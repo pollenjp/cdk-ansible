@@ -1,0 +1,25 @@
+[package]
+name = "cdk-ansible"
+version = "0.1.0"
+edition.workspace = true
+rust-version.workspace = true
+authors.workspace = true
+license.workspace = true
+
+[lints]
+workspace = true
+
+[dependencies]
+cdk-ansible-cli.workspace = true
+cdk-ansible-core.workspace = true
+cdk-ansible-macro.workspace = true
+
+anyhow.workspace = true
+clap.workspace = true
+dyn-clone.workspace = true
+fs-err.workspace = true
+indexmap.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+syn.workspace = true
+quote.workspace = true

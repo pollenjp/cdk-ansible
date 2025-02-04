@@ -1,0 +1,7 @@
+- name: Debug
+  hosts:
+    - pollenjp-wolf.home1.pollenjp.com
+  tasks:
+    - name: Debug msg
+      ansible.builtin.debug:
+        msg: msg

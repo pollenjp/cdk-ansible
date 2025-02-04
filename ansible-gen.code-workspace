@@ -1,0 +1,46 @@
+{
+  // cdk-ansible-rs
+  "folders": [
+    {
+      "path": "./tools/ansible"
+    },
+    {
+      "path": "./crates/cdk-ansible"
+    },
+    {
+      "path": "./crates/cdk-ansible-cli"
+    },
+    {
+      "path": "./crates/cdk-ansible-core"
+    },
+    {
+      "path": "./crates/cdk-ansible-static"
+    },
+    {
+      "path": "./crates/cdk-ansible-macro"
+    },
+    {
+      "path": "./crates/cdk-ansible-version"
+    },
+    {
+      "path": "."
+    },
+  ],
+  "settings": {
+    "files.exclude": {
+      "**/target/": true,
+    },
+    "search.exclude": {
+      "**/target/": true
+    },
+    "rust-analyzer.cargo.extraEnv": {
+      "CDK_ANSIBLE_COMMIT_HASH": "dummy_hash",
+      "CDK_ANSIBLE_COMMIT_SHORT_HASH": "dummy_short",
+      "CDK_ANSIBLE_COMMIT_DATE": "2024-01-01",
+      "CDK_ANSIBLE_LAST_TAG": "v0.0.0",
+      "CDK_ANSIBLE_LAST_TAG_DISTANCE": "0"
+    },
+    // ansible plugin requires python interpreter path at the top of the workspace folders
+    "ansible.python.interpreterPath": ".venv/bin/python",
+  }
+}

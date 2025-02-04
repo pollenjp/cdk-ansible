@@ -1,0 +1,18 @@
+all:
+  hosts:
+    pollenjp-wolf.home1.pollenjp.com:
+      ansible_python_interpreter: /usr/local/ansible_python/.venv/bin/python
+    pollenjp-screw.home1.pollenjp.com:
+      ansible_python_interpreter: /usr/local/ansible_python/.venv/bin/python
+    pollenjp-herta.home1.pollenjp.com:
+      ansible_python_interpreter: /usr/local/ansible_python/.venv/bin/python
+    pollenjp-ruan.home1.pollenjp.com:
+      ansible_python_interpreter: /usr/local/ansible_python/.venv/bin/python
+    pollenjp-vivy.home1.pollenjp.com:
+      ansible_python_interpreter: /usr/local/ansible_python/.venv/bin/python
+    pollenjp-k8s1-node1.home1.pollenjp.com:
+      ansible_python_interpreter: /usr/local/ansible_python/.venv/bin/python
+    pollenjp-k8s1-node2.home1.pollenjp.com:
+      ansible_python_interpreter: /usr/local/ansible_python/.venv/bin/python
+    pollenjp-k8s1-node3.home1.pollenjp.com:
+      ansible_python_interpreter: /usr/local/ansible_python/.venv/bin/python

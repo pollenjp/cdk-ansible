@@ -1,0 +1,60 @@
+---
+# exclude_paths: []
+parseable: true
+use_default_rules: true
+skip_list:
+  - "yaml" # Disable YAML linting since it's done by yamllint
+enable_list:
+  # ansible-lint -L | grep -e "opt-in" -e "experimental" | tr -s ' ' | cut -d ' ' -f2
+  # ansible-lint -L | tr -s ' ' | cut -d ' ' -f2
+  - args
+  - avoid-implicit
+  - command-instead-of-module
+  - command-instead-of-shell
+  - complexity
+  - deprecated-bare-vars
+  - deprecated-local-action
+  - deprecated-module
+  - empty-string-compare
+  - fqcn
+  - galaxy
+  - galaxy-version-incorrect
+  - ignore-errors
+  - inline-env-var
+  - internal-error
+  - jinja
+  - key-order
+  - latest
+  - literal-compare
+  - load-failure
+  - loop-var-prefix
+  - meta-incorrect
+  - meta-no-tags
+  - meta-runtime
+  - meta-video-links
+  - name
+  - no-changed-when
+  - no-free-form
+  - no-handler
+  - no-jinja-when
+  - no-log-password
+  - no-prompting
+  - no-relative-paths
+  - no-same-owner
+  - no-tabs
+  # - only-builtins
+  - package-latest
+  - parser-error
+  - partial-become
+  - playbook-extension
+  - risky-file-permissions
+  - risky-octal
+  - risky-shell-pipe
+  - role-name
+  - run-once
+  - sanity
+  - schema
+  - syntax-check
+  - var-naming
+  - warning
+  - yaml

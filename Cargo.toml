@@ -1,0 +1,41 @@
+[workspace]
+members = ["crates/*"]
+resolver = "2"
+
+[workspace.package]
+edition = "2021"
+rust-version = "1.83"
+# homepage = ""
+# documentation = ""
+# repository = ""
+authors = ["pollenjp"]
+license = "MIT"
+
+[workspace.dependencies]
+# cdk-ansible-sample-app = { path = "crates/cdk-ansible-sample-app" }
+cdk-ansible = { path = "crates/cdk-ansible" }
+cdk-ansible-cli = { path = "crates/cdk-ansible-cli" }
+cdk-ansible-core = { path = "crates/cdk-ansible-core" }
+cdk-ansible-static = { path = "crates/cdk-ansible-static" }
+cdk-ansible-macro = { path = "crates/cdk-ansible-macro" }
+cdk-ansible-version = { path = "crates/cdk-ansible-version" }
+
+anyhow = { version = "1.0.95" }
+clap = { version = "4.5.21", features = [
+    "derive",
+    "env",
+    "string",
+    "wrap_help",
+] }
+dyn-clone = "1.0.17"
+erased-serde = "0.4.5"
+fs-err = "3.0.0"
+indexmap = { version = "2.7.1", features = ["serde"] }
+quote = "1.0.37"
+serde = { version = "1.0.217", features = ["derive"] }
+serde_json = { version = "1.0.138", features = ["preserve_order"] }
+syn = { version = "2.0.90", features = ["full"] }
+
+[workspace.lints.rust]
+
+[workspace.lints.clippy]

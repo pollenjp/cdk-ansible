@@ -1,0 +1,12 @@
+- name: Debug
+  hosts:
+    - pollenjp-herta.home1.pollenjp.com
+  tasks:
+    - name: Debug msg
+      ansible.builtin.debug:
+        msg: msg
+    - name: Create file
+      ansible.builtin.file:
+        path: /tmp/debug.txt
+        mode: "0644"
+        state: touch
