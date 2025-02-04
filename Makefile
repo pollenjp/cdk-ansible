@@ -1,6 +1,7 @@
 PROJ_ROOT := $(shell pwd)
 SAMPLE_ANSIBLE_ROOT := ${PROJ_ROOT}/tools/ansible
-RS_OUT_DIR := ${PROJ_ROOT}/examples/cdk-ansible-sample-app/src/module
+SAMPLE_APP_ROOT := ${PROJ_ROOT}/examples/cdk-ansible-sample-app
+RS_OUT_DIR := ${PROJ_ROOT}/crates/cdk-ansible/.cdk-ansible.out
 UV_RUN := uv --project "${SAMPLE_ANSIBLE_ROOT}" run
 
 export
@@ -9,15 +10,18 @@ export
 .PHONY: debug
 debug:
 	cd "${PROJ_ROOT}/crates/cdk-ansible" \
-		&& ${UV_RUN} cargo run -- module --output-dir "${RS_OUT_DIR}" --module-name fortinet.fortimanager.fmgr_user_tacacs_dynamicmapping
+		&& ${UV_RUN} cargo run -- module \
+			--output-dir "${RS_OUT_DIR}" \
+			--module-name fortinet.fortimanager.fmgr_user_tacacs_dynamicmapping
 
 .PHONY: debug-module
 debug-module:
 	cd "${PROJ_ROOT}/crates/cdk-ansible" && ${UV_RUN} cargo run -- module --output-dir "${RS_OUT_DIR}"
+	rsync -av --delete "${RS_OUT_DIR}/" "${SAMPLE_APP_ROOT}/src/module"
 
 .PHONY: debug-synth
 debug-synth:
-	cd "${PROJ_ROOT}/crates/cdk-ansible-sample-app" && RUST_BACKTRACE=1 cargo run -- synth --output-dir "${SAMPLE_ANSIBLE_ROOT}"
+	cd "${SAMPLE_APP_ROOT}" && RUST_BACKTRACE=1 cargo run -- synth --output-dir "${SAMPLE_ANSIBLE_ROOT}"
 # convert json to yaml by yq
 	find "${SAMPLE_ANSIBLE_ROOT}/playbooks" "${SAMPLE_ANSIBLE_ROOT}/inventory" -name "*.json" \
 		| xargs -I{} bash -c \

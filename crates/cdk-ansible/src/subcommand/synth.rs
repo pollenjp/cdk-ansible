@@ -8,7 +8,7 @@ pub trait Synthesizer {
     fn synth_inventory(&self, args: &settings::SynthSettings) -> Result<Inventory>;
 }
 
-pub(crate) fn synth(synthesizer: &dyn Synthesizer, args: &SynthArgs) -> Result<()> {
+pub(crate) fn synth(synthesizer: &dyn Synthesizer, args: SynthArgs) -> Result<()> {
     let synth_settings = settings::SynthSettings::resolve(args);
 
     // Playbooks

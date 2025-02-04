@@ -60,8 +60,11 @@ pub struct GlobalArgs {
 #[derive(Subcommand)]
 #[allow(clippy::large_enum_variant)]
 pub enum Commands {
+    #[command(next_help_heading = "Show help")]
     Help(HelpArgs),
+    #[command(next_help_heading = "Create Rust code from ansible module")]
     Module(ModuleArgs),
+    #[command(next_help_heading = "Create Ansible playbooks from Rust code")]
     Synth(SynthArgs),
 }
 
@@ -75,10 +78,13 @@ pub struct HelpArgs {
 }
 
 #[derive(Args, Debug, Clone)]
-#[command(next_help_heading = "Create Rust code from ansible module")]
 pub struct ModuleArgs {
-    #[arg(short, long, required = true)]
-    pub output_dir: PathBuf,
+    #[arg(short, long, required = false)]
+    pub output_dir: Option<PathBuf>,
+    #[arg(short, long, required = false)]
+    pub no_cache: bool,
+    #[arg(short, long, required = false)]
+    pub cache_dir: Option<PathBuf>,
     #[arg(
         short,
         long,

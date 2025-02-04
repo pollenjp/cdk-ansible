@@ -1,5 +1,6 @@
-!ansible-gen.code-workspace
+!*.code-workspace
 .python-version
+.cdk-ansible*.out
 
 ##################
 # Rust.gitignore #

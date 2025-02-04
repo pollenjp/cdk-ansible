@@ -4,13 +4,14 @@ use indexmap::IndexMap;
 use quote::{format_ident, quote};
 use serde::{Deserialize, Serialize};
 use std::io::Write;
-use std::path::Path;
+use std::path::{Path, PathBuf};
 
-pub(crate) fn module(args: &ModuleArgs) -> Result<()> {
-    let module_names = if let Some(module_name) = &args.module_name {
-        vec![module_name.clone()]
+pub(crate) fn module(args: ModuleArgs) -> Result<()> {
+    let args = crate::settings::ModuleSettings::resolve(args);
+    let module_names = if let Some(module_name) = args.module_name {
+        vec![module_name]
     } else {
-        let list_lines = list_ansible_modules()?;
+        let list_lines = get_ansible_modules_list()?;
         list_lines
             .iter()
             .map(|line| {
@@ -29,9 +30,32 @@ pub(crate) fn module(args: &ModuleArgs) -> Result<()> {
             .map(|s| s.replace("-", "_"))
             .collect::<Vec<_>>();
 
-        let module_json = ansible_doc_cmd(&module_name)
-            .with_context(|| format!("failed to execute ansible-doc command: {}", module_name))?;
-        let output_dir = args.output_dir.clone();
+        // generate mod.rs for each directory
+        //
+        // ex) ansible.builtin.debug
+        //     =>
+        //     mod.rs                 -> pub mod ansible;
+        //     ansible/mod.rs         -> pub mod builtin;
+        //     ansible/builtin/mod.rs -> pub mod debug;
+        //
+        module_name_split
+            .iter()
+            .scan(args.output_dir.clone(), |acc, dir_name| {
+                let path = acc.clone();
+                *acc = acc.join(dir_name);
+                Some((path.join("mod.rs"), dir_name.to_string()))
+            })
+            .map(|(mod_path, sub_mod_name)| create_mod_rs(&mod_path, &sub_mod_name))
+            .collect::<Result<Vec<_>>>()?;
+
+        // Save module's Rust code
+
+        let module_json = get_module_json(GetModuleJsonArgs {
+            module_name: &module_name,
+            use_cache: args.use_cache,
+            cache_dir: &args.cache_dir,
+        })
+        .with_context(|| format!("failed to get module json: {}", module_name))?;
 
         let content = generate_module_rs(&module_json).with_context(|| {
             let module_json_str = if let Ok(module_json_str) = serde_json::to_string(&module_json) {
@@ -43,27 +67,9 @@ pub(crate) fn module(args: &ModuleArgs) -> Result<()> {
             format!("failed to generate module: {}", module_json_str)
         })?;
 
-        // generate mod.rs for each directory
-        //
-        // ex) ansible.builtin.debug
-        //     =>
-        //     mod.rs                 -> pub mod ansible;
-        //     ansible/mod.rs         -> pub mod builtin;
-        //     ansible/builtin/mod.rs -> pub mod debug;
-        //
-        module_name_split
-            .iter()
-            .scan(output_dir.clone(), |acc, dir_name| {
-                let path = acc.clone();
-                *acc = acc.join(dir_name);
-                Some((path.join("mod.rs"), dir_name.to_string()))
-            })
-            .map(|(mod_path, sub_mod_name)| create_mod_rs(&mod_path, &sub_mod_name))
-            .collect::<Result<Vec<_>>>()?;
-
         let module_path = module_name_split
             .iter()
-            .fold(output_dir, |acc, dir_name| acc.join(dir_name))
+            .fold(args.output_dir.clone(), |acc, dir_name| acc.join(dir_name))
             .with_extension("rs");
 
         std::fs::create_dir_all(module_path.parent().unwrap()).with_context(|| {
@@ -84,7 +90,12 @@ pub(crate) fn module(args: &ModuleArgs) -> Result<()> {
 /// Otherwise, write 'pub mod <module_name>;' to it.
 /// Finally, rustfmt.
 fn create_mod_rs(mod_rs_path: &Path, sub_mod_name: &str) -> Result<()> {
-    std::fs::create_dir_all(mod_rs_path.parent().unwrap()).with_context(|| {
+    std::fs::create_dir_all(
+        mod_rs_path
+            .parent()
+            .expect("failed to get parent directory"),
+    )
+    .with_context(|| {
         format!(
             "failed to create directory for saving '<module>.rs': {}",
             &mod_rs_path.display()
@@ -117,28 +128,61 @@ fn create_mod_rs(mod_rs_path: &Path, sub_mod_name: &str) -> Result<()> {
     Ok(())
 }
 
-fn ansible_doc_cmd(module_name: &str) -> Result<ModuleJson> {
-    // FIXME: ansible-doc command
-    // let output = std::process::Command::new("uv")
-    //     .args(["run", "ansible-doc", "--json", module_name])
-    let output = std::process::Command::new("ansible-doc")
-        .args(["--json", module_name])
-        .output()
-        .with_context(|| format!("failed to execute ansible-doc command: {}", module_name))?;
-    let output_str = String::from_utf8_lossy(&output.stdout);
+struct GetModuleJsonArgs<'a> {
+    module_name: &'a str,
+    use_cache: bool,
+    cache_dir: &'a PathBuf,
+}
+
+fn get_module_json(args: GetModuleJsonArgs) -> Result<ModuleJson> {
+    let cache_file_path = args.cache_dir.join(args.module_name);
+    let output_str = if args.use_cache && cache_file_path.exists() {
+        std::fs::read_to_string(&cache_file_path)
+            .with_context(|| format!("failed to read cache file: {}", &cache_file_path.display()))?
+            .to_string()
+    } else {
+        let output = std::process::Command::new("ansible-doc")
+            .args(["--json", args.module_name])
+            .output()
+            .with_context(|| {
+                format!(
+                    "failed to execute ansible-doc command: {}",
+                    args.module_name
+                )
+            })?;
+        let output_str = String::from_utf8_lossy(&output.stdout).to_string();
+        if args.use_cache {
+            // If use_cache is False, do not save to cache
+            std::fs::create_dir_all(args.cache_dir).with_context(|| {
+                format!(
+                    "failed to create cache directory: {}",
+                    &args.cache_dir.display()
+                )
+            })?;
+            std::fs::write(cache_file_path.with_extension("json"), &output_str).with_context(
+                || format!("failed to write cache file: {}", &cache_file_path.display()),
+            )?;
+        }
+
+        output_str
+    };
     let module_json: ModuleJson = serde_json::from_str(&output_str)
         .with_context(|| format!("failed to parse ansible-doc output: {:?}", output_str))?;
     Ok(module_json)
 }
 
 /// list all ansible modules accessible by ansible-doc
-fn list_ansible_modules() -> Result<Vec<String>> {
+fn get_ansible_modules_list() -> Result<Vec<String>> {
     let output = std::process::Command::new("ansible-doc")
         .args(["--list"])
         .output()
         .with_context(|| "failed to execute ansible-doc command")?;
     let output_str = String::from_utf8_lossy(&output.stdout);
-    Ok(output_str.split('\n').map(|s| s.to_string()).collect())
+    Ok(output_str
+        .split('\n')
+        .map(|s| s.to_string())
+        .filter(|s| !s.is_empty())
+        .collect())
 }
 
 type ModuleJson = IndexMap<String, ModuleItem>;

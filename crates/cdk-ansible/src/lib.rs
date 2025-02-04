@@ -45,7 +45,7 @@ where
     I: IntoIterator<Item = T>,
     T: Into<OsString> + Clone,
 {
-    let mut cli = match Cli::try_parse_from(args) {
+    let cli = match Cli::try_parse_from(args) {
         Ok(cli) => cli,
         Err(mut err) => {
             if let Some(ContextValue::String(subcommand)) = err.get(ContextKind::InvalidSubcommand)
@@ -98,29 +98,23 @@ where
         println!("----------------------------------------");
     }
 
-    let global_settings = settings::GlobalSettings::resolve(&cli.top_level.global_args);
+    let global_settings = settings::GlobalSettings::resolve(*cli.top_level.global_args);
 
     println!("----------------------------------------");
     println!("Global settings: {:?}", global_settings);
     println!("----------------------------------------");
 
-    match &mut *cli.command {
+    let result = match *cli.command {
         Commands::Help(help_args) => {
             println!("----------------------------------------");
             println!("Help command: {:?}", help_args);
             println!("----------------------------------------");
+            Ok(())
         }
-        Commands::Module(module_args) => {
-            subcommand::module::module(module_args)
-                .with_context(|| format!("Failed to run module command: {:?}", module_args))?;
-        }
-        Commands::Synth(synth_args) => {
-            subcommand::synth::synth(&commander, synth_args)
-                .with_context(|| format!("Failed to run synth command: {:?}", synth_args))?;
-        }
-    }
-
-    Ok(())
+        Commands::Module(module_args) => subcommand::module::module(module_args),
+        Commands::Synth(synth_args) => subcommand::synth::synth(&commander, synth_args),
+    };
+    result.context("Failed to run command")
 }
 
 pub fn playbook_dump(args: &settings::SynthSettings, playbook: &Playbook) -> Result<()> {

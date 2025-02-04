@@ -12,7 +12,6 @@ authors = ["pollenjp"]
 license = "MIT"
 
 [workspace.dependencies]
-# cdk-ansible-sample-app = { path = "crates/cdk-ansible-sample-app" }
 cdk-ansible = { path = "crates/cdk-ansible" }
 cdk-ansible-cli = { path = "crates/cdk-ansible-cli" }
 cdk-ansible-core = { path = "crates/cdk-ansible-core" }
