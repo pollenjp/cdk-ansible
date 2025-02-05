@@ -14,10 +14,15 @@ debug:
 			--output-dir "${RS_OUT_DIR}" \
 			--module-name fortinet.fortimanager.fmgr_user_tacacs_dynamicmapping
 
+.PHONY: help
+help:
+#	cd "${PROJ_ROOT}/crates/cdk-ansible" && ${UV_RUN} cargo run -- --help
+	cd "${PROJ_ROOT}/crates/cdk-ansible" && ${UV_RUN} cargo run -- module --help
+
 .PHONY: debug-module
 debug-module:
 	cd "${PROJ_ROOT}/crates/cdk-ansible" && ${UV_RUN} cargo run -- module --output-dir "${RS_OUT_DIR}"
-	rsync -av --delete "${RS_OUT_DIR}/" "${SAMPLE_APP_ROOT}/src/module"
+#	rsync -av --delete "${RS_OUT_DIR}/" "${SAMPLE_APP_ROOT}/src/module"
 
 .PHONY: debug-synth
 debug-synth:

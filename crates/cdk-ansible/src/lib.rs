@@ -54,14 +54,19 @@ where
                     "help" => {
                         err.insert(
                             ContextKind::InvalidSubcommand,
-                            ContextValue::String("help".to_string()),
+                            ContextValue::String("module".to_string()),
                         );
                     }
-                    "some1" => {
-                        // TODO: remove later
+                    "module" => {
                         err.insert(
                             ContextKind::InvalidSubcommand,
-                            ContextValue::String("some1".to_string()),
+                            ContextValue::String("module".to_string()),
+                        );
+                    }
+                    "synth" => {
+                        err.insert(
+                            ContextKind::InvalidSubcommand,
+                            ContextValue::String("synth".to_string()),
                         );
                     }
                     "some2" => {

@@ -1,15 +1,25 @@
-use anyhow::{Context, Result};
+use anyhow::{bail, Context, Result};
+use cargo_util_schemas::manifest::{
+    InheritableDependency, InheritableField, InheritableSemverVersion, InheritableString,
+    PackageName, TomlDependency, TomlDetailedDependency, TomlManifest, TomlPackage,
+};
 use cdk_ansible_cli::ModuleArgs;
 use indexmap::IndexMap;
 use quote::{format_ident, quote};
 use serde::{Deserialize, Serialize};
+use std::collections::BTreeMap;
 use std::io::Write;
 use std::path::{Path, PathBuf};
 
+use crate::settings::PkgUnit;
+
+// FIXME: should be configurable
+static SUB_MOD_NAME: &str = "m";
+
 pub(crate) fn module(args: ModuleArgs) -> Result<()> {
     let args = crate::settings::ModuleSettings::resolve(args);
-    let module_names = if let Some(module_name) = args.module_name {
-        vec![module_name]
+    let modu_names = if let Some(modu_name) = args.module_name {
+        vec![modu_name]
     } else {
         let list_lines = get_ansible_modules_list()?;
         list_lines
@@ -23,12 +33,10 @@ pub(crate) fn module(args: ModuleArgs) -> Result<()> {
             .collect::<Result<Vec<_>>>()?
     };
 
-    for module_name in module_names {
-        println!("module_name: {}", module_name);
-        let module_name_split = module_name
-            .split('.')
-            .map(|s| s.replace("-", "_"))
-            .collect::<Vec<_>>();
+    for modu_name in modu_names {
+        println!("module_name: {}", modu_name);
+        let am_name = AnsibleModuleName::new(&modu_name)
+            .with_context(|| format!("failed to parse module name: {}", modu_name))?;
 
         // generate mod.rs for each directory
         //
@@ -38,53 +46,291 @@ pub(crate) fn module(args: ModuleArgs) -> Result<()> {
         //     ansible/mod.rs         -> pub mod builtin;
         //     ansible/builtin/mod.rs -> pub mod debug;
         //
-        module_name_split
-            .iter()
-            .scan(args.output_dir.clone(), |acc, dir_name| {
-                let path = acc.clone();
-                *acc = acc.join(dir_name);
-                Some((path.join("mod.rs"), dir_name.to_string()))
-            })
-            .map(|(mod_path, sub_mod_name)| create_mod_rs(&mod_path, &sub_mod_name))
-            .collect::<Result<Vec<_>>>()?;
-
-        // Save module's Rust code
 
         let module_json = get_module_json(GetModuleJsonArgs {
-            module_name: &module_name,
+            name: &am_name,
             use_cache: args.use_cache,
             cache_dir: &args.cache_dir,
         })
-        .with_context(|| format!("failed to get module json: {}", module_name))?;
+        .with_context(|| format!("failed to get module json: {}", modu_name))?;
 
-        let content = generate_module_rs(&module_json).with_context(|| {
-            let module_json_str = if let Ok(module_json_str) = serde_json::to_string(&module_json) {
-                module_json_str
-            } else {
-                dbg!(&module_json);
-                "failed to serialize module_json".to_string()
-            };
-            format!("failed to generate module: {}", module_json_str)
-        })?;
-
-        let module_path = module_name_split
-            .iter()
-            .fold(args.output_dir.clone(), |acc, dir_name| acc.join(dir_name))
-            .with_extension("rs");
-
-        std::fs::create_dir_all(module_path.parent().unwrap()).with_context(|| {
-            format!(
-                "failed to create directory for saving '<module>.rs': {}",
-                module_path.parent().unwrap().display()
-            )
-        })?;
-        std::fs::write(&module_path, content)
-            .with_context(|| format!("failed to write module file: {}", &module_path.display()))?;
+        create_rust_package_project(
+            args.pkg_unit.as_ref(),
+            args.pkg_prefix.as_str(),
+            args.output_dir.as_path(),
+            &am_name,
+            &module_json,
+        )?;
     }
     Ok(())
 }
 
-// fn generate_module_rs(module_json: &ModuleJson) -> Result<String> {
+fn create_module_rs(modu_path: &Path, module_json: &ModuleJson) -> Result<()> {
+    let content = generate_module_rs(module_json).with_context(|| {
+        let module_json_str = if let Ok(module_json_str) = serde_json::to_string(&module_json) {
+            module_json_str
+        } else {
+            dbg!(module_json);
+            "failed to serialize module_json".to_string()
+        };
+        format!("failed to generate module: {}", module_json_str)
+    })?;
+
+    std::fs::create_dir_all(modu_path.parent().unwrap()).with_context(|| {
+        format!(
+            "failed to create directory for saving '<module>.rs': {}",
+            modu_path.parent().unwrap().display()
+        )
+    })?;
+    std::fs::write(modu_path, content)
+        .with_context(|| format!("failed to write module file: {}", &modu_path.display()))?;
+    Ok(())
+}
+
+/// '<namespace>.<collection>.<module>'
+///
+/// ex) ansible.builtin.debug
+///   =>
+///   namespace: ansible
+///   collection: builtin
+///   module: debug
+struct AnsibleModuleName {
+    pub namespace: String,
+    pub collection: String,
+    pub module: String,
+}
+
+impl AnsibleModuleName {
+    pub fn new(modu_name: &str) -> Result<Self> {
+        let parts = modu_name.split('.').collect::<Vec<_>>();
+        if parts.len() != 3 {
+            bail!(
+                "invalid module name: {}\nPlease specify like '<namespace>.<collection>.<module>'",
+                modu_name
+            );
+        }
+        Ok(Self {
+            namespace: parts[0].to_string(),
+            collection: parts[1].to_string(),
+            module: parts[2].to_string(),
+        })
+    }
+
+    pub fn fqdn(&self) -> String {
+        format!("{}.{}.{}", self.namespace, self.collection, self.module)
+    }
+}
+
+fn create_rust_package_project(
+    pkg_unit: Option<&PkgUnit>,
+    pkg_prefix: &str,
+    base_dir: &Path,
+    am_name: &AnsibleModuleName,
+    module_json: &ModuleJson,
+) -> Result<()> {
+    let result: Result<()> = if let Some(pkg_unit) = pkg_unit {
+        let pkg_name = match *pkg_unit {
+            PkgUnit::Namespace => format!("{}_{}", pkg_prefix, am_name.namespace),
+            PkgUnit::Collection => format!(
+                "{}_{}_{}",
+                pkg_prefix, am_name.namespace, am_name.collection
+            ),
+            PkgUnit::Module => format!(
+                "{}_{}_{}_{}",
+                pkg_prefix, am_name.namespace, am_name.collection, am_name.module
+            ),
+        };
+
+        let pkg_dir = base_dir.join(&pkg_name);
+        let src_dir = pkg_dir.join("src");
+        let sub_mod_dir = src_dir.join(SUB_MOD_NAME);
+        let lib_rs_path = src_dir.join("lib.rs");
+        for (mod_path, sub_mod_name) in [
+            (lib_rs_path.clone(), SUB_MOD_NAME.to_string()),
+            (sub_mod_dir.join("mod.rs"), am_name.namespace.clone()),
+            (
+                sub_mod_dir.join(&am_name.namespace).join("mod.rs"),
+                am_name.collection.clone(),
+            ),
+            (
+                sub_mod_dir
+                    .join(&am_name.namespace)
+                    .join(&am_name.collection)
+                    .join("mod.rs"),
+                am_name.module.clone(),
+            ),
+        ] {
+            create_mod_rs(&mod_path, &sub_mod_name)?;
+        }
+
+        create_lib_rs(&lib_rs_path, am_name, pkg_unit)?;
+
+        std::fs::create_dir_all(&pkg_dir).with_context(|| {
+            format!(
+                "failed to create directory for saving '<module>.rs': {}",
+                &pkg_dir.display()
+            )
+        })?;
+        create_cargo_toml(&pkg_name, &pkg_dir)?;
+        let modu_path = sub_mod_dir
+            .join(&am_name.namespace)
+            .join(&am_name.collection)
+            .join(&am_name.module)
+            .with_extension("rs");
+        create_module_rs(&modu_path, module_json)?;
+        Ok(())
+    } else {
+        let sub_mod_dir = base_dir;
+        for (mod_path, sub_mod_name) in [
+            (
+                sub_mod_dir.join(&am_name.namespace).join("mod.rs"),
+                am_name.collection.clone(),
+            ),
+            (
+                sub_mod_dir
+                    .join(&am_name.namespace)
+                    .join(&am_name.collection)
+                    .join("mod.rs"),
+                am_name.module.clone(),
+            ),
+        ] {
+            create_mod_rs(&mod_path, &sub_mod_name)?;
+        }
+        let modu_path = sub_mod_dir
+            .join(&am_name.namespace)
+            .join(&am_name.collection)
+            .join(&am_name.module)
+            .with_extension("rs");
+        create_module_rs(&modu_path, module_json)?;
+        Ok(())
+    };
+    result.with_context(|| format!("failed to create rust package project: {}", am_name.fqdn()))
+}
+
+///
+/// pkg_name: ex) cdkam_ansible_builtin
+/// pkg_dir: ex) /path/to/cdkam_ansible_builtin
+///
+fn create_cargo_toml(pkg_name: &str, pkg_dir: &Path) -> Result<()> {
+    let cargo_toml_path = pkg_dir.join("Cargo.toml");
+    let manifest = TomlManifest {
+        package: Some(Box::new(TomlPackage {
+            name: PackageName::new(pkg_name.to_string()).unwrap(),
+            version: Some(InheritableSemverVersion::Value(semver::Version::new(
+                0, 1, 0,
+            ))),
+            edition: Some(InheritableString::Value("2021".to_string())),
+            rust_version: None,
+            authors: None,
+            build: None,
+            metabuild: None,
+            default_target: None,
+            forced_target: None,
+            links: None,
+            exclude: None,
+            include: None,
+            publish: None,
+            workspace: None,
+            im_a_teapot: None,
+            autolib: None,
+            autobins: None,
+            autoexamples: None,
+            autotests: None,
+            autobenches: None,
+            default_run: None,
+            description: None,
+            homepage: None,
+            documentation: None,
+            readme: None,
+            keywords: None,
+            categories: None,
+            license: None,
+            license_file: None,
+            repository: None,
+            resolver: None,
+            metadata: None,
+            _invalid_cargo_features: None,
+        })),
+        dependencies: Some(BTreeMap::from([
+            (
+                PackageName::new("anyhow".to_string()).unwrap(),
+                InheritableDependency::Value(TomlDependency::Simple("1.0.95".into())),
+            ),
+            (
+                PackageName::new("indexmap".to_string()).unwrap(),
+                InheritableDependency::Value(TomlDependency::Detailed(TomlDetailedDependency {
+                    version: Some("2.7.1".to_string()),
+                    features: Some(vec!["serde".to_string()]),
+                    ..Default::default()
+                })),
+            ),
+            (
+                PackageName::new("serde".to_string()).unwrap(),
+                InheritableDependency::Value(TomlDependency::Detailed(TomlDetailedDependency {
+                    version: Some("1.0.217".to_string()),
+                    features: Some(vec!["derive".to_string()]),
+                    ..Default::default()
+                })),
+            ),
+            (
+                PackageName::new("serde_json".to_string()).unwrap(),
+                InheritableDependency::Value(TomlDependency::Detailed(TomlDetailedDependency {
+                    version: Some("1.0.138".to_string()),
+                    features: Some(vec!["preserve_order".to_string()]),
+                    ..Default::default()
+                })),
+            ),
+        ])),
+        ..Default::default()
+    };
+    std::fs::write(&cargo_toml_path, ::toml::to_string(&manifest)?)
+        .with_context(|| format!("failed to write cargo.toml: {}", &cargo_toml_path.display()))?;
+    Ok(())
+}
+
+fn create_lib_rs(
+    lib_rs_path: &Path,
+    am_name: &AnsibleModuleName,
+    pkg_unit: &PkgUnit,
+) -> Result<()> {
+    let sub_mod_path = syn::parse_str::<syn::Path>(SUB_MOD_NAME)
+        .with_context(|| format!("failed to parse sub module path: {}", SUB_MOD_NAME))?;
+    let pub_use_target_path = match *pkg_unit {
+        PkgUnit::Namespace => syn::parse_str::<syn::Path>(
+            format!("crate::{}::{}", SUB_MOD_NAME, am_name.namespace).as_str(),
+        ),
+        PkgUnit::Collection => syn::parse_str::<syn::Path>(
+            format!(
+                "crate::{}::{}::{}",
+                SUB_MOD_NAME, am_name.namespace, am_name.collection
+            )
+            .as_str(),
+        ),
+        PkgUnit::Module => syn::parse_str::<syn::Path>(
+            format!(
+                "crate::{}::{}::{}::{}",
+                SUB_MOD_NAME, am_name.namespace, am_name.collection, am_name.module
+            )
+            .as_str(),
+        ),
+    }
+    .context("failed to parse pub use target path")?;
+    let content = quote! {
+        pub mod #sub_mod_path;
+        pub use #pub_use_target_path::*;
+    };
+    std::fs::create_dir_all(lib_rs_path.parent().unwrap()).with_context(|| {
+        format!(
+            "failed to create directory for saving 'lib.rs': {}",
+            &lib_rs_path.display()
+        )
+    })?;
+    let formatted_content = format_code(&content.to_string())
+        .with_context(|| format!("failed to format lib.rs: {}", &lib_rs_path.display()))?;
+    std::fs::write(lib_rs_path, formatted_content)
+        .with_context(|| format!("failed to write lib.rs: {}", &lib_rs_path.display()))?;
+    Ok(())
+}
 
 /// If mod_path does not exist, create it and write 'pub mod <module_name>;' to it.
 /// Otherwise, write 'pub mod <module_name>;' to it.
@@ -112,7 +358,7 @@ fn create_mod_rs(mod_rs_path: &Path, sub_mod_name: &str) -> Result<()> {
 
     let sub_mod_name_ident = format_ident!("{}", sub_mod_name);
     let ts = quote! {
-        pub(crate) mod #sub_mod_name_ident;
+        pub mod #sub_mod_name_ident;
     };
     let formatted_ts =
         format_code(ts.to_string().as_str()).with_context(|| "failed to format code")?;
@@ -129,27 +375,23 @@ fn create_mod_rs(mod_rs_path: &Path, sub_mod_name: &str) -> Result<()> {
 }
 
 struct GetModuleJsonArgs<'a> {
-    module_name: &'a str,
+    name: &'a AnsibleModuleName,
     use_cache: bool,
     cache_dir: &'a PathBuf,
 }
 
 fn get_module_json(args: GetModuleJsonArgs) -> Result<ModuleJson> {
-    let cache_file_path = args.cache_dir.join(args.module_name);
+    let name = &args.name.fqdn();
+    let cache_file_path = args.cache_dir.join(name);
     let output_str = if args.use_cache && cache_file_path.exists() {
         std::fs::read_to_string(&cache_file_path)
             .with_context(|| format!("failed to read cache file: {}", &cache_file_path.display()))?
             .to_string()
     } else {
         let output = std::process::Command::new("ansible-doc")
-            .args(["--json", args.module_name])
+            .args(["--json", name])
             .output()
-            .with_context(|| {
-                format!(
-                    "failed to execute ansible-doc command: {}",
-                    args.module_name
-                )
-            })?;
+            .with_context(|| format!("failed to execute ansible-doc command: {}", name))?;
         let output_str = String::from_utf8_lossy(&output.stdout).to_string();
         if args.use_cache {
             // If use_cache is False, do not save to cache

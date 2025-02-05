@@ -1,5 +1,5 @@
 use cdk_ansible_static::EnvVars;
-use clap::{command, Args, Parser, Subcommand};
+use clap::{command, Args, Parser, Subcommand, ValueEnum};
 use std::path::PathBuf;
 
 pub mod version;
@@ -11,7 +11,7 @@ pub mod version;
 #[command(
     after_help = "Use `cdk-ansible help` for more details.",
     after_long_help = "",
-    disable_help_flag = true,
+    // disable_help_flag = true,
     disable_help_subcommand = true,
     disable_version_flag = true
 )]
@@ -23,7 +23,7 @@ pub struct Cli {
 }
 
 #[derive(Parser)]
-#[command(disable_help_flag = true, disable_version_flag = true)]
+#[command(disable_version_flag = true)]
 pub struct TopLevelArgs {
     #[command(flatten)]
     pub global_args: Box<GlobalArgs>,
@@ -79,19 +79,44 @@ pub struct HelpArgs {
 
 #[derive(Args, Debug, Clone)]
 pub struct ModuleArgs {
+    /// Default value is defined at `cdk_ansible::settings::ModuleSettings`
     #[arg(short, long, required = false)]
+    pub pkg_prefix: Option<String>,
+    /// Specifies the level at which Cargo packages are created:
+    /// - 'namespace': Creates a package at the namespace level
+    /// - 'collection': Creates a package at the collection level
+    /// - 'module': Creates a package at the module level
+    /// - 'None': Does not create any packages
+    ///
+    /// Package names follow this pattern:
+    /// - namespace: 'cdkam_<namespace>'
+    /// - collection: 'cdkam_<namespace>_<collection>'
+    /// - module: 'cdkam_<namespace>_<collection>_<module>'
+    #[arg(long, required = false, value_enum)]
+    pub pkg_unit: Option<PkgUnit>,
+    /// Default value is defined at `cdk_ansible::settings::ModuleSettings`
+    #[arg(long, required = false)]
     pub output_dir: Option<PathBuf>,
-    #[arg(short, long, required = false)]
+    /// Default value is defined at `cdk_ansible::settings::ModuleSettings`
+    #[arg(long, required = false)]
     pub no_cache: bool,
-    #[arg(short, long, required = false)]
+    /// Default value is defined at `cdk_ansible::settings::ModuleSettings`
+    #[arg(long, required = false)]
     pub cache_dir: Option<PathBuf>,
     #[arg(
-        short,
         long,
         required = false,
-        help = "Specify the ansible module name. If not specified, all modules will be generated."
+        help = "Specify the ansible module name. If not specified, all modules accessible from your ansible environment will be generated."
     )]
     pub module_name: Option<String>,
+}
+
+#[derive(Debug, Clone, ValueEnum, Eq, PartialEq)]
+pub enum PkgUnit {
+    Namespace,
+    Collection,
+    Module,
+    None,
 }
 
 #[derive(Args, Debug, Clone)]
