@@ -1,7 +1,7 @@
 use anyhow::{bail, Context, Result};
 use cargo_util_schemas::manifest::{
-    InheritableDependency, InheritableField, InheritableSemverVersion, InheritableString,
-    PackageName, TomlDependency, TomlDetailedDependency, TomlManifest, TomlPackage,
+    InheritableDependency, InheritableSemverVersion, InheritableString, PackageName,
+    TomlDependency, TomlDetailedDependency, TomlManifest, TomlPackage,
 };
 use cdk_ansible_cli::ModuleArgs;
 use indexmap::IndexMap;
