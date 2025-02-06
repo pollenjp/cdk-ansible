@@ -1,7 +1,7 @@
 use anyhow::{bail, Context, Result};
 use cargo_util_schemas::manifest::{
     InheritableDependency, InheritableSemverVersion, InheritableString, PackageName,
-    TomlDependency, TomlDetailedDependency, TomlManifest, TomlPackage,
+    TomlDependency, TomlDetailedDependency, TomlManifest, TomlPackage, TomlWorkspace,
 };
 use cdk_ansible_cli::ModuleArgs;
 use indexmap::IndexMap;
@@ -37,15 +37,6 @@ pub(crate) fn module(args: ModuleArgs) -> Result<()> {
         println!("module_name: {}", modu_name);
         let am_name = AnsibleModuleName::new(&modu_name)
             .with_context(|| format!("failed to parse module name: {}", modu_name))?;
-
-        // generate mod.rs for each directory
-        //
-        // ex) ansible.builtin.debug
-        //     =>
-        //     mod.rs                 -> pub mod ansible;
-        //     ansible/mod.rs         -> pub mod builtin;
-        //     ansible/builtin/mod.rs -> pub mod debug;
-        //
 
         let module_json = get_module_json(GetModuleJsonArgs {
             name: &am_name,
@@ -145,6 +136,15 @@ fn create_rust_package_project(
         let src_dir = pkg_dir.join("src");
         let sub_mod_dir = src_dir.join(SUB_MOD_NAME);
         let lib_rs_path = src_dir.join("lib.rs");
+
+        // generate mod.rs for each directory
+        //
+        // ex) ansible.builtin.debug
+        //     =>
+        //     mod.rs                 -> pub mod ansible;
+        //     ansible/mod.rs         -> pub mod builtin;
+        //     ansible/builtin/mod.rs -> pub mod debug;
+        //
         for (mod_path, sub_mod_name) in [
             (lib_rs_path.clone(), SUB_MOD_NAME.to_string()),
             (sub_mod_dir.join("mod.rs"), am_name.namespace.clone()),
@@ -280,7 +280,12 @@ fn create_cargo_toml(pkg_name: &str, pkg_dir: &Path) -> Result<()> {
                     ..Default::default()
                 })),
             ),
+            (
+                PackageName::new("cdk-ansible-core".to_string()).unwrap(),
+                InheritableDependency::Value(TomlDependency::Simple("0.0.1".into())),
+            ),
         ])),
+        workspace: Some(TomlWorkspace::default()),
         ..Default::default()
     };
     std::fs::write(&cargo_toml_path, ::toml::to_string(&manifest)?)

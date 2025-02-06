@@ -69,20 +69,6 @@ where
                             ContextValue::String("synth".to_string()),
                         );
                     }
-                    "some2" => {
-                        // TODO: remove later
-                        err.insert(
-                            ContextKind::InvalidSubcommand,
-                            ContextValue::String("some2".to_string()),
-                        );
-                    }
-                    "some3" => {
-                        // TODO: remove later
-                        err.insert(
-                            ContextKind::InvalidSubcommand,
-                            ContextValue::String("some3".to_string()),
-                        );
-                    }
                     _ => {}
                 }
             }

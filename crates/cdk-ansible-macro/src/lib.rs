@@ -2,6 +2,9 @@ use proc_macro::TokenStream;
 use quote::quote;
 use syn::{parse_macro_input, Attribute, ImplItem, ItemImpl, ItemStruct, LitStr};
 
+// MIT License
+// Copyright (c) 2021-2023 Astral Sh
+// https://github.com/astral-sh/uv/blob/cfd1e670ddb803f4e67d4abd069fad271e1d1c7f/crates/uv-macros/src/lib.rs
 fn get_doc_comment(attrs: &[Attribute]) -> String {
     attrs
         .iter()
@@ -21,6 +24,9 @@ fn get_doc_comment(attrs: &[Attribute]) -> String {
         .join("\n")
 }
 
+// MIT License
+// Copyright (c) 2021-2023 Astral Sh
+// https://github.com/astral-sh/uv/blob/cfd1e670ddb803f4e67d4abd069fad271e1d1c7f/crates/uv-macros/src/lib.rs
 fn get_env_var_pattern_from_attr(attrs: &[Attribute]) -> Option<String> {
     attrs
         .iter()
@@ -29,10 +35,17 @@ fn get_env_var_pattern_from_attr(attrs: &[Attribute]) -> Option<String> {
         .map(|lit_str| lit_str.value())
 }
 
+// MIT License
+// Copyright (c) 2021-2023 Astral Sh
+// https://github.com/astral-sh/uv/blob/cfd1e670ddb803f4e67d4abd069fad271e1d1c7f/crates/uv-macros/src/lib.rs
 fn is_hidden(attrs: &[Attribute]) -> bool {
     attrs.iter().any(|attr| attr.path().is_ident("attr_hidden"))
 }
 
+// MIT License
+// Copyright (c) 2021-2023 Astral Sh
+// https://github.com/astral-sh/uv/blob/cfd1e670ddb803f4e67d4abd069fad271e1d1c7f/crates/uv-macros/src/lib.rs
+//
 /// This attribute is used to generate environment variables metadata for [`cdk_ansible_static::EnvVars`].
 #[proc_macro_attribute]
 pub fn attribute_env_vars_metadata(_attr: TokenStream, input: TokenStream) -> TokenStream {
@@ -81,7 +94,7 @@ pub fn attribute_env_vars_metadata(_attr: TokenStream, input: TokenStream) -> To
     expanded.into()
 }
 
-/// https://stackoverflow.com/questions/54177438/how-to-programmatically-get-the-number-of-fields-of-a-struct
+// https://stackoverflow.com/questions/54177438/how-to-programmatically-get-the-number-of-fields-of-a-struct
 #[proc_macro_derive(FieldCount)]
 pub fn derive_field_count(input: TokenStream) -> TokenStream {
     let input = parse_macro_input!(input as ItemStruct);
