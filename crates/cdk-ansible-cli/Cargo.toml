@@ -1,6 +1,6 @@
 [package]
 name = "cdk-ansible-cli"
-version.workspace = true
+version = "0.0.1"
 edition.workspace = true
 rust-version.workspace = true
 description.workspace = true
@@ -15,7 +15,6 @@ workspace = true
 
 [dependencies]
 cdk-ansible-static.workspace = true
-cdk-ansible-version.workspace = true
 
 anyhow.workspace = true
 clap.workspace = true

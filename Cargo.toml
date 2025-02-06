@@ -14,12 +14,11 @@ authors = ["pollenjp"]
 license = "MIT"
 
 [workspace.dependencies]
-cdk-ansible = { path = "crates/cdk-ansible" }
-cdk-ansible-cli = { path = "crates/cdk-ansible-cli" }
-cdk-ansible-core = { path = "crates/cdk-ansible-core" }
-cdk-ansible-static = { path = "crates/cdk-ansible-static" }
-cdk-ansible-macro = { path = "crates/cdk-ansible-macro" }
-cdk-ansible-version = { path = "crates/cdk-ansible-version" }
+# cdk-ansible = { path = "crates/cdk-ansible" }
+cdk-ansible-cli = { version = "0.0.1", path = "crates/cdk-ansible-cli" }
+cdk-ansible-core = { version = "0.0.1", path = "crates/cdk-ansible-core" }
+cdk-ansible-static = { version = "0.0.1", path = "crates/cdk-ansible-static" }
+cdk-ansible-macro = { version = "0.0.1", path = "crates/cdk-ansible-macro" }
 
 anyhow = { version = "1.0.95" }
 cargo-util-schemas = { version = "0.7.1" }

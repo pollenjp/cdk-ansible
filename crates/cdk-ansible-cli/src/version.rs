@@ -37,9 +37,15 @@ impl fmt::Display for VersionInfo {
     }
 }
 
+/// Return the application version.
+pub fn pkg_version() -> &'static str {
+    env!("CARGO_PKG_VERSION")
+}
+
 /// Returns version information.
 pub(crate) fn version() -> VersionInfo {
-    let version = cdk_ansible_version::version().to_string();
+    // let version = cdk_ansible_version::version().to_string();
+    let version = pkg_version().to_string();
 
     // Commit info is pulled from git and set by `build.rs`
     let commit_info = CDK_ANSIBLE_COMMIT_HASH.map(|commit_hash| CommitInfo {
@@ -54,5 +60,15 @@ pub(crate) fn version() -> VersionInfo {
     VersionInfo {
         version,
         commit_info,
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_get_version() {
+        assert_eq!(version().to_string(), env!("CARGO_PKG_VERSION").to_string());
     }
 }

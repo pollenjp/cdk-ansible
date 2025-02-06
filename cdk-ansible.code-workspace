@@ -20,9 +20,6 @@
       "path": "./crates/cdk-ansible-macro"
     },
     {
-      "path": "./crates/cdk-ansible-version"
-    },
-    {
       "path": "."
     },
   ],
