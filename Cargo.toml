@@ -5,9 +5,9 @@ resolver = "2"
 [workspace.package]
 edition = "2021"
 rust-version = "1.83"
-# homepage = ""
-# documentation = ""
-# repository = ""
+homepage = "https://github.com/pollenjp/cdk-ansible"
+documentation = "https://github.com/pollenjp/cdk-ansible"
+repository = "https://github.com/pollenjp/cdk-ansible"
 authors = ["pollenjp"]
 license = "MIT"
 
