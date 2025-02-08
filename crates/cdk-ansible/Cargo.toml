@@ -1,6 +1,8 @@
 [package]
 name = "cdk-ansible"
-version = "0.0.2"
+# Use workspace value because 'version' function is defined in 'cdk-ansible-cli' crate
+# and these values should be the same.
+version.workspace = true
 edition.workspace = true
 rust-version.workspace = true
 description.workspace = true
@@ -21,7 +23,6 @@ cdk-ansible-macro.workspace = true
 anyhow.workspace = true
 cargo-util-schemas.workspace = true
 clap.workspace = true
-dyn-clone.workspace = true
 fs-err.workspace = true
 indexmap.workspace = true
 quote.workspace = true

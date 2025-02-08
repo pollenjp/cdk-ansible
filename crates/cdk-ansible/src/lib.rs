@@ -1,7 +1,6 @@
 use anyhow::Context;
 use anyhow::Result;
 use cdk_ansible_cli::{Cli, Commands};
-use cdk_ansible_core::core::{Inventory, Playbook};
 use clap::error::{ContextKind, ContextValue};
 use clap::Parser;
 use serde::Deserialize;
@@ -12,6 +11,7 @@ pub mod settings;
 
 mod subcommand;
 
+pub use cdk_ansible_core::core::*;
 pub use subcommand::synth::Synthesizer;
 
 /// Options for the application.

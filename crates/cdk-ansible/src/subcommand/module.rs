@@ -1,7 +1,7 @@
 use anyhow::{bail, Context, Result};
 use cargo_util_schemas::manifest::{
     InheritableDependency, InheritableSemverVersion, InheritableString, PackageName,
-    TomlDependency, TomlDetailedDependency, TomlManifest, TomlPackage, TomlWorkspace,
+    TomlDependency, TomlDetailedDependency, TomlManifest, TomlPackage,
 };
 use cdk_ansible_cli::ModuleArgs;
 use indexmap::IndexMap;
@@ -12,7 +12,7 @@ use std::io::Write;
 use std::path::{Path, PathBuf};
 
 use crate::settings::PkgUnit;
-
+use cdk_ansible_cli::version::pkg_version;
 // FIXME: should be configurable
 static SUB_MOD_NAME: &str = "m";
 
@@ -281,11 +281,10 @@ fn create_cargo_toml(pkg_name: &str, pkg_dir: &Path) -> Result<()> {
                 })),
             ),
             (
-                PackageName::new("cdk-ansible-core".to_string()).unwrap(),
-                InheritableDependency::Value(TomlDependency::Simple("0.0.1".into())),
+                PackageName::new("cdk-ansible".to_string()).unwrap(),
+                InheritableDependency::Value(TomlDependency::Simple(pkg_version().to_string())),
             ),
         ])),
-        workspace: Some(TomlWorkspace::default()),
         ..Default::default()
     };
     std::fs::write(&cargo_toml_path, ::toml::to_string(&manifest)?)
@@ -503,7 +502,7 @@ fn generate_module_rs(module_json: &ModuleJson) -> Result<String> {
         .collect::<Result<Vec<_>>>()?;
 
     let token_streams = vec![quote! {
-        use cdk_ansible_core::core::{OptionUnset, TaskModule};
+        use cdk_ansible::{OptionUnset, TaskModule};
         use serde::Serialize;
 
         #[derive(Clone, Debug, PartialEq, Serialize)]
