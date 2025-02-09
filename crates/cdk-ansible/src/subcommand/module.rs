@@ -1,18 +1,12 @@
+use crate::settings::PkgUnit;
 use anyhow::{bail, Context, Result};
-use cargo_util_schemas::manifest::{
-    InheritableDependency, InheritableSemverVersion, InheritableString, PackageName,
-    TomlDependency, TomlDetailedDependency, TomlManifest, TomlPackage,
-};
 use cdk_ansible_cli::ModuleArgs;
 use indexmap::IndexMap;
 use quote::{format_ident, quote};
 use serde::{Deserialize, Serialize};
-use std::collections::BTreeMap;
 use std::io::Write;
 use std::path::{Path, PathBuf};
 
-use crate::settings::PkgUnit;
-use cdk_ansible_cli::version::pkg_version;
 // FIXME: should be configurable
 static SUB_MOD_NAME: &str = "m";
 
@@ -213,80 +207,59 @@ fn create_rust_package_project(
 ///
 fn create_cargo_toml(pkg_name: &str, pkg_dir: &Path) -> Result<()> {
     let cargo_toml_path = pkg_dir.join("Cargo.toml");
-    let manifest = TomlManifest {
-        package: Some(Box::new(TomlPackage {
-            name: PackageName::new(pkg_name.to_string()).unwrap(),
-            version: Some(InheritableSemverVersion::Value(semver::Version::new(
-                0, 1, 0,
-            ))),
-            edition: Some(InheritableString::Value("2021".to_string())),
-            rust_version: None,
-            authors: None,
-            build: None,
-            metabuild: None,
-            default_target: None,
-            forced_target: None,
-            links: None,
-            exclude: None,
-            include: None,
-            publish: None,
-            workspace: None,
-            im_a_teapot: None,
-            autolib: None,
-            autobins: None,
-            autoexamples: None,
-            autotests: None,
-            autobenches: None,
-            default_run: None,
-            description: None,
-            homepage: None,
-            documentation: None,
-            readme: None,
-            keywords: None,
-            categories: None,
-            license: None,
-            license_file: None,
-            repository: None,
-            resolver: None,
-            metadata: None,
-            _invalid_cargo_features: None,
-        })),
-        dependencies: Some(BTreeMap::from([
-            (
-                PackageName::new("anyhow".to_string()).unwrap(),
-                InheritableDependency::Value(TomlDependency::Simple("1.0.95".into())),
-            ),
-            (
-                PackageName::new("indexmap".to_string()).unwrap(),
-                InheritableDependency::Value(TomlDependency::Detailed(TomlDetailedDependency {
-                    version: Some("2.7.1".to_string()),
-                    features: Some(vec!["serde".to_string()]),
-                    ..Default::default()
-                })),
-            ),
-            (
-                PackageName::new("serde".to_string()).unwrap(),
-                InheritableDependency::Value(TomlDependency::Detailed(TomlDetailedDependency {
-                    version: Some("1.0.217".to_string()),
-                    features: Some(vec!["derive".to_string()]),
-                    ..Default::default()
-                })),
-            ),
-            (
-                PackageName::new("serde_json".to_string()).unwrap(),
-                InheritableDependency::Value(TomlDependency::Detailed(TomlDetailedDependency {
-                    version: Some("1.0.138".to_string()),
-                    features: Some(vec!["preserve_order".to_string()]),
-                    ..Default::default()
-                })),
-            ),
-            (
-                PackageName::new("cdk-ansible".to_string()).unwrap(),
-                InheritableDependency::Value(TomlDependency::Simple(pkg_version().to_string())),
-            ),
-        ])),
-        ..Default::default()
-    };
+
+    // FIXME: some values should be configurable
+    //
+    // [package]
+    // edition = "2021"
+    // name = "cdkam_ansible"
+    // version = "0.1.0"
+    // [dependencies]
+    // cdk-ansible.workspace = true
+    // anyhow = "1.0.95"
+    // indexmap = { version = "2.7.1", features = ["serde"] }
+    // serde = { version = "1.0.217", features = ["derive"] }
+    // serde_json = { version = "1.0.138", features = ["preserve_order"] }
+
+    let mut manifest = cargo_toml::Manifest::from_str(
+        r#"
+        [package]
+        name = "sample"
+        version = "0.1.0"
+        edition = "2021"
+        "#,
+    )?;
+    if let Some(package) = manifest.package.as_mut() {
+        package.name = pkg_name.to_string();
+    }
+    manifest.dependencies = vec![
+        (
+            "cdk-ansible".to_string(),
+            cargo_toml::Dependency::Inherited(cargo_toml::InheritedDependencyDetail {
+                workspace: true,
+                ..Default::default()
+            }),
+        ),
+        (
+            "anyhow".to_string(),
+            cargo_toml::Dependency::Simple("1.0.95".to_string()),
+        ),
+        (
+            "indexmap".to_string(),
+            cargo_toml::Dependency::Simple("2.7.1".to_string()),
+        ),
+        (
+            "serde".to_string(),
+            cargo_toml::Dependency::Simple("1.0.217".to_string()),
+        ),
+        (
+            "serde_json".to_string(),
+            cargo_toml::Dependency::Simple("1.0.138".to_string()),
+        ),
+    ]
+    .into_iter()
+    .collect();
+
     std::fs::write(&cargo_toml_path, ::toml::to_string(&manifest)?)
         .with_context(|| format!("failed to write cargo.toml: {}", &cargo_toml_path.display()))?;
     Ok(())
