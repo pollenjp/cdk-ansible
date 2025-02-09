@@ -26,6 +26,7 @@ debug-module:
 
 .PHONY: simple-sample
 simple-sample:
+	${UV_RUN} cargo run --package cdk-ansible -- module --output-dir "${RS_OUT_DIR}" --module-name 'ansible.builtin.debug'
 # Run 'synth' to generate playbooks and inventory
 	RUST_BACKTRACE=1 cargo run --package simple-sample -- synth --output-dir "${SAMPLE_ANSIBLE_ROOT}"
 # Convert json to yaml by yq

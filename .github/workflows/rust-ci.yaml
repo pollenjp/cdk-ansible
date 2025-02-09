@@ -22,3 +22,19 @@ jobs:
       - name: Test
         run: make test
         working-directory: .
+  test-simple-sample:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v5
+      - run: make simple-sample
+      - name: Check dirty
+        run: |
+          status=$(git status --porcelain)
+          if [ -z "$status" ]; then
+              echo "No changes"
+          else
+              echo "Dirty"
+              echo "$status"
+              exit 1
+          fi
