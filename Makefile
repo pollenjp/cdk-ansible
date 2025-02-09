@@ -6,7 +6,6 @@ UV_RUN := uv --project "${SAMPLE_ANSIBLE_ROOT}" run
 
 export
 
-
 .PHONY: debug
 debug:
 	${UV_RUN} cargo run --package cdk-ansible -- module \
