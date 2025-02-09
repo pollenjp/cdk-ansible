@@ -9,8 +9,7 @@ export
 
 .PHONY: debug
 debug:
-	cd "${PROJ_ROOT}/crates/cdk-ansible" \
-		&& ${UV_RUN} cargo run -- module \
+	${UV_RUN} cargo run --package cdk-ansible -- module \
 			--output-dir "${RS_OUT_DIR}" \
 			--module-name 'ansible.builtin.debug'
 
@@ -25,17 +24,31 @@ debug-module:
 	${UV_RUN} cargo run --package cdk-ansible -- module --output-dir "${RS_OUT_DIR}"
 #	rsync -av --delete "${RS_OUT_DIR}/" "${SAMPLE_APP_ROOT}/src/module"
 
-.PHONY: debug-synth
-debug-synth:
+.PHONY: simple-sample
+simple-sample:
+# Run 'synth' to generate playbooks and inventory
 	RUST_BACKTRACE=1 cargo run --package simple-sample -- synth --output-dir "${SAMPLE_ANSIBLE_ROOT}"
-# convert json to yaml by yq
+# Convert json to yaml by yq
 	find "${SAMPLE_ANSIBLE_ROOT}/playbooks" "${SAMPLE_ANSIBLE_ROOT}/inventory" -name "*.json" \
 		| xargs -I{} bash -c \
 			'set -eu; \
 			filepath_json={}; \
 			filepath_yaml="$${filepath_json%.json}.yaml"; \
 			yq -p json -o yaml "$${filepath_json}" > "$${filepath_yaml}"'
+# Run ansible-lint
 	$(MAKE) lint-ansible
+
+.PHONY: build
+build:
+# build packages one by one
+	cargo build --package cdk-ansible-macro
+	cargo build --package cdk-ansible-static
+	cargo build --package cdk-ansible-core
+	cargo build --package cdk-ansible-cli
+	cargo build --package cdk-ansible
+# examples
+	cargo build --package cdkam_ansible
+	cargo build --package simple-sample
 
 .PHONY: test
 test:
