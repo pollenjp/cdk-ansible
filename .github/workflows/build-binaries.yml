@@ -62,6 +62,7 @@ jobs:
             echo XDG_BIN_HOME="${{ runner.temp }}/.local/bin"
             echo CARGO_HOME="${{ runner.temp }}/.cargo"
             echo PYTHONUSERBASE="${{ runner.temp }}/.local"
+            echo DIST_DIR="${{ runner.temp }}/dist"
           } >> "$GITHUB_ENV"
           {
             echo "${{ runner.temp }}/.local/bin"
@@ -90,20 +91,23 @@ jobs:
       - name: Archive binary for Unix-like systems
         if: ${{ !contains(matrix.target, 'windows-msvc') }}
         run: |
-          DIST_DIR="${{ runner.temp }}/dist"
           archive_name="${{ env.APP_NAME }}-${{ matrix.target }}"
-          ARCHIVE_DIR="$DIST_DIR/$archive_name"
-          ARCHIVE_FILE="$archive_name.tar.gz"
+          archive_dir="${DIST_DIR:?}/$archive_name"
+          archive_file="$archive_name.tar.gz"
 
-          mkdir -p "$ARCHIVE_DIR"
-          cp "target/${{ matrix.target }}/release/${{ env.APP_NAME }}" "$ARCHIVE_DIR/${{ env.APP_NAME }}"
-          tar czvf "$ARCHIVE_FILE" "$ARCHIVE_DIR"
-          shasum -a 256 "$ARCHIVE_FILE" > "$ARCHIVE_FILE.sha256"
+          mkdir -p "$archive_dir"
+          cp "target/${{ matrix.target }}/release/${{ env.APP_NAME }}" \
+            "$archive_dir/${{ env.APP_NAME }}"
+
+          pushd "${DIST_DIR:?}"
+          tar czvf "$archive_file" "$archive_name"
+          shasum -a 256 "$archive_file" > "$archive_file.sha256"
+          popd
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
           name: artifacts-${{ matrix.target }}
           retention-days: 1
           path: |
-            *.tar.gz
-            *.sha256
+            ${{ env.DIST_DIR }}/*.tar.gz
+            ${{ env.DIST_DIR }}/*.sha256
