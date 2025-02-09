@@ -38,13 +38,15 @@ impl fmt::Display for VersionInfo {
 }
 
 /// Return the application version.
+///
+/// note: this function returns the version of `cdk-ansible-cli` crate
+///       and need to be the same as the version of `cdk-ansible` crate.
 pub fn pkg_version() -> &'static str {
     env!("CARGO_PKG_VERSION")
 }
 
 /// Returns version information.
 pub(crate) fn version() -> VersionInfo {
-    // let version = cdk_ansible_version::version().to_string();
     let version = pkg_version().to_string();
 
     // Commit info is pulled from git and set by `build.rs`

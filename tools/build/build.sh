@@ -1,0 +1,32 @@
+#!/usr/bin/env bash
+# Requirements
+# pip install --user cargo-zigbuild
+
+set -eux -o pipefail
+
+# https://opensource.axo.dev/cargo-dist/book/custom-builds.html#understanding-build-commands
+# x86_64-unknown-linux-gnu
+# aarch64-unknown-linux-gnu
+# x86_64-unknown-linux-musl
+# aarch64-unknown-linux-musl
+# x86_64-apple-darwin
+# aarch64-apple-darwin
+: "${BUILD_BINARY_TARGET:?}"
+
+# Build all packages by default, or specify a package name to build
+: "${PKG_NAME:-}"
+
+# https://blog.rust-lang.org/2022/08/01/Increasing-glibc-kernel-requirements.html
+CARGO_DIST_GLIB_VERSION=${CARGO_DIST_GLIB_VERSION:-2.17}
+
+# Install Rust toolchain
+rustup update --no-self-update stable
+rustup target add "${BUILD_BINARY_TARGET}"
+rustup component add rust-src
+
+target="${BUILD_BINARY_TARGET}"
+if [[ "${target}" =~ gnu$ ]]; then
+  # if target ends with 'gnu', add glib version to target
+  target="${target}.${CARGO_DIST_GLIB_VERSION}"
+fi
+cargo zigbuild ${PKG_NAME:+--package "${PKG_NAME}"} --target="${target}" --release

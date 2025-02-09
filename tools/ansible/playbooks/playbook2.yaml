@@ -1,0 +1,7 @@
+- name: Debug
+  hosts:
+    - host-a.example.com
+  tasks:
+    - name: Debug msg
+      ansible.builtin.debug:
+        msg: msg

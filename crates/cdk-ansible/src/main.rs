@@ -1,6 +1,5 @@
 use anyhow::{bail, Result};
-use cdk_ansible::{run, settings::SynthSettings, Synthesizer};
-use cdk_ansible_core::core::{Inventory, Playbook};
+use cdk_ansible::{run, settings::SynthSettings, Inventory, Playbook, Synthesizer};
 
 struct UnimplementedCommander {}
 

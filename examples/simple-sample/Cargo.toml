@@ -1,0 +1,15 @@
+[package]
+name = "simple-sample"
+version = "0.1.0"
+edition = "2021"
+authors = ["pollenjp <pollenjp@gmail.com>"]
+license = "MIT"
+
+[dependencies]
+cdk-ansible.workspace = true
+cdk-ansible-macro.workspace = true
+cdkam_ansible.path = "../cdkam_ansible"
+
+anyhow.workspace = true
+serde.workspace = true
+serde_json.workspace = true
