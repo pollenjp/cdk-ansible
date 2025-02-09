@@ -84,8 +84,4 @@ clean:
 
 .PHONY: publish
 publish:
-#	cargo publish --package cdk-ansible-core
-#	cargo publish --package cdk-ansible-macro
-#	cargo publish --package cdk-ansible-static
-#	cargo publish --package cdk-ansible-cli
-	cargo publish --package cdk-ansible
+	./tools/publish/publish.sh
