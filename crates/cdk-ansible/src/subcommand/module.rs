@@ -368,7 +368,7 @@ fn get_module_json(args: GetModuleJsonArgs) -> Result<ModuleJson> {
         let output = std::process::Command::new("ansible-doc")
             .args(["--json", name])
             .output()
-            .with_context(|| format!("failed to execute ansible-doc command: {}", name))?;
+            .with_context(|| format!("failed to execute 'ansible-doc --json {}'", name))?;
         let output_str = String::from_utf8_lossy(&output.stdout).to_string();
         if args.use_cache {
             // If use_cache is False, do not save to cache
@@ -395,7 +395,7 @@ fn get_ansible_modules_list() -> Result<Vec<String>> {
     let output = std::process::Command::new("ansible-doc")
         .args(["--list"])
         .output()
-        .with_context(|| "failed to execute ansible-doc command")?;
+        .with_context(|| "failed to execute 'ansible-doc --list'")?;
     let output_str = String::from_utf8_lossy(&output.stdout);
     Ok(output_str
         .split('\n')
@@ -443,8 +443,8 @@ fn generate_module_rs(module_json: &ModuleJson) -> Result<String> {
                 "{}",
                 escape_rust_reserved_keywords(key.as_str())
                     // TODO: configure variable name's replacement rules from optional args
-                    .replace("-", "__")
-                    .replace("+", "___")
+                    .replace("-", "_x_")
+                    .replace("+", "_xx_")
             );
             let type_ident = syn::parse_str::<syn::Type>(
                 match value
@@ -454,20 +454,20 @@ fn generate_module_rs(module_json: &ModuleJson) -> Result<String> {
                     .unwrap_or_else(|| "str".to_string())
                     .as_str()
                 {
-                    "str" | "string" => "OptionUnset<String>",
-                    "path" => "OptionUnset<std::path::PathBuf>",
-                    "int" | "integer" => "OptionUnset<i64>",
-                    "bool" | "boolean" => "OptionUnset<bool>",
-                    "list" => "OptionUnset<Vec<serde_json::Value>>",
-                    "dict" => "OptionUnset<indexmap::IndexMap<String, serde_json::Value>>",
-                    _ => "OptionUnset<String>", // FIXME: default should be set?
+                    "str" | "string" => "OptU<String>",
+                    "path" => "OptU<std::path::PathBuf>",
+                    "int" | "integer" => "OptU<i64>",
+                    "bool" | "boolean" => "OptU<bool>",
+                    "list" => "OptU<Vec<serde_json::Value>>",
+                    "dict" => "OptU<indexmap::IndexMap<String, serde_json::Value>>",
+                    _ => "OptU<String>", // FIXME: default should be set?
                 },
             )
             .with_context(|| format!("failed to parse type: {:?}", value.type_))?;
             Ok(quote! {
                 #[serde(
-                    default = "OptionUnset::default",
-                    skip_serializing_if = "OptionUnset::is_unset"
+                    default = "OptU::default",
+                    skip_serializing_if = "OptU::is_unset"
                 )]
                 pub #key_ident: #type_ident,
             })
@@ -475,7 +475,7 @@ fn generate_module_rs(module_json: &ModuleJson) -> Result<String> {
         .collect::<Result<Vec<_>>>()?;
 
     let token_streams = vec![quote! {
-        use cdk_ansible::{OptionUnset, TaskModule};
+        use cdk_ansible::{OptU, TaskModule};
         use serde::Serialize;
 
         #[derive(Clone, Debug, PartialEq, Serialize)]

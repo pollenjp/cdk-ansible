@@ -1,4 +1,4 @@
-use cdk_ansible::{OptionUnset, TaskModule};
+use cdk_ansible::{OptU, TaskModule};
 use serde::Serialize;
 #[derive(Clone, Debug, PartialEq, Serialize)]
 pub struct Module {
@@ -14,19 +14,10 @@ pub struct Args {
 #[derive(Clone, Debug, PartialEq, Default, Serialize)]
 #[serde(rename_all = "snake_case")]
 pub struct Opt {
-    #[serde(
-        default = "OptionUnset::default",
-        skip_serializing_if = "OptionUnset::is_unset"
-    )]
-    pub msg: OptionUnset<String>,
-    #[serde(
-        default = "OptionUnset::default",
-        skip_serializing_if = "OptionUnset::is_unset"
-    )]
-    pub var: OptionUnset<String>,
-    #[serde(
-        default = "OptionUnset::default",
-        skip_serializing_if = "OptionUnset::is_unset"
-    )]
-    pub verbosity: OptionUnset<i64>,
+    #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
+    pub msg: OptU<String>,
+    #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
+    pub var: OptU<String>,
+    #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
+    pub verbosity: OptU<i64>,
 }

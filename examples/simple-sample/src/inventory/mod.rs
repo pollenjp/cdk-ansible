@@ -1,5 +1,5 @@
 use anyhow::{bail, Result};
-use cdk_ansible::{Child, Inventory, InventoryRoot, OptionUnset};
+use cdk_ansible::{Child, Inventory, InventoryRoot, OptU};
 
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub enum HostName {
@@ -32,7 +32,7 @@ impl Hosts {
             name: "inventory".to_string(),
             root: InventoryRoot {
                 all: Child {
-                    hosts: OptionUnset::Some(
+                    hosts: OptU::Some(
                         vec![(
                             self.host_a.fqdn.clone(),
                             Some(
@@ -44,13 +44,13 @@ impl Hosts {
                         .into_iter()
                         .collect(),
                     ),
-                    children: OptionUnset::Unset,
-                    vars: OptionUnset::Unset,
+                    children: OptU::Unset,
+                    vars: OptU::Unset,
                 },
             },
         };
 
-        let hosts = if let OptionUnset::Some(hosts) = &inventory.root.all.hosts {
+        let hosts = if let OptU::Some(hosts) = &inventory.root.all.hosts {
             hosts.clone()
         } else {
             bail!("hosts is not set");

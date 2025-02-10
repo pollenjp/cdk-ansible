@@ -1,5 +1,5 @@
 use anyhow::Result;
-use cdk_ansible::{OptionUnset, Play, PlayOptions, Playbook, Task, TaskOptions};
+use cdk_ansible::{OptU, Play, PlayOptions, Playbook, Task, TaskOptions};
 
 use crate::playbooks::PlaybookGenArgs;
 
@@ -18,7 +18,7 @@ pub fn playbook2(args: &impl PlaybookGenArgs) -> Result<Playbook> {
                 command: Box::new(cdkam_ansible::builtin::debug::Module {
                     module: cdkam_ansible::builtin::debug::Args {
                         options: cdkam_ansible::builtin::debug::Opt {
-                            msg: OptionUnset::Some("msg".to_string()),
+                            msg: OptU::Some("msg".to_string()),
                             ..Default::default()
                         },
                     },
