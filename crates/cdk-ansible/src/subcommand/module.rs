@@ -53,7 +53,7 @@ pub(crate) fn module(args: ModuleArgs) -> Result<()> {
 ///
 fn match_module_name(name_regex: &str) -> Result<Vec<AnsibleModuleName>> {
     // parse as regex
-    let regex = Regex::new(name_regex)?;
+    let regex = Regex::new(format!("^{}$", name_regex).as_str())?;
     let list_lines = get_ansible_modules_list()?;
     let ans_modu_names = list_lines
         .iter()
