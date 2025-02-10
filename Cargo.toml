@@ -3,7 +3,7 @@ members = ["crates/*", "examples/*"]
 resolver = "2"
 
 [workspace.package]
-version = "0.0.4"
+version = "0.0.5"
 edition = "2021"
 rust-version = "1.83"
 description = "cdk-ansible is a tool to generate Ansible playbooks from Rust code."
@@ -16,7 +16,7 @@ license = "MIT"
 [workspace.dependencies]
 cdk-ansible = { path = "crates/cdk-ansible" }
 # should be the same as the version of 'cdk-ansible' crate
-cdk-ansible-cli = { version = "0.0.4", path = "crates/cdk-ansible-cli" }
+cdk-ansible-cli = { version = "0.0.5", path = "crates/cdk-ansible-cli" }
 cdk-ansible-core = { version = "0.0.2", path = "crates/cdk-ansible-core" }
 cdk-ansible-static = { version = "0.0.1", path = "crates/cdk-ansible-static" }
 cdk-ansible-macro = { version = "0.0.2", path = "crates/cdk-ansible-macro" }
