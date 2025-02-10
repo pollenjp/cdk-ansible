@@ -24,8 +24,9 @@ Note: (Future feature) `cdk-ansible project` to create a new cdk-ansible's templ
 
 ```txt
 proj-root/
-`-- Cargo.toml          ... workspace cargo
-                            define `workspace.dependencies.cdk-ansible`.
+`-- cdk-ansible/
+    `-- Cargo.toml          ... workspace cargo
+                                define `workspace.dependencies.cdk-ansible`.
 ```
 
 ### Create Ansible Module package for the workspace
