@@ -103,12 +103,14 @@ pub struct ModuleArgs {
     /// Default value is defined at `cdk_ansible::settings::ModuleSettings`
     #[arg(long, required = false)]
     pub cache_dir: Option<PathBuf>,
-    #[arg(
-        long,
-        required = false,
-        help = "Specify the ansible module name. If not specified, all modules accessible from your ansible environment will be generated."
-    )]
+    /// Specify the ansible module name. (e.g. 'ansible.builtin.debug')
+    /// If not specified, all modules accessible from your ansible environment will be generated.
+    #[arg(long, required = false, conflicts_with = "module_name_regex")]
     pub module_name: Option<String>,
+    /// Specify the ansible module name regex. (e.g. 'ansible\.builtin\..*')
+    /// If not specified, all modules accessible from your ansible environment will be generated.
+    #[arg(long, required = false, conflicts_with = "module_name")]
+    pub module_name_regex: Option<String>,
 }
 
 #[derive(Debug, Clone, ValueEnum, Eq, PartialEq)]

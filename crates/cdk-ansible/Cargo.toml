@@ -26,6 +26,7 @@ clap.workspace = true
 fs-err.workspace = true
 indexmap.workspace = true
 quote.workspace = true
+regex.workspace = true
 semver.workspace = true
 serde.workspace = true
 serde_json.workspace = true

@@ -61,9 +61,17 @@ proj-root/
 ### Create Ansible Module package for the workspace
 
 ```bash
+# specify module name like below.
+#
+# '<namespace>.<collection>.<module>' only generates the specified module.
 cdk-ansible module --output-dir crates/ --module-name ansible.builtin.debug
-
-# If you don't specify `--module-name`, all modules accessible from your ansible environment will be generated.
+# '<namespace>.<collection>' generates all modules in the collection.
+cdk-ansible module --output-dir crates/ --module-name-regex 'ansible\.builtin\..*'
+# '<namespace>' generates all modules in the namespace.
+cdk-ansible module --output-dir crates/ --module-name-regex 'ansible\..*'
+# If you don't specify `--module-name` or `--module-name-regex`,
+# all modules accessible from your ansible environment will be generated.
+# (This is the same as `--module-name-regex '*'`)
 cdk-ansible module --output-dir crates/
 
 # If you are using uv to manage your ansible project, move to the directory or specify the `--project` option.

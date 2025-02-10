@@ -3,6 +3,7 @@ use anyhow::{bail, Context, Result};
 use cdk_ansible_cli::ModuleArgs;
 use indexmap::IndexMap;
 use quote::{format_ident, quote};
+use regex::Regex;
 use serde::{Deserialize, Serialize};
 use std::io::Write;
 use std::path::{Path, PathBuf};
@@ -12,42 +13,58 @@ static SUB_MOD_NAME: &str = "m";
 
 pub(crate) fn module(args: ModuleArgs) -> Result<()> {
     let args = crate::settings::ModuleSettings::resolve(args);
-    let modu_names = if let Some(modu_name) = args.module_name {
-        vec![modu_name]
-    } else {
-        let list_lines = get_ansible_modules_list()?;
-        list_lines
-            .iter()
-            .map(|line| {
-                let Some(module_name) = line.split(' ').next() else {
-                    return Err(anyhow::anyhow!("failed to split line: {}", line));
-                };
-                Ok(module_name.to_string())
-            })
-            .collect::<Result<Vec<_>>>()?
+    let ans_modu_names = match (args.module_name, args.module_name_regex) {
+        (Some(modu_name), None) => {
+            vec![AnsibleModuleName::new(&modu_name)
+                .with_context(|| format!("failed to parse module name: {}", modu_name))?]
+        }
+        (None, Some(regex)) => match_module_name(&regex)?,
+        (None, None) => match_module_name("*")?,
+        (Some(_), Some(_)) => {
+            // Already rejected at argument parsing
+            bail!("failed to specify both module_name and module_name_regex");
+        }
     };
 
-    for modu_name in modu_names {
-        println!("module_name: {}", modu_name);
-        let am_name = AnsibleModuleName::new(&modu_name)
-            .with_context(|| format!("failed to parse module name: {}", modu_name))?;
-
+    for ans_modu_name in ans_modu_names {
+        println!("generate '{}'", ans_modu_name);
         let module_json = get_module_json(GetModuleJsonArgs {
-            name: &am_name,
+            name: &ans_modu_name,
             use_cache: args.use_cache,
             cache_dir: &args.cache_dir,
         })
-        .with_context(|| format!("failed to get module json: {}", modu_name))?;
+        .with_context(|| format!("failed to get module json: {}", ans_modu_name))?;
 
         create_rust_package_project(
             args.pkg_unit.as_ref(),
             args.pkg_prefix.as_str(),
             args.output_dir.as_path(),
-            &am_name,
+            &ans_modu_name,
             &module_json,
         )?;
     }
     Ok(())
+}
+
+///
+/// # Arguments
+///
+/// * name_regex - e.g. '<namespace>\.<collection>\.*', '<namespace>\.*'
+///
+fn match_module_name(name_regex: &str) -> Result<Vec<AnsibleModuleName>> {
+    // parse as regex
+    let regex = Regex::new(name_regex)?;
+    let list_lines = get_ansible_modules_list()?;
+    let ans_modu_names = list_lines
+        .iter()
+        .filter(|line| regex.is_match(line))
+        .map(|line| {
+            let am_name = AnsibleModuleName::new(line)
+                .with_context(|| format!("failed to parse module name: {}", line))?;
+            Ok(am_name)
+        })
+        .collect::<Result<Vec<_>>>()?;
+    Ok(ans_modu_names)
 }
 
 fn create_module_rs(modu_path: &Path, module_json: &ModuleJson) -> Result<()> {
@@ -103,6 +120,12 @@ impl AnsibleModuleName {
 
     pub fn fqdn(&self) -> String {
         format!("{}.{}.{}", self.namespace, self.collection, self.module)
+    }
+}
+
+impl std::fmt::Display for AnsibleModuleName {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f, "{}", self.fqdn())
     }
 }
 
@@ -390,18 +413,25 @@ fn get_module_json(args: GetModuleJsonArgs) -> Result<ModuleJson> {
     Ok(module_json)
 }
 
-/// list all ansible modules accessible by ansible-doc
+/// list all ansible module names accessible by ansible-doc
 fn get_ansible_modules_list() -> Result<Vec<String>> {
     let output = std::process::Command::new("ansible-doc")
         .args(["--list"])
         .output()
         .with_context(|| "failed to execute 'ansible-doc --list'")?;
     let output_str = String::from_utf8_lossy(&output.stdout);
-    Ok(output_str
+    let names = output_str
         .split('\n')
         .map(|s| s.to_string())
         .filter(|s| !s.is_empty())
-        .collect())
+        .map(|line| {
+            let Some(module_name) = line.split(' ').next() else {
+                return Err(anyhow::anyhow!("failed to split line: {}", line));
+            };
+            Ok(module_name.to_string())
+        })
+        .collect::<Result<Vec<_>>>()?;
+    Ok(names)
 }
 
 type ModuleJson = IndexMap<String, ModuleItem>;

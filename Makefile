@@ -10,7 +10,7 @@ export
 debug:
 	${UV_RUN} cargo run --package cdk-ansible -- module \
 			--output-dir "${RS_OUT_DIR}" \
-			--module-name 'ansible.builtin.debug'
+			--module-name-regex 'ansible\.builtin\..*'
 
 .PHONY: help
 help:

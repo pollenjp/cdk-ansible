@@ -31,6 +31,7 @@ pub struct ModuleSettings {
     pub use_cache: bool,
     pub cache_dir: PathBuf,
     pub module_name: Option<String>,
+    pub module_name_regex: Option<String>,
 }
 
 impl ModuleSettings {
@@ -53,6 +54,7 @@ impl ModuleSettings {
                 .cache_dir
                 .unwrap_or_else(|| ".cdk-ansible.cache.out".into()),
             module_name: args.module_name,
+            module_name_regex: args.module_name_regex,
         }
     }
 }
