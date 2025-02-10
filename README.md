@@ -16,6 +16,35 @@ While Ansible's `playbook` and `inventory` files are written in YAML format, man
 
 - `cdk-ansible` generates Ansible **Playbook** and **Inventory** files.
 
+## Install
+
+See [the latest release page](https://github.com/pollenjp/cdk-ansible/releases/latest) and run the command like below.
+
+```sh
+# ex) vX.Y.Z
+curl --proto '=https' --tlsv1.2 -LsSf https://github.com/pollenjp/cdk-ansible/releases/download/vX.Y.Z/cdk-ansible-installer.sh | sh
+```
+
+### binstall
+
+[binstall](https://crates.io/crates/cargo-binstall)
+
+```bash
+cargo binstall cdk-ansible
+```
+
+### shell
+
+```bsh
+
+```
+
+### cargo install
+
+```bash
+cargo install cdk-ansible
+```
+
 ## Usage
 
 ### Init cdk-ansible project
