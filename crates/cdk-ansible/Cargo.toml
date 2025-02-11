@@ -15,10 +15,6 @@ license.workspace = true
 [lints]
 workspace = true
 
-# [lints.clippy]
-# all = "deny"
-# redundant_pub_crate = "warn"
-
 [dependencies]
 # cdk-ansible-cli.workspace = true
 cdk-ansible-core.workspace = true

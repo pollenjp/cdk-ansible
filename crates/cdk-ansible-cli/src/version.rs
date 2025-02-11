@@ -1,18 +1,27 @@
-use cdk_ansible_static::*;
+use cdk_ansible_static::{
+    CDK_ANSIBLE_COMMIT_DATE, CDK_ANSIBLE_COMMIT_HASH, CDK_ANSIBLE_COMMIT_SHORT_HASH,
+    CDK_ANSIBLE_LAST_TAG, CDK_ANSIBLE_LAST_TAG_DISTANCE,
+};
+use core::fmt;
 use serde::Serialize;
-use std::fmt;
 
 #[derive(Serialize)]
-pub(crate) struct CommitInfo {
+/// Information about the git commit we may have been built from.
+pub struct CommitInfo {
+    /// The short commit hash
     short_commit_hash: String,
+    /// The commit hash
     commit_hash: String,
+    /// The commit date
     commit_date: String,
+    /// The last tag
     last_tag: Option<String>,
+    /// The number of commits since the last tag
     commits_since_last_tag: u32,
 }
 
 #[derive(Serialize)]
-pub(crate) struct VersionInfo {
+pub struct VersionInfo {
     /// version, such as "1.2.3"
     version: String,
     /// Information about the git commit we may have been built from.
@@ -26,7 +35,7 @@ impl fmt::Display for VersionInfo {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         write!(f, "{}", self.version)?;
 
-        if let Some(ref ci) = self.commit_info {
+        if let Some(ci) = self.commit_info.as_ref() {
             if ci.commits_since_last_tag > 0 {
                 write!(f, "+{}", ci.commits_since_last_tag)?;
             }
@@ -41,23 +50,39 @@ impl fmt::Display for VersionInfo {
 ///
 /// note: this function returns the version of `cdk-ansible-cli` crate
 ///       and need to be the same as the version of `cdk-ansible` crate.
-fn pkg_version() -> &'static str {
+#[expect(clippy::single_call_fn, reason = "better readability")]
+const fn pkg_version() -> &'static str {
     env!("CARGO_PKG_VERSION")
 }
 
 /// Returns version information.
-pub(crate) fn version() -> VersionInfo {
-    let version = pkg_version().to_string();
+pub fn version() -> VersionInfo {
+    let version = pkg_version().to_owned();
 
     // Commit info is pulled from git and set by `build.rs`
-    let commit_info = CDK_ANSIBLE_COMMIT_HASH.map(|commit_hash| CommitInfo {
-        short_commit_hash: CDK_ANSIBLE_COMMIT_SHORT_HASH.unwrap().to_string(),
-        commit_hash: commit_hash.to_string(),
-        commit_date: CDK_ANSIBLE_COMMIT_DATE.unwrap().to_string(),
-        last_tag: CDK_ANSIBLE_LAST_TAG.map(|tag| tag.to_string()),
-        commits_since_last_tag: CDK_ANSIBLE_LAST_TAG_DISTANCE
-            .map_or(0, |distance| distance.parse::<u32>().unwrap_or(0)),
-    });
+    let commit_info = match (
+        CDK_ANSIBLE_COMMIT_HASH,
+        CDK_ANSIBLE_COMMIT_SHORT_HASH,
+        CDK_ANSIBLE_COMMIT_DATE,
+        CDK_ANSIBLE_LAST_TAG,
+        CDK_ANSIBLE_LAST_TAG_DISTANCE,
+    ) {
+        (
+            Some(commit_hash),
+            Some(short_commit_hash),
+            Some(commit_date),
+            Some(last_tag),
+            commits_since_last_tag,
+        ) => Some(CommitInfo {
+            short_commit_hash: short_commit_hash.to_owned(),
+            commit_hash: commit_hash.to_owned(),
+            commit_date: commit_date.to_owned(),
+            last_tag: Some(last_tag.to_owned()),
+            commits_since_last_tag: commits_since_last_tag
+                .map_or(0, |distance| distance.parse::<u32>().unwrap_or(0)),
+        }),
+        _ => None,
+    };
 
     VersionInfo {
         version,
@@ -71,6 +96,6 @@ mod tests {
 
     #[test]
     fn test_get_version() {
-        assert_eq!(version().to_string(), env!("CARGO_PKG_VERSION").to_string());
+        assert_eq!(version().to_string(), env!("CARGO_PKG_VERSION").to_owned());
     }
 }

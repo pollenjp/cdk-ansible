@@ -10,11 +10,7 @@ documentation = "https://docs.rs/cdk-ansible-cli"
 repository.workspace = true
 authors.workspace = true
 license.workspace = true
-
-[lints.clippy]
-all = "deny"
-redundant_pub_crate = "warn"
-# unreachable_pub = "warn"
+keywords.workspace = true
 
 [dependencies]
 cdk-ansible-static.workspace = true
@@ -33,3 +29,45 @@ serde.workspace = true
 serde_json.workspace = true
 syn.workspace = true
 toml.workspace = true
+
+[lints.clippy]
+# https://rust-lang.github.io/rust-clippy/master/index.html#arbitrary_source_item_ordering
+arbitrary_source_item_ordering = "allow"
+# https://rust-lang.github.io/rust-clippy/master/index.html#implicit_return
+implicit_return = "allow"
+# https://rust-lang.github.io/rust-clippy/master/index.html#std_instead_of_alloc
+# std_instead_of_alloc = "allow"
+# https://rust-lang.github.io/rust-clippy/master/index.html#question_mark_used
+question_mark_used = "allow"
+# https://rust-lang.github.io/rust-clippy/master/index.html#min_ident_chars
+min_ident_chars = "allow"
+# https://rust-lang.github.io/rust-clippy/master/index.html#single_char_lifetime_names
+single_char_lifetime_names = "allow"
+# https://rust-lang.github.io/rust-clippy/master/index.html#get_first
+get_first = "allow"
+# https://rust-lang.github.io/rust-clippy/master/index.html#branches_sharing_code
+branches_sharing_code = "allow"
+# https://rust-lang.github.io/rust-clippy/master/index.html#print_stdout
+print_stdout = "allow"
+# https://rust-lang.github.io/rust-clippy/master/index.html#shadow_reuse
+shadow_reuse = "allow"
+# https://rust-lang.github.io/rust-clippy/master/index.html#shadow_same
+shadow_same = "allow"
+# https://rust-lang.github.io/rust-clippy/master/index.html#shadow_unrelated
+shadow_unrelated = "allow"
+# https://rust-lang.github.io/rust-clippy/master/index.html#mod_module_files
+mod_module_files = "allow"
+# https://rust-lang.github.io/rust-clippy/master/index.html#self_named_module_files
+self_named_module_files = "allow"
+
+# https://rust-lang.github.io/rust-clippy/master/index.html#redundant_pub_crate
+# redundant_pub_crate = "allow"
+# https://rust-lang.github.io/rust-clippy/master/index.html#unreachable_pub
+# unreachable_pub = "allow"
+
+pedantic = "warn"
+# restriction = "warn"
+# https://rust-lang.github.io/rust-clippy/master/index.html#blanket_clippy_restriction_lints
+blanket_clippy_restriction_lints = "allow"
+nursery = "warn"
+# cargo = "warn"

@@ -13,35 +13,37 @@ use std::path::PathBuf;
     disable_help_subcommand = true,
     disable_version_flag = true
 )]
+/// The main CLI structure.
 pub struct Cli {
     #[command(subcommand)]
+    /// The command to execute.
     pub command: Box<Commands>,
     #[command(flatten)]
+    /// The top-level arguments.
     pub top_level: TopLevelArgs,
 }
 
 #[derive(Parser)]
 #[command(disable_version_flag = true)]
 pub struct TopLevelArgs {
-    #[command(flatten)]
-    pub global_args: Box<GlobalArgs>,
-
     #[arg(
         global = true,
         long,
         env = EnvVars::CDK_ANSIBLE_CONFIG_FILE,
-        help_heading = "Global options"
     )]
+    /// The configuration file (future use)
     pub config_file: Option<PathBuf>,
-
+    #[command(flatten)]
+    /// The global arguments.
+    pub global_args: Box<GlobalArgs>,
     /// Display the version.
-    #[arg(global = true, short = 'V', long, action = clap::ArgAction::Version, help_heading = "Global options")]
-    version: Option<bool>,
+    #[arg(global = true, short = 'V', long, action = clap::ArgAction::Version)]
+    /// Show version information.
+    pub version: Option<bool>,
 }
 
 #[derive(Parser, Debug, Clone)]
 #[command(next_help_heading = "Global options", next_display_order = 1000)]
-#[allow(clippy::struct_excessive_bools)]
 pub struct GlobalArgs {
     /// Do not print any output.
     #[arg(global = true, long, short, conflicts_with = "verbose")]
@@ -56,11 +58,10 @@ pub struct GlobalArgs {
 }
 
 #[derive(Subcommand)]
-#[allow(clippy::large_enum_variant)]
 pub enum Commands {
-    #[command(next_help_heading = "Show help")]
+    /// Show help
     Help(HelpArgs),
-    #[command(next_help_heading = "Create Rust code from ansible module")]
+    /// Create Rust code from ansible module
     Module(ModuleArgs),
 }
 
@@ -70,6 +71,7 @@ pub struct HelpArgs {
     #[arg(long)]
     pub no_pager: bool,
 
+    /// The command to show help for
     pub command: Option<Vec<String>>,
 }
 
@@ -111,8 +113,12 @@ pub struct ModuleArgs {
 
 #[derive(Debug, Clone, ValueEnum, Eq, PartialEq)]
 pub enum PkgUnit {
+    /// Create a package at the namespace level
     Namespace,
+    /// Create a package at the collection level
     Collection,
+    /// Create a package at the module level
     Module,
+    /// Does not create any packages
     None,
 }

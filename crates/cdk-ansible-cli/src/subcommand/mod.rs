@@ -1,1 +1,3 @@
-pub(crate) mod module;
+//! Subcommands
+
+pub mod module;

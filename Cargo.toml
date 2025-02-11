@@ -12,6 +12,7 @@ documentation = "https://docs.rs/cdk-ansible"
 repository = "https://github.com/pollenjp/cdk-ansible"
 authors = ["pollenjp"]
 license = "MIT"
+keywords = ["ansible", "cdk", "cdk-ansible"]
 
 [workspace.dependencies]
 cdk-ansible = { path = "crates/cdk-ansible" }
@@ -44,6 +45,8 @@ toml = "0.8.19"
 [workspace.lints.rust]
 
 [workspace.lints.clippy]
+# TODO: uncomment
+# cargo = "warn"
 
 # The profile that 'dist' will build with
 [profile.dist]
