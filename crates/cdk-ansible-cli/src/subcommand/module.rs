@@ -1,6 +1,6 @@
+use crate::arg::ModuleArgs;
 use crate::settings::PkgUnit;
 use anyhow::{bail, Context, Result};
-use cdk_ansible_cli::ModuleArgs;
 use indexmap::IndexMap;
 use quote::{format_ident, quote};
 use regex::Regex;

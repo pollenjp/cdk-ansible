@@ -1,7 +1,7 @@
+use crate::arg::SynthArgs;
 use crate::settings;
 use crate::{playbook_dump, Inventory, Playbook};
 use anyhow::{Context, Result};
-use cdk_ansible_cli::SynthArgs;
 
 pub trait Synthesizer {
     fn synth_playbooks(&self, args: &settings::SynthSettings) -> Result<Vec<Playbook>>;

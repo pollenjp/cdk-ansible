@@ -1,135 +1,108 @@
-use cdk_ansible_static::EnvVars;
-use clap::{command, Args, Parser, Subcommand, ValueEnum};
-use std::path::PathBuf;
+use clap::Parser;
+mod version;
+use anyhow::Context;
+use anyhow::Result;
+use clap::error::{ContextKind, ContextValue};
+use serde::Deserialize;
+use std::ffi::OsString;
+use std::path::Path;
 
-pub mod version;
+mod arg;
+mod settings;
+mod subcommand;
+use arg::{Cli, Commands};
 
-#[derive(Parser)]
-#[command(name = "cdk-ansible", author, long_version = crate::version::version().to_string())]
-#[command(about = ".")]
-#[command(propagate_version = true)]
-#[command(
-    after_help = "Use `cdk-ansible help` for more details.",
-    after_long_help = "",
-    // disable_help_flag = true,
-    disable_help_subcommand = true,
-    disable_version_flag = true
-)]
-pub struct Cli {
-    #[command(subcommand)]
-    pub command: Box<Commands>,
-    #[command(flatten)]
-    pub top_level: TopLevelArgs,
+/// Options for the application.
+#[derive(Debug, Clone, Default, Deserialize)]
+struct Options {}
+
+/// Load [`Options`] from a app config file
+fn read_file(path: &Path) -> Result<Options> {
+    let content =
+        fs_err::read_to_string(path).context(format!("Failed to read file: {}", path.display()))?;
+    println!("parsing function is not implemented yet:");
+    println!("----------------------------------------");
+    println!("{}", content);
+    println!("----------------------------------------");
+    let options: Options = Options::default();
+    Ok(options)
 }
 
-#[derive(Parser)]
-#[command(disable_version_flag = true)]
-pub struct TopLevelArgs {
-    #[command(flatten)]
-    pub global_args: Box<GlobalArgs>,
+#[derive(Debug, Clone)]
+struct FilesystemOptions(Options);
 
-    #[arg(
-        global = true,
-        long,
-        env = EnvVars::CDK_ANSIBLE_CONFIG_FILE,
-        help_heading = "Global options"
-    )]
-    pub config_file: Option<PathBuf>,
-
-    /// Display the version.
-    #[arg(global = true, short = 'V', long, action = clap::ArgAction::Version, help_heading = "Global options")]
-    version: Option<bool>,
+impl FilesystemOptions {
+    pub fn from_file(file: &Path) -> Result<Self> {
+        let options = read_file(file)?;
+        Ok(Self(options))
+    }
 }
 
-#[derive(Parser, Debug, Clone)]
-#[command(next_help_heading = "Global options", next_display_order = 1000)]
-#[allow(clippy::struct_excessive_bools)]
-pub struct GlobalArgs {
-    /// Do not print any output.
-    #[arg(global = true, long, short, conflicts_with = "verbose")]
-    pub quiet: bool,
+pub fn run<I, T>(args: I) -> Result<()>
+where
+    I: IntoIterator<Item = T>,
+    T: Into<OsString> + Clone,
+{
+    let cli = match Cli::try_parse_from(args) {
+        Ok(cli) => cli,
+        Err(mut err) => {
+            if let Some(ContextValue::String(subcommand)) = err.get(ContextKind::InvalidSubcommand)
+            {
+                match subcommand.as_str() {
+                    "help" => {
+                        err.insert(
+                            ContextKind::InvalidSubcommand,
+                            ContextValue::String("module".to_string()),
+                        );
+                    }
+                    "module" => {
+                        err.insert(
+                            ContextKind::InvalidSubcommand,
+                            ContextValue::String("module".to_string()),
+                        );
+                    }
+                    "synth" => {
+                        err.insert(
+                            ContextKind::InvalidSubcommand,
+                            ContextValue::String("synth".to_string()),
+                        );
+                    }
+                    _ => {}
+                }
+            }
+            err.exit()
+        }
+    };
 
-    /// Use verbose output.
-    ///
-    /// You can configure fine-grained logging using the `RUST_LOG` environment variable.
-    /// (<https://docs.rs/tracing-subscriber/latest/tracing_subscriber/filter/struct.EnvFilter.html#directives>)
-    #[arg(global = true, action = clap::ArgAction::Count, long, short, conflicts_with = "quiet")]
-    pub verbose: u8,
-}
+    let filesystem = if let Some(config_file) = cli.top_level.config_file.as_ref() {
+        Some(FilesystemOptions::from_file(config_file)?)
+    } else {
+        None
+    };
 
-#[derive(Subcommand)]
-#[allow(clippy::large_enum_variant)]
-pub enum Commands {
-    #[command(next_help_heading = "Show help")]
-    Help(HelpArgs),
-    #[command(next_help_heading = "Create Rust code from ansible module")]
-    Module(ModuleArgs),
-    #[command(next_help_heading = "Create Ansible playbooks from Rust code")]
-    Synth(SynthArgs),
-}
+    if let Some(filesystem) = filesystem {
+        // TODO: read as global settings
+        println!("----------------------------------------");
+        println!("Filesystem options: {:?}", filesystem);
+        println!("----------------------------------------");
+    }
 
-#[derive(Args, Debug)]
-pub struct HelpArgs {
-    /// Disable pager when printing help
-    #[arg(long)]
-    pub no_pager: bool,
+    let global_settings = settings::GlobalSettings::resolve(*cli.top_level.global_args);
 
-    pub command: Option<Vec<String>>,
-}
+    println!("----------------------------------------");
+    println!("Global settings: {:?}", global_settings);
+    println!("{}", global_settings.quiet);
+    println!("{}", global_settings.verbose);
+    println!("----------------------------------------");
 
-#[derive(Args, Debug, Clone)]
-pub struct ModuleArgs {
-    /// Default value is defined at `cdk_ansible::settings::ModuleSettings`
-    #[arg(short, long, required = false)]
-    pub pkg_prefix: Option<String>,
-    /// Specifies the level at which Cargo packages are created:
-    /// - 'namespace': Creates a package at the namespace level
-    /// - 'collection': Creates a package at the collection level
-    /// - 'module': Creates a package at the module level
-    /// - 'None': Does not create any packages
-    ///
-    /// Package names follow this pattern:
-    /// - namespace: 'cdkam_<namespace>'
-    /// - collection: 'cdkam_<namespace>_<collection>'
-    /// - module: 'cdkam_<namespace>_<collection>_<module>'
-    #[arg(long, required = false, value_enum)]
-    pub pkg_unit: Option<PkgUnit>,
-    /// Default value is defined at `cdk_ansible::settings::ModuleSettings`
-    #[arg(long, required = false)]
-    pub output_dir: Option<PathBuf>,
-    /// Default value is defined at `cdk_ansible::settings::ModuleSettings`
-    #[arg(long, required = false)]
-    pub no_cache: bool,
-    /// Default value is defined at `cdk_ansible::settings::ModuleSettings`
-    #[arg(long, required = false)]
-    pub cache_dir: Option<PathBuf>,
-    /// Specify the ansible module name. (e.g. 'ansible.builtin.debug')
-    /// If not specified, all modules accessible from your ansible environment will be generated.
-    #[arg(long, required = false, conflicts_with = "module_name_regex")]
-    pub module_name: Option<String>,
-    /// Specify the ansible module name regex. (e.g. 'ansible\.builtin\..*')
-    /// If not specified, all modules accessible from your ansible environment will be generated.
-    #[arg(long, required = false, conflicts_with = "module_name")]
-    pub module_name_regex: Option<String>,
-}
-
-#[derive(Debug, Clone, ValueEnum, Eq, PartialEq)]
-pub enum PkgUnit {
-    Namespace,
-    Collection,
-    Module,
-    None,
-}
-
-#[derive(Args, Debug, Clone)]
-pub struct SynthArgs {
-    #[arg(short, long, required = true)]
-    #[arg(help = "Ansible project root directory")]
-    pub output_dir: PathBuf,
-    #[arg(short, long, required = false)]
-    #[arg(help = "Ansible inventory directory. Default is '<output>/inventory/'")]
-    pub inventory_dir: Option<PathBuf>,
-    #[arg(short, long, required = false)]
-    #[arg(help = "Ansible playbooks directory. Default is '<output>/playbooks/'")]
-    pub playbooks_dir: Option<PathBuf>,
+    let result = match *cli.command {
+        Commands::Help(help_args) => {
+            println!("----------------------------------------");
+            println!("Help command: {:?}", help_args);
+            println!("----------------------------------------");
+            Ok(())
+        }
+        Commands::Module(module_args) => subcommand::module::module(module_args),
+    };
+    result.context("Failed to run command")
 }

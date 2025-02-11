@@ -12,7 +12,7 @@ pub(crate) struct CommitInfo {
 }
 
 #[derive(Serialize)]
-pub struct VersionInfo {
+pub(crate) struct VersionInfo {
     /// version, such as "1.2.3"
     version: String,
     /// Information about the git commit we may have been built from.
@@ -41,7 +41,7 @@ impl fmt::Display for VersionInfo {
 ///
 /// note: this function returns the version of `cdk-ansible-cli` crate
 ///       and need to be the same as the version of `cdk-ansible` crate.
-pub fn pkg_version() -> &'static str {
+fn pkg_version() -> &'static str {
     env!("CARGO_PKG_VERSION")
 }
 
