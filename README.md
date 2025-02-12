@@ -33,7 +33,7 @@ See [the latest release page](https://github.com/pollenjp/cdk-ansible/releases/l
 
 ```sh
 # ex) vX.Y.Z
-curl --proto '=https' --tlsv1.2 -LsSf https://github.com/pollenjp/cdk-ansible/releases/download/vX.Y.Z/cdk-ansible-installer.sh | sh
+curl --proto '=https' --tlsv1.2 -LsSf https://github.com/pollenjp/cdk-ansible/releases/download/vX.Y.Z/cdk-ansible-cli-installer.sh | sh
 ```
 
 ### cargo install
