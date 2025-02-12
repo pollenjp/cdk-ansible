@@ -4,7 +4,6 @@ use std::path::PathBuf;
 #[derive(Parser)]
 #[command(name = "custom cdk-ansible")]
 #[command(about = ".")]
-#[command(propagate_version = true)]
 #[command(
     after_help = "Use `cdk-ansible help` for more details.",
     after_long_help = "",
