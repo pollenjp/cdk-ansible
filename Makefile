@@ -8,9 +8,10 @@ export
 
 .PHONY: debug
 debug:
-	${UV_RUN} cargo run --package cdk-ansible -- module \
+	${UV_RUN} cargo run --package cdk-ansible-cli -- module \
 			--output-dir "${RS_OUT_DIR}" \
-			--module-name-regex 'ansible\.builtin\..*'
+			--module-name-regex 'ansible.builtin.debug'
+#			--module-name-regex 'ansible\.builtin\..*'
 
 .PHONY: help
 help:
@@ -49,6 +50,10 @@ build:
 # examples
 	cargo build --package cdkam_ansible
 	cargo build --package simple-sample
+
+.PHONY: build-release
+build-release:
+	PKG_NAME=cdk-ansible-cli BUILD_BINARY_TARGET=x86_64-unknown-linux-gnu ./tools/build/build.sh
 
 .PHONY: test
 test:

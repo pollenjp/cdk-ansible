@@ -29,4 +29,6 @@ if [[ "${target}" =~ gnu$ ]]; then
   # if target ends with 'gnu', add glib version to target
   target="${target}.${CARGO_DIST_GLIB_VERSION}"
 fi
-cargo zigbuild ${PKG_NAME:+--package "${PKG_NAME}"} --target="${target}" --release
+cargo zigbuild --release \
+  ${PKG_NAME:+--package "${PKG_NAME}"} \
+  --target="${target}"

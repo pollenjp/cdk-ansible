@@ -1,7 +1,8 @@
 use anyhow::Result;
 use cdk_ansible_cli::run;
+use std::env;
 
 fn main() -> Result<()> {
-    run(std::env::args_os())?;
+    run(env::args_os())?;
     Ok(())
 }

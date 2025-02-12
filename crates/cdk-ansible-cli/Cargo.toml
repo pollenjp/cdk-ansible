@@ -31,43 +31,154 @@ syn.workspace = true
 toml.workspace = true
 
 [lints.clippy]
-# https://rust-lang.github.io/rust-clippy/master/index.html#arbitrary_source_item_ordering
-arbitrary_source_item_ordering = "allow"
-# https://rust-lang.github.io/rust-clippy/master/index.html#implicit_return
-implicit_return = "allow"
-# https://rust-lang.github.io/rust-clippy/master/index.html#std_instead_of_alloc
-# std_instead_of_alloc = "allow"
-# https://rust-lang.github.io/rust-clippy/master/index.html#question_mark_used
-question_mark_used = "allow"
-# https://rust-lang.github.io/rust-clippy/master/index.html#min_ident_chars
-min_ident_chars = "allow"
-# https://rust-lang.github.io/rust-clippy/master/index.html#single_char_lifetime_names
-single_char_lifetime_names = "allow"
-# https://rust-lang.github.io/rust-clippy/master/index.html#get_first
-get_first = "allow"
-# https://rust-lang.github.io/rust-clippy/master/index.html#branches_sharing_code
-branches_sharing_code = "allow"
-# https://rust-lang.github.io/rust-clippy/master/index.html#print_stdout
-print_stdout = "allow"
-# https://rust-lang.github.io/rust-clippy/master/index.html#shadow_reuse
-shadow_reuse = "allow"
-# https://rust-lang.github.io/rust-clippy/master/index.html#shadow_same
-shadow_same = "allow"
-# https://rust-lang.github.io/rust-clippy/master/index.html#shadow_unrelated
-shadow_unrelated = "allow"
-# https://rust-lang.github.io/rust-clippy/master/index.html#mod_module_files
-mod_module_files = "allow"
-# https://rust-lang.github.io/rust-clippy/master/index.html#self_named_module_files
-self_named_module_files = "allow"
-
-# https://rust-lang.github.io/rust-clippy/master/index.html#redundant_pub_crate
-# redundant_pub_crate = "allow"
-# https://rust-lang.github.io/rust-clippy/master/index.html#unreachable_pub
-# unreachable_pub = "allow"
 
 pedantic = "warn"
-# restriction = "warn"
-# https://rust-lang.github.io/rust-clippy/master/index.html#blanket_clippy_restriction_lints
-blanket_clippy_restriction_lints = "allow"
-nursery = "warn"
 # cargo = "warn"
+
+#
+# style
+#
+get_first = "allow"
+
+#
+# nursery
+#
+nursery = "warn"
+branches_sharing_code = "allow"
+
+#
+# restriction
+#
+# https://rust-lang.github.io/rust-clippy/master/index.html#blanket_clippy_restriction_lints
+#
+# > Restriction lints sometimes are in contrast with other lints or even go against idiomatic rust.
+# > These lints should only be enabled on a lint-by-lint basis and with careful consideration.
+#
+# List up and enable lints one by one.
+# <=1.84 : https://rust-lang.github.io/rust-clippy/master/index.html?groups=restriction&versions=lte%3A84
+# note: Remove some rules because the 'Added in' value is wrong.
+#
+absolute_paths = "warn"
+alloc_instead_of_core = "warn"
+allow_attributes = "warn"
+allow_attributes_without_reason = "warn"
+# arbitrary_source_item_ordering = "warn"
+arithmetic_side_effects = "warn"
+as_conversions = "warn"
+as_underscore = "warn"
+assertions_on_result_states = "warn"
+big_endian_bytes = "warn"
+cfg_not_test = "warn"
+clone_on_ref_ptr = "warn"
+create_dir = "warn"
+dbg_macro = "warn"
+decimal_literal_representation = "warn"
+default_numeric_fallback = "warn"
+default_union_representation = "warn"
+deref_by_slicing = "warn"
+disallowed_script_idents = "warn"
+else_if_without_else = "warn"
+empty_drop = "warn"
+empty_enum_variants_with_brackets = "warn"
+empty_structs_with_brackets = "warn"
+error_impl_error = "warn"
+exhaustive_enums = "warn"
+exhaustive_structs = "warn"
+exit = "warn"
+expect_used = "warn"
+field_scoped_visibility_modifiers = "warn"
+filetype_is_file = "warn"
+float_arithmetic = "warn"
+float_cmp_const = "warn"
+fn_to_numeric_cast_any = "warn"
+get_unwrap = "warn"
+host_endian_bytes = "warn"
+if_then_some_else_none = "warn"
+impl_trait_in_params = "warn"
+# implicit_return = "warn"
+indexing_slicing = "warn"
+infinite_loop = "warn"
+inline_asm_x86_att_syntax = "warn"
+inline_asm_x86_intel_syntax = "warn"
+integer_division = "warn"
+integer_division_remainder_used = "warn"
+iter_over_hash_type = "warn"
+large_include_file = "warn"
+let_underscore_must_use = "warn"
+let_underscore_untyped = "warn"
+little_endian_bytes = "warn"
+lossy_float_literal = "warn"
+map_err_ignore = "warn"
+map_with_unused_argument_over_ranges = "warn"
+mem_forget = "warn"
+# min_ident_chars = "warn"
+missing_assert_message = "warn"
+missing_asserts_for_indexing = "warn"
+# missing_docs_in_private_items = "warn"
+missing_inline_in_public_items = "warn"
+missing_trait_methods = "warn"
+mixed_read_write_in_expression = "warn"
+# mod_module_files = "warn"
+module_name_repetitions = "warn"
+modulo_arithmetic = "warn"
+multiple_inherent_impl = "warn"
+multiple_unsafe_ops_per_block = "warn"
+mutex_atomic = "warn"
+mutex_integer = "warn"
+needless_raw_strings = "warn"
+non_ascii_literal = "warn"
+non_zero_suggestions = "warn"
+panic = "warn"
+panic_in_result_fn = "warn"
+partial_pub_fields = "warn"
+pathbuf_init_then_push = "warn"
+pattern_type_mismatch = "warn"
+print_stderr = "warn"
+# FIXME: later
+# print_stdout = "warn"
+pub_use = "warn"
+pub_with_shorthand = "warn"
+pub_without_shorthand = "warn"
+# question_mark_used = "warn"
+rc_buffer = "warn"
+rc_mutex = "warn"
+redundant_type_annotations = "warn"
+ref_patterns = "warn"
+renamed_function_params = "warn"
+rest_pat_in_fully_bound_structs = "warn"
+same_name_method = "warn"
+# self_named_module_files = "warn"
+semicolon_inside_block = "warn"
+semicolon_outside_block = "warn"
+separated_literal_suffix = "warn"
+# shadow_reuse = "warn"
+# shadow_same = "warn"
+# shadow_unrelated = "warn"
+single_call_fn = "warn"
+# single_char_lifetime_names = "warn"
+std_instead_of_alloc = "warn"
+std_instead_of_core = "warn"
+str_to_string = "warn"
+string_add = "warn"
+string_lit_chars_any = "warn"
+string_slice = "warn"
+string_to_string = "warn"
+suspicious_xor_used_as_pow = "warn"
+tests_outside_test_module = "warn"
+todo = "warn"
+try_err = "warn"
+undocumented_unsafe_blocks = "warn"
+unimplemented = "warn"
+unnecessary_safety_comment = "warn"
+unnecessary_safety_doc = "warn"
+unnecessary_self_imports = "warn"
+unneeded_field_pattern = "warn"
+unreachable = "warn"
+unseparated_literal_suffix = "warn"
+unused_result_ok = "warn"
+unused_trait_names = "warn"
+unwrap_in_result = "warn"
+unwrap_used = "warn"
+use_debug = "warn"
+verbose_file_reads = "warn"
+wildcard_enum_match_arm = "warn"
