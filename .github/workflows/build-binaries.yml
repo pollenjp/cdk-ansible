@@ -86,7 +86,7 @@ jobs:
       - name: Build binaries
         run: ./tools/build/build.sh
         env:
-          PKG_NAME: ${{ env.APP_NAME }}
+          PKG_NAME: cdk-ansible-cli
           BUILD_BINARY_TARGET: ${{ matrix.target }}
       - name: Archive binary for Unix-like systems
         if: ${{ !contains(matrix.target, 'windows-msvc') }}
