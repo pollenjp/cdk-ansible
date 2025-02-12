@@ -16,7 +16,6 @@ license.workspace = true
 workspace = true
 
 [dependencies]
-# cdk-ansible-cli.workspace = true
 cdk-ansible-core.workspace = true
 cdk-ansible-macro.workspace = true
 

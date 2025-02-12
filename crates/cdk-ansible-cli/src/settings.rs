@@ -58,21 +58,16 @@ impl ModuleSettings {
     #[expect(clippy::single_call_fn, reason = "better readability")]
     pub fn resolve(args: arg::ModuleArgs) -> Self {
         Self {
-            output_dir: args.output_dir.unwrap_or_else(|| ".cdk-ansible.out".into()),
-            pkg_prefix: args.pkg_prefix.unwrap_or_else(|| {
-                // CDK Ansible Module
-                "cdkam".to_owned()
-            }),
+            output_dir: args.output_dir,
+            pkg_prefix: args.pkg_prefix,
             pkg_unit: match args.pkg_unit {
-                Some(arg::PkgUnit::Namespace) | None => Some(PkgUnit::Namespace),
-                Some(arg::PkgUnit::Collection) => Some(PkgUnit::Collection),
-                Some(arg::PkgUnit::Module) => Some(PkgUnit::Module),
-                Some(arg::PkgUnit::None) => None,
+                arg::PkgUnit::Namespace => Some(PkgUnit::Namespace),
+                arg::PkgUnit::Collection => Some(PkgUnit::Collection),
+                arg::PkgUnit::Module => Some(PkgUnit::Module),
+                arg::PkgUnit::None => None,
             },
             use_cache: !args.no_cache,
-            cache_dir: args
-                .cache_dir
-                .unwrap_or_else(|| ".cdk-ansible.cache.out".into()),
+            cache_dir: args.cache_dir,
             module_name: args.module_name,
             module_name_regex: args.module_name_regex,
         }
