@@ -89,8 +89,8 @@ clean:
 
 .PHONY: dist-gen
 dist-gen:
-	dist generate
-#	dist build --tag=v0.0.8 --output-format=json "--artifacts=global"
+#	dist generate
+	dist build --tag=v0.0.10 --output-format=json "--artifacts=global"
 
 .PHONY: publish
 publish:
