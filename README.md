@@ -39,7 +39,8 @@ curl --proto '=https' --tlsv1.2 -LsSf https://github.com/pollenjp/cdk-ansible/re
 ### cargo install
 
 ```bash
-cargo install cdk-ansible
+# note: use 'cdk-ansible-cli', not 'cdk-ansible'
+cargo install cdk-ansible-cli
 ```
 
 ## Usage
