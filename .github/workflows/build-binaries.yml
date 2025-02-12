@@ -14,6 +14,7 @@ concurrency:
 
 env:
   APP_NAME: cdk-ansible
+  PKG_NAME: cdk-ansible-cli
   CARGO_INCREMENTAL: 0
   CARGO_NET_RETRY: 10
   RUSTUP_MAX_RETRIES: 10
@@ -86,12 +87,12 @@ jobs:
       - name: Build binaries
         run: ./tools/build/build.sh
         env:
-          PKG_NAME: cdk-ansible-cli
+          PKG_NAME: ${{ env.PKG_NAME }}
           BUILD_BINARY_TARGET: ${{ matrix.target }}
       - name: Archive binary for Unix-like systems
         if: ${{ !contains(matrix.target, 'windows-msvc') }}
         run: |
-          archive_name="${{ env.APP_NAME }}-${{ matrix.target }}"
+          archive_name="${{ env.PKG_NAME }}-${{ matrix.target }}"
           archive_dir="${DIST_DIR:?}/$archive_name"
           archive_file="$archive_name.tar.gz"
 

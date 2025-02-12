@@ -17,14 +17,14 @@ While Ansible's `playbook` and `inventory` files are written in YAML format, man
 - [**cdk-ansible**](https://crates.io/crates/cdk-ansible) crate helps you to generate Ansible **Playbook** and **Inventory** files.
 - [**cdk-ansible-cli**](https://crates.io/crates/cdk-ansible-cli) (`cdk-ansible` command) generates Rust packages for existing Ansible modules.
 
-## Install
+## Install Command
 
 ### binstall
 
 [binstall](https://crates.io/crates/cargo-binstall)
 
 ```bash
-cargo binstall cdk-ansible
+cargo binstall cdk-ansible-cli
 ```
 
 ### Shell
@@ -39,7 +39,6 @@ curl --proto '=https' --tlsv1.2 -LsSf https://github.com/pollenjp/cdk-ansible/re
 ### cargo install
 
 ```bash
-# note: use 'cdk-ansible-cli', not 'cdk-ansible'
 cargo install cdk-ansible-cli
 ```
 
