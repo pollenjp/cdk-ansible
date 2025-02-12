@@ -87,6 +87,11 @@ install-dev:
 clean:
 	rm -rf target/
 
+.PHONY: dist-gen
+dist-gen:
+	dist generate
+#	dist build --tag=v0.0.8 --output-format=json "--artifacts=global"
+
 .PHONY: publish
 publish:
 	./tools/publish/publish.sh
