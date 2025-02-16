@@ -311,6 +311,7 @@ fn create_cargo_toml(pkg_name: &str, pkg_dir: &Path) -> Result<()> {
         name = "sample"
         version = "0.1.0"
         edition = "2021"
+        rust-version = "1.83"
         "#,
     )?;
     if let Some(package) = manifest.package.as_mut() {
@@ -601,10 +602,12 @@ fn generate_module_rs(module_json: &AnsModuleJson) -> Result<String> {
         .collect::<Result<Vec<_>>>()?;
 
     let token_streams = vec![quote! {
-        use cdk_ansible::{OptU, TaskModule};
+        #[allow(unused_imports, reason = "Some modules may have empty `options` field")]
+        use cdk_ansible::OptU;
+        use cdk_ansible::TaskModule;
         use serde::Serialize;
 
-        #[derive(Clone, Debug, PartialEq, Serialize)]
+        #[derive(Clone, Debug, Serialize)]
         pub struct Module {
             #[serde(rename = #module_name)]
             pub module: Args,
@@ -612,13 +615,13 @@ fn generate_module_rs(module_json: &AnsModuleJson) -> Result<String> {
 
         impl TaskModule for Module {}
 
-        #[derive(Clone, Debug, PartialEq, Serialize)]
+        #[derive(Clone, Debug, Serialize)]
         pub struct Args {
             #[serde(flatten)]
             pub options: Opt,
         }
 
-        #[derive(Clone, Debug, PartialEq, Default, Serialize)]
+        #[derive(Clone, Debug, Default, Serialize)]
         #[serde(rename_all = "snake_case")]
         pub struct Opt {
             #(#struct_attributes)*
