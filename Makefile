@@ -71,6 +71,7 @@ test-modules:
 lint:
 	$(MAKE) lint-rust
 	$(MAKE) lint-ansible
+	cargo hack check --rust-version --workspace --all-targets --ignore-private
 
 .PHONY: lint-rust
 lint-rust:
