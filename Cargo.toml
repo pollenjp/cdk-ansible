@@ -18,8 +18,8 @@ keywords = ["ansible", "cdk", "cdk-ansible"]
 cdk-ansible = { path = "crates/cdk-ansible" }
 cdk-ansible-cli = { path = "crates/cdk-ansible-cli" }
 cdk-ansible-core = { version = "0.0.3", path = "crates/cdk-ansible-core" }
-cdk-ansible-static = { version = "0.0.2", path = "crates/cdk-ansible-static" }
-cdk-ansible-macro = { version = "0.0.3", path = "crates/cdk-ansible-macro" }
+cdk-ansible-static = { version = "0.0.1", path = "crates/cdk-ansible-static" }
+cdk-ansible-macro = { version = "0.0.2", path = "crates/cdk-ansible-macro" }
 
 anyhow = { version = "1.0.95" }
 cargo_toml = "0.21.0"
