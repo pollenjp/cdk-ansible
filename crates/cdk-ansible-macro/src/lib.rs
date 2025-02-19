@@ -45,6 +45,14 @@ fn is_hidden(attrs: &[Attribute]) -> bool {
 // MIT License
 // Copyright (c) 2021-2023 Astral Sh
 // https://github.com/astral-sh/uv/blob/cfd1e670ddb803f4e67d4abd069fad271e1d1c7f/crates/uv-macros/src/lib.rs
+#[proc_macro_attribute]
+pub fn attr_hidden(_attr: TokenStream, item: TokenStream) -> TokenStream {
+    item
+}
+
+// MIT License
+// Copyright (c) 2021-2023 Astral Sh
+// https://github.com/astral-sh/uv/blob/cfd1e670ddb803f4e67d4abd069fad271e1d1c7f/crates/uv-macros/src/lib.rs
 //
 /// This attribute is used to generate environment variables metadata for [`cdk_ansible_static::EnvVars`].
 #[proc_macro_attribute]

@@ -2,8 +2,9 @@
 name = "simple-sample"
 version = "0.1.0"
 edition = "2021"
-authors = ["pollenjp <pollenjp@gmail.com>"]
+authors = ["pollenjp <pollenjp@example.com>"]
 license = "MIT"
+rust-version.workspace = true
 
 [dependencies]
 cdk-ansible.workspace = true

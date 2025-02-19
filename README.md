@@ -126,6 +126,6 @@ find playbooks inventory -name "*.json" \
   | xargs -I{} bash -c \
     'set -eu; \
     filepath_json={}; \
-    filepath_yaml="$${filepath_json%.json}.yaml"; \
-    yq -p json -o yaml "$${filepath_json}" > "$${filepath_yaml}"'
+    filepath_yaml="${filepath_json%.json}.yaml"; \
+    yq -p json -o yaml "${filepath_json}" > "${filepath_yaml}"'
 ```

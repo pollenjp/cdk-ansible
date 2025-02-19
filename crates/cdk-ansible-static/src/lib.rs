@@ -12,19 +12,23 @@
  *   * VSCode: `rust-analyzer.cargo.extraEnv` in `.vscode/settings.json`
  *   * TODO: please write here for other IDEs
  */
-use cdk_ansible_macro::attribute_env_vars_metadata;
-
-pub const CDK_ANSIBLE_COMMIT_HASH: Option<&str> = option_env!("CDK_ANSIBLE_COMMIT_HASH");
-pub const CDK_ANSIBLE_COMMIT_SHORT_HASH: Option<&str> =
-    option_env!("CDK_ANSIBLE_COMMIT_SHORT_HASH");
-pub const CDK_ANSIBLE_COMMIT_DATE: Option<&str> = option_env!("CDK_ANSIBLE_COMMIT_DATE");
-pub const CDK_ANSIBLE_LAST_TAG: Option<&str> = option_env!("CDK_ANSIBLE_LAST_TAG");
-pub const CDK_ANSIBLE_LAST_TAG_DISTANCE: Option<&str> =
-    option_env!("CDK_ANSIBLE_LAST_TAG_DISTANCE");
-
+use cdk_ansible_macro::{attr_hidden, attribute_env_vars_metadata};
 pub struct EnvVars;
 
 #[attribute_env_vars_metadata]
 impl EnvVars {
     pub const CDK_ANSIBLE_CONFIG_FILE: &'static str = "CDK_ANSIBLE_CONFIG_FILE";
+    /// Used at build time via `build.rs`.
+    #[attr_hidden]
+    pub const CARGO_MANIFEST_DIR: &'static str = "CARGO_MANIFEST_DIR";
+    #[attr_hidden]
+    pub const CDK_ANSIBLE_COMMIT_HASH: &'static str = "CDK_ANSIBLE_COMMIT_HASH";
+    #[attr_hidden]
+    pub const CDK_ANSIBLE_COMMIT_SHORT_HASH: &'static str = "CDK_ANSIBLE_COMMIT_SHORT_HASH";
+    #[attr_hidden]
+    pub const CDK_ANSIBLE_COMMIT_DATE: &'static str = "CDK_ANSIBLE_COMMIT_DATE";
+    #[attr_hidden]
+    pub const CDK_ANSIBLE_LAST_TAG: &'static str = "CDK_ANSIBLE_LAST_TAG";
+    #[attr_hidden]
+    pub const CDK_ANSIBLE_LAST_TAG_DISTANCE: &'static str = "CDK_ANSIBLE_LAST_TAG_DISTANCE";
 }

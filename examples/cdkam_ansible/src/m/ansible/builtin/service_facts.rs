@@ -4,7 +4,7 @@ use cdk_ansible::TaskModule;
 use serde::Serialize;
 #[derive(Clone, Debug, Serialize)]
 pub struct Module {
-    #[serde(rename = "ansible.builtin.debug")]
+    #[serde(rename = "ansible.builtin.service_facts")]
     pub module: Args,
 }
 impl TaskModule for Module {}
@@ -15,11 +15,4 @@ pub struct Args {
 }
 #[derive(Clone, Debug, Default, Serialize)]
 #[serde(rename_all = "snake_case")]
-pub struct Opt {
-    #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
-    pub msg: OptU<String>,
-    #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
-    pub var: OptU<String>,
-    #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
-    pub verbosity: OptU<i64>,
-}
+pub struct Opt {}
