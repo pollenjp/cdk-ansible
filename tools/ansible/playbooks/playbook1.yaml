@@ -5,3 +5,5 @@
     - name: Debug msg
       ansible.builtin.debug:
         msg: msg
+    - name: No options' module
+      ansible.builtin.service_facts: {}

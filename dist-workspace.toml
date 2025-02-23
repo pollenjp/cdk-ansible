@@ -11,6 +11,8 @@ ci = "github"
 unix-archive = ".tar.gz"
 # The installers to generate for each app
 installers = ["shell"]
+# The namespace to use for the release tag
+tag-namespace = "cdk-ansible-cli-v" # cdk-ansible-cli-vX.Y.Z
 # Target platforms to build apps for (Rust target-triple syntax)
 targets = [
     "aarch64-apple-darwin",

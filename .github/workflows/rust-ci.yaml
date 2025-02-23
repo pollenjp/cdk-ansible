@@ -20,14 +20,19 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Test
-        run: make test
-        working-directory: .
+        run: cargo test --verbose
+  test-under-tools:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v5
+      - run: make test-under-tools
   test-simple-sample:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: astral-sh/setup-uv@v5
-      - run: make simple-sample
+      - run: make test-simple-sample
       - name: Check dirty
         run: |
           status=$(git status --porcelain)
@@ -38,3 +43,15 @@ jobs:
               echo "$status"
               exit 1
           fi
+  latest_deps: # https://doc.rust-lang.org/nightly/cargo/guide/continuous-integration.html#verifying-latest-dependencies
+    name: Latest Dependencies
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    env:
+      CARGO_RESOLVER_INCOMPATIBLE_RUST_VERSIONS: allow
+    steps:
+      - uses: actions/checkout@v4
+      - run: rustup update stable && rustup default stable
+      - run: cargo update --verbose
+      - run: cargo build --verbose
+      - run: cargo test --verbose

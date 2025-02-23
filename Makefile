@@ -24,9 +24,10 @@ debug-module:
 	${UV_RUN} cargo run --package cdk-ansible -- module --output-dir "${RS_OUT_DIR}"
 #	rsync -av --delete "${RS_OUT_DIR}/" "${SAMPLE_APP_ROOT}/src/module"
 
-.PHONY: simple-sample
-simple-sample:
+.PHONY: test-simple-sample
+test-simple-sample:
 	${UV_RUN} cargo run --package cdk-ansible-cli -- module --output-dir "${RS_OUT_DIR}" --module-name 'ansible.builtin.debug'
+	${UV_RUN} cargo run --package cdk-ansible-cli -- module --output-dir "${RS_OUT_DIR}" --module-name 'ansible.builtin.service_facts'
 # Run 'synth' to generate playbooks and inventory
 	RUST_BACKTRACE=1 cargo run --package simple-sample -- synth --output-dir "${SAMPLE_ANSIBLE_ROOT}"
 # Convert json to yaml by yq
@@ -41,6 +42,7 @@ simple-sample:
 
 .PHONY: build
 build:
+# FIXME: cargo-release may be better
 # build packages one by one
 	cargo build --package cdk-ansible-macro
 	cargo build --package cdk-ansible-static
@@ -52,17 +54,24 @@ build:
 	cargo build --package simple-sample
 
 .PHONY: build-release
-build-release:
+build-release: ## local check
 	PKG_NAME=cdk-ansible-cli BUILD_BINARY_TARGET=x86_64-unknown-linux-gnu ./tools/build/build.sh
 
 .PHONY: test
 test:
 	cargo test
+	${MAKE} test-simple-sample
+	${MAKE} test-under-tools
+
+.PHONY: test-under-tools
+test-under-tools:
+	find "${PROJ_ROOT}/tools/test" -name "*.sh" -exec {} \;
 
 .PHONY: lint
 lint:
 	$(MAKE) lint-rust
 	$(MAKE) lint-ansible
+	cargo hack check --rust-version --workspace --all-targets --ignore-private
 
 .PHONY: lint-rust
 lint-rust:
@@ -91,6 +100,10 @@ clean:
 dist-gen:
 #	dist generate
 	dist build --tag=v0.0.10 --output-format=json "--artifacts=global"
+
+.PHONY: prepare-release
+prepare-release:
+	cargo release changes
 
 .PHONY: publish
 publish:

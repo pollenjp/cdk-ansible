@@ -78,9 +78,8 @@ impl FilesystemOptions {
 ///
 /// # Errors
 ///
-/// * `CliError` - If the command line arguments are invalid.
-/// * `IoError` - If the configuration file is not found or cannot be read.
-/// * `SubcommandError` - If the subcommand fails to execute.
+/// Use [`anyhow::Result`] to handle errors.
+///
 #[inline]
 // #[expect(clippy::single_call_fn, reason = "better readability")]
 pub fn run<I, T>(args: I) -> Result<()>

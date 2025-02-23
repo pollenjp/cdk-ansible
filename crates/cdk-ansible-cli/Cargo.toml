@@ -30,6 +30,13 @@ serde_json.workspace = true
 syn.workspace = true
 toml.workspace = true
 
+[build-dependencies]
+cdk-ansible-static.workspace = true
+
+anyhow.workspace = true
+regex.workspace = true
+fs-err.workspace = true
+
 [lints.clippy]
 
 # category
