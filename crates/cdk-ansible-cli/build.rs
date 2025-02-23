@@ -107,6 +107,7 @@ struct LatestTag {
     /// tag name
     name: String,
     /// semantic version
+    #[expect(dead_code, reason = "may be used in the future")]
     semver: SemVer,
 }
 
