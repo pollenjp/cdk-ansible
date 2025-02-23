@@ -101,6 +101,10 @@ dist-gen:
 #	dist generate
 	dist build --tag=v0.0.10 --output-format=json "--artifacts=global"
 
+.PHONY: prepare-release
+prepare-release:
+	cargo release changes
+
 .PHONY: publish
 publish:
 	./tools/publish/publish.sh
