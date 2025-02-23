@@ -14,6 +14,8 @@ pub struct CommitInfo {
     last_tag: Option<String>,
     /// The number of commits since the last tag
     commits_since_last_tag: u32,
+    /// Whether the build time repo is dirty
+    is_dirty: bool,
 }
 
 #[derive(Serialize)]
@@ -34,6 +36,9 @@ impl fmt::Display for VersionInfo {
         if let Some(ci) = self.commit_info.as_ref() {
             if ci.commits_since_last_tag > 0 {
                 write!(f, "+{}", ci.commits_since_last_tag)?;
+            }
+            if ci.is_dirty {
+                write!(f, "-dirty")?;
             }
             write!(f, " ({} {})", ci.short_commit_hash, ci.commit_date)?;
         }
@@ -62,6 +67,7 @@ pub fn version() -> VersionInfo {
         option_env!("CDK_ANSIBLE_COMMIT_DATE"),
         option_env!("CDK_ANSIBLE_LAST_TAG"),
         option_env!("CDK_ANSIBLE_LAST_TAG_DISTANCE"),
+        option_env!("CDK_ANSIBLE_LAST_TAG_DISTANCE_DIRTY"),
     ) {
         (
             Some(commit_hash),
@@ -69,6 +75,7 @@ pub fn version() -> VersionInfo {
             Some(commit_date),
             Some(last_tag),
             commits_since_last_tag,
+            is_dirty,
         ) => Some(CommitInfo {
             short_commit_hash: short_commit_hash.to_owned(),
             commit_hash: commit_hash.to_owned(),
@@ -76,6 +83,7 @@ pub fn version() -> VersionInfo {
             last_tag: Some(last_tag.to_owned()),
             commits_since_last_tag: commits_since_last_tag
                 .map_or(0, |distance| distance.parse::<u32>().unwrap_or(0)),
+            is_dirty: is_dirty == Some("1"),
         }),
         _ => None,
     };

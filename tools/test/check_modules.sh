@@ -29,7 +29,9 @@ members = ["crates/*"]
 cdk-ansible = { path = "${proj_root}/crates/cdk-ansible" }
 __EOF__
 
+pushd "${proj_root}"
 "${ansible_uv[@]}" run cargo run --package cdk-ansible-cli -- module --output-dir "${temp_dir}/crates" --module-name 'ansible.builtin.service_facts'
+popd
 
 pushd "${temp_dir}/crates"
 cargo build

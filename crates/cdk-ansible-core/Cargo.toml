@@ -10,6 +10,9 @@ repository.workspace = true
 authors.workspace = true
 license.workspace = true
 
+[package.metadata.release]
+tag-name = "{{prefix}}v{{version}}"
+
 [lints]
 workspace = true
 

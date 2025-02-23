@@ -61,11 +61,11 @@ build-release: ## local check
 test:
 	cargo test
 	${MAKE} test-simple-sample
-	${MAKE} test-modules
+	${MAKE} test-under-tools
 
-.PHONY: test-modules
-test-modules:
-	./tools/test/check_modules.sh
+.PHONY: test-under-tools
+test-under-tools:
+	find "${PROJ_ROOT}/tools/test" -name "*.sh" -exec {} \;
 
 .PHONY: lint
 lint:

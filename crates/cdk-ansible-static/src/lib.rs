@@ -31,4 +31,7 @@ impl EnvVars {
     pub const CDK_ANSIBLE_LAST_TAG: &'static str = "CDK_ANSIBLE_LAST_TAG";
     #[attr_hidden]
     pub const CDK_ANSIBLE_LAST_TAG_DISTANCE: &'static str = "CDK_ANSIBLE_LAST_TAG_DISTANCE";
+    #[attr_hidden]
+    pub const CDK_ANSIBLE_LAST_TAG_DISTANCE_DIRTY: &'static str =
+        "CDK_ANSIBLE_LAST_TAG_DISTANCE_DIRTY";
 }
