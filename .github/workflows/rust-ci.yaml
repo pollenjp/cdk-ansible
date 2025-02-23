@@ -21,7 +21,7 @@ jobs:
       - uses: actions/checkout@v4
       - name: Test
         run: cargo test --verbose
-  test-modules:
+  test-under-tools:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
