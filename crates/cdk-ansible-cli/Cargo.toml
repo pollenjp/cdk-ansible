@@ -14,7 +14,7 @@ keywords.workspace = true
 
 [package.metadata.binstall]
 # https://github.com/cargo-bins/cargo-binstall/blob/6010abb1da3dbaae07e8823fa57c0cd7cf183245/SUPPORT.md
-pkg-url = "{ repo }/releases/download/{ name }-v{ version }/{ name }-{ target }-v{ version }{ archive-suffix }"
+pkg-url = "{ repo }/releases/download/{ name }-v{ version }/{ name }-{ target }{ archive-suffix }"
 
 [dependencies]
 cdk-ansible-static.workspace = true
