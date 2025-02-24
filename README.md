@@ -27,7 +27,7 @@ While Ansible's `playbook` and `inventory` files are written in YAML format, man
 cargo binstall cdk-ansible-cli
 ```
 
-### Shell
+### shell
 
 See [the latest release page](https://github.com/pollenjp/cdk-ansible/releases/latest) and run the command like below.
 
@@ -48,7 +48,7 @@ cargo install cdk-ansible-cli
 
 Note: (Future feature) `cdk-ansible project` to create a new cdk-ansible's template project.
 
-```txt
+```text
 proj-root/
 `-- cdk-ansible/
     `-- Cargo.toml          ... workspace cargo
@@ -76,7 +76,7 @@ uv --project /path/to/your/ansible-project run \
   cdk-ansible module --output-dir crates/ --module-name ansible.builtin.debug
 ```
 
-```txt
+```text
 proj-root/
 `-- cdk-ansible/
   |-- Cargo.toml
@@ -93,7 +93,7 @@ proj-root/
 
 `your-app` project should be like [simple-sample](examples/simple-sample).
 
-```txt
+```text
 proj-root/
 `-- cdk-ansible/
   `-- crates/
@@ -108,7 +108,7 @@ cd cdk-ansible
 cargo run --package your-app -- synth --output-dir ../ansible
 ```
 
-```txt
+```text
 proj-root/
 |-- cdk-ansible/
 `-- ansible/              ... Your ansible project
