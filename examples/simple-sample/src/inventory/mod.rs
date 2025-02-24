@@ -49,7 +49,7 @@ impl Hosts {
         };
 
         // Validate: count Hosts' attributes
-        if hosts.len() == Self::field_count() {
+        if hosts.len() != Self::field_count() {
             bail!("Some hosts are not set");
         }
 

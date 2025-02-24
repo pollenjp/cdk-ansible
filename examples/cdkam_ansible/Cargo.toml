@@ -1,8 +1,12 @@
 [package]
 name = "cdkam_ansible"
 version = "0.1.0"
-edition.workspace = true
-rust-version.workspace = true
+
+[package.edition]
+workspace = true
+
+[package.rust-version]
+workspace = true
 
 [dependencies]
 anyhow = "1.0.95"

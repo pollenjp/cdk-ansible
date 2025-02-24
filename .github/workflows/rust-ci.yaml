@@ -12,6 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - run: rustup update stable && rustup default stable
       - name: Lint
         run: make lint-rust
         working-directory: .
@@ -19,6 +20,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - run: rustup update stable && rustup default stable
       - name: Test
         run: cargo test --verbose
   test-under-tools:
@@ -26,12 +28,14 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: astral-sh/setup-uv@v5
+      - run: rustup update stable && rustup default stable
       - run: make test-under-tools
   test-simple-sample:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: astral-sh/setup-uv@v5
+      - run: rustup update stable && rustup default stable
       - run: make test-simple-sample
       - name: Check dirty
         run: |

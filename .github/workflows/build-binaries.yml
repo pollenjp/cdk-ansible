@@ -73,6 +73,7 @@ jobs:
       #     curl --proto '=https' --tlsv1.2 --retry 10 --retry-connrefused -fsSL "https://sh.rustup.rs" \
       #       | sh -s -- --profile minimal --default-toolchain none -y
       #     echo "${CARGO_HOME:-$HOME/.cargo}/bin" >> $GITHUB_PATH
+      - run: rustup update stable && rustup default stable
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
