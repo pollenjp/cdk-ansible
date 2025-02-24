@@ -41,6 +41,11 @@ anyhow.workspace = true
 regex.workspace = true
 fs-err.workspace = true
 
+[lints.rust]
+# clippy::redundant_pub_crate conflicts with rustc::unreachable_pub #5369
+# https://github.com/rust-lang/rust-clippy/issues/5369
+# unreachable-pub = "warn"
+
 [lints.clippy]
 
 # category
@@ -62,6 +67,7 @@ branches_sharing_code = "allow"
 #
 # https://rust-lang.github.io/rust-clippy/master/index.html#blanket_clippy_restriction_lints
 blanket_clippy_restriction_lints = "allow"
+absolute_paths = "allow"
 arbitrary_source_item_ordering = "allow"
 implicit_return = "allow"
 min_ident_chars = "allow"
@@ -69,9 +75,11 @@ missing_docs_in_private_items = "allow"
 mod_module_files = "allow"
 # FIXME: later
 print_stdout = "allow"
+pub_with_shorthand = "allow"
 question_mark_used = "allow"
 self_named_module_files = "allow"
 shadow_reuse = "allow"
 shadow_same = "allow"
 shadow_unrelated = "allow"
+single_call_fn = "allow"
 single_char_lifetime_names = "allow"

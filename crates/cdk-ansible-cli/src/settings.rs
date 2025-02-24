@@ -55,7 +55,6 @@ pub struct ModuleSettings {
 
 impl ModuleSettings {
     /// Convert the command line arguments to the settings
-    #[expect(clippy::single_call_fn, reason = "better readability")]
     pub fn resolve(args: arg::ModuleArgs) -> Self {
         Self {
             output_dir: args.output_dir,

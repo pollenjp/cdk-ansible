@@ -81,7 +81,6 @@ impl FilesystemOptions {
 /// Use [`anyhow::Result`] to handle errors.
 ///
 #[inline]
-// #[expect(clippy::single_call_fn, reason = "better readability")]
 pub fn run<I, T>(args: I) -> Result<()>
 where
     I: IntoIterator<Item = T>,

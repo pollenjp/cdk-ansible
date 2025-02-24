@@ -1,9 +1,10 @@
+use crate::version;
 use cdk_ansible_static::EnvVars;
 use clap::{command, Args, Parser, Subcommand, ValueEnum};
 use std::path::PathBuf;
 
 #[derive(Parser)]
-#[command(name = "cdk-ansible", author, long_version = crate::version::version().to_string())]
+#[command(name = "cdk-ansible", author, long_version = version::version().to_string())]
 #[command(about = ".")]
 #[command(propagate_version = true)]
 #[command(

@@ -1,6 +1,6 @@
 use crate::arg::ModuleArgs;
 use crate::settings::{ModuleSettings, PkgUnit};
-use anyhow::{bail, Context as _, Result};
+use anyhow::{Context as _, Result, bail};
 use core::fmt;
 use indexmap::IndexMap;
 use quote::{format_ident, quote};
@@ -29,13 +29,14 @@ static SUB_MOD_NAME: &str = "m";
 ///
 /// * `CliError` - If the command line arguments are invalid.
 /// * `IoError` - If the configuration file is not found or cannot be read.
-#[expect(clippy::single_call_fn, reason = "better readability")]
 pub fn module(args: ModuleArgs) -> Result<()> {
     let args = ModuleSettings::resolve(args);
     let ans_modu_names = match (args.module_name, args.module_name_regex) {
         (Some(modu_name), None) => {
-            vec![AnsibleModuleName::new(&modu_name)
-                .with_context(|| format!("failed to parse module name: {modu_name}"))?]
+            vec![
+                AnsibleModuleName::new(&modu_name)
+                    .with_context(|| format!("failed to parse module name: {modu_name}"))?,
+            ]
         }
         (None, Some(regex)) => match_module_name(&regex)?,
         (None, None) => match_module_name("*")?,
@@ -310,8 +311,8 @@ fn create_cargo_toml(pkg_name: &str, pkg_dir: &Path) -> Result<()> {
         [package]
         name = "sample"
         version = "0.1.0"
-        edition = "2021"
-        rust-version = "1.83"
+        edition.workspace = true
+        rust-version.workspace = true
         "#,
     )?;
     if let Some(package) = manifest.package.as_mut() {
@@ -521,21 +522,21 @@ type AnsModuleJson = IndexMap<String, AnsModuleItem>;
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 /// module field
-pub struct AnsModuleItem {
+struct AnsModuleItem {
     /// 'doc' field
     pub doc: AnsModuleDoc,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 /// doc field
-pub struct AnsModuleDoc {
+struct AnsModuleDoc {
     /// 'options' field
     pub options: Option<IndexMap<String, AnsModuleDocOption>>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 /// doc option field
-pub struct AnsModuleDocOption {
+struct AnsModuleDocOption {
     // TODO: add description field
     // #[serde(default)]
     // pub description: Vec<String>,
