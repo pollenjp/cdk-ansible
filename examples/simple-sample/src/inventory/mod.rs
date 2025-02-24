@@ -1,11 +1,5 @@
 use anyhow::{bail, Result};
 use cdk_ansible::{Child, Inventory, InventoryRoot, OptU};
-
-#[derive(Debug, Clone, PartialEq, Eq)]
-pub enum HostName {
-    HostA,
-}
-
 use cdk_ansible_macro::FieldCount;
 
 #[derive(Default, Debug, Clone, PartialEq, Eq, FieldCount)]
@@ -25,18 +19,18 @@ impl Hosts {
     ///
     pub fn to_inventory(&self) -> Result<Inventory> {
         let debian_ansible_python_interpreter_tuple = (
-            "ansible_python_interpreter".to_string(),
-            serde_json::Value::String("/usr/bin/python3".to_string()),
+            "ansible_python_interpreter".to_owned(),
+            serde_json::Value::String("/usr/bin/python3".to_owned()),
         );
         let inventory = Inventory {
-            name: "inventory".to_string(),
+            name: "inventory".to_owned(),
             root: InventoryRoot {
                 all: Child {
                     hosts: OptU::Some(
                         vec![(
                             self.host_a.fqdn.clone(),
                             Some(
-                                vec![debian_ansible_python_interpreter_tuple.clone()]
+                                vec![debian_ansible_python_interpreter_tuple]
                                     .into_iter()
                                     .collect::<serde_json::Map<String, serde_json::Value>>(),
                             ),
@@ -50,14 +44,12 @@ impl Hosts {
             },
         };
 
-        let hosts = if let OptU::Some(hosts) = &inventory.root.all.hosts {
-            hosts.clone()
-        } else {
+        let OptU::Some(hosts) = inventory.root.all.hosts.clone() else {
             bail!("hosts is not set");
         };
 
         // Validate: count Hosts' attributes
-        if Hosts::field_count() != hosts.len() {
+        if hosts.len() == Self::field_count() {
             bail!("Some hosts are not set");
         }
 
@@ -71,10 +63,11 @@ pub struct HostA {
     pub fqdn: String,
 }
 
+#[expect(clippy::unnecessary_wraps, reason = "use anyhow::Result interface")]
 pub fn get_hosts() -> Result<Hosts> {
     Ok(Hosts {
         host_a: {
-            let name = "host-a".to_string();
+            let name = "host-a".to_owned();
             HostA {
                 name: name.clone(),
                 fqdn: format!("{}.example.com", &name),

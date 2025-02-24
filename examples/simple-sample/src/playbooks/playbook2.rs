@@ -1,24 +1,22 @@
+use crate::playbooks::PlaybookGenArgs;
 use anyhow::Result;
 use cdk_ansible::{OptU, Play, PlayOptions, Playbook, Task, TaskOptions};
 
-use crate::playbooks::PlaybookGenArgs;
-
-pub fn playbook2(args: &impl PlaybookGenArgs) -> Result<Playbook> {
+#[expect(clippy::unnecessary_wraps, reason = "use anyhow::Result interface")]
+pub fn playbook2<T: PlaybookGenArgs>(args: &T) -> Result<Playbook> {
     Ok(Playbook {
         // Save as `playbook2.json`
-        name: "playbook2".to_string(),
+        name: "playbook2".to_owned(),
         plays: vec![Play {
-            name: "Debug".to_string(),
+            name: "Debug".to_owned(),
             hosts: vec![args.get_hosts().host_a.fqdn.clone()],
             tasks: vec![Task {
-                name: "Debug msg".to_string(),
-                options: TaskOptions {
-                    ..Default::default()
-                },
+                name: "Debug msg".to_owned(),
+                options: TaskOptions::default(),
                 command: Box::new(cdkam_ansible::builtin::debug::Module {
                     module: cdkam_ansible::builtin::debug::Args {
                         options: cdkam_ansible::builtin::debug::Opt {
-                            msg: OptU::Some("msg".to_string()),
+                            msg: OptU::Some("msg".to_owned()),
                             ..Default::default()
                         },
                     },

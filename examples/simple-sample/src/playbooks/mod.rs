@@ -7,7 +7,7 @@ mod playbook2;
 use crate::PlaybookGenArgs;
 
 /// Generate all playbooks and return them
-pub fn generate_all_playbooks(args: &impl PlaybookGenArgs) -> Result<Vec<Playbook>> {
+pub fn generate_all<T: PlaybookGenArgs>(args: &T) -> Result<Vec<Playbook>> {
     let playbooks = vec![playbook1::playbook1(args)?, playbook2::playbook2(args)?];
 
     // validate playbook names are unique
@@ -37,15 +37,18 @@ mod test {
     fn test_validate_playbook_names() {
         let playbooks = vec![
             Playbook {
-                name: "playbook".to_string(),
+                name: "playbook".to_owned(),
                 plays: vec![],
             },
             Playbook {
-                name: "playbook".to_string(),
+                name: "playbook".to_owned(),
                 plays: vec![],
             },
         ];
-        let err = validate_playbook_names(&playbooks).unwrap_err();
-        assert_eq!(err.to_string(), "Playbook names are not unique");
+        #[expect(clippy::unreachable, reason = "should be an error")]
+        match validate_playbook_names(&playbooks) {
+            Ok(()) => unreachable!("should be an error"),
+            Err(e) => assert_eq!(e.to_string(), "Playbook names are not unique"),
+        }
     }
 }
