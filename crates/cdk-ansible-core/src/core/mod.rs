@@ -1,4 +1,4 @@
-use dyn_clone::{clone_trait_object, DynClone};
+use dyn_clone::{DynClone, clone_trait_object};
 use erased_serde::serialize_trait_object;
 use indexmap::IndexMap;
 use serde::Serialize;

@@ -1,6 +1,6 @@
 use crate::arg::SynthArgs;
 use crate::settings;
-use crate::{playbook_dump, Inventory, Playbook};
+use crate::{Inventory, Playbook, playbook_dump};
 use anyhow::{Context, Result};
 
 pub trait Synthesizer {

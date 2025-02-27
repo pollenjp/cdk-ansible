@@ -1,6 +1,6 @@
 use crate::version;
 use cdk_ansible_static::EnvVars;
-use clap::{command, Args, Parser, Subcommand, ValueEnum};
+use clap::{Args, Parser, Subcommand, ValueEnum, command};
 use std::path::PathBuf;
 
 #[derive(Parser)]

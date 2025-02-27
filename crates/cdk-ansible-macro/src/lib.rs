@@ -1,6 +1,6 @@
 use proc_macro::TokenStream;
 use quote::quote;
-use syn::{parse_macro_input, Attribute, ImplItem, ItemImpl, ItemStruct, LitStr};
+use syn::{Attribute, ImplItem, ItemImpl, ItemStruct, LitStr, parse_macro_input};
 
 // MIT License
 // Copyright (c) 2021-2023 Astral Sh
@@ -70,12 +70,15 @@ pub fn attribute_env_vars_metadata(_attr: TokenStream, input: TokenStream) -> To
             }
             ImplItem::Fn(item) if !is_hidden(&item.attrs) => {
                 // Extract the environment variable patterns.
-                match get_env_var_pattern_from_attr(&item.attrs) { Some(pattern) => {
-                    let doc = get_doc_comment(&item.attrs);
-                    Some((pattern, doc))
-                } _ => {
-                    None // Skip if pattern extraction fails.
-                }}
+                match get_env_var_pattern_from_attr(&item.attrs) {
+                    Some(pattern) => {
+                        let doc = get_doc_comment(&item.attrs);
+                        Some((pattern, doc))
+                    }
+                    _ => {
+                        None // Skip if pattern extraction fails.
+                    }
+                }
             }
             _ => None,
         })

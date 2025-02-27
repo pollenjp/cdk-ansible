@@ -10,8 +10,8 @@
 
 use anyhow::{Context as _, Result};
 use clap::{
-    error::{ContextKind, ContextValue},
     Parser as _,
+    error::{ContextKind, ContextValue},
 };
 use serde::Deserialize;
 use std::ffi::OsString;
