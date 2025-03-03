@@ -1,6 +1,7 @@
 use anyhow::{bail, Result};
 use cdk_ansible::{Child, Inventory, InventoryRoot, OptU};
 use cdk_ansible_macro::FieldCount;
+use indexmap::IndexMap;
 
 #[derive(Default, Debug, Clone, PartialEq, Eq, FieldCount)]
 pub struct Hosts {
@@ -32,7 +33,7 @@ impl Hosts {
                             Some(
                                 vec![debian_ansible_python_interpreter_tuple]
                                     .into_iter()
-                                    .collect::<serde_json::Map<String, serde_json::Value>>(),
+                                    .collect::<IndexMap<String, serde_json::Value>>(),
                             ),
                         )]
                         .into_iter()

@@ -429,6 +429,7 @@ dependencies = [
  "cdk-ansible",
  "cdk-ansible-macro",
  "cdkam_ansible",
+ "indexmap",
  "serde",
  "serde_json",
 ]

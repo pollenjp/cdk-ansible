@@ -12,6 +12,7 @@ cdk-ansible-macro.workspace = true
 cdkam_ansible.path = "../cdkam_ansible"
 
 anyhow.workspace = true
+indexmap.workspace = true
 serde.workspace = true
 serde_json.workspace = true
 

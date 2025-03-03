@@ -17,11 +17,11 @@ pub struct InventoryRoot {
 #[derive(Default, Debug, Clone, PartialEq, Serialize)]
 pub struct Child {
     #[serde(skip_serializing_if = "OptU::is_unset")]
-    pub hosts: OptU<IndexMap<String, Option<serde_json::Map<String, serde_json::Value>>>>,
+    pub hosts: OptU<IndexMap<String, Option<IndexMap<String, serde_json::Value>>>>,
     #[serde(skip_serializing_if = "OptU::is_unset")]
     pub children: OptU<IndexMap<String, Child>>,
     #[serde(skip_serializing_if = "OptU::is_unset")]
-    pub vars: OptU<serde_json::Map<String, serde_json::Value>>,
+    pub vars: OptU<IndexMap<String, serde_json::Value>>,
 }
 
 #[derive(Clone, Debug)]
