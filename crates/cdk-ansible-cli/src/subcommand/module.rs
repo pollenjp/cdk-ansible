@@ -311,8 +311,8 @@ fn create_cargo_toml(pkg_name: &str, pkg_dir: &Path) -> Result<()> {
         [package]
         name = "sample"
         version = "0.1.0"
-        edition.workspace = true
-        rust-version.workspace = true
+        edition = "2024"
+        rust-version = "1.85"
         "#,
     )?;
     if let Some(package) = manifest.package.as_mut() {
