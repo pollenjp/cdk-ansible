@@ -1,5 +1,6 @@
 use anyhow::Result;
 use cdk_ansible::{OptU, Play, PlayOptions, Playbook, Task, TaskOptions};
+use indexmap::IndexMap;
 
 use crate::playbooks::PlaybookGenArgs;
 
@@ -11,6 +12,13 @@ pub fn playbook1<T: PlaybookGenArgs>(args: &T) -> Result<Playbook> {
         plays: vec![Play {
             name: "Debug".to_owned(),
             hosts: vec![args.get_hosts().host_a.fqdn.clone()],
+            options: PlayOptions {
+                vars: OptU::Some(IndexMap::from([(
+                    "var_from_play_option".to_owned(),
+                    serde_json::Value::String("VAR_FROM_PLAY_OPTION".to_owned()),
+                )])),
+                ..Default::default()
+            },
             tasks: vec![
                 Task {
                     name: "Debug msg".to_owned(),
@@ -34,7 +42,6 @@ pub fn playbook1<T: PlaybookGenArgs>(args: &T) -> Result<Playbook> {
                     }),
                 },
             ],
-            options: PlayOptions::default(),
         }],
     })
 }

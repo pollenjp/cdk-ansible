@@ -2,7 +2,6 @@ use dyn_clone::{DynClone, clone_trait_object};
 use erased_serde::serialize_trait_object;
 use indexmap::IndexMap;
 use serde::Serialize;
-use std::collections::HashMap;
 #[derive(Default, Debug, Clone, PartialEq)]
 pub struct Inventory {
     pub name: String,
@@ -74,22 +73,9 @@ pub struct Play {
 /// [playbook keywords (play)](https://docs.ansible.com/ansible/latest/reference_appendices/playbooks_keywords.html#play)
 #[derive(Serialize, Default, Clone, Debug)]
 pub struct PlayOptions {
-    /// The 'action' to execute for a task, it normally translates into a C(module) or action plugin.
-    #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
-    pub action: OptU<String>,
     /// Force any un-handled task errors on any host to propagate to all hosts and end the play.
     #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
     pub any_errors_fatal: OptU<bool>,
-    /// A secondary way to add arguments into a task. Takes a dictionary in which keys map to options and values.
-    #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
-    pub args: OptU<HashMap<String, serde_json::Value>>,
-    /// Run a task asynchronously if the C(action) supports this; the value is the maximum runtime in seconds.
-    #[serde(
-        rename = "async",
-        default = "OptU::default",
-        skip_serializing_if = "OptU::is_unset"
-    )]
-    pub async_: OptU<i64>,
     /// Boolean that controls if privilege escalation is used or not on Task execution.
     /// Implemented by the become plugin. See Become plugins.
     #[serde(
@@ -110,9 +96,6 @@ pub struct PlayOptions {
     /// User that you 'become' after using privilege escalation. The remote/login user must have permissions to become this user.
     #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
     pub become_user: OptU<String>,
-    /// Conditional expression that overrides the task's normal 'changed' status.
-    #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
-    pub changed_when: OptU<String>,
     /// A boolean that controls if a task is executed in 'check' mode. See Validating tasks: check mode and diff mode.
     #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
     pub check_mode: OptU<bool>,
@@ -125,122 +108,98 @@ pub struct PlayOptions {
     /// Enable debugging tasks based on the state of the task result. See Debugging tasks.
     #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
     pub debugger: OptU<bool>,
-
     /// Toggle to make tasks return 'diff' information or not.
     #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
     pub diff: OptU<bool>,
-
     /// A dictionary that gets converted into environment vars to be provided for the task upon execution.
     /// This can ONLY be used with modules. This is not supported for any other type of plugins nor Ansible itself nor its configuration,
     /// it just sets the variables for the code responsible for executing the task.
     /// This is not a recommended way to pass in confidential data.
     #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
-    pub environment: OptU<HashMap<String, String>>,
-
+    pub environment: OptU<IndexMap<String, String>>,
     /// Set the fact path option for the fact gathering plugin controlled by gather_facts.
     #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
     pub fact_path: OptU<String>,
-
     /// Will force notified handler execution for hosts even if they failed during the play.
     /// Will not trigger if the play itself fails.
     #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
     pub force_handlers: OptU<bool>,
-
     /// A boolean that controls if the play will automatically run the 'setup' task to gather facts for the hosts.
     #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
     pub gather_facts: OptU<bool>,
-
     /// Allows you to pass subset options to the fact gathering plugin controlled by gather_facts.
     #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
     pub gather_subset: OptU<Vec<String>>,
-
     /// Allows you to set the timeout for the fact gathering plugin controlled by gather_facts.
     #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
     pub gather_timeout: OptU<i64>,
-
     /// A section with tasks that are treated as handlers, these won't get executed normally,
     /// only when notified after each section of tasks is complete.
     /// A handler's listen field is not templatable.
     #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
     pub handlers: OptU<Vec<Task>>,
-
     /// Boolean that allows you to ignore task failures and continue with play. It does not affect connection errors.
     #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
     pub ignore_errors: OptU<bool>,
-
     /// Boolean that allows you to ignore task failures due to an unreachable host and continue with the play.
     /// This does not affect other task errors (see ignore_errors) but is useful for groups of volatile/ephemeral hosts.
     #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
     pub ignore_unreachable: OptU<bool>,
-
     /// Can be used to abort the run after a given percentage of hosts in the current batch has failed.
     /// This only works on linear or linear-derived strategies.
     #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
     pub max_fail_percentage: OptU<i64>,
-
     /// Specifies default parameter values for modules.
     #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
-    pub module_defaults: OptU<HashMap<String, serde_json::Value>>,
-
+    pub module_defaults: OptU<IndexMap<String, serde_json::Value>>,
     /// Boolean that controls information disclosure.
     #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
     pub no_log: OptU<bool>,
-
     /// Controls the sorting of hosts as they are used for executing the play.
     /// Possible values are inventory (default), sorted, reverse_sorted, reverse_inventory and shuffle.
     #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
     pub order: OptU<String>,
-
     /// Used to override the default port used in a connection.
     #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
     pub port: OptU<i64>,
-
     /// A list of tasks to execute after the tasks section.
     #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
     pub post_tasks: OptU<Vec<Task>>,
-
     /// A list of tasks to execute before roles.
     #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
     pub pre_tasks: OptU<Vec<Task>>,
-
     /// User used to log into the target via the connection plugin.
     #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
     pub remote_user: OptU<String>,
-
+    /// List of roles to be imported into the play
+    #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
+    pub roles: OptU<Vec<String>>,
     /// Boolean that will bypass the host loop, forcing the task to attempt to execute on the first host available
     /// and afterward apply any results and facts to all active hosts in the same batch.
     #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
     pub run_once: OptU<bool>,
-
     /// Explicitly define how Ansible batches the execution of the current play on the play's target. See Setting the batch size with serial.
     #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
     pub serial: OptU<i64>,
-
     /// Allows you to choose the strategy plugin to use for the play. See Strategy plugins.
     #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
     pub strategy: OptU<String>,
-
     /// Tags applied to the task or included tasks, this allows selecting subsets of tasks from the command line.
     #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
     pub tags: OptU<Vec<String>>,
-
     /// Limit the number of concurrent task runs on task, block and playbook level. This is independent of the forks and serial settings, but cannot be set higher than those limits. For example, if forks is set to 10 and the throttle is set to 15, at most 10 hosts will be operated on in parallel.
     #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
     pub throttle: OptU<i64>,
-
     /// Time limit for the task action to execute in, if exceeded, Ansible will interrupt the process. Timeout does not include templating or looping.
     #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
     pub timeout: OptU<i64>,
-
     /// Dictionary/map of variables
     #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
-    pub vars: OptU<HashMap<String, serde_json::Value>>,
-
+    pub vars: OptU<IndexMap<String, serde_json::Value>>,
     /// List of files that contain vars to include in the play.
     #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
     pub vars_files: OptU<Vec<String>>,
-
-    /// list of variables to prompt for.
+    /// List of variables to prompt for.
     #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
     pub vars_prompt: OptU<Vec<String>>,
 }
@@ -286,7 +245,7 @@ pub struct TaskOptions {
     pub any_errors_fatal: OptU<bool>,
     /// A secondary way to add arguments into a task. Takes a dictionary in which keys map to options and values.
     #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
-    pub args: OptU<HashMap<String, serde_json::Value>>,
+    pub args: OptU<IndexMap<String, serde_json::Value>>,
     /// Run a task asynchronously if the C(action) supports this; the value is the maximum runtime in seconds.
     #[serde(
         rename = "async",
@@ -353,7 +312,7 @@ pub struct TaskOptions {
     /// it just sets the variables for the code responsible for executing the task.
     /// This is not a recommended way to pass in confidential data.
     #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
-    pub environment: OptU<HashMap<String, String>>,
+    pub environment: OptU<IndexMap<String, String>>,
     /// Conditional expression that overrides the task's normal 'failed' status.
     #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
     pub failed_when: OptU<String>,
@@ -380,11 +339,11 @@ pub struct TaskOptions {
 
     /// Several keys here allow you to modify/set loop behavior in a task. See Adding controls to loops.
     #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
-    pub loop_control: OptU<HashMap<String, serde_json::Value>>,
+    pub loop_control: OptU<IndexMap<String, serde_json::Value>>,
 
     /// Specifies default parameter values for modules.
     #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
-    pub module_defaults: OptU<HashMap<String, serde_json::Value>>,
+    pub module_defaults: OptU<IndexMap<String, serde_json::Value>>,
 
     /// Boolean that controls information disclosure.
     #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
@@ -438,7 +397,7 @@ pub struct TaskOptions {
 
     /// Dictionary/map of variables
     #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
-    pub vars: OptU<HashMap<String, serde_json::Value>>,
+    pub vars: OptU<IndexMap<String, serde_json::Value>>,
 
     /// Conditional expression, determines if an iteration of a task is run or not.
     #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
@@ -493,25 +452,18 @@ mod tests {
                     }),
                 }],
                 options: PlayOptions {
-                    action: OptU::Some("action1".to_string()),
                     any_errors_fatal: OptU::Some(true),
-                    args: OptU::Some(HashMap::from([(
-                        "arg1".to_string(),
-                        serde_json::Value::String("value1".to_string())
-                    )])),
-                    async_: OptU::Some(10),
                     become_: OptU::Some(true),
                     become_exe: OptU::Some("become_exe".to_string()),
                     become_flags: OptU::Some("become_flags".to_string()),
                     become_method: OptU::Some("become_method".to_string()),
                     become_user: OptU::Some("become_user".to_string()),
-                    changed_when: OptU::Some("changed_when".to_string()),
                     check_mode: OptU::Some(true),
                     collections: OptU::Some(vec!["collection1".to_string()]),
                     connection: OptU::Some("connection1".to_string()),
                     debugger: OptU::Some(true),
                     diff: OptU::Some(true),
-                    environment: OptU::Some(HashMap::from([(
+                    environment: OptU::Some(IndexMap::from([(
                         "env1".to_string(),
                         "value1".to_string()
                     )])),
@@ -530,7 +482,7 @@ mod tests {
                     ignore_errors: OptU::Some(true),
                     ignore_unreachable: OptU::Some(true),
                     max_fail_percentage: OptU::Some(10),
-                    module_defaults: OptU::Some(HashMap::from([(
+                    module_defaults: OptU::Some(IndexMap::from([(
                         "module1".to_string(),
                         serde_json::Value::String("value1".to_string())
                     )])),
@@ -552,13 +504,14 @@ mod tests {
                         }),
                     }]),
                     remote_user: OptU::Some("remote_user".to_string()),
+                    roles: OptU::Some(vec!["role1".to_string()]),
                     run_once: OptU::Some(true),
                     serial: OptU::Some(10),
                     strategy: OptU::Some("strategy".to_string()),
                     tags: OptU::Some(vec!["tag1".to_string()]),
                     throttle: OptU::Some(10),
                     timeout: OptU::Some(10),
-                    vars: OptU::Some(HashMap::from([(
+                    vars: OptU::Some(IndexMap::from([(
                         "var1".to_string(),
                         serde_json::Value::String("value1".to_string())
                     )])),
@@ -567,7 +520,49 @@ mod tests {
                 }
             })
             .expect("failed to serialize"),
-            r#"{"name":"play1","hosts":["host1"],"action":"action1","any_errors_fatal":true,"args":{"arg1":"value1"},"async":10,"become":true,"become_exe":"become_exe","become_flags":"become_flags","become_method":"become_method","become_user":"become_user","changed_when":"changed_when","check_mode":true,"collections":["collection1"],"connection":"connection1","debugger":true,"diff":true,"environment":{"env1":"value1"},"fact_path":"fact_path","force_handlers":true,"gather_facts":true,"gather_subset":["gather_subset1"],"gather_timeout":10,"handlers":[{"name":"handler1","x1":"x1"}],"ignore_errors":true,"ignore_unreachable":true,"max_fail_percentage":10,"module_defaults":{"module1":"value1"},"no_log":true,"order":"order","port":10,"post_tasks":[{"name":"post_task1","x1":"x1"}],"pre_tasks":[{"name":"pre_task1","x1":"x1"}],"remote_user":"remote_user","run_once":true,"serial":10,"strategy":"strategy","tags":["tag1"],"throttle":10,"timeout":10,"vars":{"var1":"value1"},"vars_files":["vars_file1"],"vars_prompt":["vars_prompt1"],"tasks":[{"name":"task1","x1":"x1"}]}"#
+            String::new()
+                + "{"
+                + r#""name":"play1","#
+                + r#""hosts":["host1"],"#
+                + r#""any_errors_fatal":true,"#
+                + r#""become":true,"#
+                + r#""become_exe":"become_exe","#
+                + r#""become_flags":"become_flags","#
+                + r#""become_method":"become_method","#
+                + r#""become_user":"become_user","#
+                + r#""check_mode":true,"#
+                + r#""collections":["collection1"],"#
+                + r#""connection":"connection1","#
+                + r#""debugger":true,"#
+                + r#""diff":true,"#
+                + r#""environment":{"env1":"value1"},"#
+                + r#""fact_path":"fact_path","#
+                + r#""force_handlers":true,"#
+                + r#""gather_facts":true,"#
+                + r#""gather_subset":["gather_subset1"],"#
+                + r#""gather_timeout":10,"#
+                + r#""handlers":[{"name":"handler1","x1":"x1"}],"#
+                + r#""ignore_errors":true,"#
+                + r#""ignore_unreachable":true,"#
+                + r#""max_fail_percentage":10,"#
+                + r#""module_defaults":{"module1":"value1"},"#
+                + r#""no_log":true,"#
+                + r#""order":"order","#
+                + r#""port":10,"#
+                + r#""post_tasks":[{"name":"post_task1","x1":"x1"}],"#
+                + r#""pre_tasks":[{"name":"pre_task1","x1":"x1"}],"#
+                + r#""remote_user":"remote_user","#
+                + r#""roles":["role1"],"#
+                + r#""run_once":true,"#
+                + r#""serial":10,"#
+                + r#""strategy":"strategy","#
+                + r#""tags":["tag1"],"#
+                + r#""throttle":10,"#
+                + r#""timeout":10,"#
+                + r#""vars":{"var1":"value1"},"#
+                + r#""vars_files":["vars_file1"],"#
+                + r#""vars_prompt":["vars_prompt1"],"#
+                + r#""tasks":[{"name":"task1","x1":"x1"}]}"#
         );
     }
 
@@ -578,7 +573,7 @@ mod tests {
             serde_json::to_string(&TaskOptions {
                 action: OptU::Some("action1".to_string()),
                 any_errors_fatal: OptU::Some(true),
-                args: OptU::Some(HashMap::from([(
+                args: OptU::Some(IndexMap::from([(
                     "arg1".to_string(),
                     serde_json::Value::String("value1".to_string())
                 )])),
@@ -597,7 +592,7 @@ mod tests {
                 delegate_facts: OptU::Some(true),
                 delegate_to: OptU::Some("delegate_to".to_string()),
                 diff: OptU::Some(true),
-                environment: OptU::Some(HashMap::from([(
+                environment: OptU::Some(IndexMap::from([(
                     "env1".to_string(),
                     "value1".to_string()
                 )])),
@@ -606,11 +601,11 @@ mod tests {
                 ignore_unreachable: OptU::Some(true),
                 local_action: OptU::Some("local_action".to_string()),
                 loop_: OptU::Some(vec![serde_json::Value::String("loop1".to_string())]),
-                loop_control: OptU::Some(HashMap::from([(
+                loop_control: OptU::Some(IndexMap::from([(
                     "loop_control1".to_string(),
                     serde_json::Value::String("value1".to_string())
                 )])),
-                module_defaults: OptU::Some(HashMap::from([(
+                module_defaults: OptU::Some(IndexMap::from([(
                     "module1".to_string(),
                     serde_json::Value::String("value1".to_string())
                 )])),
@@ -626,7 +621,7 @@ mod tests {
                 throttle: OptU::Some(10),
                 timeout: OptU::Some(10),
                 until: OptU::Some("until".to_string()),
-                vars: OptU::Some(HashMap::from([(
+                vars: OptU::Some(IndexMap::from([(
                     "var1".to_string(),
                     serde_json::Value::String("value1".to_string())
                 )])),
