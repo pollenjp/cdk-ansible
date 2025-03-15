@@ -571,8 +571,8 @@ fn generate_module_rs(module_json: &AnsModuleJson) -> Result<String> {
                 "{}",
                 escape_rust_reserved_keywords(key.as_str())
                     // TODO: configure variable name's replacement rules from optional args
-                    .replace('-', "_x_")
-                    .replace('+', "_xx_")
+                    .replace('-', "_xx_")
+                    .replace('+', "_xxx_")
             );
             let type_ident = syn::parse_str::<syn::Type>(
                 match value
@@ -640,65 +640,26 @@ fn generate_module_rs(module_json: &AnsModuleJson) -> Result<String> {
 
 /// Escape rust reserved keywords
 ///
-/// <https://doc.rust-lang.org/book/appendix-01-keywords.html>
+/// <https://doc.rust-lang.org/reference/keywords.html>
 ///
 #[expect(clippy::single_call_fn, reason = "better readability")]
 fn escape_rust_reserved_keywords(s: &str) -> String {
     match s {
-        // Keywords Currently in Use
-        "as" => "as_".to_owned(),
-        "async" => "async_".to_owned(),
-        "await" => "await_".to_owned(),
-        "break" => "break_".to_owned(),
-        "const" => "const_".to_owned(),
-        "continue" => "continue_".to_owned(),
-        "crate" => "crate_".to_owned(),
-        "dyn" => "dyn_".to_owned(),
-        "else" => "else_".to_owned(),
-        "enum" => "enum_".to_owned(),
-        "extern" => "extern_".to_owned(),
-        "false" => "false_".to_owned(),
-        "fn" => "fn_".to_owned(),
-        "for" => "for_".to_owned(),
-        "if" => "if_".to_owned(),
-        "impl" => "impl_".to_owned(),
-        "in" => "in_".to_owned(),
-        "let" => "let_".to_owned(),
-        "loop" => "loop_".to_owned(),
-        "match" => "match_".to_owned(),
-        "mod" => "mod_".to_owned(),
-        "move" => "move_".to_owned(),
-        "mut" => "mut_".to_owned(),
-        "pub" => "pub_".to_owned(),
-        "ref" => "ref_".to_owned(),
-        "return" => "return_".to_owned(),
-        "Self" => "Self_".to_owned(),
-        "self" => "self_".to_owned(),
-        "static" => "static_".to_owned(),
-        "struct" => "struct_".to_owned(),
-        "super" => "super_".to_owned(),
-        "trait" => "trait_".to_owned(),
-        "true" => "true_".to_owned(),
-        "type" => "type_".to_owned(),
-        "unsafe" => "unsafe_".to_owned(),
-        "use" => "use_".to_owned(),
-        "where" => "where_".to_owned(),
-        "while" => "while_".to_owned(),
-        // Keywords Reserved for Future Use
-        "abstract" => "abstract_".to_owned(),
-        "become" => "become_".to_owned(),
-        "box" => "box_".to_owned(),
-        "do" => "do_".to_owned(),
-        "final" => "final_".to_owned(),
-        "macro" => "macro_".to_owned(),
-        "override" => "override_".to_owned(),
-        "priv" => "priv_".to_owned(),
-        "try" => "try_".to_owned(),
-        "typeof" => "typeof_".to_owned(),
-        "unsized" => "unsized_".to_owned(),
-        "virtual" => "virtual_".to_owned(),
-        "yield" => "yield_".to_owned(),
-        _ => s.to_owned(),
+        // Strict keywords
+        "as" | "break" | "const" | "continue" | "crate" | "else" | "enum" | "extern" | "false"
+        | "fn" | "if" | "impl" | "in" | "let" | "loop" | "match" | "mod" | "move" | "mut"
+        | "pub" | "ref" | "return" | "self" | "Self" | "static" | "struct" | "super" | "trait"
+        | "true" | "type" | "unsafe" | "use" | "where" | "while" | "async" | "await" | "dyn"
+        // Reserved keywords
+        | "abstract" | "become" | "box" | "do" | "final" | "macro" | "override" | "priv"
+        | "typeof" | "unsized" | "virtual" | "yield" | "try" | "gen"
+        // Weak keywords
+        | "macro_rules" | "union"  | "safe" | "raw" => {
+            s.to_owned() + "_x_"
+        }
+        // Weak keywords
+        "'static" => "x_static_x_".to_owned(),
+        _ => s.to_owned(), // do nothing
     }
 }
 
