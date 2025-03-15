@@ -562,7 +562,8 @@ mod tests {
                 + r#""vars":{"var1":"value1"},"#
                 + r#""vars_files":["vars_file1"],"#
                 + r#""vars_prompt":["vars_prompt1"],"#
-                + r#""tasks":[{"name":"task1","x1":"x1"}]}"#
+                + r#""tasks":[{"name":"task1","x1":"x1"}]"#
+                + r#"}"#
         );
     }
 
@@ -628,7 +629,49 @@ mod tests {
                 when: OptU::Some("when".to_string()),
             })
             .expect("failed to serialize"),
-            r#"{"action":"action1","any_errors_fatal":true,"args":{"arg1":"value1"},"async":10,"become":true,"become_exe":"become_exe","become_flags":"become_flags","become_method":"become_method","become_user":"become_user","changed_when":"changed_when","check_mode":true,"collections":["collection1"],"connection":"connection1","debugger":true,"delay":10,"delegate_facts":true,"delegate_to":"delegate_to","diff":true,"environment":{"env1":"value1"},"failed_when":"failed_when","ignore_errors":true,"ignore_unreachable":true,"local_action":"local_action","loop":["loop1"],"loop_control":{"loop_control1":"value1"},"module_defaults":{"module1":"value1"},"no_log":true,"notify":["notify1"],"poll":10,"port":10,"register":"register","remote_user":"remote_user","retries":10,"run_once":true,"tags":["tag1"],"throttle":10,"timeout":10,"until":"until","vars":{"var1":"value1"},"when":"when"}"#
+            String::new()
+                + r#"{""#
+                + r#"action":"action1","#
+                + r#""any_errors_fatal":true,"#
+                + r#""args":{"arg1":"value1"},"#
+                + r#""async":10,"#
+                + r#""become":true,"#
+                + r#""become_exe":"become_exe","#
+                + r#""become_flags":"become_flags","#
+                + r#""become_method":"become_method","#
+                + r#""become_user":"become_user","#
+                + r#""changed_when":"changed_when","#
+                + r#""check_mode":true,"#
+                + r#""collections":["collection1"],"#
+                + r#""connection":"connection1","#
+                + r#""debugger":true,"#
+                + r#""delay":10,"#
+                + r#""delegate_facts":true,"#
+                + r#""delegate_to":"delegate_to","#
+                + r#""diff":true,"#
+                + r#""environment":{"env1":"value1"},"#
+                + r#""failed_when":"failed_when","#
+                + r#""ignore_errors":true,"#
+                + r#""ignore_unreachable":true,"#
+                + r#""local_action":"local_action","#
+                + r#""loop":["loop1"],"#
+                + r#""loop_control":{"loop_control1":"value1"},"#
+                + r#""module_defaults":{"module1":"value1"},"#
+                + r#""no_log":true,"#
+                + r#""notify":["notify1"],"#
+                + r#""poll":10,"#
+                + r#""port":10,"#
+                + r#""register":"register","#
+                + r#""remote_user":"remote_user","#
+                + r#""retries":10,"#
+                + r#""run_once":true,"#
+                + r#""tags":["tag1"],"#
+                + r#""throttle":10,"#
+                + r#""timeout":10,"#
+                + r#""until":"until","#
+                + r#""vars":{"var1":"value1"},"#
+                + r#""when":"when""#
+                + r#"}"#
         );
     }
 }
