@@ -11,6 +11,9 @@ mod subcommand;
 pub use cdk_ansible_core::core::*;
 pub use subcommand::synth::Synthesizer;
 
+// Re-export macros
+pub use cdk_ansible_macro::FieldCount;
+
 /// Options for the application.
 #[derive(Debug, Clone, Default, Deserialize)]
 struct Options {}
