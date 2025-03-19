@@ -63,7 +63,7 @@ pub struct Play {
     /// Identifier. Can be used for documentation, or in tasks/handlers.
     pub name: String,
     /// A list of groups, hosts or host pattern that translates into a list of hosts that are the play's target.
-    pub hosts: Vec<String>,
+    pub hosts: StringOrVecString,
     #[serde(flatten)]
     pub options: PlayOptions,
     /// Main list of tasks to execute in the play, they run after roles and before post_tasks.
@@ -274,8 +274,11 @@ pub struct TaskOptions {
     #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
     pub become_user: OptU<String>,
     /// Conditional expression that overrides the task's normal 'changed' status.
+    ///
+    /// The ansible original type allows `Array of strings`.
+    /// But we use `String` for now, because all conditions are expressed as a single string.
     #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
-    pub changed_when: OptU<String>,
+    pub changed_when: OptU<BoolOrStringOrVecString>,
     /// A boolean that controls if a task is executed in 'check' mode. See Validating tasks: check mode and diff mode.
     #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
     pub check_mode: OptU<bool>,
@@ -315,7 +318,7 @@ pub struct TaskOptions {
     pub environment: OptU<IndexMap<String, String>>,
     /// Conditional expression that overrides the task's normal 'failed' status.
     #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
-    pub failed_when: OptU<String>,
+    pub failed_when: OptU<BoolOrStringOrVecString>,
 
     /// Boolean that allows you to ignore task failures and continue with play. It does not affect connection errors.
     #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
@@ -407,6 +410,73 @@ pub struct TaskOptions {
     // The same as loop but magically adds the output of any lookup plugin to generate the item list.
 }
 
+/// A boolean or a string
+#[derive(Serialize, Clone, Debug, PartialEq)]
+#[serde(untagged)]
+pub enum BoolOrString {
+    Bool(bool),
+    String(String),
+}
+
+impl From<bool> for BoolOrString {
+    fn from(value: bool) -> Self {
+        Self::Bool(value)
+    }
+}
+
+impl From<String> for BoolOrString {
+    fn from(value: String) -> Self {
+        Self::String(value)
+    }
+}
+
+/// A string or a vector of strings
+#[derive(Serialize, Clone, Debug, PartialEq)]
+#[serde(untagged)]
+pub enum StringOrVecString {
+    String(String),
+    VecString(Vec<String>),
+}
+
+impl From<String> for StringOrVecString {
+    fn from(value: String) -> Self {
+        Self::String(value)
+    }
+}
+
+impl From<Vec<String>> for StringOrVecString {
+    fn from(value: Vec<String>) -> Self {
+        Self::VecString(value)
+    }
+}
+
+/// A boolean or a string or a vector of strings
+#[derive(Serialize, Clone, Debug, PartialEq)]
+#[serde(untagged)]
+pub enum BoolOrStringOrVecString {
+    Bool(bool),
+    String(String),
+    VecString(Vec<String>),
+}
+
+impl From<bool> for BoolOrStringOrVecString {
+    fn from(value: bool) -> Self {
+        Self::Bool(value)
+    }
+}
+
+impl From<String> for BoolOrStringOrVecString {
+    fn from(value: String) -> Self {
+        Self::String(value)
+    }
+}
+
+impl From<Vec<String>> for BoolOrStringOrVecString {
+    fn from(value: Vec<String>) -> Self {
+        Self::VecString(value)
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -423,7 +493,7 @@ mod tests {
         assert_eq!(
             serde_json::to_string(&Play {
                 name: "play1".to_string(),
-                hosts: vec!["host1".to_string()],
+                hosts: vec!["host1".to_string()].into(),
                 tasks: vec![Task {
                     name: "task1".to_string(),
                     options: TaskOptions::default(),
@@ -443,7 +513,7 @@ mod tests {
         assert_eq!(
             serde_json::to_string(&Play {
                 name: "play1".to_string(),
-                hosts: vec!["host1".to_string()],
+                hosts: vec!["host1".to_string()].into(),
                 tasks: vec![Task {
                     name: "task1".to_string(),
                     options: TaskOptions::default(),
@@ -584,7 +654,7 @@ mod tests {
                 become_flags: OptU::Some("become_flags".to_string()),
                 become_method: OptU::Some("become_method".to_string()),
                 become_user: OptU::Some("become_user".to_string()),
-                changed_when: OptU::Some("changed_when".to_string()),
+                changed_when: OptU::Some("changed_when".to_string().into()),
                 check_mode: OptU::Some(true),
                 collections: OptU::Some(vec!["collection1".to_string()]),
                 connection: OptU::Some("connection1".to_string()),
@@ -597,7 +667,7 @@ mod tests {
                     "env1".to_string(),
                     "value1".to_string()
                 )])),
-                failed_when: OptU::Some("failed_when".to_string()),
+                failed_when: OptU::Some("failed_when".to_string().into()),
                 ignore_errors: OptU::Some(true),
                 ignore_unreachable: OptU::Some(true),
                 local_action: OptU::Some("local_action".to_string()),
@@ -672,6 +742,81 @@ mod tests {
                 + r#""vars":{"var1":"value1"},"#
                 + r#""when":"when""#
                 + r#"}"#
+        );
+    }
+
+    #[test]
+    fn test_changed_when_bool() {
+        assert_eq!(
+            serde_json::to_string(&TaskOptions {
+                changed_when: OptU::Some(true.into()),
+                ..Default::default()
+            })
+            .expect("failed to serialize"),
+            String::new() + r#"{"changed_when":true}"#
+        );
+    }
+
+    #[test]
+    fn test_changed_when_string() {
+        assert_eq!(
+            serde_json::to_string(&TaskOptions {
+                changed_when: OptU::Some("changed_when".to_string().into()),
+                ..Default::default()
+            })
+            .expect("failed to serialize"),
+            String::new() + r#"{"changed_when":"changed_when"}"#
+        );
+    }
+    #[test]
+    fn test_changed_when_vec_string() {
+        assert_eq!(
+            serde_json::to_string(&TaskOptions {
+                changed_when: OptU::Some(
+                    vec!["changed_when1".to_string(), "changed_when2".to_string()].into()
+                ),
+                ..Default::default()
+            })
+            .expect("failed to serialize"),
+            String::new() + r#"{"changed_when":["changed_when1","changed_when2"]}"#
+        );
+    }
+
+    #[test]
+    fn test_failed_when_bool() {
+        assert_eq!(
+            serde_json::to_string(&TaskOptions {
+                failed_when: OptU::Some(true.into()),
+                ..Default::default()
+            })
+            .expect("failed to serialize"),
+            String::new() + r#"{"failed_when":true}"#
+        );
+    }
+
+    #[test]
+    fn test_failed_when_string() {
+        assert_eq!(
+            serde_json::to_string(&TaskOptions {
+                failed_when: OptU::Some("failed_when".to_string().into()),
+                ..Default::default()
+            })
+            .expect("failed to serialize"),
+            String::new() + r#"{"failed_when":"failed_when"}"#
+        );
+    }
+
+    #[test]
+    fn test_failed_when_vec_string() {
+        assert_eq!(
+            serde_json::to_string(&TaskOptions {
+                failed_when: OptU::Some(
+                    vec!["failed_when1".to_string(), "failed_when2".to_string()].into()
+                ),
+                ..Default::default()
+            })
+            .expect("failed to serialize"),
+            String::new() + r#"{"failed_when":["failed_when1","failed_when2"]}"#
         );
     }
 }

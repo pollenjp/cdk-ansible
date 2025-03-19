@@ -11,7 +11,7 @@ pub fn playbook1<T: PlaybookGenArgs>(args: &T) -> Result<Playbook> {
         name: "playbook1".to_owned(),
         plays: vec![Play {
             name: "Debug".to_owned(),
-            hosts: vec![args.get_hosts().host_a.fqdn.clone()],
+            hosts: vec![args.get_hosts().host_a.fqdn.clone()].into(),
             options: PlayOptions {
                 vars: OptU::Some(IndexMap::from([(
                     "var_from_play_option".to_owned(),

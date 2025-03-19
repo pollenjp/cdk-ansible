@@ -9,7 +9,7 @@ pub fn playbook2<T: PlaybookGenArgs>(args: &T) -> Result<Playbook> {
         name: "playbook2".to_owned(),
         plays: vec![Play {
             name: "Debug".to_owned(),
-            hosts: vec![args.get_hosts().host_a.fqdn.clone()],
+            hosts: vec![args.get_hosts().host_a.fqdn.clone()].into(),
             tasks: vec![Task {
                 name: "Debug msg".to_owned(),
                 options: TaskOptions::default(),
