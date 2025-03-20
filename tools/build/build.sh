@@ -20,9 +20,7 @@ set -eux -o pipefail
 CARGO_DIST_GLIB_VERSION=${CARGO_DIST_GLIB_VERSION:-2.17}
 
 # Install Rust toolchain
-# rustup update --no-self-update stable
-rustup install 1.85.0
-rustup default 1.85.0
+rustup update --no-self-update stable
 rustup target add "${BUILD_BINARY_TARGET}"
 rustup component add rust-src
 
