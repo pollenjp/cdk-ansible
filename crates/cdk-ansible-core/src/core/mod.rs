@@ -404,7 +404,7 @@ pub struct TaskOptions {
 
     /// Conditional expression, determines if an iteration of a task is run or not.
     #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
-    pub when: OptU<String>,
+    pub when: OptU<BoolOrStringOrVecString>,
     // FIXME: not supported yet!
     // with_<lookup_plugin>
     // The same as loop but magically adds the output of any lookup plugin to generate the item list.
@@ -696,7 +696,7 @@ mod tests {
                     "var1".to_string(),
                     serde_json::Value::String("value1".to_string())
                 )])),
-                when: OptU::Some("when".to_string()),
+                when: OptU::Some("when".to_string().into()),
             })
             .expect("failed to serialize"),
             String::new()
@@ -817,6 +817,42 @@ mod tests {
             })
             .expect("failed to serialize"),
             String::new() + r#"{"failed_when":["failed_when1","failed_when2"]}"#
+        );
+    }
+
+    #[test]
+    fn test_when_bool() {
+        assert_eq!(
+            serde_json::to_string(&TaskOptions {
+                when: OptU::Some(true.into()),
+                ..Default::default()
+            })
+            .expect("failed to serialize"),
+            String::new() + r#"{"when":true}"#
+        );
+    }
+
+    #[test]
+    fn test_when_string() {
+        assert_eq!(
+            serde_json::to_string(&TaskOptions {
+                when: OptU::Some("1 == 1".to_string().into()),
+                ..Default::default()
+            })
+            .expect("failed to serialize"),
+            String::new() + r#"{"when":"1 == 1"}"#
+        );
+    }
+
+    #[test]
+    fn test_when_vec_string() {
+        assert_eq!(
+            serde_json::to_string(&TaskOptions {
+                when: OptU::Some(vec!["1 == 1".to_string(), "2 == 2".to_string()].into()),
+                ..Default::default()
+            })
+            .expect("failed to serialize"),
+            String::new() + r#"{"when":["1 == 1","2 == 2"]}"#
         );
     }
 }
