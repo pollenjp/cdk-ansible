@@ -270,6 +270,8 @@ pub struct TaskOptions {
     /// Which method of privilege escalation to use (such as sudo or su).
     #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
     pub become_method: OptU<String>,
+    #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
+    pub become_pass: OptU<String>,
     /// User that you 'become' after using privilege escalation. The remote/login user must have permissions to become this user.
     #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
     pub become_user: OptU<String>,

@@ -582,11 +582,12 @@ fn generate_module_rs(module_json: &AnsModuleJson) -> Result<String> {
                     .unwrap_or_else(|| "str".to_owned())
                     .as_str()
                 {
+                    // FIXME: always include "string" because ansible can use template.
                     "path" => "OptU<std::path::PathBuf>",
                     "int" | "integer" => "OptU<i64>",
                     "bool" | "boolean" => "OptU<bool>",
-                    "list" => "OptU<Vec<serde_json::Value>>",
-                    "dict" => "OptU<indexmap::IndexMap<String, serde_json::Value>>",
+                    "list" => "OptU<Vec<::serde_json::Value>>",
+                    "dict" => "OptU<indexmap::IndexMap<String, ::serde_json::Value>>",
                     // `"str" | "string"` or default should be [`OptU<String>`]
                     _ => "OptU<String>",
                 },
