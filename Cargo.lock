@@ -90,7 +90,7 @@ dependencies = [
 
 [[package]]
 name = "cdk-ansible"
-version = "0.0.18"
+version = "0.0.19"
 dependencies = [
  "anyhow",
  "cargo_toml",
@@ -110,7 +110,7 @@ dependencies = [
 
 [[package]]
 name = "cdk-ansible-cli"
-version = "0.0.18"
+version = "0.0.19"
 dependencies = [
  "anyhow",
  "cargo_toml",
@@ -131,7 +131,7 @@ dependencies = [
 
 [[package]]
 name = "cdk-ansible-core"
-version = "0.0.8"
+version = "0.0.9"
 dependencies = [
  "dyn-clone",
  "erased-serde",
