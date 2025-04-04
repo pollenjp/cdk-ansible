@@ -270,8 +270,6 @@ pub struct TaskOptions {
     /// Which method of privilege escalation to use (such as sudo or su).
     #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
     pub become_method: OptU<String>,
-    #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
-    pub become_pass: OptU<String>,
     /// User that you 'become' after using privilege escalation. The remote/login user must have permissions to become this user.
     #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
     pub become_user: OptU<String>,
@@ -655,7 +653,6 @@ mod tests {
                 become_exe: OptU::Some("become_exe".to_string()),
                 become_flags: OptU::Some("become_flags".to_string()),
                 become_method: OptU::Some("become_method".to_string()),
-                become_pass: OptU::Some("become_pass".to_string()),
                 become_user: OptU::Some("become_user".to_string()),
                 changed_when: OptU::Some("changed_when".to_string().into()),
                 check_mode: OptU::Some(true),
@@ -712,7 +709,6 @@ mod tests {
                 + r#""become_exe":"become_exe","#
                 + r#""become_flags":"become_flags","#
                 + r#""become_method":"become_method","#
-                + r#""become_pass":"become_pass","#
                 + r#""become_user":"become_user","#
                 + r#""changed_when":"changed_when","#
                 + r#""check_mode":true,"#
