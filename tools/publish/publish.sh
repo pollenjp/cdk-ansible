@@ -7,6 +7,7 @@ pkgs=(
   cdk-ansible-static
   cdk-ansible-cli
   cdk-ansible
+  cdkam
 )
 
 for pkg in "${pkgs[@]}"; do

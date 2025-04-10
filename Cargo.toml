@@ -20,6 +20,7 @@ cdk-ansible-cli = { path = "crates/cdk-ansible-cli" }
 cdk-ansible-core = { version = "0.0.9", path = "crates/cdk-ansible-core" }
 cdk-ansible-static = { version = "0.0.2", path = "crates/cdk-ansible-static" }
 cdk-ansible-macro = { version = "0.0.4", path = "crates/cdk-ansible-macro" }
+cdkam = { path = "crates/cdkam" }
 
 anyhow = { version = "1.0.95" }
 cargo_toml = "0.21.0"
