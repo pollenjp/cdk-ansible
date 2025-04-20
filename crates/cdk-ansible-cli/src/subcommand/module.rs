@@ -265,6 +265,7 @@ fn create_rust_package_project(
         let sub_mod_dir = base_dir.join(SUB_MOD_NAME);
         for (mod_path, sub_mod_name) in [
             (lib_rs_path, SUB_MOD_NAME.to_owned()),
+            (sub_mod_dir.join("mod.rs"), am_name.namespace.clone()),
             (
                 sub_mod_dir.join(&am_name.namespace).join("mod.rs"),
                 am_name.collection.clone(),
