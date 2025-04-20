@@ -158,6 +158,12 @@ dependencies = [
 [[package]]
 name = "cdkam"
 version = "0.0.1"
+dependencies = [
+ "cdk-ansible",
+ "indexmap",
+ "serde",
+ "serde_json",
+]
 
 [[package]]
 name = "cdkam_ansible"

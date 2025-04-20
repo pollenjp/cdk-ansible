@@ -12,6 +12,11 @@ license.workspace = true
 keywords.workspace = true
 
 [dependencies]
+cdk-ansible = { workspace = true }
+
+indexmap = { workspace = true }
+serde = { workspace = true }
+serde_json = { workspace = true }
 
 [lints]
 workspace = true
