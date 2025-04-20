@@ -21,8 +21,10 @@ help:
 
 .PHONY: debug-module
 debug-module:
-	${UV_RUN} cargo run --package cdk-ansible -- module --output-dir "${RS_OUT_DIR}"
-#	rsync -av --delete "${RS_OUT_DIR}/" "${SAMPLE_APP_ROOT}/src/module"
+#	${UV_RUN} cargo run --package cdk-ansible-cli -- module --output-dir "${RS_OUT_DIR}"
+	${UV_RUN} cargo run --package cdk-ansible-cli -- module --module-name-regex 'ansible\.builtin\..*' \
+		--output-dir './crates/cdkam/src/' \
+		--pkg-unit 'none'
 
 .PHONY: test-simple-sample
 test-simple-sample:
