@@ -206,8 +206,8 @@ fn create_rust_package_project(
 
         let pkg_dir = base_dir.join(&pkg_name);
         let src_dir = pkg_dir.join("src");
-        let sub_mod_dir = src_dir.join(SUB_MOD_NAME);
         let lib_rs_path = src_dir.join("lib.rs");
+        let sub_mod_dir = src_dir.join(SUB_MOD_NAME);
 
         // generate mod.rs for each directory
         //
@@ -252,8 +252,19 @@ fn create_rust_package_project(
         create_module_rs(&modu_path, module_json)?;
         Ok(())
     } else {
-        let sub_mod_dir = base_dir;
+        let lib_rs_path = {
+            let dirname = base_dir.file_name().ok_or_else(|| {
+                anyhow::anyhow!("failed to get directory name: {}", &base_dir.display())
+            })?;
+            if dirname == "src" {
+                base_dir.join("lib.rs") // prj_root/src/lib.rs
+            } else {
+                base_dir.join("mod.rs") // prj_root/src/some/mod.rs
+            }
+        };
+        let sub_mod_dir = base_dir.join(SUB_MOD_NAME);
         for (mod_path, sub_mod_name) in [
+            (lib_rs_path, SUB_MOD_NAME.to_owned()),
             (
                 sub_mod_dir.join(&am_name.namespace).join("mod.rs"),
                 am_name.collection.clone(),
