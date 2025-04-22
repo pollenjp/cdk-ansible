@@ -13,9 +13,9 @@ pub fn playbook2<T: PlaybookGenArgs>(args: &T) -> Result<Playbook> {
             tasks: vec![Task {
                 name: "Debug msg".to_owned(),
                 options: TaskOptions::default(),
-                command: Box::new(cdkam_ansible::builtin::debug::Module {
-                    module: cdkam_ansible::builtin::debug::Args {
-                        options: cdkam_ansible::builtin::debug::Opt {
+                command: Box::new(sample_cdkam_ansible::builtin::debug::Module {
+                    module: sample_cdkam_ansible::builtin::debug::Args {
+                        options: sample_cdkam_ansible::builtin::debug::Opt {
                             msg: OptU::Some("msg".to_owned()),
                             ..Default::default()
                         },

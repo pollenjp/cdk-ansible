@@ -7,6 +7,7 @@ use proc_macro2::TokenStream;
 use quote::{format_ident, quote};
 use regex::Regex;
 use serde::{Deserialize, Serialize};
+use std::collections::BTreeSet;
 use std::fs;
 use std::io::Write as _;
 use std::path::{Path, PathBuf};
@@ -150,6 +151,27 @@ impl AnsibleModuleName {
     pub fn fqdn(&self) -> String {
         format!("{}.{}.{}", self.namespace, self.collection, self.module)
     }
+
+    /// e.g. '<pkg_prefix>_<namespace>', '<pkg_prefix>_<namespace>_<collection>', '<pkg_prefix>_<namespace>_<collection>_<module>'
+    pub fn pkg_name(&self, pkg_prefix: &str, pkg_unit: &PkgUnit) -> String {
+        match pkg_unit {
+            PkgUnit::Namespace => format!("{}_{}", pkg_prefix, self.namespace),
+            PkgUnit::Collection => format!("{}_{}_{}", pkg_prefix, self.namespace, self.collection),
+            PkgUnit::Module => format!(
+                "{}_{}_{}_{}",
+                pkg_prefix, self.namespace, self.collection, self.module
+            ),
+        }
+    }
+
+    /// e.g. 'ansible-builtin-debug'
+    pub fn feature_name(&self, pkg_unit: &PkgUnit) -> String {
+        match pkg_unit {
+            PkgUnit::Namespace => format!("{}", self.namespace),
+            PkgUnit::Collection => format!("{}-{}", self.namespace, self.collection),
+            PkgUnit::Module => format!("{}-{}-{}", self.namespace, self.collection, self.module),
+        }
+    }
 }
 
 impl fmt::Display for AnsibleModuleName {
@@ -193,21 +215,8 @@ fn create_rust_package_project(
     let result: Result<()> = {
         let pkg_name = match pkg_unit {
             None => pkg_prefix.to_owned(),
-            Some(&PkgUnit::Namespace) => format!("{}_{}", pkg_prefix, am_name.namespace),
-            Some(&PkgUnit::Collection) => format!(
-                "{}_{}_{}",
-                pkg_prefix, am_name.namespace, am_name.collection
-            ),
-            Some(&PkgUnit::Module) => format!(
-                "{}_{}_{}_{}",
-                pkg_prefix, am_name.namespace, am_name.collection, am_name.module
-            ),
+            Some(u) => am_name.pkg_name(pkg_prefix, u),
         };
-        let feature_name = format!(
-            "{}-{}-{}",
-            am_name.namespace, am_name.collection, am_name.module
-        );
-
         let pkg_dir = base_dir.join(&pkg_name);
         let src_dir = pkg_dir.join("src");
         let lib_rs_path = src_dir.join("lib.rs");
@@ -244,7 +253,7 @@ fn create_rust_package_project(
                 .join("mod.rs"),
             &am_name.module,
             Some(CfgAttr {
-                feature: feature_name.clone(),
+                feature: am_name.feature_name(&PkgUnit::Module),
             }),
         )?;
 
@@ -254,7 +263,7 @@ fn create_rust_package_project(
                 &pkg_dir.display()
             )
         })?;
-        create_or_edit_cargo_toml(&pkg_dir, &pkg_name, &feature_name)?;
+        create_or_edit_cargo_toml(am_name, &pkg_dir, &pkg_name)?;
 
         let modu_path = sub_mod_dir
             .join(&am_name.namespace)
@@ -278,7 +287,11 @@ fn create_rust_package_project(
 /// Returns a `Result` with the result of the subcommand.
 ///
 #[expect(clippy::single_call_fn, reason = "better readability")]
-fn create_or_edit_cargo_toml(pkg_dir: &Path, pkg_name: &str, feature_name: &str) -> Result<()> {
+fn create_or_edit_cargo_toml(
+    am_name: &AnsibleModuleName,
+    pkg_dir: &Path,
+    pkg_name: &str,
+) -> Result<()> {
     let cargo_toml_path = pkg_dir.join("Cargo.toml");
 
     // FIXME: some values should be configurable
@@ -347,34 +360,87 @@ rust-version = \"1.85\"
             format!("Failed to parse toml as toml_edit::DocumentMut: {toml_text:?}",)
         })?;
 
-    let feature_table: ::toml_edit::Table = override_toml.get("features").map_or_else(
-        || -> Result<_> {
-            let mut tbl = ::toml_edit::Table::new();
-            tbl.insert(feature_name, ::toml_edit::value(::toml_edit::Array::new()));
-            Ok(tbl)
-        },
+    // Set '[features]' as table
+    let mut features_table: ::toml_edit::Table = override_toml.get("features").map_or_else(
+        || Ok(::toml_edit::Table::new()),
         |v| {
-            let mut tbl = v.as_table().cloned().ok_or_else(|| {
-                anyhow::anyhow!("failed to get table from toml_edit::Item: {v:?}")
-            })?;
-            let feature_val = v
-                .get(feature_name)
+            v.as_table()
                 .cloned()
-                .unwrap_or_else(|| ::toml_edit::value(::toml_edit::Array::new()));
-            tbl.insert(feature_name, feature_val);
-            Ok(tbl)
+                .ok_or_else(|| anyhow::anyhow!("failed to get table from toml_edit::Item: {v:?}"))
         },
     )?;
 
     #[expect(clippy::indexing_slicing, reason = "toml_edit convention")]
     {
-        override_toml["features"] = ::toml_edit::Item::Table(feature_table);
+        features_table["default"].or_insert(::toml_edit::array());
+
+        // ```rs
+        // [features]
+        // default = []
+        // ansible = ["ansible-builtin"]
+        // ansible-builtin = ["ansible-builtin-debug", ...]
+        // ansible-builtin-debug = []
+        // ansible-builtin-<...> = []
+        // ...
+        // ```
+
+        let ns_feat_name = am_name.feature_name(&PkgUnit::Namespace);
+        let coll_feat_name = am_name.feature_name(&PkgUnit::Collection);
+        let modu_feat_name = am_name.feature_name(&PkgUnit::Module);
+        let ns_feat = add_str_and_sort_array_without_duplication(
+            features_table.get(&ns_feat_name),
+            vec![coll_feat_name.clone()],
+        )?;
+        features_table[&ns_feat_name] = ns_feat;
+        let coll_feat = add_str_and_sort_array_without_duplication(
+            features_table.get(&coll_feat_name),
+            vec![modu_feat_name.clone()],
+        )?;
+        features_table[&coll_feat_name] = coll_feat;
+        let modu_feat = add_str_and_sort_array_without_duplication(
+            features_table.get(&modu_feat_name),
+            vec![],
+        )?;
+        features_table[&modu_feat_name] = modu_feat;
+
+        override_toml["features"] = ::toml_edit::Item::Table(features_table);
     };
 
     fs::write(&cargo_toml_path, override_toml.to_string())
         .with_context(|| format!("failed to write Cargo.toml: {}", &cargo_toml_path.display()))?;
 
     Ok(())
+}
+
+fn add_str_and_sort_array_without_duplication(
+    arr_item: Option<&::toml_edit::Item>,
+    values: Vec<String>,
+) -> Result<::toml_edit::Item> {
+    let arr_item = arr_item
+        .cloned()
+        .unwrap_or_else(|| ::toml_edit::value(::toml_edit::Array::new()));
+    let orig_arr = arr_item
+        .as_array()
+        .cloned()
+        .with_context(|| "failed to as_array_mut from toml_edit::Item")?;
+    // sort and remove duplicates
+    let mut set = BTreeSet::<String>::new();
+    for v in &orig_arr {
+        let s = v
+            .as_str()
+            .with_context(|| "failed to as_str from toml_edit::Value")?
+            .to_owned();
+        set.insert(s);
+    }
+    for v in values {
+        set.insert(v);
+    }
+    // Construct sorted array
+    let mut ret_arr = ::toml_edit::Array::new();
+    for v in set {
+        ret_arr.push(v);
+    }
+    Ok(::toml_edit::value(ret_arr))
 }
 
 /// Create a lib.rs file, such as:

@@ -169,17 +169,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "cdkam_ansible"
-version = "0.1.0"
-dependencies = [
- "anyhow",
- "cdk-ansible",
- "indexmap",
- "serde",
- "serde_json",
-]
-
-[[package]]
 name = "clap"
 version = "4.5.23"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -387,6 +376,17 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "f3cb5ba0dc43242ce17de99c180e96db90b235b8a9fdc9543c96d2209116bd9f"
 
 [[package]]
+name = "sample_cdkam_ansible"
+version = "0.1.0"
+dependencies = [
+ "anyhow",
+ "cdk-ansible",
+ "indexmap",
+ "serde",
+ "serde_json",
+]
+
+[[package]]
 name = "semver"
 version = "1.0.25"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -441,8 +441,8 @@ dependencies = [
  "anyhow",
  "cdk-ansible",
  "cdk-ansible-macro",
- "cdkam_ansible",
  "indexmap",
+ "sample_cdkam_ansible",
  "serde",
  "serde_json",
 ]
