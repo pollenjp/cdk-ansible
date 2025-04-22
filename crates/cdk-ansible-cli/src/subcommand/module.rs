@@ -3,6 +3,7 @@ use crate::settings::{ModuleSettings, PkgUnit};
 use anyhow::{Context as _, Result, bail};
 use core::fmt;
 use indexmap::IndexMap;
+use proc_macro2::TokenStream;
 use quote::{format_ident, quote};
 use regex::Regex;
 use serde::{Deserialize, Serialize};
@@ -175,13 +176,11 @@ impl fmt::Display for AnsibleModuleName {
 /// |-- src/
 ///      |-- lib.rs
 ///      |-- m/
-///          |-- ansible/
+///          |-- <namespace>/
 ///               |-- mod.rs
-///               |-- <namespace>/
+///               |-- <collection>/
 ///                    |-- mod.rs
-///                    |-- <collection>/
-///                         |-- mod.rs
-///                         |-- <module>.rs
+///                    |-- <module>.rs
 ///
 #[expect(clippy::single_call_fn, reason = "better readability")]
 fn create_rust_package_project(
@@ -191,18 +190,23 @@ fn create_rust_package_project(
     am_name: &AnsibleModuleName,
     module_json: &AnsModuleJson,
 ) -> Result<()> {
-    let result: Result<()> = if let Some(pkg_unit) = pkg_unit {
-        let pkg_name = match *pkg_unit {
-            PkgUnit::Namespace => format!("{}_{}", pkg_prefix, am_name.namespace),
-            PkgUnit::Collection => format!(
+    let result: Result<()> = {
+        let pkg_name = match pkg_unit {
+            None => pkg_prefix.to_owned(),
+            Some(&PkgUnit::Namespace) => format!("{}_{}", pkg_prefix, am_name.namespace),
+            Some(&PkgUnit::Collection) => format!(
                 "{}_{}_{}",
                 pkg_prefix, am_name.namespace, am_name.collection
             ),
-            PkgUnit::Module => format!(
+            Some(&PkgUnit::Module) => format!(
                 "{}_{}_{}_{}",
                 pkg_prefix, am_name.namespace, am_name.collection, am_name.module
             ),
         };
+        let feature_name = format!(
+            "{}-{}-{}",
+            am_name.namespace, am_name.collection, am_name.module
+        );
 
         let pkg_dir = base_dir.join(&pkg_name);
         let src_dir = pkg_dir.join("src");
@@ -217,25 +221,32 @@ fn create_rust_package_project(
         //     ansible/mod.rs         -> pub mod builtin;
         //     ansible/builtin/mod.rs -> pub mod debug;
         //
-        for (mod_path, sub_mod_name) in [
-            (lib_rs_path.clone(), SUB_MOD_NAME.to_owned()),
-            (sub_mod_dir.join("mod.rs"), am_name.namespace.clone()),
-            (
-                sub_mod_dir.join(&am_name.namespace).join("mod.rs"),
-                am_name.collection.clone(),
-            ),
-            (
-                sub_mod_dir
-                    .join(&am_name.namespace)
-                    .join(&am_name.collection)
-                    .join("mod.rs"),
-                am_name.module.clone(),
-            ),
-        ] {
-            create_mod_rs(&mod_path, &sub_mod_name)?;
-        }
 
+        // Add 'pub use m::<namespace>::*' to root/src/lib.rs
         create_lib_rs(&lib_rs_path, am_name, pkg_unit)?;
+        // Add 'pub mod <namespace>' to root/src/m/mod.rs
+        create_mod_rs(
+            &sub_mod_dir.join("mod.rs"),
+            &am_name.namespace.clone(),
+            None,
+        )?;
+        // Add 'pub mod <collection>' to root/src/m/<namespace>/mod.rs
+        create_mod_rs(
+            &sub_mod_dir.join(&am_name.namespace).join("mod.rs"),
+            &am_name.collection,
+            None,
+        )?;
+        // Add 'pub mod <module>' to root/src/m/<namespace>/<collection>/mod.rs
+        create_mod_rs(
+            &sub_mod_dir
+                .join(&am_name.namespace)
+                .join(&am_name.collection)
+                .join("mod.rs"),
+            &am_name.module,
+            Some(CfgAttr {
+                feature: feature_name.clone(),
+            }),
+        )?;
 
         fs::create_dir_all(&pkg_dir).with_context(|| {
             format!(
@@ -243,43 +254,8 @@ fn create_rust_package_project(
                 &pkg_dir.display()
             )
         })?;
-        create_cargo_toml(&pkg_name, &pkg_dir)?;
-        let modu_path = sub_mod_dir
-            .join(&am_name.namespace)
-            .join(&am_name.collection)
-            .join(&am_name.module)
-            .with_extension("rs");
-        create_module_rs(&modu_path, module_json)?;
-        Ok(())
-    } else {
-        let lib_rs_path = {
-            let dirname = base_dir.file_name().ok_or_else(|| {
-                anyhow::anyhow!("failed to get directory name: {}", &base_dir.display())
-            })?;
-            if dirname == "src" {
-                base_dir.join("lib.rs") // prj_root/src/lib.rs
-            } else {
-                base_dir.join("mod.rs") // prj_root/src/some/mod.rs
-            }
-        };
-        let sub_mod_dir = base_dir.join(SUB_MOD_NAME);
-        for (mod_path, sub_mod_name) in [
-            (lib_rs_path, SUB_MOD_NAME.to_owned()),
-            (sub_mod_dir.join("mod.rs"), am_name.namespace.clone()),
-            (
-                sub_mod_dir.join(&am_name.namespace).join("mod.rs"),
-                am_name.collection.clone(),
-            ),
-            (
-                sub_mod_dir
-                    .join(&am_name.namespace)
-                    .join(&am_name.collection)
-                    .join("mod.rs"),
-                am_name.module.clone(),
-            ),
-        ] {
-            create_mod_rs(&mod_path, &sub_mod_name)?;
-        }
+        create_or_edit_cargo_toml(&pkg_dir, &pkg_name, &feature_name)?;
+
         let modu_path = sub_mod_dir
             .join(&am_name.namespace)
             .join(&am_name.collection)
@@ -302,7 +278,7 @@ fn create_rust_package_project(
 /// Returns a `Result` with the result of the subcommand.
 ///
 #[expect(clippy::single_call_fn, reason = "better readability")]
-fn create_cargo_toml(pkg_name: &str, pkg_dir: &Path) -> Result<()> {
+fn create_or_edit_cargo_toml(pkg_dir: &Path, pkg_name: &str, feature_name: &str) -> Result<()> {
     let cargo_toml_path = pkg_dir.join("Cargo.toml");
 
     // FIXME: some values should be configurable
@@ -318,52 +294,98 @@ fn create_cargo_toml(pkg_name: &str, pkg_dir: &Path) -> Result<()> {
     // serde = { version = "1.0.217", features = ["derive"] }
     // serde_json = { version = "1.0.138", features = ["preserve_order"] }
 
-    let mut manifest = cargo_toml::Manifest::from_str(
-        r#"
-        [package]
-        name = "sample"
-        version = "0.1.0"
-        edition = "2024"
-        rust-version = "1.85"
-        "#,
-    )?;
-    if let Some(package) = manifest.package.as_mut() {
-        pkg_name.clone_into(&mut package.name);
-    }
-    manifest.dependencies = vec![
-        (
-            "cdk-ansible".to_owned(),
-            cargo_toml::Dependency::Inherited(cargo_toml::InheritedDependencyDetail {
-                workspace: true,
-                ..Default::default()
-            }),
-        ),
-        (
-            "anyhow".to_owned(),
-            cargo_toml::Dependency::Simple("1.0.95".to_owned()),
-        ),
-        (
-            "indexmap".to_owned(),
-            cargo_toml::Dependency::Simple("2.7.1".to_owned()),
-        ),
-        (
-            "serde".to_owned(),
-            cargo_toml::Dependency::Simple("1.0.217".to_owned()),
-        ),
-        (
-            "serde_json".to_owned(),
-            cargo_toml::Dependency::Simple("1.0.138".to_owned()),
-        ),
-    ]
-    .into_iter()
-    .collect();
+    if !cargo_toml_path.exists() {
+        let mut manifest = ::cargo_toml::Manifest::from_str(&format!(
+            "[package]
+name = \"{pkg_name}\"
+version = \"0.1.0\"
+edition = \"2024\"
+rust-version = \"1.85\"
+"
+        ))?;
+        if let Some(package) = manifest.package.as_mut() {
+            pkg_name.clone_into(&mut package.name);
+        }
+        manifest.dependencies = vec![
+            (
+                "cdk-ansible".to_owned(),
+                ::cargo_toml::Dependency::Inherited(::cargo_toml::InheritedDependencyDetail {
+                    workspace: true,
+                    ..Default::default()
+                }),
+            ),
+            (
+                "anyhow".to_owned(),
+                ::cargo_toml::Dependency::Simple("1.0.95".to_owned()),
+            ),
+            (
+                "indexmap".to_owned(),
+                ::cargo_toml::Dependency::Simple("2.7.1".to_owned()),
+            ),
+            (
+                "serde".to_owned(),
+                ::cargo_toml::Dependency::Simple("1.0.217".to_owned()),
+            ),
+            (
+                "serde_json".to_owned(),
+                ::cargo_toml::Dependency::Simple("1.0.138".to_owned()),
+            ),
+        ]
+        .into_iter()
+        .collect();
 
-    fs::write(&cargo_toml_path, ::toml::to_string(&manifest)?)
-        .with_context(|| format!("failed to write cargo.toml: {}", &cargo_toml_path.display()))?;
+        fs::write(&cargo_toml_path, ::toml::to_string(&manifest)?).with_context(|| {
+            format!("failed to write Cargo.toml: {}", &cargo_toml_path.display())
+        })?;
+    }
+
+    let toml_text = fs::read_to_string(&cargo_toml_path)
+        .with_context(|| format!("failed to read Cargo.toml: {}", &cargo_toml_path.display()))?;
+    let mut override_toml = toml_text
+        .parse::<::toml_edit::DocumentMut>()
+        .with_context(|| {
+            format!("Failed to parse toml as toml_edit::DocumentMut: {toml_text:?}",)
+        })?;
+
+    let feature_table: ::toml_edit::Table = override_toml.get("features").map_or_else(
+        || -> Result<_> {
+            let mut tbl = ::toml_edit::Table::new();
+            tbl.insert(feature_name, ::toml_edit::value(::toml_edit::Array::new()));
+            Ok(tbl)
+        },
+        |v| {
+            let mut tbl = v.as_table().cloned().ok_or_else(|| {
+                anyhow::anyhow!("failed to get table from toml_edit::Item: {v:?}")
+            })?;
+            let feature_val = v
+                .get(feature_name)
+                .cloned()
+                .unwrap_or_else(|| ::toml_edit::value(::toml_edit::Array::new()));
+            tbl.insert(feature_name, feature_val);
+            Ok(tbl)
+        },
+    )?;
+
+    override_toml["features"] = ::toml_edit::Item::Table(feature_table);
+
+    fs::write(&cargo_toml_path, override_toml.to_string())
+        .with_context(|| format!("failed to write Cargo.toml: {}", &cargo_toml_path.display()))?;
+
     Ok(())
 }
 
-/// Create a lib.rs file
+/// Create a lib.rs file, such as:
+///
+/// ```rs
+/// pub mod m;
+/// pub use m::*;
+/// // or
+/// pub use m::<namespace>::*;
+/// // or
+/// pub use m::<namespace>::<collection>::*;
+/// // or
+/// pub use m::<namespace>::<collection>::<module>::*;
+/// ```
 ///
 /// # Arguments
 ///
@@ -375,22 +397,27 @@ fn create_cargo_toml(pkg_name: &str, pkg_dir: &Path) -> Result<()> {
 fn create_lib_rs(
     lib_rs_path: &Path,
     am_name: &AnsibleModuleName,
-    pkg_unit: &PkgUnit,
+    pkg_unit: Option<&PkgUnit>,
 ) -> Result<()> {
     let sub_mod_path = syn::parse_str::<syn::Path>(SUB_MOD_NAME)
         .with_context(|| format!("failed to parse sub module path: {SUB_MOD_NAME}"))?;
-    let pub_use_target_path = match *pkg_unit {
-        PkgUnit::Namespace => syn::parse_str::<syn::Path>(
+    let pub_use_target_path = match pkg_unit {
+        // pub use m::*;
+        None => syn::parse_str::<syn::Path>(format!("crate::{SUB_MOD_NAME}").as_str()),
+        // pub use m::<namespace>::*;
+        Some(&PkgUnit::Namespace) => syn::parse_str::<syn::Path>(
             format!("crate::{}::{}", SUB_MOD_NAME, am_name.namespace).as_str(),
         ),
-        PkgUnit::Collection => syn::parse_str::<syn::Path>(
+        // pub use m::<namespace>::<collection>::*;
+        Some(&PkgUnit::Collection) => syn::parse_str::<syn::Path>(
             format!(
                 "crate::{}::{}::{}",
                 SUB_MOD_NAME, am_name.namespace, am_name.collection
             )
             .as_str(),
         ),
-        PkgUnit::Module => syn::parse_str::<syn::Path>(
+        // pub use m::<namespace>::<collection>::<module>::*;
+        Some(&PkgUnit::Module) => syn::parse_str::<syn::Path>(
             format!(
                 "crate::{}::{}::{}::{}",
                 SUB_MOD_NAME, am_name.namespace, am_name.collection, am_name.module
@@ -419,6 +446,19 @@ fn create_lib_rs(
     Ok(())
 }
 
+struct CfgAttr {
+    pub feature: String,
+}
+
+impl CfgAttr {
+    pub fn to_token(&self) -> TokenStream {
+        let feature = &self.feature;
+        quote! {
+            #[cfg(feature = #feature)]
+        }
+    }
+}
+
 /// If `mod_path` does not exist, create it and write `pub mod <module_name>;` to it.
 /// Otherwise, write `pub mod <module_name>;` to it.
 /// Finally, rustfmt.
@@ -428,7 +468,7 @@ fn create_lib_rs(
 /// * `mod_rs_path` - e.g. `/path/to/cdkam_ansible/src/m/ansible/mod.rs`
 /// * `sub_mod_name` - e.g. 'ansible'
 ///
-fn create_mod_rs(mod_rs_path: &Path, sub_mod_name: &str) -> Result<()> {
+fn create_mod_rs(mod_rs_path: &Path, sub_mod_name: &str, cfg_attr: Option<CfgAttr>) -> Result<()> {
     let dir = mod_rs_path
         .parent()
         .with_context(|| format!("failed to get parent directory: {}", mod_rs_path.display()))?;
@@ -448,9 +488,12 @@ fn create_mod_rs(mod_rs_path: &Path, sub_mod_name: &str) -> Result<()> {
     };
 
     let sub_mod_name_ident = format_ident!("{}", sub_mod_name);
+    let cfg_attr = cfg_attr.map_or_else(|| quote! {}, |cfg_attr| cfg_attr.to_token());
     let ts = quote! {
+        #cfg_attr
         pub mod #sub_mod_name_ident;
     };
+
     let formatted_ts =
         format_code(ts.to_string().as_str()).with_context(|| "failed to format code")?;
 
@@ -502,7 +545,7 @@ fn get_module_json(
 
         output_str
     };
-    let module_json: AnsModuleJson = serde_json::from_str(&output_str)
+    let module_json: AnsModuleJson = ::serde_json::from_str(&output_str)
         .with_context(|| format!("failed to parse ansible-doc output: {output_str}"))?;
     Ok(module_json)
 }

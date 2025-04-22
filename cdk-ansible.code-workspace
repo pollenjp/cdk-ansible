@@ -20,6 +20,9 @@
       "path": "./crates/cdk-ansible-macro"
     },
     {
+      "path": "./crates/cdkam"
+    },
+    {
       "name": "root",
       "path": "."
     },
@@ -27,9 +30,11 @@
   "settings": {
     "files.exclude": {
       "**/target/": true,
+      // "./crates/cdkam/**": true,
     },
     "search.exclude": {
-      "**/target/": true
+      "**/target/": true,
+      "crates/cdkam/**": true,
     },
     "rust-analyzer.cargo.extraEnv": {
       "CDK_ANSIBLE_COMMIT_HASH": "dummy_hash",
@@ -38,6 +43,9 @@
       "CDK_ANSIBLE_LAST_TAG": "v0.0.0",
       "CDK_ANSIBLE_LAST_TAG_DISTANCE": "0"
     },
+    "rust-analyzer.cargo.features": [
+      // "ansible-builtin"
+    ],
     // ansible plugin requires python interpreter path at the top of the workspace folders
     "ansible.python.interpreterPath": ".venv/bin/python",
   }
