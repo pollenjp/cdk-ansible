@@ -115,6 +115,7 @@ pub mod lineinfile;
 #[cfg(feature = "ansible-builtin-meta")]
 pub mod meta;
 
+#[cfg(feature = "ansible-builtin-mount_facts")]
 pub mod mount_facts;
 
 #[cfg(feature = "ansible-builtin-package")]
@@ -209,6 +210,3 @@ pub mod wait_for_connection;
 
 #[cfg(feature = "ansible-builtin-yum_repository")]
 pub mod yum_repository;
-
-#[cfg(feature = "ansible-builtin-mount_facts")]
-pub mod mount_facts;
