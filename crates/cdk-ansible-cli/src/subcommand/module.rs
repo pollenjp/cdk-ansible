@@ -366,7 +366,10 @@ rust-version = \"1.85\"
         },
     )?;
 
-    override_toml["features"] = ::toml_edit::Item::Table(feature_table);
+    #[expect(clippy::indexing_slicing, reason = "toml_edit convention")]
+    {
+        override_toml["features"] = ::toml_edit::Item::Table(feature_table);
+    };
 
     fs::write(&cargo_toml_path, override_toml.to_string())
         .with_context(|| format!("failed to write Cargo.toml: {}", &cargo_toml_path.display()))?;
