@@ -1,6 +1,7 @@
 use crate::arg::ModuleArgs;
 use crate::settings::{ModuleSettings, PkgUnit};
 use anyhow::{Context as _, Result, bail};
+use convert_case::{Boundary, Case, Casing as _};
 use core::fmt;
 use indexmap::IndexMap;
 use proc_macro2::TokenStream;
@@ -698,10 +699,15 @@ fn generate_module_rs(module_json: &AnsModuleJson) -> Result<String> {
         .map(|(key, value)| {
             let key_ident = format_ident!(
                 "{}",
-                escape_rust_reserved_keywords(key.as_str())
-                    // TODO: configure variable name's replacement rules from optional args
-                    .replace('-', "_xx_")
-                    .replace('+', "_xxx_")
+                escape_rust_reserved_keywords(
+                    &key.as_str()
+                        .from_case(Case::Camel)
+                        .without_boundaries(&Boundary::digits())
+                        .to_case(Case::Snake)
+                )
+                // TODO: configure variable name's replacement rules from optional args
+                .replace('-', "_xx_")
+                .replace('+', "_xxx_")
             );
             let type_ident = syn::parse_str::<syn::Type>(
                 match value

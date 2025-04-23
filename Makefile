@@ -34,7 +34,6 @@ debug-module:
 
 .PHONY: test-simple-sample
 test-simple-sample:
-	rm -rf "${RS_OUT_DIR}"/sample_cdkam*
 	${UV_RUN} cargo run --package cdk-ansible-cli -- module --pkg-prefix 'sample_cdkam' --output-dir "${RS_OUT_DIR}" --module-name 'ansible.builtin.debug'
 	${UV_RUN} cargo run --package cdk-ansible-cli -- module --pkg-prefix 'sample_cdkam' --output-dir "${RS_OUT_DIR}" --module-name 'ansible.builtin.service_facts'
 # Run 'synth' to generate playbooks and inventory

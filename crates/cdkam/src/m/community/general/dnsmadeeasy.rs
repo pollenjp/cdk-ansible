@@ -21,19 +21,19 @@ pub struct Opt {
     #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
     pub account_secret: OptU<String>,
     #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
-    pub autoFailover: OptU<bool>,
+    pub auto_failover: OptU<bool>,
     #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
-    pub contactList: OptU<String>,
+    pub contact_list: OptU<String>,
     #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
     pub domain: OptU<String>,
     #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
     pub failover: OptU<bool>,
     #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
-    pub httpFile: OptU<String>,
+    pub http_file: OptU<String>,
     #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
-    pub httpFqdn: OptU<String>,
+    pub http_fqdn: OptU<String>,
     #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
-    pub httpQueryString: OptU<String>,
+    pub http_query_string: OptU<String>,
     #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
     pub ip1: OptU<String>,
     #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
@@ -45,7 +45,7 @@ pub struct Opt {
     #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
     pub ip5: OptU<String>,
     #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
-    pub maxEmails: OptU<i64>,
+    pub max_emails: OptU<i64>,
     #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
     pub monitor: OptU<bool>,
     #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
@@ -67,7 +67,7 @@ pub struct Opt {
     #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
     pub state: OptU<String>,
     #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
-    pub systemDescription: OptU<String>,
+    pub system_description: OptU<String>,
     #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
     pub validate_certs: OptU<bool>,
 }

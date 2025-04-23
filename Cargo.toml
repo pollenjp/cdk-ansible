@@ -30,6 +30,7 @@ clap = { version = "4.5.21", features = [
     "string",
     "wrap_help",
 ] }
+convert_case = "0.8.0"
 dyn-clone = "1.0.17"
 erased-serde = "0.4.5"
 fs-err = "3.0.0"

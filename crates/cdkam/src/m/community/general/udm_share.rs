@@ -25,7 +25,7 @@ pub struct Opt {
     #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
     pub name: OptU<String>,
     #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
-    pub nfsCustomSettings: OptU<Vec<::serde_json::Value>>,
+    pub nfs_custom_settings: OptU<Vec<::serde_json::Value>>,
     #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
     pub nfs_hosts: OptU<Vec<::serde_json::Value>>,
     #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
@@ -37,83 +37,83 @@ pub struct Opt {
     #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
     pub root_squash: OptU<bool>,
     #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
-    pub sambaBlockSize: OptU<String>,
+    pub samba_block_size: OptU<String>,
     #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
-    pub sambaBlockingLocks: OptU<bool>,
+    pub samba_blocking_locks: OptU<bool>,
     #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
-    pub sambaBrowseable: OptU<bool>,
+    pub samba_browseable: OptU<bool>,
     #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
-    pub sambaCreateMode: OptU<String>,
+    pub samba_create_mode: OptU<String>,
     #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
-    pub sambaCscPolicy: OptU<String>,
+    pub samba_csc_policy: OptU<String>,
     #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
-    pub sambaCustomSettings: OptU<Vec<::serde_json::Value>>,
+    pub samba_custom_settings: OptU<Vec<::serde_json::Value>>,
     #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
-    pub sambaDirectoryMode: OptU<String>,
+    pub samba_directory_mode: OptU<String>,
     #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
-    pub sambaDirectorySecurityMode: OptU<String>,
+    pub samba_directory_security_mode: OptU<String>,
     #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
-    pub sambaDosFilemode: OptU<bool>,
+    pub samba_dos_filemode: OptU<bool>,
     #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
-    pub sambaFakeOplocks: OptU<bool>,
+    pub samba_fake_oplocks: OptU<bool>,
     #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
-    pub sambaForceCreateMode: OptU<bool>,
+    pub samba_force_create_mode: OptU<bool>,
     #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
-    pub sambaForceDirectoryMode: OptU<bool>,
+    pub samba_force_directory_mode: OptU<bool>,
     #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
-    pub sambaForceDirectorySecurityMode: OptU<bool>,
+    pub samba_force_directory_security_mode: OptU<bool>,
     #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
-    pub sambaForceGroup: OptU<String>,
+    pub samba_force_group: OptU<String>,
     #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
-    pub sambaForceSecurityMode: OptU<bool>,
+    pub samba_force_security_mode: OptU<bool>,
     #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
-    pub sambaForceUser: OptU<String>,
+    pub samba_force_user: OptU<String>,
     #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
-    pub sambaHideFiles: OptU<String>,
+    pub samba_hide_files: OptU<String>,
     #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
-    pub sambaHideUnreadable: OptU<bool>,
+    pub samba_hide_unreadable: OptU<bool>,
     #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
-    pub sambaHostsAllow: OptU<Vec<::serde_json::Value>>,
+    pub samba_hosts_allow: OptU<Vec<::serde_json::Value>>,
     #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
-    pub sambaHostsDeny: OptU<Vec<::serde_json::Value>>,
+    pub samba_hosts_deny: OptU<Vec<::serde_json::Value>>,
     #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
-    pub sambaInheritAcls: OptU<bool>,
+    pub samba_inherit_acls: OptU<bool>,
     #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
-    pub sambaInheritOwner: OptU<bool>,
+    pub samba_inherit_owner: OptU<bool>,
     #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
-    pub sambaInheritPermissions: OptU<bool>,
+    pub samba_inherit_permissions: OptU<bool>,
     #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
-    pub sambaInvalidUsers: OptU<String>,
+    pub samba_invalid_users: OptU<String>,
     #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
-    pub sambaLevel2Oplocks: OptU<bool>,
+    pub samba_level2oplocks: OptU<bool>,
     #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
-    pub sambaLocking: OptU<bool>,
+    pub samba_locking: OptU<bool>,
     #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
-    pub sambaMSDFSRoot: OptU<bool>,
+    pub samba_msdfs_root: OptU<bool>,
     #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
-    pub sambaName: OptU<String>,
+    pub samba_name: OptU<String>,
     #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
-    pub sambaNtAclSupport: OptU<bool>,
+    pub samba_nt_acl_support: OptU<bool>,
     #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
-    pub sambaOplocks: OptU<bool>,
+    pub samba_oplocks: OptU<bool>,
     #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
-    pub sambaPostexec: OptU<String>,
+    pub samba_postexec: OptU<String>,
     #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
-    pub sambaPreexec: OptU<String>,
+    pub samba_preexec: OptU<String>,
     #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
-    pub sambaPublic: OptU<bool>,
+    pub samba_public: OptU<bool>,
     #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
-    pub sambaSecurityMode: OptU<String>,
+    pub samba_security_mode: OptU<String>,
     #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
-    pub sambaStrictLocking: OptU<String>,
+    pub samba_strict_locking: OptU<String>,
     #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
-    pub sambaVFSObjects: OptU<String>,
+    pub samba_vfs_objects: OptU<String>,
     #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
-    pub sambaValidUsers: OptU<String>,
+    pub samba_valid_users: OptU<String>,
     #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
-    pub sambaWriteList: OptU<String>,
+    pub samba_write_list: OptU<String>,
     #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
-    pub sambaWriteable: OptU<bool>,
+    pub samba_writeable: OptU<bool>,
     #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
     pub state: OptU<String>,
     #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]

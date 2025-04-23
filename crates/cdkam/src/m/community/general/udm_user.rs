@@ -63,9 +63,9 @@ pub struct Opt {
     #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
     pub ou: OptU<String>,
     #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
-    pub overridePWHistory: OptU<bool>,
+    pub override_pw_history: OptU<bool>,
     #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
-    pub overridePWLength: OptU<bool>,
+    pub override_pw_length: OptU<bool>,
     #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
     pub pager_telephonenumber: OptU<Vec<::serde_json::Value>>,
     #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]

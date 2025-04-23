@@ -31,7 +31,7 @@ pub struct Opt {
     #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
     pub dn: OptU<String>,
     #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
-    pub objectClass: OptU<Vec<::serde_json::Value>>,
+    pub object_class: OptU<Vec<::serde_json::Value>>,
     #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
     pub recursive: OptU<bool>,
     #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]

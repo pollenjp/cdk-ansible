@@ -31,11 +31,11 @@ pub struct Opt {
     #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
     pub auth_username: OptU<String>,
     #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
-    pub authenticationExecutions: OptU<Vec<::serde_json::Value>>,
+    pub authentication_executions: OptU<Vec<::serde_json::Value>>,
     #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
     pub connection_timeout: OptU<i64>,
     #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
-    pub copyFrom: OptU<String>,
+    pub copy_from: OptU<String>,
     #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
     pub description: OptU<String>,
     #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
@@ -43,7 +43,7 @@ pub struct Opt {
     #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
     pub http_agent: OptU<String>,
     #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
-    pub providerId: OptU<String>,
+    pub provider_id: OptU<String>,
     #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
     pub realm: OptU<String>,
     #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
