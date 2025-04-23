@@ -27,10 +27,14 @@ debug-module:
 		--output-dir './crates' \
 		--pkg-unit 'none' \
 		--module-name-regex 'ansible\.builtin\..*'
+	${UV_RUN} cargo run --package cdk-ansible-cli -- module \
+		--output-dir './crates' \
+		--pkg-unit 'none' \
+		--module-name-regex 'community\.general\..*'
 
 .PHONY: test-simple-sample
 test-simple-sample:
-#	rm -rf "${RS_OUT_DIR}"/sample_cdkam*
+	rm -rf "${RS_OUT_DIR}"/sample_cdkam*
 	${UV_RUN} cargo run --package cdk-ansible-cli -- module --pkg-prefix 'sample_cdkam' --output-dir "${RS_OUT_DIR}" --module-name 'ansible.builtin.debug'
 	${UV_RUN} cargo run --package cdk-ansible-cli -- module --pkg-prefix 'sample_cdkam' --output-dir "${RS_OUT_DIR}" --module-name 'ansible.builtin.service_facts'
 # Run 'synth' to generate playbooks and inventory
