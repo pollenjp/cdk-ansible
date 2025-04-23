@@ -24,8 +24,10 @@ cdk-ansible-macro.workspace = true
 anyhow.workspace = true
 cargo_toml.workspace = true
 clap.workspace = true
+convert_case.workspace = true
 fs-err.workspace = true
 indexmap.workspace = true
+proc-macro2.workspace = true
 quote.workspace = true
 regex.workspace = true
 semver.workspace = true
@@ -33,6 +35,7 @@ serde.workspace = true
 serde_json.workspace = true
 syn.workspace = true
 toml.workspace = true
+toml_edit.workspace = true
 
 [build-dependencies]
 cdk-ansible-static.workspace = true
@@ -83,5 +86,6 @@ shadow_same = "allow"
 shadow_unrelated = "allow"
 single_call_fn = "allow"
 single_char_lifetime_names = "allow"
+std_instead_of_alloc = "allow"
 string_add = "allow"
 string_add_assign = "allow"

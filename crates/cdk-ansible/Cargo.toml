@@ -22,6 +22,7 @@ cdk-ansible-macro.workspace = true
 anyhow.workspace = true
 cargo_toml.workspace = true
 clap.workspace = true
+convert_case.workspace = true
 fs-err.workspace = true
 indexmap.workspace = true
 quote.workspace = true

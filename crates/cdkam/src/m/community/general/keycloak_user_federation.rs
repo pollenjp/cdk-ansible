@@ -1,0 +1,61 @@
+#[allow(unused_imports, reason = "Some modules may have empty `options` field")]
+use cdk_ansible::OptU;
+use cdk_ansible::TaskModule;
+use serde::Serialize;
+#[derive(Clone, Debug, Serialize)]
+pub struct Module {
+    #[serde(rename = "community.general.keycloak_user_federation")]
+    pub module: Args,
+}
+impl TaskModule for Module {}
+#[derive(Clone, Debug, Serialize)]
+pub struct Args {
+    #[serde(flatten)]
+    pub options: Opt,
+}
+#[derive(Clone, Debug, Default, Serialize)]
+#[serde(rename_all = "snake_case")]
+pub struct Opt {
+    #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
+    pub auth_client_id: OptU<String>,
+    #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
+    pub auth_client_secret: OptU<String>,
+    #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
+    pub auth_keycloak_url: OptU<String>,
+    #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
+    pub auth_password: OptU<String>,
+    #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
+    pub auth_realm: OptU<String>,
+    #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
+    pub auth_username: OptU<String>,
+    #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
+    pub bind_credential_update_mode: OptU<String>,
+    #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
+    pub config: OptU<indexmap::IndexMap<String, ::serde_json::Value>>,
+    #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
+    pub connection_timeout: OptU<i64>,
+    #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
+    pub http_agent: OptU<String>,
+    #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
+    pub id: OptU<String>,
+    #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
+    pub mappers: OptU<Vec<::serde_json::Value>>,
+    #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
+    pub name: OptU<String>,
+    #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
+    pub parent_id: OptU<String>,
+    #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
+    pub provider_id: OptU<String>,
+    #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
+    pub provider_type: OptU<String>,
+    #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
+    pub realm: OptU<String>,
+    #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
+    pub remove_unspecified_mappers: OptU<bool>,
+    #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
+    pub state: OptU<String>,
+    #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
+    pub token: OptU<String>,
+    #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
+    pub validate_certs: OptU<bool>,
+}

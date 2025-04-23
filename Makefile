@@ -8,9 +8,10 @@ export
 
 .PHONY: debug
 debug:
-	${UV_RUN} cargo run --package cdk-ansible-cli -- module \
-			--output-dir "${RS_OUT_DIR}" \
-			--module-name-regex 'ansible.builtin.debug'
+	${UV_RUN} cargo run --package cdk-ansible-cli -- module --help
+#	${UV_RUN} cargo run --package cdk-ansible-cli -- module \
+#			--output-dir "${RS_OUT_DIR}" \
+#			--module-name-regex 'ansible.builtin.debug'
 #			--module-name-regex 'ansible\.builtin\..*'
 
 .PHONY: help
@@ -21,13 +22,20 @@ help:
 
 .PHONY: debug-module
 debug-module:
-	${UV_RUN} cargo run --package cdk-ansible -- module --output-dir "${RS_OUT_DIR}"
-#	rsync -av --delete "${RS_OUT_DIR}/" "${SAMPLE_APP_ROOT}/src/module"
+#	${UV_RUN} cargo run --package cdk-ansible-cli -- module --output-dir "${RS_OUT_DIR}"
+	${UV_RUN} cargo run --package cdk-ansible-cli -- module \
+		--output-dir './crates' \
+		--pkg-unit 'none' \
+		--module-name-regex 'ansible\.builtin\..*'
+	${UV_RUN} cargo run --package cdk-ansible-cli -- module \
+		--output-dir './crates' \
+		--pkg-unit 'none' \
+		--module-name-regex 'community\.general\..*'
 
 .PHONY: test-simple-sample
 test-simple-sample:
-	${UV_RUN} cargo run --package cdk-ansible-cli -- module --output-dir "${RS_OUT_DIR}" --module-name 'ansible.builtin.debug'
-	${UV_RUN} cargo run --package cdk-ansible-cli -- module --output-dir "${RS_OUT_DIR}" --module-name 'ansible.builtin.service_facts'
+	${UV_RUN} cargo run --package cdk-ansible-cli -- module --pkg-prefix 'sample_cdkam' --output-dir "${RS_OUT_DIR}" --module-name 'ansible.builtin.debug'
+	${UV_RUN} cargo run --package cdk-ansible-cli -- module --pkg-prefix 'sample_cdkam' --output-dir "${RS_OUT_DIR}" --module-name 'ansible.builtin.service_facts'
 # Run 'synth' to generate playbooks and inventory
 	RUST_BACKTRACE=1 cargo run --package simple-sample -- synth --output-dir "${SAMPLE_ANSIBLE_ROOT}"
 # Convert json to yaml by yq

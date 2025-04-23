@@ -1,0 +1,27 @@
+{
+  // cdk-ansible-rs
+  "folders": [
+    {
+      "path": "./crates/cdkam"
+    },
+    {
+      "name": "root",
+      "path": "."
+    },
+  ],
+  "settings": {
+    "files.exclude": {
+      "**/target/": true,
+    },
+    "search.exclude": {
+      "**/target/": true
+    },
+    "rust-analyzer.cargo.extraEnv": {
+    },
+    "rust-analyzer.cargo.features": [
+      "ansible-builtin"
+    ],
+    // ansible plugin requires python interpreter path at the top of the workspace folders
+    "ansible.python.interpreterPath": ".venv/bin/python",
+  }
+}

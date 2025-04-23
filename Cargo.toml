@@ -15,32 +15,35 @@ license = "MIT"
 keywords = ["ansible", "cdk", "cdk-ansible"]
 
 [workspace.dependencies]
-cdk-ansible = { path = "crates/cdk-ansible" }
-cdk-ansible-cli = { path = "crates/cdk-ansible-cli" }
+cdk-ansible = { version = "0.0.19", path = "crates/cdk-ansible" }
+cdk-ansible-cli = { version = "0.0.19", path = "crates/cdk-ansible-cli" }
 cdk-ansible-core = { version = "0.0.9", path = "crates/cdk-ansible-core" }
 cdk-ansible-static = { version = "0.0.2", path = "crates/cdk-ansible-static" }
 cdk-ansible-macro = { version = "0.0.4", path = "crates/cdk-ansible-macro" }
 cdkam = { path = "crates/cdkam" }
 
 anyhow = { version = "1.0.95" }
-cargo_toml = "0.21.0"
+cargo_toml = "0.22.1"
 clap = { version = "4.5.21", features = [
     "derive",
     "env",
     "string",
     "wrap_help",
 ] }
+convert_case = "0.8.0"
 dyn-clone = "1.0.17"
 erased-serde = "0.4.5"
 fs-err = "3.0.0"
 indexmap = { version = "2.7.1", features = ["serde"] }
+proc-macro2 = "1.0.95"
 regex = "1.11.1"
 quote = "1.0.37"
 semver = "1.0.25"
 serde = { version = "1.0.217", features = ["derive"] }
 serde_json = { version = "1.0.138", features = ["preserve_order"] }
 syn = { version = "2.0.90", features = ["full"] }
-toml = "0.8.19"
+toml = "0.8.20"
+toml_edit = "0.22.24"
 
 [workspace.lints.rust]
 
