@@ -58,7 +58,7 @@ build:
 	cargo build --package cdk-ansible-cli
 	cargo build --package cdk-ansible
 # examples
-	cargo build --package cdkam_ansible
+	cargo build --package sample_cdkam_ansible
 	cargo build --package simple-sample
 
 .PHONY: build-release
