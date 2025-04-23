@@ -152,12 +152,18 @@ impl AnsibleModuleName {
         format!("{}.{}.{}", self.namespace, self.collection, self.module)
     }
 
-    /// e.g. '<pkg_prefix>_<namespace>', '<pkg_prefix>_<namespace>_<collection>', '<pkg_prefix>_<namespace>_<collection>_<module>'
-    pub fn pkg_name(&self, pkg_prefix: &str, pkg_unit: &PkgUnit) -> String {
+    /// e.g.
+    /// - `<pkg_prefix>_<namespace>`,
+    /// - `<pkg_prefix>_<namespace>_<collection>`,
+    /// - `<pkg_prefix>_<namespace>_<collection>_<module>`
+    pub fn pkg_name(&self, pkg_prefix: &str, pkg_unit: Option<&PkgUnit>) -> String {
         match pkg_unit {
-            PkgUnit::Namespace => format!("{}_{}", pkg_prefix, self.namespace),
-            PkgUnit::Collection => format!("{}_{}_{}", pkg_prefix, self.namespace, self.collection),
-            PkgUnit::Module => format!(
+            None => pkg_prefix.to_owned(),
+            Some(&PkgUnit::Namespace) => format!("{}_{}", pkg_prefix, self.namespace),
+            Some(&PkgUnit::Collection) => {
+                format!("{}_{}_{}", pkg_prefix, self.namespace, self.collection)
+            }
+            Some(&PkgUnit::Module) => format!(
                 "{}_{}_{}_{}",
                 pkg_prefix, self.namespace, self.collection, self.module
             ),
@@ -166,8 +172,8 @@ impl AnsibleModuleName {
 
     /// e.g. 'ansible-builtin-debug'
     pub fn feature_name(&self, pkg_unit: &PkgUnit) -> String {
-        match pkg_unit {
-            PkgUnit::Namespace => format!("{}", self.namespace),
+        match *pkg_unit {
+            PkgUnit::Namespace => self.namespace.clone(),
             PkgUnit::Collection => format!("{}-{}", self.namespace, self.collection),
             PkgUnit::Module => format!("{}-{}-{}", self.namespace, self.collection, self.module),
         }
@@ -213,10 +219,7 @@ fn create_rust_package_project(
     module_json: &AnsModuleJson,
 ) -> Result<()> {
     let result: Result<()> = {
-        let pkg_name = match pkg_unit {
-            None => pkg_prefix.to_owned(),
-            Some(u) => am_name.pkg_name(pkg_prefix, u),
-        };
+        let pkg_name = am_name.pkg_name(pkg_prefix, pkg_unit);
         let pkg_dir = base_dir.join(&pkg_name);
         let src_dir = pkg_dir.join("src");
         let lib_rs_path = src_dir.join("lib.rs");
@@ -296,6 +299,7 @@ fn create_or_edit_cargo_toml(
 
     // FIXME: some values should be configurable
     //
+    // ```Cargo.toml
     // [package]
     // edition = "2021"
     // name = "cdkam_ansible"
@@ -306,6 +310,7 @@ fn create_or_edit_cargo_toml(
     // indexmap = { version = "2.7.1", features = ["serde"] }
     // serde = { version = "1.0.217", features = ["derive"] }
     // serde_json = { version = "1.0.138", features = ["preserve_order"] }
+    // ```
 
     if !cargo_toml_path.exists() {
         let mut manifest = ::cargo_toml::Manifest::from_str(&format!(
