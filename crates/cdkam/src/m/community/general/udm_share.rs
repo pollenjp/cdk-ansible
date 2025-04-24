@@ -225,7 +225,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "sambaLevel2Oplocks"
     )]
-    pub samba_level2oplocks: OptU<bool>,
+    pub samba_level2_oplocks: OptU<bool>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",

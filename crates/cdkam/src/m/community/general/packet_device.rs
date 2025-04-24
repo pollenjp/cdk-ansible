@@ -117,7 +117,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "wait_for_public_IPv"
     )]
-    pub wait_for_public_i_pv: OptU<i64>,
+    pub wait_for_public_ipv: OptU<i64>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
