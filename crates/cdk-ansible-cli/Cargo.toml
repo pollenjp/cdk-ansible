@@ -78,6 +78,7 @@ missing_docs_in_private_items = "allow"
 mod_module_files = "allow"
 # FIXME: later
 print_stdout = "allow"
+pub_use = "allow"
 pub_with_shorthand = "allow"
 question_mark_used = "allow"
 self_named_module_files = "allow"
