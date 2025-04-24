@@ -23,6 +23,8 @@ mod arg;
 mod settings;
 /// Define subcommands
 mod subcommand;
+/// Define utils
+mod utils;
 /// Define version
 mod version;
 

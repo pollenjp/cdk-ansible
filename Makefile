@@ -32,22 +32,6 @@ debug-module:
 		--pkg-unit 'none' \
 		--module-name-regex 'community\.general\..*'
 
-.PHONY: test-simple-sample
-test-simple-sample:
-	${UV_RUN} cargo run --package cdk-ansible-cli -- module --pkg-prefix 'sample_cdkam' --output-dir "${RS_OUT_DIR}" --module-name 'ansible.builtin.debug'
-	${UV_RUN} cargo run --package cdk-ansible-cli -- module --pkg-prefix 'sample_cdkam' --output-dir "${RS_OUT_DIR}" --module-name 'ansible.builtin.service_facts'
-# Run 'synth' to generate playbooks and inventory
-	RUST_BACKTRACE=1 cargo run --package simple-sample -- synth --output-dir "${SAMPLE_ANSIBLE_ROOT}"
-# Convert json to yaml by yq
-	find "${SAMPLE_ANSIBLE_ROOT}/playbooks" "${SAMPLE_ANSIBLE_ROOT}/inventory" -name "*.json" \
-		| xargs -I{} bash -c \
-			'set -eu; \
-			filepath_json={}; \
-			filepath_yaml="$${filepath_json%.json}.yaml"; \
-			yq -p json -o yaml "$${filepath_json}" > "$${filepath_yaml}"'
-# Run ansible-lint
-	$(MAKE) lint-ansible
-
 .PHONY: build
 build:
 # FIXME: cargo-release may be better
@@ -67,9 +51,29 @@ build-release: ## local check
 
 .PHONY: test
 test:
-	cargo test
+	${MAKE} test-cargo
 	${MAKE} test-simple-sample
 	${MAKE} test-under-tools
+
+.PHONY: test-cargo
+test-cargo:
+	cargo test --all-features
+
+.PHONY: test-simple-sample
+test-simple-sample:
+	${UV_RUN} cargo run --package cdk-ansible-cli -- module --pkg-prefix 'sample_cdkam' --output-dir "${RS_OUT_DIR}" --module-name 'ansible.builtin.debug'
+	${UV_RUN} cargo run --package cdk-ansible-cli -- module --pkg-prefix 'sample_cdkam' --output-dir "${RS_OUT_DIR}" --module-name 'ansible.builtin.service_facts'
+# Run 'synth' to generate playbooks and inventory
+	RUST_BACKTRACE=1 cargo run --package simple-sample -- synth --output-dir "${SAMPLE_ANSIBLE_ROOT}"
+# Convert json to yaml by yq
+	find "${SAMPLE_ANSIBLE_ROOT}/playbooks" "${SAMPLE_ANSIBLE_ROOT}/inventory" -name "*.json" \
+		| xargs -I{} bash -c \
+			'set -eu; \
+			filepath_json={}; \
+			filepath_yaml="$${filepath_json%.json}.yaml"; \
+			yq -p json -o yaml "$${filepath_json}" > "$${filepath_yaml}"'
+# Run ansible-lint
+	$(MAKE) lint-ansible
 
 .PHONY: test-under-tools
 test-under-tools:

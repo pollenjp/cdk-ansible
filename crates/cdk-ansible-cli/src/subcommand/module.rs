@@ -1,5 +1,6 @@
 use crate::arg::ModuleArgs;
 use crate::settings::{ModuleSettings, PkgUnit};
+use crate::utils::ACRONYM_WITH_TWO_LOWER;
 use anyhow::{Context as _, Result, bail};
 use convert_case::{Boundary, Case, Casing as _};
 use core::fmt;
@@ -339,7 +340,11 @@ rust-version = \"1.85\"
             ),
             (
                 "indexmap".to_owned(),
-                ::cargo_toml::Dependency::Simple("2.7.1".to_owned()),
+                ::cargo_toml::Dependency::Detailed(Box::new(::cargo_toml::DependencyDetail {
+                    version: Some("2.7.1".to_owned()),
+                    features: vec!["serde".to_owned()],
+                    ..Default::default()
+                })),
             ),
             (
                 "serde".to_owned(),
@@ -697,18 +702,27 @@ fn generate_module_rs(module_json: &AnsModuleJson) -> Result<String> {
         .unwrap_or_else(IndexMap::new)
         .iter()
         .map(|(key, value)| {
-            let key_ident = format_ident!(
-                "{}",
+            let key_ident = format_ident!("{}", {
+                let mut boundary = Boundary::defaults().to_vec();
+                boundary.push(ACRONYM_WITH_TWO_LOWER); // AAbb -> a_abb (allow 'IPv4' to be 'ipv4')
                 escape_rust_reserved_keywords(
-                    &key.as_str()
+                    &key
+                        // TODO: configure variable name's replacement rules from optional args
+                        .replace('-', "_xx_")
+                        .replace('+', "_xxx_")
+                        .as_str()
                         .from_case(Case::Camel)
-                        .without_boundaries(&Boundary::digits())
-                        .to_case(Case::Snake)
+                        .with_boundaries(&boundary)
+                        .without_boundaries(&[
+                            // Boundary::UPPER_DIGIT, // A1
+                            Boundary::LOWER_DIGIT, // a1 (allow 'IPv4' to be 'ipv4')
+                            // Boundary::DIGIT_LOWER, // 1a
+                            // Boundary::DIGIT_UPPER, // 1A
+                            Boundary::ACRONYM, // AAa (I don't expect 'IPv4' to 'i_pv4')
+                        ])
+                        .to_case(Case::Snake),
                 )
-                // TODO: configure variable name's replacement rules from optional args
-                .replace('-', "_xx_")
-                .replace('+', "_xxx_")
-            );
+            });
             let type_ident = syn::parse_str::<syn::Type>(
                 match value
                     .type_
@@ -728,10 +742,12 @@ fn generate_module_rs(module_json: &AnsModuleJson) -> Result<String> {
                 },
             )
             .with_context(|| format!("failed to parse type: {:?}", value.type_))?;
+            let raw_key_ident = key.to_owned();
             Ok(quote! {
                 #[serde(
                     default = "OptU::default",
-                    skip_serializing_if = "OptU::is_unset"
+                    skip_serializing_if = "OptU::is_unset",
+                    rename = #raw_key_ident
                 )]
                 pub #key_ident: #type_ident,
             })
