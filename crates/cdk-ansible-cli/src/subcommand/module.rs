@@ -340,7 +340,11 @@ rust-version = \"1.85\"
             ),
             (
                 "indexmap".to_owned(),
-                ::cargo_toml::Dependency::Simple("2.7.1".to_owned()),
+                ::cargo_toml::Dependency::Detailed(Box::new(::cargo_toml::DependencyDetail {
+                    version: Some("2.7.1".to_owned()),
+                    features: vec!["serde".to_owned()],
+                    ..Default::default()
+                })),
             ),
             (
                 "serde".to_owned(),
