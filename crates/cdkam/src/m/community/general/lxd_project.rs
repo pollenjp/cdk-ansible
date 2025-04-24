@@ -16,26 +16,70 @@ pub struct Args {
 #[derive(Clone, Debug, Default, Serialize)]
 #[serde(rename_all = "snake_case")]
 pub struct Opt {
-    #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
+    #[serde(
+        default = "OptU::default",
+        skip_serializing_if = "OptU::is_unset",
+        rename = "client_cert"
+    )]
     pub client_cert: OptU<std::path::PathBuf>,
-    #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
+    #[serde(
+        default = "OptU::default",
+        skip_serializing_if = "OptU::is_unset",
+        rename = "client_key"
+    )]
     pub client_key: OptU<std::path::PathBuf>,
-    #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
+    #[serde(
+        default = "OptU::default",
+        skip_serializing_if = "OptU::is_unset",
+        rename = "config"
+    )]
     pub config: OptU<indexmap::IndexMap<String, ::serde_json::Value>>,
-    #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
+    #[serde(
+        default = "OptU::default",
+        skip_serializing_if = "OptU::is_unset",
+        rename = "description"
+    )]
     pub description: OptU<String>,
-    #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
+    #[serde(
+        default = "OptU::default",
+        skip_serializing_if = "OptU::is_unset",
+        rename = "merge_project"
+    )]
     pub merge_project: OptU<bool>,
-    #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
+    #[serde(
+        default = "OptU::default",
+        skip_serializing_if = "OptU::is_unset",
+        rename = "name"
+    )]
     pub name: OptU<String>,
-    #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
+    #[serde(
+        default = "OptU::default",
+        skip_serializing_if = "OptU::is_unset",
+        rename = "new_name"
+    )]
     pub new_name: OptU<String>,
-    #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
+    #[serde(
+        default = "OptU::default",
+        skip_serializing_if = "OptU::is_unset",
+        rename = "snap_url"
+    )]
     pub snap_url: OptU<String>,
-    #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
+    #[serde(
+        default = "OptU::default",
+        skip_serializing_if = "OptU::is_unset",
+        rename = "state"
+    )]
     pub state: OptU<String>,
-    #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
+    #[serde(
+        default = "OptU::default",
+        skip_serializing_if = "OptU::is_unset",
+        rename = "trust_password"
+    )]
     pub trust_password: OptU<String>,
-    #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
+    #[serde(
+        default = "OptU::default",
+        skip_serializing_if = "OptU::is_unset",
+        rename = "url"
+    )]
     pub url: OptU<String>,
 }

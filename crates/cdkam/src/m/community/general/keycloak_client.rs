@@ -16,109 +16,317 @@ pub struct Args {
 #[derive(Clone, Debug, Default, Serialize)]
 #[serde(rename_all = "snake_case")]
 pub struct Opt {
-    #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
+    #[serde(
+        default = "OptU::default",
+        skip_serializing_if = "OptU::is_unset",
+        rename = "admin_url"
+    )]
     pub admin_url: OptU<String>,
-    #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
+    #[serde(
+        default = "OptU::default",
+        skip_serializing_if = "OptU::is_unset",
+        rename = "always_display_in_console"
+    )]
     pub always_display_in_console: OptU<bool>,
-    #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
+    #[serde(
+        default = "OptU::default",
+        skip_serializing_if = "OptU::is_unset",
+        rename = "attributes"
+    )]
     pub attributes: OptU<indexmap::IndexMap<String, ::serde_json::Value>>,
-    #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
+    #[serde(
+        default = "OptU::default",
+        skip_serializing_if = "OptU::is_unset",
+        rename = "auth_client_id"
+    )]
     pub auth_client_id: OptU<String>,
-    #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
+    #[serde(
+        default = "OptU::default",
+        skip_serializing_if = "OptU::is_unset",
+        rename = "auth_client_secret"
+    )]
     pub auth_client_secret: OptU<String>,
-    #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
+    #[serde(
+        default = "OptU::default",
+        skip_serializing_if = "OptU::is_unset",
+        rename = "auth_keycloak_url"
+    )]
     pub auth_keycloak_url: OptU<String>,
-    #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
+    #[serde(
+        default = "OptU::default",
+        skip_serializing_if = "OptU::is_unset",
+        rename = "auth_password"
+    )]
     pub auth_password: OptU<String>,
-    #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
+    #[serde(
+        default = "OptU::default",
+        skip_serializing_if = "OptU::is_unset",
+        rename = "auth_realm"
+    )]
     pub auth_realm: OptU<String>,
-    #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
+    #[serde(
+        default = "OptU::default",
+        skip_serializing_if = "OptU::is_unset",
+        rename = "auth_username"
+    )]
     pub auth_username: OptU<String>,
-    #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
+    #[serde(
+        default = "OptU::default",
+        skip_serializing_if = "OptU::is_unset",
+        rename = "authentication_flow_binding_overrides"
+    )]
     pub authentication_flow_binding_overrides:
         OptU<indexmap::IndexMap<String, ::serde_json::Value>>,
-    #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
+    #[serde(
+        default = "OptU::default",
+        skip_serializing_if = "OptU::is_unset",
+        rename = "authorization_services_enabled"
+    )]
     pub authorization_services_enabled: OptU<bool>,
-    #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
+    #[serde(
+        default = "OptU::default",
+        skip_serializing_if = "OptU::is_unset",
+        rename = "authorization_settings"
+    )]
     pub authorization_settings: OptU<indexmap::IndexMap<String, ::serde_json::Value>>,
-    #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
+    #[serde(
+        default = "OptU::default",
+        skip_serializing_if = "OptU::is_unset",
+        rename = "base_url"
+    )]
     pub base_url: OptU<String>,
-    #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
+    #[serde(
+        default = "OptU::default",
+        skip_serializing_if = "OptU::is_unset",
+        rename = "bearer_only"
+    )]
     pub bearer_only: OptU<bool>,
-    #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
+    #[serde(
+        default = "OptU::default",
+        skip_serializing_if = "OptU::is_unset",
+        rename = "client_authenticator_type"
+    )]
     pub client_authenticator_type: OptU<String>,
-    #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
+    #[serde(
+        default = "OptU::default",
+        skip_serializing_if = "OptU::is_unset",
+        rename = "client_id"
+    )]
     pub client_id: OptU<String>,
-    #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
+    #[serde(
+        default = "OptU::default",
+        skip_serializing_if = "OptU::is_unset",
+        rename = "client_template"
+    )]
     pub client_template: OptU<String>,
-    #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
+    #[serde(
+        default = "OptU::default",
+        skip_serializing_if = "OptU::is_unset",
+        rename = "connection_timeout"
+    )]
     pub connection_timeout: OptU<i64>,
-    #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
+    #[serde(
+        default = "OptU::default",
+        skip_serializing_if = "OptU::is_unset",
+        rename = "consent_required"
+    )]
     pub consent_required: OptU<bool>,
-    #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
+    #[serde(
+        default = "OptU::default",
+        skip_serializing_if = "OptU::is_unset",
+        rename = "default_client_scopes"
+    )]
     pub default_client_scopes: OptU<Vec<::serde_json::Value>>,
-    #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
+    #[serde(
+        default = "OptU::default",
+        skip_serializing_if = "OptU::is_unset",
+        rename = "default_roles"
+    )]
     pub default_roles: OptU<Vec<::serde_json::Value>>,
-    #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
+    #[serde(
+        default = "OptU::default",
+        skip_serializing_if = "OptU::is_unset",
+        rename = "description"
+    )]
     pub description: OptU<String>,
-    #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
+    #[serde(
+        default = "OptU::default",
+        skip_serializing_if = "OptU::is_unset",
+        rename = "direct_access_grants_enabled"
+    )]
     pub direct_access_grants_enabled: OptU<bool>,
-    #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
+    #[serde(
+        default = "OptU::default",
+        skip_serializing_if = "OptU::is_unset",
+        rename = "enabled"
+    )]
     pub enabled: OptU<bool>,
-    #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
+    #[serde(
+        default = "OptU::default",
+        skip_serializing_if = "OptU::is_unset",
+        rename = "frontchannel_logout"
+    )]
     pub frontchannel_logout: OptU<bool>,
-    #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
+    #[serde(
+        default = "OptU::default",
+        skip_serializing_if = "OptU::is_unset",
+        rename = "full_scope_allowed"
+    )]
     pub full_scope_allowed: OptU<bool>,
-    #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
+    #[serde(
+        default = "OptU::default",
+        skip_serializing_if = "OptU::is_unset",
+        rename = "http_agent"
+    )]
     pub http_agent: OptU<String>,
-    #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
+    #[serde(
+        default = "OptU::default",
+        skip_serializing_if = "OptU::is_unset",
+        rename = "id"
+    )]
     pub id: OptU<String>,
-    #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
+    #[serde(
+        default = "OptU::default",
+        skip_serializing_if = "OptU::is_unset",
+        rename = "implicit_flow_enabled"
+    )]
     pub implicit_flow_enabled: OptU<bool>,
-    #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
+    #[serde(
+        default = "OptU::default",
+        skip_serializing_if = "OptU::is_unset",
+        rename = "name"
+    )]
     pub name: OptU<String>,
-    #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
+    #[serde(
+        default = "OptU::default",
+        skip_serializing_if = "OptU::is_unset",
+        rename = "node_re_registration_timeout"
+    )]
     pub node_re_registration_timeout: OptU<i64>,
-    #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
+    #[serde(
+        default = "OptU::default",
+        skip_serializing_if = "OptU::is_unset",
+        rename = "not_before"
+    )]
     pub not_before: OptU<i64>,
-    #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
+    #[serde(
+        default = "OptU::default",
+        skip_serializing_if = "OptU::is_unset",
+        rename = "optional_client_scopes"
+    )]
     pub optional_client_scopes: OptU<Vec<::serde_json::Value>>,
-    #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
+    #[serde(
+        default = "OptU::default",
+        skip_serializing_if = "OptU::is_unset",
+        rename = "protocol"
+    )]
     pub protocol: OptU<String>,
-    #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
+    #[serde(
+        default = "OptU::default",
+        skip_serializing_if = "OptU::is_unset",
+        rename = "protocol_mappers"
+    )]
     pub protocol_mappers: OptU<Vec<::serde_json::Value>>,
-    #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
+    #[serde(
+        default = "OptU::default",
+        skip_serializing_if = "OptU::is_unset",
+        rename = "public_client"
+    )]
     pub public_client: OptU<bool>,
-    #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
+    #[serde(
+        default = "OptU::default",
+        skip_serializing_if = "OptU::is_unset",
+        rename = "realm"
+    )]
     pub realm: OptU<String>,
-    #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
+    #[serde(
+        default = "OptU::default",
+        skip_serializing_if = "OptU::is_unset",
+        rename = "redirect_uris"
+    )]
     pub redirect_uris: OptU<Vec<::serde_json::Value>>,
-    #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
+    #[serde(
+        default = "OptU::default",
+        skip_serializing_if = "OptU::is_unset",
+        rename = "registered_nodes"
+    )]
     pub registered_nodes: OptU<indexmap::IndexMap<String, ::serde_json::Value>>,
-    #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
+    #[serde(
+        default = "OptU::default",
+        skip_serializing_if = "OptU::is_unset",
+        rename = "registration_access_token"
+    )]
     pub registration_access_token: OptU<String>,
-    #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
+    #[serde(
+        default = "OptU::default",
+        skip_serializing_if = "OptU::is_unset",
+        rename = "root_url"
+    )]
     pub root_url: OptU<String>,
-    #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
+    #[serde(
+        default = "OptU::default",
+        skip_serializing_if = "OptU::is_unset",
+        rename = "secret"
+    )]
     pub secret: OptU<String>,
-    #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
+    #[serde(
+        default = "OptU::default",
+        skip_serializing_if = "OptU::is_unset",
+        rename = "service_accounts_enabled"
+    )]
     pub service_accounts_enabled: OptU<bool>,
-    #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
+    #[serde(
+        default = "OptU::default",
+        skip_serializing_if = "OptU::is_unset",
+        rename = "standard_flow_enabled"
+    )]
     pub standard_flow_enabled: OptU<bool>,
-    #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
+    #[serde(
+        default = "OptU::default",
+        skip_serializing_if = "OptU::is_unset",
+        rename = "state"
+    )]
     pub state: OptU<String>,
-    #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
+    #[serde(
+        default = "OptU::default",
+        skip_serializing_if = "OptU::is_unset",
+        rename = "surrogate_auth_required"
+    )]
     pub surrogate_auth_required: OptU<bool>,
-    #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
+    #[serde(
+        default = "OptU::default",
+        skip_serializing_if = "OptU::is_unset",
+        rename = "token"
+    )]
     pub token: OptU<String>,
-    #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
+    #[serde(
+        default = "OptU::default",
+        skip_serializing_if = "OptU::is_unset",
+        rename = "use_template_config"
+    )]
     pub use_template_config: OptU<bool>,
-    #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
+    #[serde(
+        default = "OptU::default",
+        skip_serializing_if = "OptU::is_unset",
+        rename = "use_template_mappers"
+    )]
     pub use_template_mappers: OptU<bool>,
-    #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
+    #[serde(
+        default = "OptU::default",
+        skip_serializing_if = "OptU::is_unset",
+        rename = "use_template_scope"
+    )]
     pub use_template_scope: OptU<bool>,
-    #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
+    #[serde(
+        default = "OptU::default",
+        skip_serializing_if = "OptU::is_unset",
+        rename = "validate_certs"
+    )]
     pub validate_certs: OptU<bool>,
-    #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
+    #[serde(
+        default = "OptU::default",
+        skip_serializing_if = "OptU::is_unset",
+        rename = "web_origins"
+    )]
     pub web_origins: OptU<Vec<::serde_json::Value>>,
 }

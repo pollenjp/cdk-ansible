@@ -16,58 +16,166 @@ pub struct Args {
 #[derive(Clone, Debug, Default, Serialize)]
 #[serde(rename_all = "snake_case")]
 pub struct Opt {
-    #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
+    #[serde(
+        default = "OptU::default",
+        skip_serializing_if = "OptU::is_unset",
+        rename = "admin_pass"
+    )]
     pub admin_pass: OptU<String>,
-    #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
+    #[serde(
+        default = "OptU::default",
+        skip_serializing_if = "OptU::is_unset",
+        rename = "availability_zone"
+    )]
     pub availability_zone: OptU<String>,
-    #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
+    #[serde(
+        default = "OptU::default",
+        skip_serializing_if = "OptU::is_unset",
+        rename = "data_volumes"
+    )]
     pub data_volumes: OptU<Vec<::serde_json::Value>>,
-    #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
+    #[serde(
+        default = "OptU::default",
+        skip_serializing_if = "OptU::is_unset",
+        rename = "description"
+    )]
     pub description: OptU<String>,
-    #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
+    #[serde(
+        default = "OptU::default",
+        skip_serializing_if = "OptU::is_unset",
+        rename = "domain"
+    )]
     pub domain: OptU<String>,
-    #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
+    #[serde(
+        default = "OptU::default",
+        skip_serializing_if = "OptU::is_unset",
+        rename = "eip_id"
+    )]
     pub eip_id: OptU<String>,
-    #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
+    #[serde(
+        default = "OptU::default",
+        skip_serializing_if = "OptU::is_unset",
+        rename = "enable_auto_recovery"
+    )]
     pub enable_auto_recovery: OptU<bool>,
-    #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
+    #[serde(
+        default = "OptU::default",
+        skip_serializing_if = "OptU::is_unset",
+        rename = "enterprise_project_id"
+    )]
     pub enterprise_project_id: OptU<String>,
-    #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
+    #[serde(
+        default = "OptU::default",
+        skip_serializing_if = "OptU::is_unset",
+        rename = "flavor_name"
+    )]
     pub flavor_name: OptU<String>,
-    #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
+    #[serde(
+        default = "OptU::default",
+        skip_serializing_if = "OptU::is_unset",
+        rename = "id"
+    )]
     pub id: OptU<String>,
-    #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
+    #[serde(
+        default = "OptU::default",
+        skip_serializing_if = "OptU::is_unset",
+        rename = "identity_endpoint"
+    )]
     pub identity_endpoint: OptU<String>,
-    #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
+    #[serde(
+        default = "OptU::default",
+        skip_serializing_if = "OptU::is_unset",
+        rename = "image_id"
+    )]
     pub image_id: OptU<String>,
-    #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
+    #[serde(
+        default = "OptU::default",
+        skip_serializing_if = "OptU::is_unset",
+        rename = "name"
+    )]
     pub name: OptU<String>,
-    #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
+    #[serde(
+        default = "OptU::default",
+        skip_serializing_if = "OptU::is_unset",
+        rename = "nics"
+    )]
     pub nics: OptU<Vec<::serde_json::Value>>,
-    #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
+    #[serde(
+        default = "OptU::default",
+        skip_serializing_if = "OptU::is_unset",
+        rename = "password"
+    )]
     pub password: OptU<String>,
-    #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
+    #[serde(
+        default = "OptU::default",
+        skip_serializing_if = "OptU::is_unset",
+        rename = "project"
+    )]
     pub project: OptU<String>,
-    #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
+    #[serde(
+        default = "OptU::default",
+        skip_serializing_if = "OptU::is_unset",
+        rename = "region"
+    )]
     pub region: OptU<String>,
-    #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
+    #[serde(
+        default = "OptU::default",
+        skip_serializing_if = "OptU::is_unset",
+        rename = "root_volume"
+    )]
     pub root_volume: OptU<indexmap::IndexMap<String, ::serde_json::Value>>,
-    #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
+    #[serde(
+        default = "OptU::default",
+        skip_serializing_if = "OptU::is_unset",
+        rename = "security_groups"
+    )]
     pub security_groups: OptU<Vec<::serde_json::Value>>,
-    #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
+    #[serde(
+        default = "OptU::default",
+        skip_serializing_if = "OptU::is_unset",
+        rename = "server_metadata"
+    )]
     pub server_metadata: OptU<indexmap::IndexMap<String, ::serde_json::Value>>,
-    #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
+    #[serde(
+        default = "OptU::default",
+        skip_serializing_if = "OptU::is_unset",
+        rename = "server_tags"
+    )]
     pub server_tags: OptU<indexmap::IndexMap<String, ::serde_json::Value>>,
-    #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
+    #[serde(
+        default = "OptU::default",
+        skip_serializing_if = "OptU::is_unset",
+        rename = "ssh_key_name"
+    )]
     pub ssh_key_name: OptU<String>,
-    #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
+    #[serde(
+        default = "OptU::default",
+        skip_serializing_if = "OptU::is_unset",
+        rename = "state"
+    )]
     pub state: OptU<String>,
-    #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
+    #[serde(
+        default = "OptU::default",
+        skip_serializing_if = "OptU::is_unset",
+        rename = "timeouts"
+    )]
     pub timeouts: OptU<indexmap::IndexMap<String, ::serde_json::Value>>,
-    #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
+    #[serde(
+        default = "OptU::default",
+        skip_serializing_if = "OptU::is_unset",
+        rename = "user"
+    )]
     pub user: OptU<String>,
-    #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
+    #[serde(
+        default = "OptU::default",
+        skip_serializing_if = "OptU::is_unset",
+        rename = "user_data"
+    )]
     pub user_data: OptU<String>,
-    #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
+    #[serde(
+        default = "OptU::default",
+        skip_serializing_if = "OptU::is_unset",
+        rename = "vpc_id"
+    )]
     pub vpc_id: OptU<String>,
 }

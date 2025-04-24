@@ -16,36 +16,100 @@ pub struct Args {
 #[derive(Clone, Debug, Default, Serialize)]
 #[serde(rename_all = "snake_case")]
 pub struct Opt {
-    #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
+    #[serde(
+        default = "OptU::default",
+        skip_serializing_if = "OptU::is_unset",
+        rename = "attributes"
+    )]
     pub attributes: OptU<String>,
-    #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
+    #[serde(
+        default = "OptU::default",
+        skip_serializing_if = "OptU::is_unset",
+        rename = "dest"
+    )]
     pub dest: OptU<std::path::PathBuf>,
-    #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
+    #[serde(
+        default = "OptU::default",
+        skip_serializing_if = "OptU::is_unset",
+        rename = "exclude_path"
+    )]
     pub exclude_path: OptU<Vec<::serde_json::Value>>,
-    #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
+    #[serde(
+        default = "OptU::default",
+        skip_serializing_if = "OptU::is_unset",
+        rename = "exclusion_patterns"
+    )]
     pub exclusion_patterns: OptU<Vec<::serde_json::Value>>,
-    #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
+    #[serde(
+        default = "OptU::default",
+        skip_serializing_if = "OptU::is_unset",
+        rename = "force_archive"
+    )]
     pub force_archive: OptU<bool>,
-    #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
+    #[serde(
+        default = "OptU::default",
+        skip_serializing_if = "OptU::is_unset",
+        rename = "format"
+    )]
     pub format: OptU<String>,
-    #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
+    #[serde(
+        default = "OptU::default",
+        skip_serializing_if = "OptU::is_unset",
+        rename = "group"
+    )]
     pub group: OptU<String>,
-    #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
+    #[serde(
+        default = "OptU::default",
+        skip_serializing_if = "OptU::is_unset",
+        rename = "mode"
+    )]
     pub mode: OptU<String>,
-    #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
+    #[serde(
+        default = "OptU::default",
+        skip_serializing_if = "OptU::is_unset",
+        rename = "owner"
+    )]
     pub owner: OptU<String>,
-    #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
+    #[serde(
+        default = "OptU::default",
+        skip_serializing_if = "OptU::is_unset",
+        rename = "path"
+    )]
     pub path: OptU<Vec<::serde_json::Value>>,
-    #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
+    #[serde(
+        default = "OptU::default",
+        skip_serializing_if = "OptU::is_unset",
+        rename = "remove"
+    )]
     pub remove: OptU<bool>,
-    #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
+    #[serde(
+        default = "OptU::default",
+        skip_serializing_if = "OptU::is_unset",
+        rename = "selevel"
+    )]
     pub selevel: OptU<String>,
-    #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
+    #[serde(
+        default = "OptU::default",
+        skip_serializing_if = "OptU::is_unset",
+        rename = "serole"
+    )]
     pub serole: OptU<String>,
-    #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
+    #[serde(
+        default = "OptU::default",
+        skip_serializing_if = "OptU::is_unset",
+        rename = "setype"
+    )]
     pub setype: OptU<String>,
-    #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
+    #[serde(
+        default = "OptU::default",
+        skip_serializing_if = "OptU::is_unset",
+        rename = "seuser"
+    )]
     pub seuser: OptU<String>,
-    #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
+    #[serde(
+        default = "OptU::default",
+        skip_serializing_if = "OptU::is_unset",
+        rename = "unsafe_writes"
+    )]
     pub unsafe_writes: OptU<bool>,
 }

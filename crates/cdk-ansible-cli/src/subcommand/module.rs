@@ -728,10 +728,12 @@ fn generate_module_rs(module_json: &AnsModuleJson) -> Result<String> {
                 },
             )
             .with_context(|| format!("failed to parse type: {:?}", value.type_))?;
+            let raw_key_ident = key.to_owned();
             Ok(quote! {
                 #[serde(
                     default = "OptU::default",
-                    skip_serializing_if = "OptU::is_unset"
+                    skip_serializing_if = "OptU::is_unset",
+                    rename = #raw_key_ident
                 )]
                 pub #key_ident: #type_ident,
             })
