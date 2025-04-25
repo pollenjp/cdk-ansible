@@ -507,7 +507,7 @@ fn create_lib_rs(
     }
     .context("failed to parse pub use target path")?;
     let content = quote! {
-        pub mod #sub_mod_path;
+        mod #sub_mod_path;
         pub use #pub_use_target_path::*;
     };
     let lib_dir = lib_rs_path
