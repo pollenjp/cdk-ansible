@@ -20,17 +20,16 @@ help:
 	RUST_BACKTRACE=1 cargo run --package simple-sample -- synth --help
 #	${UV_RUN} cargo run --package cdk-ansible -- module --help
 
-.PHONY: debug-module
-debug-module:
-#	${UV_RUN} cargo run --package cdk-ansible-cli -- module --output-dir "${RS_OUT_DIR}"
-	${UV_RUN} cargo run --package cdk-ansible-cli -- module \
-		--output-dir './crates' \
-		--pkg-unit 'none' \
-		--module-name-regex 'ansible\.builtin\..*'
-	${UV_RUN} cargo run --package cdk-ansible-cli -- module \
-		--output-dir './crates' \
-		--pkg-unit 'none' \
-		--module-name-regex 'community\.general\..*'
+CDKAM_GEN_CMD := ${UV_RUN} cargo run --package cdk-ansible-cli \
+	module \
+	--output-dir './crates' \
+	--pkg-unit 'none'
+
+.PHONY: cdkam
+cdkam:  ## utility to generate cdkam modules (manual editing required afterwards)
+	${CDKAM_GEN_CMD} --module-name-regex 'ansible\.builtin\..*'
+	${CDKAM_GEN_CMD} --module-name-regex 'ansible\.posix\..*'
+	${CDKAM_GEN_CMD} --module-name-regex 'community\.general\..*'
 
 .PHONY: build
 build:
