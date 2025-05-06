@@ -54,7 +54,8 @@ pub(crate) fn synth(synthesizer: &dyn Synthesizer, args: SynthArgs) -> Result<()
     })?;
     std::fs::write(
         &inventory_file,
-        serde_json::to_string(&inventory.root)
+        inventory
+            .dump_json()
             .with_context(|| format!("Failed to serialize inventory: {:?}", &inventory_file))?,
     )
     .with_context(|| format!("Failed to write inventory file: {:?}", &inventory_file))?;

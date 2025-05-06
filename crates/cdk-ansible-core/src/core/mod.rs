@@ -8,6 +8,12 @@ pub struct Inventory {
     pub root: InventoryRoot,
 }
 
+impl Inventory {
+    pub fn dump_json(&self) -> serde_json::Result<String> {
+        serde_json::to_string(&self.root)
+    }
+}
+
 #[derive(Default, Debug, Clone, PartialEq, Serialize)]
 pub struct InventoryRoot {
     pub all: Child,

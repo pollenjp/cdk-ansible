@@ -1,6 +1,5 @@
 #![allow(clippy::expect_used, reason = "fix later")]
 #![allow(clippy::unwrap_used, reason = "fix later")]
-#![allow(clippy::single_call_fn, reason = "fix later")]
 #![allow(clippy::absolute_paths, reason = "fix later")]
 
 use anyhow::bail;

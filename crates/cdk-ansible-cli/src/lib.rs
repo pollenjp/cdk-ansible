@@ -41,7 +41,6 @@ struct Options {
 }
 
 /// Load [`Options`] from a app config file
-#[expect(clippy::single_call_fn, reason = "better readability")]
 fn read_file(path: &Path) -> Result<Options> {
     let _content =
         fs_err::read_to_string(path).context(format!("Failed to read file: {}", path.display()))?;
@@ -57,7 +56,6 @@ struct FilesystemOptions(Options);
 
 impl FilesystemOptions {
     /// Load [`FilesystemOptions`] from a app config file
-    #[expect(clippy::single_call_fn, reason = "better readability")]
     pub fn from_file(file: &Path) -> Result<Self> {
         let options: Options = read_file(file)?;
         Ok(Self(options))
