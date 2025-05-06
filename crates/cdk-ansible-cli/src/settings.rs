@@ -14,7 +14,6 @@ pub struct GlobalSettings {
 
 impl GlobalSettings {
     /// Convert the command line arguments to the settings
-    #[expect(clippy::single_call_fn, reason = "better readability")]
     pub const fn resolve(args: &arg::GlobalArgs) -> Self {
         Self {
             quiet: args.quiet,

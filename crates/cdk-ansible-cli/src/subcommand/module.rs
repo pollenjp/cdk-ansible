@@ -212,7 +212,6 @@ impl fmt::Display for AnsibleModuleName {
 ///                    |-- mod.rs
 ///                    |-- <module>.rs
 ///
-#[expect(clippy::single_call_fn, reason = "better readability")]
 fn create_rust_package_project(
     pkg_unit: Option<&PkgUnit>,
     pkg_prefix: &str,
@@ -291,7 +290,6 @@ fn create_rust_package_project(
 ///
 /// Returns a `Result` with the result of the subcommand.
 ///
-#[expect(clippy::single_call_fn, reason = "better readability")]
 fn create_or_edit_cargo_toml(
     am_name: &AnsibleModuleName,
     pkg_dir: &Path,
@@ -473,7 +471,6 @@ fn add_str_and_sort_array_without_duplication(
 /// * `am_name` - [`AnsibleModuleName`]
 /// * `pkg_unit` - [`PkgUnit`]
 ///
-#[expect(clippy::single_call_fn, reason = "better readability")]
 fn create_lib_rs(
     lib_rs_path: &Path,
     am_name: &AnsibleModuleName,
@@ -596,7 +593,6 @@ fn create_mod_rs(mod_rs_path: &Path, sub_mod_name: &str, cfg_attr: Option<CfgAtt
 /// * `use_cache` - Whether to use cache
 /// * `cache_dir` - Cache directory
 ///
-#[expect(clippy::single_call_fn, reason = "better readability")]
 fn get_module_json(
     name: &AnsibleModuleName,
     use_cache: bool,
@@ -631,7 +627,6 @@ fn get_module_json(
 }
 
 /// list all ansible module names accessible by ansible-doc
-#[expect(clippy::single_call_fn, reason = "better readability")]
 fn get_ansible_modules_list() -> Result<Vec<String>> {
     let output = Command::new("ansible-doc")
         .args(["--list"])
@@ -686,7 +681,6 @@ struct AnsModuleDocOption {
 ///
 /// * `module_json` - [`ModuleJson`]
 ///
-#[expect(clippy::single_call_fn, reason = "better readability")]
 fn generate_module_rs(module_json: &AnsModuleJson) -> Result<String> {
     let Some(module_name) = module_json.keys().next() else {
         bail!("module_json does not have any key: {module_json:?}")
@@ -794,7 +788,6 @@ fn generate_module_rs(module_json: &AnsModuleJson) -> Result<String> {
 ///
 /// <https://doc.rust-lang.org/reference/keywords.html>
 ///
-#[expect(clippy::single_call_fn, reason = "better readability")]
 fn escape_rust_reserved_keywords(s: &str) -> String {
     match s {
         // Strict keywords
