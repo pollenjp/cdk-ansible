@@ -50,9 +50,8 @@ build:
 	cargo build --package cdk-ansible-core
 	cargo build --package cdk-ansible-cli
 	cargo build --package cdk-ansible
-# examples
-	cargo build --package sample_cdkam_ansible
-	cargo build --package simple-sample
+# include examples
+	cargo build --workspace
 
 .PHONY: build-release
 build-release: ## local check
