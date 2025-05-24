@@ -76,6 +76,12 @@ impl From<Vec<String>> for StringOrVecString {
     }
 }
 
+impl From<&str> for StringOrVecString {
+    fn from(value: &str) -> Self {
+        Self::String(value.to_owned())
+    }
+}
+
 /// A boolean or a string or a vector of strings
 #[derive(Serialize, Clone, Debug, PartialEq)]
 #[serde(untagged)]
@@ -126,6 +132,12 @@ impl From<PathBuf> for StringOrPath {
 impl From<String> for StringOrPath {
     fn from(value: String) -> Self {
         Self::String(value)
+    }
+}
+
+impl From<&str> for StringOrPath {
+    fn from(value: &str) -> Self {
+        Self::String(value.to_owned())
     }
 }
 
