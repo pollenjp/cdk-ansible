@@ -27,13 +27,13 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "clean"
     )]
-    pub clean: OptU<bool>,
+    pub clean: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "current_path"
     )]
-    pub current_path: OptU<std::path::PathBuf>,
+    pub current_path: OptU<::cdk_ansible::StringOrPath>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -45,13 +45,13 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "keep_releases"
     )]
-    pub keep_releases: OptU<i64>,
+    pub keep_releases: OptU<::cdk_ansible::IntOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "mode"
     )]
-    pub mode: OptU<String>,
+    pub mode: OptU<::serde_json::Value>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -63,7 +63,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "path"
     )]
-    pub path: OptU<std::path::PathBuf>,
+    pub path: OptU<::cdk_ansible::StringOrPath>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -105,7 +105,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "shared_path"
     )]
-    pub shared_path: OptU<std::path::PathBuf>,
+    pub shared_path: OptU<::cdk_ansible::StringOrPath>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -123,5 +123,5 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "unsafe_writes"
     )]
-    pub unsafe_writes: OptU<bool>,
+    pub unsafe_writes: OptU<::cdk_ansible::BoolOrString>,
 }

@@ -21,7 +21,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "data"
     )]
-    pub data: OptU<indexmap::IndexMap<String, ::serde_json::Value>>,
+    pub data: OptU<::cdk_ansible::StringOrMap>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",

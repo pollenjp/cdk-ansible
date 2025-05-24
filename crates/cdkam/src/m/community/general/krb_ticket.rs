@@ -21,13 +21,13 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "address_restricted"
     )]
-    pub address_restricted: OptU<bool>,
+    pub address_restricted: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "anonymous"
     )]
-    pub anonymous: OptU<bool>,
+    pub anonymous: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -39,37 +39,37 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "canonicalization"
     )]
-    pub canonicalization: OptU<bool>,
+    pub canonicalization: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "enterprise"
     )]
-    pub enterprise: OptU<bool>,
+    pub enterprise: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "forwardable"
     )]
-    pub forwardable: OptU<bool>,
+    pub forwardable: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "kdestroy_all"
     )]
-    pub kdestroy_all: OptU<bool>,
+    pub kdestroy_all: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "keytab"
     )]
-    pub keytab: OptU<bool>,
+    pub keytab: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "keytab_path"
     )]
-    pub keytab_path: OptU<std::path::PathBuf>,
+    pub keytab_path: OptU<::cdk_ansible::StringOrPath>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -93,7 +93,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "proxiable"
     )]
-    pub proxiable: OptU<bool>,
+    pub proxiable: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -105,7 +105,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "renewal"
     )]
-    pub renewal: OptU<bool>,
+    pub renewal: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -123,5 +123,5 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "validate"
     )]
-    pub validate: OptU<bool>,
+    pub validate: OptU<::cdk_ansible::BoolOrString>,
 }

@@ -21,7 +21,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "force"
     )]
-    pub force: OptU<bool>,
+    pub force: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -39,25 +39,31 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "pvresize"
     )]
-    pub pvresize: OptU<bool>,
+    pub pvresize: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "pvs"
     )]
-    pub pvs: OptU<Vec<::serde_json::Value>>,
+    pub pvs: OptU<::cdk_ansible::StringOrVec>,
+    #[serde(
+        default = "OptU::default",
+        skip_serializing_if = "OptU::is_unset",
+        rename = "remove_extra_pvs"
+    )]
+    pub remove_extra_pvs: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "reset_pv_uuid"
     )]
-    pub reset_pv_uuid: OptU<bool>,
+    pub reset_pv_uuid: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "reset_vg_uuid"
     )]
-    pub reset_vg_uuid: OptU<bool>,
+    pub reset_vg_uuid: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",

@@ -27,7 +27,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "fail_key"
     )]
-    pub fail_key: OptU<bool>,
+    pub fail_key: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",

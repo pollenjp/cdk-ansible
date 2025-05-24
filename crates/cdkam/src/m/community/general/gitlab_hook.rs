@@ -69,37 +69,37 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "hook_validate_certs"
     )]
-    pub hook_validate_certs: OptU<bool>,
+    pub hook_validate_certs: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "issues_events"
     )]
-    pub issues_events: OptU<bool>,
+    pub issues_events: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "job_events"
     )]
-    pub job_events: OptU<bool>,
+    pub job_events: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "merge_requests_events"
     )]
-    pub merge_requests_events: OptU<bool>,
+    pub merge_requests_events: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "note_events"
     )]
-    pub note_events: OptU<bool>,
+    pub note_events: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "pipeline_events"
     )]
-    pub pipeline_events: OptU<bool>,
+    pub pipeline_events: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -111,7 +111,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "push_events"
     )]
-    pub push_events: OptU<bool>,
+    pub push_events: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -123,7 +123,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "releases_events"
     )]
-    pub releases_events: OptU<bool>,
+    pub releases_events: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -135,7 +135,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "tag_push_events"
     )]
-    pub tag_push_events: OptU<bool>,
+    pub tag_push_events: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -147,11 +147,11 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "validate_certs"
     )]
-    pub validate_certs: OptU<bool>,
+    pub validate_certs: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "wiki_page_events"
     )]
-    pub wiki_page_events: OptU<bool>,
+    pub wiki_page_events: OptU<::cdk_ansible::BoolOrString>,
 }

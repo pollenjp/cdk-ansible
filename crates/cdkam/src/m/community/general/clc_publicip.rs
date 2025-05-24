@@ -21,7 +21,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "ports"
     )]
-    pub ports: OptU<Vec<::serde_json::Value>>,
+    pub ports: OptU<::cdk_ansible::StringOrVec>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -33,7 +33,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "server_ids"
     )]
-    pub server_ids: OptU<Vec<::serde_json::Value>>,
+    pub server_ids: OptU<::cdk_ansible::StringOrVec>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -45,5 +45,5 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "wait"
     )]
-    pub wait: OptU<bool>,
+    pub wait: OptU<::cdk_ansible::BoolOrString>,
 }

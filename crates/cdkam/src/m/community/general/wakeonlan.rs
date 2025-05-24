@@ -33,5 +33,5 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "port"
     )]
-    pub port: OptU<i64>,
+    pub port: OptU<::cdk_ansible::IntOrString>,
 }

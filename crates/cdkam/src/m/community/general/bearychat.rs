@@ -21,7 +21,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "attachments"
     )]
-    pub attachments: OptU<Vec<::serde_json::Value>>,
+    pub attachments: OptU<::cdk_ansible::StringOrVec>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -33,7 +33,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "markdown"
     )]
-    pub markdown: OptU<bool>,
+    pub markdown: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",

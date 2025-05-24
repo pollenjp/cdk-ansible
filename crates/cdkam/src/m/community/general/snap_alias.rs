@@ -21,7 +21,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "alias"
     )]
-    pub alias: OptU<Vec<::serde_json::Value>>,
+    pub alias: OptU<::cdk_ansible::StringOrVec>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",

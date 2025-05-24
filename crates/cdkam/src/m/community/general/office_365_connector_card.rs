@@ -21,7 +21,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "actions"
     )]
-    pub actions: OptU<Vec<::serde_json::Value>>,
+    pub actions: OptU<::cdk_ansible::StringOrVec>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -33,7 +33,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "sections"
     )]
-    pub sections: OptU<Vec<::serde_json::Value>>,
+    pub sections: OptU<::cdk_ansible::StringOrVec>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",

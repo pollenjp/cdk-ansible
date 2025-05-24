@@ -21,7 +21,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "lunid"
     )]
-    pub lunid: OptU<i64>,
+    pub lunid: OptU<::cdk_ansible::IntOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",

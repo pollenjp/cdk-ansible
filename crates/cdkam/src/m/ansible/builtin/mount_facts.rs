@@ -21,25 +21,25 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "devices"
     )]
-    pub devices: OptU<Vec<::serde_json::Value>>,
+    pub devices: OptU<::cdk_ansible::StringOrVec>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "fstypes"
     )]
-    pub fstypes: OptU<Vec<::serde_json::Value>>,
+    pub fstypes: OptU<::cdk_ansible::StringOrVec>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "include_aggregate_mounts"
     )]
-    pub include_aggregate_mounts: OptU<bool>,
+    pub include_aggregate_mounts: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "mount_binary"
     )]
-    pub mount_binary: OptU<String>,
+    pub mount_binary: OptU<::serde_json::Value>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -51,11 +51,11 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "sources"
     )]
-    pub sources: OptU<Vec<::serde_json::Value>>,
+    pub sources: OptU<::cdk_ansible::StringOrVec>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "timeout"
     )]
-    pub timeout: OptU<String>,
+    pub timeout: OptU<::serde_json::Value>,
 }

@@ -33,13 +33,13 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "unseen"
     )]
-    pub unseen: OptU<bool>,
+    pub unseen: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "value"
     )]
-    pub value: OptU<String>,
+    pub value: OptU<::serde_json::Value>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",

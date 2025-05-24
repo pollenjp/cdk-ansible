@@ -21,25 +21,25 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "allow_vendor_change"
     )]
-    pub allow_vendor_change: OptU<bool>,
+    pub allow_vendor_change: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "clean_deps"
     )]
-    pub clean_deps: OptU<bool>,
+    pub clean_deps: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "disable_gpg_check"
     )]
-    pub disable_gpg_check: OptU<bool>,
+    pub disable_gpg_check: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "disable_recommends"
     )]
-    pub disable_recommends: OptU<bool>,
+    pub disable_recommends: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -57,31 +57,49 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "force"
     )]
-    pub force: OptU<bool>,
+    pub force: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "force_resolution"
     )]
-    pub force_resolution: OptU<bool>,
+    pub force_resolution: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "name"
     )]
-    pub name: OptU<Vec<::serde_json::Value>>,
+    pub name: OptU<::cdk_ansible::StringOrVec>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "oldpackage"
     )]
-    pub oldpackage: OptU<bool>,
+    pub oldpackage: OptU<::cdk_ansible::BoolOrString>,
+    #[serde(
+        default = "OptU::default",
+        skip_serializing_if = "OptU::is_unset",
+        rename = "quiet"
+    )]
+    pub quiet: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "replacefiles"
     )]
-    pub replacefiles: OptU<bool>,
+    pub replacefiles: OptU<::cdk_ansible::BoolOrString>,
+    #[serde(
+        default = "OptU::default",
+        skip_serializing_if = "OptU::is_unset",
+        rename = "simple_errors"
+    )]
+    pub simple_errors: OptU<::cdk_ansible::BoolOrString>,
+    #[serde(
+        default = "OptU::default",
+        skip_serializing_if = "OptU::is_unset",
+        rename = "skip_post_errors"
+    )]
+    pub skip_post_errors: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -99,5 +117,5 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "update_cache"
     )]
-    pub update_cache: OptU<bool>,
+    pub update_cache: OptU<::cdk_ansible::BoolOrString>,
 }

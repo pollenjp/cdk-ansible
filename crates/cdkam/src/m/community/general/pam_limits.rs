@@ -21,7 +21,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "backup"
     )]
-    pub backup: OptU<bool>,
+    pub backup: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -57,13 +57,13 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "use_max"
     )]
-    pub use_max: OptU<bool>,
+    pub use_max: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "use_min"
     )]
-    pub use_min: OptU<bool>,
+    pub use_min: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",

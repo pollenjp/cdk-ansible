@@ -21,7 +21,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "abort_on_timeout"
     )]
-    pub abort_on_timeout: OptU<bool>,
+    pub abort_on_timeout: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -33,19 +33,19 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "api_version"
     )]
-    pub api_version: OptU<i64>,
+    pub api_version: OptU<::cdk_ansible::IntOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "client_cert"
     )]
-    pub client_cert: OptU<std::path::PathBuf>,
+    pub client_cert: OptU<::cdk_ansible::StringOrPath>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "client_key"
     )]
-    pub client_key: OptU<std::path::PathBuf>,
+    pub client_key: OptU<::cdk_ansible::StringOrPath>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -57,13 +57,13 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "force"
     )]
-    pub force: OptU<bool>,
+    pub force: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "force_basic_auth"
     )]
-    pub force_basic_auth: OptU<bool>,
+    pub force_basic_auth: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -81,7 +81,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "job_options"
     )]
-    pub job_options: OptU<indexmap::IndexMap<String, ::serde_json::Value>>,
+    pub job_options: OptU<::cdk_ansible::StringOrMap>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -117,35 +117,35 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "use_gssapi"
     )]
-    pub use_gssapi: OptU<bool>,
+    pub use_gssapi: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "use_proxy"
     )]
-    pub use_proxy: OptU<bool>,
+    pub use_proxy: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "validate_certs"
     )]
-    pub validate_certs: OptU<bool>,
+    pub validate_certs: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "wait_execution"
     )]
-    pub wait_execution: OptU<bool>,
+    pub wait_execution: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "wait_execution_delay"
     )]
-    pub wait_execution_delay: OptU<i64>,
+    pub wait_execution_delay: OptU<::cdk_ansible::IntOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "wait_execution_timeout"
     )]
-    pub wait_execution_timeout: OptU<i64>,
+    pub wait_execution_timeout: OptU<::cdk_ansible::IntOrString>,
 }

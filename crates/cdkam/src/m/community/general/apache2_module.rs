@@ -21,7 +21,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "force"
     )]
-    pub force: OptU<bool>,
+    pub force: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -33,7 +33,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "ignore_configcheck"
     )]
-    pub ignore_configcheck: OptU<bool>,
+    pub ignore_configcheck: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -51,5 +51,5 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "warn_mpm_absent"
     )]
-    pub warn_mpm_absent: OptU<bool>,
+    pub warn_mpm_absent: OptU<::cdk_ansible::BoolOrString>,
 }

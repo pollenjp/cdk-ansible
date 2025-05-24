@@ -21,13 +21,13 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "attach"
     )]
-    pub attach: OptU<Vec<::serde_json::Value>>,
+    pub attach: OptU<::cdk_ansible::StringOrVec>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "bcc"
     )]
-    pub bcc: OptU<Vec<::serde_json::Value>>,
+    pub bcc: OptU<::cdk_ansible::StringOrVec>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -39,7 +39,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "cc"
     )]
-    pub cc: OptU<Vec<::serde_json::Value>>,
+    pub cc: OptU<::cdk_ansible::StringOrVec>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -57,7 +57,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "headers"
     )]
-    pub headers: OptU<Vec<::serde_json::Value>>,
+    pub headers: OptU<::cdk_ansible::StringOrVec>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -81,7 +81,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "port"
     )]
-    pub port: OptU<i64>,
+    pub port: OptU<::cdk_ansible::IntOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -111,13 +111,13 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "timeout"
     )]
-    pub timeout: OptU<i64>,
+    pub timeout: OptU<::cdk_ansible::IntOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "to"
     )]
-    pub to: OptU<Vec<::serde_json::Value>>,
+    pub to: OptU<::cdk_ansible::StringOrVec>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",

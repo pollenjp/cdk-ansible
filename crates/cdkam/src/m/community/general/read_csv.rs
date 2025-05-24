@@ -33,7 +33,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "fieldnames"
     )]
-    pub fieldnames: OptU<Vec<::serde_json::Value>>,
+    pub fieldnames: OptU<::cdk_ansible::StringOrVec>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -45,23 +45,23 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "path"
     )]
-    pub path: OptU<std::path::PathBuf>,
+    pub path: OptU<::cdk_ansible::StringOrPath>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "skipinitialspace"
     )]
-    pub skipinitialspace: OptU<bool>,
+    pub skipinitialspace: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "strict"
     )]
-    pub strict: OptU<bool>,
+    pub strict: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "unique"
     )]
-    pub unique: OptU<bool>,
+    pub unique: OptU<::cdk_ansible::BoolOrString>,
 }

@@ -21,5 +21,5 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "arguments"
     )]
-    pub arguments: OptU<Vec<::serde_json::Value>>,
+    pub arguments: OptU<::cdk_ansible::StringOrVec>,
 }

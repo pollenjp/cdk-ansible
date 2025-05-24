@@ -21,7 +21,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "counters"
     )]
-    pub counters: OptU<bool>,
+    pub counters: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -33,19 +33,19 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "modprobe"
     )]
-    pub modprobe: OptU<std::path::PathBuf>,
+    pub modprobe: OptU<::cdk_ansible::StringOrPath>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "noflush"
     )]
-    pub noflush: OptU<bool>,
+    pub noflush: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "path"
     )]
-    pub path: OptU<std::path::PathBuf>,
+    pub path: OptU<::cdk_ansible::StringOrPath>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -63,5 +63,5 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "wait"
     )]
-    pub wait: OptU<i64>,
+    pub wait: OptU<::cdk_ansible::IntOrString>,
 }

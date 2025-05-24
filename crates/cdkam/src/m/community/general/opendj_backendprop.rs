@@ -39,7 +39,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "opendj_bindir"
     )]
-    pub opendj_bindir: OptU<std::path::PathBuf>,
+    pub opendj_bindir: OptU<::cdk_ansible::StringOrPath>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -51,7 +51,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "passwordfile"
     )]
-    pub passwordfile: OptU<std::path::PathBuf>,
+    pub passwordfile: OptU<::cdk_ansible::StringOrPath>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",

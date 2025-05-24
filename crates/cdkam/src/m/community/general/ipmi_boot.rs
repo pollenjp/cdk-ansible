@@ -45,13 +45,13 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "persistent"
     )]
-    pub persistent: OptU<bool>,
+    pub persistent: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "port"
     )]
-    pub port: OptU<i64>,
+    pub port: OptU<::cdk_ansible::IntOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -63,7 +63,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "uefiboot"
     )]
-    pub uefiboot: OptU<bool>,
+    pub uefiboot: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",

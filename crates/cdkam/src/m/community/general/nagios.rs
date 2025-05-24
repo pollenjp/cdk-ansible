@@ -57,7 +57,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "minutes"
     )]
-    pub minutes: OptU<i64>,
+    pub minutes: OptU<::cdk_ansible::IntOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",

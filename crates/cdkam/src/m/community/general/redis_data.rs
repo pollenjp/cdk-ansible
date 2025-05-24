@@ -39,19 +39,19 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "existing"
     )]
-    pub existing: OptU<bool>,
+    pub existing: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "expiration"
     )]
-    pub expiration: OptU<i64>,
+    pub expiration: OptU<::cdk_ansible::IntOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "keep_ttl"
     )]
-    pub keep_ttl: OptU<bool>,
+    pub keep_ttl: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -75,7 +75,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "login_port"
     )]
-    pub login_port: OptU<i64>,
+    pub login_port: OptU<::cdk_ansible::IntOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -87,7 +87,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "non_existing"
     )]
-    pub non_existing: OptU<bool>,
+    pub non_existing: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -99,13 +99,13 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "tls"
     )]
-    pub tls: OptU<bool>,
+    pub tls: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "validate_certs"
     )]
-    pub validate_certs: OptU<bool>,
+    pub validate_certs: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",

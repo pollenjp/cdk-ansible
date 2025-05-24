@@ -21,31 +21,31 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "access_code_lifespan"
     )]
-    pub access_code_lifespan: OptU<i64>,
+    pub access_code_lifespan: OptU<::cdk_ansible::IntOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "access_code_lifespan_login"
     )]
-    pub access_code_lifespan_login: OptU<i64>,
+    pub access_code_lifespan_login: OptU<::cdk_ansible::IntOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "access_code_lifespan_user_action"
     )]
-    pub access_code_lifespan_user_action: OptU<i64>,
+    pub access_code_lifespan_user_action: OptU<::cdk_ansible::IntOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "access_token_lifespan"
     )]
-    pub access_token_lifespan: OptU<i64>,
+    pub access_token_lifespan: OptU<::cdk_ansible::IntOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "access_token_lifespan_for_implicit_flow"
     )]
-    pub access_token_lifespan_for_implicit_flow: OptU<i64>,
+    pub access_token_lifespan_for_implicit_flow: OptU<::cdk_ansible::IntOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -57,25 +57,25 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "action_token_generated_by_admin_lifespan"
     )]
-    pub action_token_generated_by_admin_lifespan: OptU<i64>,
+    pub action_token_generated_by_admin_lifespan: OptU<::cdk_ansible::IntOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "action_token_generated_by_user_lifespan"
     )]
-    pub action_token_generated_by_user_lifespan: OptU<i64>,
+    pub action_token_generated_by_user_lifespan: OptU<::cdk_ansible::IntOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "admin_events_details_enabled"
     )]
-    pub admin_events_details_enabled: OptU<bool>,
+    pub admin_events_details_enabled: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "admin_events_enabled"
     )]
-    pub admin_events_enabled: OptU<bool>,
+    pub admin_events_enabled: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -87,7 +87,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "attributes"
     )]
-    pub attributes: OptU<indexmap::IndexMap<String, ::serde_json::Value>>,
+    pub attributes: OptU<::cdk_ansible::StringOrMap>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -135,13 +135,13 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "browser_security_headers"
     )]
-    pub browser_security_headers: OptU<indexmap::IndexMap<String, ::serde_json::Value>>,
+    pub browser_security_headers: OptU<::cdk_ansible::StringOrMap>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "brute_force_protected"
     )]
-    pub brute_force_protected: OptU<bool>,
+    pub brute_force_protected: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -153,25 +153,25 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "client_scope_mappings"
     )]
-    pub client_scope_mappings: OptU<indexmap::IndexMap<String, ::serde_json::Value>>,
+    pub client_scope_mappings: OptU<::cdk_ansible::StringOrMap>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "connection_timeout"
     )]
-    pub connection_timeout: OptU<i64>,
+    pub connection_timeout: OptU<::cdk_ansible::IntOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "default_default_client_scopes"
     )]
-    pub default_default_client_scopes: OptU<Vec<::serde_json::Value>>,
+    pub default_default_client_scopes: OptU<::cdk_ansible::StringOrVec>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "default_groups"
     )]
-    pub default_groups: OptU<Vec<::serde_json::Value>>,
+    pub default_groups: OptU<::cdk_ansible::StringOrVec>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -183,13 +183,13 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "default_optional_client_scopes"
     )]
-    pub default_optional_client_scopes: OptU<Vec<::serde_json::Value>>,
+    pub default_optional_client_scopes: OptU<::cdk_ansible::StringOrVec>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "default_roles"
     )]
-    pub default_roles: OptU<Vec<::serde_json::Value>>,
+    pub default_roles: OptU<::cdk_ansible::StringOrVec>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -225,13 +225,13 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "duplicate_emails_allowed"
     )]
-    pub duplicate_emails_allowed: OptU<bool>,
+    pub duplicate_emails_allowed: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "edit_username_allowed"
     )]
-    pub edit_username_allowed: OptU<bool>,
+    pub edit_username_allowed: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -243,37 +243,37 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "enabled"
     )]
-    pub enabled: OptU<bool>,
+    pub enabled: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "enabled_event_types"
     )]
-    pub enabled_event_types: OptU<Vec<::serde_json::Value>>,
+    pub enabled_event_types: OptU<::cdk_ansible::StringOrVec>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "events_enabled"
     )]
-    pub events_enabled: OptU<bool>,
+    pub events_enabled: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "events_expiration"
     )]
-    pub events_expiration: OptU<i64>,
+    pub events_expiration: OptU<::cdk_ansible::IntOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "events_listeners"
     )]
-    pub events_listeners: OptU<Vec<::serde_json::Value>>,
+    pub events_listeners: OptU<::cdk_ansible::StringOrVec>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "failure_factor"
     )]
-    pub failure_factor: OptU<i64>,
+    pub failure_factor: OptU<::cdk_ansible::IntOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -291,7 +291,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "internationalization_enabled"
     )]
-    pub internationalization_enabled: OptU<bool>,
+    pub internationalization_enabled: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -303,55 +303,55 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "login_with_email_allowed"
     )]
-    pub login_with_email_allowed: OptU<bool>,
+    pub login_with_email_allowed: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "max_delta_time_seconds"
     )]
-    pub max_delta_time_seconds: OptU<i64>,
+    pub max_delta_time_seconds: OptU<::cdk_ansible::IntOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "max_failure_wait_seconds"
     )]
-    pub max_failure_wait_seconds: OptU<i64>,
+    pub max_failure_wait_seconds: OptU<::cdk_ansible::IntOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "minimum_quick_login_wait_seconds"
     )]
-    pub minimum_quick_login_wait_seconds: OptU<i64>,
+    pub minimum_quick_login_wait_seconds: OptU<::cdk_ansible::IntOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "not_before"
     )]
-    pub not_before: OptU<i64>,
+    pub not_before: OptU<::cdk_ansible::IntOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "offline_session_idle_timeout"
     )]
-    pub offline_session_idle_timeout: OptU<i64>,
+    pub offline_session_idle_timeout: OptU<::cdk_ansible::IntOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "offline_session_max_lifespan"
     )]
-    pub offline_session_max_lifespan: OptU<i64>,
+    pub offline_session_max_lifespan: OptU<::cdk_ansible::IntOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "offline_session_max_lifespan_enabled"
     )]
-    pub offline_session_max_lifespan_enabled: OptU<bool>,
+    pub offline_session_max_lifespan_enabled: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "organizations_enabled"
     )]
-    pub organizations_enabled: OptU<bool>,
+    pub organizations_enabled: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -363,25 +363,25 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "otp_policy_digits"
     )]
-    pub otp_policy_digits: OptU<i64>,
+    pub otp_policy_digits: OptU<::cdk_ansible::IntOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "otp_policy_initial_counter"
     )]
-    pub otp_policy_initial_counter: OptU<i64>,
+    pub otp_policy_initial_counter: OptU<::cdk_ansible::IntOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "otp_policy_look_ahead_window"
     )]
-    pub otp_policy_look_ahead_window: OptU<i64>,
+    pub otp_policy_look_ahead_window: OptU<::cdk_ansible::IntOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "otp_policy_period"
     )]
-    pub otp_policy_period: OptU<i64>,
+    pub otp_policy_period: OptU<::cdk_ansible::IntOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -393,7 +393,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "otp_supported_applications"
     )]
-    pub otp_supported_applications: OptU<Vec<::serde_json::Value>>,
+    pub otp_supported_applications: OptU<::cdk_ansible::StringOrVec>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -405,13 +405,13 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "permanent_lockout"
     )]
-    pub permanent_lockout: OptU<bool>,
+    pub permanent_lockout: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "quick_login_check_milli_seconds"
     )]
-    pub quick_login_check_milli_seconds: OptU<i64>,
+    pub quick_login_check_milli_seconds: OptU<::cdk_ansible::IntOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -421,21 +421,27 @@ pub struct Opt {
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
+        rename = "refresh_token"
+    )]
+    pub refresh_token: OptU<String>,
+    #[serde(
+        default = "OptU::default",
+        skip_serializing_if = "OptU::is_unset",
         rename = "refresh_token_max_reuse"
     )]
-    pub refresh_token_max_reuse: OptU<i64>,
+    pub refresh_token_max_reuse: OptU<::cdk_ansible::IntOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "registration_allowed"
     )]
-    pub registration_allowed: OptU<bool>,
+    pub registration_allowed: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "registration_email_as_username"
     )]
-    pub registration_email_as_username: OptU<bool>,
+    pub registration_email_as_username: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -447,7 +453,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "remember_me"
     )]
-    pub remember_me: OptU<bool>,
+    pub remember_me: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -459,19 +465,19 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "reset_password_allowed"
     )]
-    pub reset_password_allowed: OptU<bool>,
+    pub reset_password_allowed: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "revoke_refresh_token"
     )]
-    pub revoke_refresh_token: OptU<bool>,
+    pub revoke_refresh_token: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "smtp_server"
     )]
-    pub smtp_server: OptU<indexmap::IndexMap<String, ::serde_json::Value>>,
+    pub smtp_server: OptU<::cdk_ansible::StringOrMap>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -483,25 +489,25 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "sso_session_idle_timeout"
     )]
-    pub sso_session_idle_timeout: OptU<i64>,
+    pub sso_session_idle_timeout: OptU<::cdk_ansible::IntOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "sso_session_idle_timeout_remember_me"
     )]
-    pub sso_session_idle_timeout_remember_me: OptU<i64>,
+    pub sso_session_idle_timeout_remember_me: OptU<::cdk_ansible::IntOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "sso_session_max_lifespan"
     )]
-    pub sso_session_max_lifespan: OptU<i64>,
+    pub sso_session_max_lifespan: OptU<::cdk_ansible::IntOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "sso_session_max_lifespan_remember_me"
     )]
-    pub sso_session_max_lifespan_remember_me: OptU<i64>,
+    pub sso_session_max_lifespan_remember_me: OptU<::cdk_ansible::IntOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -513,7 +519,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "supported_locales"
     )]
-    pub supported_locales: OptU<Vec<::serde_json::Value>>,
+    pub supported_locales: OptU<::cdk_ansible::StringOrVec>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -525,23 +531,23 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "user_managed_access_allowed"
     )]
-    pub user_managed_access_allowed: OptU<bool>,
+    pub user_managed_access_allowed: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "validate_certs"
     )]
-    pub validate_certs: OptU<bool>,
+    pub validate_certs: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "verify_email"
     )]
-    pub verify_email: OptU<bool>,
+    pub verify_email: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "wait_increment_seconds"
     )]
-    pub wait_increment_seconds: OptU<i64>,
+    pub wait_increment_seconds: OptU<::cdk_ansible::IntOrString>,
 }

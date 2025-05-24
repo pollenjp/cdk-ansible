@@ -27,7 +27,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "body"
     )]
-    pub body: OptU<String>,
+    pub body: OptU<::serde_json::Value>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -39,43 +39,43 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "ca_path"
     )]
-    pub ca_path: OptU<std::path::PathBuf>,
+    pub ca_path: OptU<::cdk_ansible::StringOrPath>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "ciphers"
     )]
-    pub ciphers: OptU<Vec<::serde_json::Value>>,
+    pub ciphers: OptU<::cdk_ansible::StringOrVec>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "client_cert"
     )]
-    pub client_cert: OptU<std::path::PathBuf>,
+    pub client_cert: OptU<::cdk_ansible::StringOrPath>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "client_key"
     )]
-    pub client_key: OptU<std::path::PathBuf>,
+    pub client_key: OptU<::cdk_ansible::StringOrPath>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "creates"
     )]
-    pub creates: OptU<std::path::PathBuf>,
+    pub creates: OptU<::cdk_ansible::StringOrPath>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "decompress"
     )]
-    pub decompress: OptU<bool>,
+    pub decompress: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "dest"
     )]
-    pub dest: OptU<std::path::PathBuf>,
+    pub dest: OptU<::cdk_ansible::StringOrPath>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -87,13 +87,13 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "force"
     )]
-    pub force: OptU<bool>,
+    pub force: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "force_basic_auth"
     )]
-    pub force_basic_auth: OptU<bool>,
+    pub force_basic_auth: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -105,7 +105,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "headers"
     )]
-    pub headers: OptU<indexmap::IndexMap<String, ::serde_json::Value>>,
+    pub headers: OptU<::cdk_ansible::StringOrMap>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -123,7 +123,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "mode"
     )]
-    pub mode: OptU<String>,
+    pub mode: OptU<::serde_json::Value>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -135,19 +135,19 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "remote_src"
     )]
-    pub remote_src: OptU<bool>,
+    pub remote_src: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "removes"
     )]
-    pub removes: OptU<std::path::PathBuf>,
+    pub removes: OptU<::cdk_ansible::StringOrPath>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "return_content"
     )]
-    pub return_content: OptU<bool>,
+    pub return_content: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -177,37 +177,37 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "src"
     )]
-    pub src: OptU<std::path::PathBuf>,
+    pub src: OptU<::cdk_ansible::StringOrPath>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "status_code"
     )]
-    pub status_code: OptU<Vec<::serde_json::Value>>,
+    pub status_code: OptU<::cdk_ansible::StringOrVec>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "timeout"
     )]
-    pub timeout: OptU<i64>,
+    pub timeout: OptU<::cdk_ansible::IntOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "unix_socket"
     )]
-    pub unix_socket: OptU<std::path::PathBuf>,
+    pub unix_socket: OptU<::cdk_ansible::StringOrPath>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "unredirected_headers"
     )]
-    pub unredirected_headers: OptU<Vec<::serde_json::Value>>,
+    pub unredirected_headers: OptU<::cdk_ansible::StringOrVec>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "unsafe_writes"
     )]
-    pub unsafe_writes: OptU<bool>,
+    pub unsafe_writes: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -231,23 +231,23 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "use_gssapi"
     )]
-    pub use_gssapi: OptU<bool>,
+    pub use_gssapi: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "use_netrc"
     )]
-    pub use_netrc: OptU<bool>,
+    pub use_netrc: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "use_proxy"
     )]
-    pub use_proxy: OptU<bool>,
+    pub use_proxy: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "validate_certs"
     )]
-    pub validate_certs: OptU<bool>,
+    pub validate_certs: OptU<::cdk_ansible::BoolOrString>,
 }

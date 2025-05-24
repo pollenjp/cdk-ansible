@@ -27,7 +27,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "excludepkgs"
     )]
-    pub excludepkgs: OptU<Vec<::serde_json::Value>>,
+    pub excludepkgs: OptU<::cdk_ansible::StringOrVec>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -39,7 +39,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "includepkgs"
     )]
-    pub includepkgs: OptU<Vec<::serde_json::Value>>,
+    pub includepkgs: OptU<::cdk_ansible::StringOrVec>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",

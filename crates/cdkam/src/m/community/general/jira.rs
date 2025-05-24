@@ -33,7 +33,19 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "attachment"
     )]
-    pub attachment: OptU<indexmap::IndexMap<String, ::serde_json::Value>>,
+    pub attachment: OptU<::cdk_ansible::StringOrMap>,
+    #[serde(
+        default = "OptU::default",
+        skip_serializing_if = "OptU::is_unset",
+        rename = "client_cert"
+    )]
+    pub client_cert: OptU<::cdk_ansible::StringOrPath>,
+    #[serde(
+        default = "OptU::default",
+        skip_serializing_if = "OptU::is_unset",
+        rename = "client_key"
+    )]
+    pub client_key: OptU<::cdk_ansible::StringOrPath>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -45,7 +57,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "comment_visibility"
     )]
-    pub comment_visibility: OptU<indexmap::IndexMap<String, ::serde_json::Value>>,
+    pub comment_visibility: OptU<::cdk_ansible::StringOrMap>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -57,7 +69,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "fields"
     )]
-    pub fields: OptU<indexmap::IndexMap<String, ::serde_json::Value>>,
+    pub fields: OptU<::cdk_ansible::StringOrMap>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -93,7 +105,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "maxresults"
     )]
-    pub maxresults: OptU<i64>,
+    pub maxresults: OptU<::cdk_ansible::IntOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -127,6 +139,12 @@ pub struct Opt {
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
+        rename = "status_id"
+    )]
+    pub status_id: OptU<String>,
+    #[serde(
+        default = "OptU::default",
+        skip_serializing_if = "OptU::is_unset",
         rename = "summary"
     )]
     pub summary: OptU<String>,
@@ -135,7 +153,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "timeout"
     )]
-    pub timeout: OptU<String>,
+    pub timeout: OptU<::serde_json::Value>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -159,5 +177,5 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "validate_certs"
     )]
-    pub validate_certs: OptU<bool>,
+    pub validate_certs: OptU<::cdk_ansible::BoolOrString>,
 }

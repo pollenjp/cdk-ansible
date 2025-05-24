@@ -21,13 +21,13 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "allow_root"
     )]
-    pub allow_root: OptU<bool>,
+    pub allow_root: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "force"
     )]
-    pub force: OptU<bool>,
+    pub force: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -39,13 +39,13 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "plugin_bin"
     )]
-    pub plugin_bin: OptU<std::path::PathBuf>,
+    pub plugin_bin: OptU<::cdk_ansible::StringOrPath>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "plugin_dir"
     )]
-    pub plugin_dir: OptU<std::path::PathBuf>,
+    pub plugin_dir: OptU<::cdk_ansible::StringOrPath>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",

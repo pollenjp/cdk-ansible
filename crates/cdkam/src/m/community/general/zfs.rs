@@ -21,7 +21,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "extra_zfs_properties"
     )]
-    pub extra_zfs_properties: OptU<indexmap::IndexMap<String, ::serde_json::Value>>,
+    pub extra_zfs_properties: OptU<::cdk_ansible::StringOrMap>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",

@@ -21,13 +21,13 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "deploy"
     )]
-    pub deploy: OptU<bool>,
+    pub deploy: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "force"
     )]
-    pub force: OptU<bool>,
+    pub force: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -39,13 +39,13 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "serverless_bin_path"
     )]
-    pub serverless_bin_path: OptU<std::path::PathBuf>,
+    pub serverless_bin_path: OptU<::cdk_ansible::StringOrPath>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "service_path"
     )]
-    pub service_path: OptU<std::path::PathBuf>,
+    pub service_path: OptU<::cdk_ansible::StringOrPath>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -63,5 +63,5 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "verbose"
     )]
-    pub verbose: OptU<bool>,
+    pub verbose: OptU<::cdk_ansible::BoolOrString>,
 }

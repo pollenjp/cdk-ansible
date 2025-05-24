@@ -51,7 +51,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "recursive"
     )]
-    pub recursive: OptU<bool>,
+    pub recursive: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -63,13 +63,13 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "timeout"
     )]
-    pub timeout: OptU<i64>,
+    pub timeout: OptU<::cdk_ansible::IntOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "use_tls"
     )]
-    pub use_tls: OptU<bool>,
+    pub use_tls: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",

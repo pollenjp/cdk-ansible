@@ -39,19 +39,19 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "duration"
     )]
-    pub duration: OptU<i64>,
+    pub duration: OptU<::cdk_ansible::IntOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "start"
     )]
-    pub start: OptU<i64>,
+    pub start: OptU<::cdk_ansible::IntOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "stop"
     )]
-    pub stop: OptU<i64>,
+    pub stop: OptU<::cdk_ansible::IntOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",

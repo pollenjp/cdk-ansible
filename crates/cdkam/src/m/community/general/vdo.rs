@@ -27,7 +27,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "activated"
     )]
-    pub activated: OptU<bool>,
+    pub activated: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -69,19 +69,19 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "emulate512"
     )]
-    pub emulate512: OptU<bool>,
+    pub emulate512: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "force"
     )]
-    pub force: OptU<bool>,
+    pub force: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "growphysical"
     )]
-    pub growphysical: OptU<bool>,
+    pub growphysical: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -135,7 +135,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "running"
     )]
-    pub running: OptU<bool>,
+    pub running: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",

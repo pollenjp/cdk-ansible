@@ -21,7 +21,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "ack_venv_creation_deprecation"
     )]
-    pub ack_venv_creation_deprecation: OptU<bool>,
+    pub ack_venv_creation_deprecation: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -39,7 +39,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "clear"
     )]
-    pub clear: OptU<bool>,
+    pub clear: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -57,7 +57,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "failfast"
     )]
-    pub failfast: OptU<bool>,
+    pub failfast: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -69,37 +69,37 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "link"
     )]
-    pub link: OptU<bool>,
+    pub link: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "merge"
     )]
-    pub merge: OptU<bool>,
+    pub merge: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "project_path"
     )]
-    pub project_path: OptU<std::path::PathBuf>,
+    pub project_path: OptU<::cdk_ansible::StringOrPath>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "pythonpath"
     )]
-    pub pythonpath: OptU<std::path::PathBuf>,
+    pub pythonpath: OptU<::cdk_ansible::StringOrPath>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "settings"
     )]
-    pub settings: OptU<std::path::PathBuf>,
+    pub settings: OptU<::cdk_ansible::StringOrPath>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "skip"
     )]
-    pub skip: OptU<bool>,
+    pub skip: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -111,5 +111,5 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "virtualenv"
     )]
-    pub virtualenv: OptU<std::path::PathBuf>,
+    pub virtualenv: OptU<::cdk_ansible::StringOrPath>,
 }

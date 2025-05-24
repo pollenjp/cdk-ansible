@@ -39,7 +39,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "api_port"
     )]
-    pub api_port: OptU<i64>,
+    pub api_port: OptU<::cdk_ansible::IntOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -63,31 +63,31 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "backup"
     )]
-    pub backup: OptU<bool>,
+    pub backup: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "bps_max_length"
     )]
-    pub bps_max_length: OptU<i64>,
+    pub bps_max_length: OptU<::cdk_ansible::IntOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "bps_rd_max_length"
     )]
-    pub bps_rd_max_length: OptU<i64>,
+    pub bps_rd_max_length: OptU<::cdk_ansible::IntOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "bps_wr_max_length"
     )]
-    pub bps_wr_max_length: OptU<i64>,
+    pub bps_wr_max_length: OptU<::cdk_ansible::IntOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "bwlimit"
     )]
-    pub bwlimit: OptU<i64>,
+    pub bwlimit: OptU<::cdk_ansible::IntOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -105,19 +105,19 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "cyls"
     )]
-    pub cyls: OptU<i64>,
+    pub cyls: OptU<::cdk_ansible::IntOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "delete_moved"
     )]
-    pub delete_moved: OptU<bool>,
+    pub delete_moved: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "detect_zeroes"
     )]
-    pub detect_zeroes: OptU<bool>,
+    pub detect_zeroes: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -141,7 +141,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "heads"
     )]
-    pub heads: OptU<i64>,
+    pub heads: OptU<::cdk_ansible::IntOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -153,61 +153,61 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "iops"
     )]
-    pub iops: OptU<i64>,
+    pub iops: OptU<::cdk_ansible::IntOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "iops_max"
     )]
-    pub iops_max: OptU<i64>,
+    pub iops_max: OptU<::cdk_ansible::IntOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "iops_max_length"
     )]
-    pub iops_max_length: OptU<i64>,
+    pub iops_max_length: OptU<::cdk_ansible::IntOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "iops_rd"
     )]
-    pub iops_rd: OptU<i64>,
+    pub iops_rd: OptU<::cdk_ansible::IntOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "iops_rd_max"
     )]
-    pub iops_rd_max: OptU<i64>,
+    pub iops_rd_max: OptU<::cdk_ansible::IntOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "iops_rd_max_length"
     )]
-    pub iops_rd_max_length: OptU<i64>,
+    pub iops_rd_max_length: OptU<::cdk_ansible::IntOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "iops_wr"
     )]
-    pub iops_wr: OptU<i64>,
+    pub iops_wr: OptU<::cdk_ansible::IntOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "iops_wr_max"
     )]
-    pub iops_wr_max: OptU<i64>,
+    pub iops_wr_max: OptU<::cdk_ansible::IntOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "iops_wr_max_length"
     )]
-    pub iops_wr_max_length: OptU<i64>,
+    pub iops_wr_max_length: OptU<::cdk_ansible::IntOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "iothread"
     )]
-    pub iothread: OptU<bool>,
+    pub iothread: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -219,37 +219,37 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "mbps"
     )]
-    pub mbps: OptU<String>,
+    pub mbps: OptU<::serde_json::Value>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "mbps_max"
     )]
-    pub mbps_max: OptU<String>,
+    pub mbps_max: OptU<::serde_json::Value>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "mbps_rd"
     )]
-    pub mbps_rd: OptU<String>,
+    pub mbps_rd: OptU<::serde_json::Value>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "mbps_rd_max"
     )]
-    pub mbps_rd_max: OptU<String>,
+    pub mbps_rd_max: OptU<::serde_json::Value>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "mbps_wr"
     )]
-    pub mbps_wr: OptU<String>,
+    pub mbps_wr: OptU<::serde_json::Value>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "mbps_wr_max"
     )]
-    pub mbps_wr_max: OptU<String>,
+    pub mbps_wr_max: OptU<::serde_json::Value>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -267,13 +267,13 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "queues"
     )]
-    pub queues: OptU<i64>,
+    pub queues: OptU<::cdk_ansible::IntOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "replicate"
     )]
-    pub replicate: OptU<bool>,
+    pub replicate: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -285,19 +285,19 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "ro"
     )]
-    pub ro: OptU<bool>,
+    pub ro: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "scsiblock"
     )]
-    pub scsiblock: OptU<bool>,
+    pub scsiblock: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "secs"
     )]
-    pub secs: OptU<i64>,
+    pub secs: OptU<::cdk_ansible::IntOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -309,7 +309,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "shared"
     )]
-    pub shared: OptU<bool>,
+    pub shared: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -321,13 +321,13 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "snapshot"
     )]
-    pub snapshot: OptU<bool>,
+    pub snapshot: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "ssd"
     )]
-    pub ssd: OptU<bool>,
+    pub ssd: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -357,13 +357,13 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "target_vmid"
     )]
-    pub target_vmid: OptU<i64>,
+    pub target_vmid: OptU<::cdk_ansible::IntOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "timeout"
     )]
-    pub timeout: OptU<i64>,
+    pub timeout: OptU<::cdk_ansible::IntOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -375,13 +375,13 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "validate_certs"
     )]
-    pub validate_certs: OptU<bool>,
+    pub validate_certs: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "vmid"
     )]
-    pub vmid: OptU<i64>,
+    pub vmid: OptU<::cdk_ansible::IntOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",

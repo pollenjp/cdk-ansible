@@ -39,17 +39,17 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "state"
     )]
-    pub state: OptU<String>,
+    pub state: OptU<::cdk_ansible::StringOrVec>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "tls"
     )]
-    pub tls: OptU<bool>,
+    pub tls: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "validate_certs"
     )]
-    pub validate_certs: OptU<bool>,
+    pub validate_certs: OptU<::cdk_ansible::BoolOrString>,
 }

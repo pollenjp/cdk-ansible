@@ -39,7 +39,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "force_defaults"
     )]
-    pub force_defaults: OptU<bool>,
+    pub force_defaults: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -63,7 +63,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "private"
     )]
-    pub private: OptU<bool>,
+    pub private: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",

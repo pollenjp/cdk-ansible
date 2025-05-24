@@ -21,7 +21,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "allow_no_value"
     )]
-    pub allow_no_value: OptU<bool>,
+    pub allow_no_value: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -33,25 +33,25 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "backup"
     )]
-    pub backup: OptU<bool>,
+    pub backup: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "create"
     )]
-    pub create: OptU<bool>,
+    pub create: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "exclusive"
     )]
-    pub exclusive: OptU<bool>,
+    pub exclusive: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "follow"
     )]
-    pub follow: OptU<bool>,
+    pub follow: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -63,25 +63,25 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "ignore_spaces"
     )]
-    pub ignore_spaces: OptU<bool>,
+    pub ignore_spaces: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "mode"
     )]
-    pub mode: OptU<String>,
+    pub mode: OptU<::serde_json::Value>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "modify_inactive_option"
     )]
-    pub modify_inactive_option: OptU<bool>,
+    pub modify_inactive_option: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "no_extra_spaces"
     )]
-    pub no_extra_spaces: OptU<bool>,
+    pub no_extra_spaces: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -99,7 +99,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "path"
     )]
-    pub path: OptU<std::path::PathBuf>,
+    pub path: OptU<::cdk_ansible::StringOrPath>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -111,7 +111,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "section_has_values"
     )]
-    pub section_has_values: OptU<Vec<::serde_json::Value>>,
+    pub section_has_values: OptU<::cdk_ansible::StringOrVec>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -147,7 +147,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "unsafe_writes"
     )]
-    pub unsafe_writes: OptU<bool>,
+    pub unsafe_writes: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -159,5 +159,5 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "values"
     )]
-    pub values: OptU<Vec<::serde_json::Value>>,
+    pub values: OptU<::cdk_ansible::StringOrVec>,
 }

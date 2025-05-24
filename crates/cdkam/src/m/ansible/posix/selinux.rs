@@ -39,5 +39,5 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "update_kernel_param"
     )]
-    pub update_kernel_param: OptU<bool>,
+    pub update_kernel_param: OptU<::cdk_ansible::BoolOrString>,
 }

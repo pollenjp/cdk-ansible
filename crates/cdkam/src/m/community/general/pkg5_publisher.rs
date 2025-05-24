@@ -21,13 +21,13 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "enabled"
     )]
-    pub enabled: OptU<bool>,
+    pub enabled: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "mirror"
     )]
-    pub mirror: OptU<Vec<::serde_json::Value>>,
+    pub mirror: OptU<::cdk_ansible::StringOrVec>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -39,7 +39,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "origin"
     )]
-    pub origin: OptU<Vec<::serde_json::Value>>,
+    pub origin: OptU<::cdk_ansible::StringOrVec>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -51,5 +51,5 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "sticky"
     )]
-    pub sticky: OptU<bool>,
+    pub sticky: OptU<::cdk_ansible::BoolOrString>,
 }

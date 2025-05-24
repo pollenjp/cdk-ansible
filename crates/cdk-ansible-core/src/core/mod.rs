@@ -2,10 +2,20 @@ use dyn_clone::{DynClone, clone_trait_object};
 use erased_serde::serialize_trait_object;
 use indexmap::IndexMap;
 use serde::Serialize;
+
+mod types;
+pub use types::*;
+
 #[derive(Default, Debug, Clone, PartialEq)]
 pub struct Inventory {
     pub name: String,
     pub root: InventoryRoot,
+}
+
+impl Inventory {
+    pub fn dump_json(&self) -> serde_json::Result<String> {
+        serde_json::to_string(&self.root)
+    }
 }
 
 #[derive(Default, Debug, Clone, PartialEq, Serialize)]
@@ -75,7 +85,7 @@ pub struct Play {
 pub struct PlayOptions {
     /// Force any un-handled task errors on any host to propagate to all hosts and end the play.
     #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
-    pub any_errors_fatal: OptU<bool>,
+    pub any_errors_fatal: OptU<BoolOrString>,
     /// Boolean that controls if privilege escalation is used or not on Task execution.
     /// Implemented by the become plugin. See Become plugins.
     #[serde(
@@ -83,7 +93,7 @@ pub struct PlayOptions {
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset"
     )]
-    pub become_: OptU<bool>,
+    pub become_: OptU<BoolOrString>,
     /// Path to the executable used to elevate privileges. Implemented by the become plugin. See Become plugins.
     #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
     pub become_exe: OptU<String>,
@@ -98,7 +108,7 @@ pub struct PlayOptions {
     pub become_user: OptU<String>,
     /// A boolean that controls if a task is executed in 'check' mode. See Validating tasks: check mode and diff mode.
     #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
-    pub check_mode: OptU<bool>,
+    pub check_mode: OptU<BoolOrString>,
     /// List of collection namespaces to search for modules, plugins, and roles. See Using collections in a playbook
     #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
     pub collections: OptU<Vec<String>>,
@@ -107,10 +117,10 @@ pub struct PlayOptions {
     pub connection: OptU<String>,
     /// Enable debugging tasks based on the state of the task result. See Debugging tasks.
     #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
-    pub debugger: OptU<bool>,
+    pub debugger: OptU<BoolOrString>,
     /// Toggle to make tasks return 'diff' information or not.
     #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
-    pub diff: OptU<bool>,
+    pub diff: OptU<BoolOrString>,
     /// A dictionary that gets converted into environment vars to be provided for the task upon execution.
     /// This can ONLY be used with modules. This is not supported for any other type of plugins nor Ansible itself nor its configuration,
     /// it just sets the variables for the code responsible for executing the task.
@@ -123,10 +133,10 @@ pub struct PlayOptions {
     /// Will force notified handler execution for hosts even if they failed during the play.
     /// Will not trigger if the play itself fails.
     #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
-    pub force_handlers: OptU<bool>,
+    pub force_handlers: OptU<BoolOrString>,
     /// A boolean that controls if the play will automatically run the 'setup' task to gather facts for the hosts.
     #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
-    pub gather_facts: OptU<bool>,
+    pub gather_facts: OptU<BoolOrString>,
     /// Allows you to pass subset options to the fact gathering plugin controlled by gather_facts.
     #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
     pub gather_subset: OptU<Vec<String>>,
@@ -140,11 +150,11 @@ pub struct PlayOptions {
     pub handlers: OptU<Vec<Task>>,
     /// Boolean that allows you to ignore task failures and continue with play. It does not affect connection errors.
     #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
-    pub ignore_errors: OptU<bool>,
+    pub ignore_errors: OptU<BoolOrString>,
     /// Boolean that allows you to ignore task failures due to an unreachable host and continue with the play.
     /// This does not affect other task errors (see ignore_errors) but is useful for groups of volatile/ephemeral hosts.
     #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
-    pub ignore_unreachable: OptU<bool>,
+    pub ignore_unreachable: OptU<BoolOrString>,
     /// Can be used to abort the run after a given percentage of hosts in the current batch has failed.
     /// This only works on linear or linear-derived strategies.
     #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
@@ -154,7 +164,7 @@ pub struct PlayOptions {
     pub module_defaults: OptU<IndexMap<String, serde_json::Value>>,
     /// Boolean that controls information disclosure.
     #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
-    pub no_log: OptU<bool>,
+    pub no_log: OptU<BoolOrString>,
     /// Controls the sorting of hosts as they are used for executing the play.
     /// Possible values are inventory (default), sorted, reverse_sorted, reverse_inventory and shuffle.
     #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
@@ -177,7 +187,7 @@ pub struct PlayOptions {
     /// Boolean that will bypass the host loop, forcing the task to attempt to execute on the first host available
     /// and afterward apply any results and facts to all active hosts in the same batch.
     #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
-    pub run_once: OptU<bool>,
+    pub run_once: OptU<BoolOrString>,
     /// Explicitly define how Ansible batches the execution of the current play on the play's target. See Setting the batch size with serial.
     #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
     pub serial: OptU<i64>,
@@ -242,7 +252,7 @@ pub struct TaskOptions {
     pub action: OptU<String>,
     /// Force any un-handled task errors on any host to propagate to all hosts and end the play.
     #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
-    pub any_errors_fatal: OptU<bool>,
+    pub any_errors_fatal: OptU<BoolOrString>,
     /// A secondary way to add arguments into a task. Takes a dictionary in which keys map to options and values.
     #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
     pub args: OptU<IndexMap<String, serde_json::Value>>,
@@ -260,7 +270,7 @@ pub struct TaskOptions {
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset"
     )]
-    pub become_: OptU<bool>,
+    pub become_: OptU<BoolOrString>,
     /// Path to the executable used to elevate privileges. Implemented by the become plugin. See Become plugins.
     #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
     pub become_exe: OptU<String>,
@@ -281,7 +291,7 @@ pub struct TaskOptions {
     pub changed_when: OptU<BoolOrStringOrVecString>,
     /// A boolean that controls if a task is executed in 'check' mode. See Validating tasks: check mode and diff mode.
     #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
-    pub check_mode: OptU<bool>,
+    pub check_mode: OptU<BoolOrString>,
     /// List of collection namespaces to search for modules, plugins, and roles. See Using collections in a playbook
     #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
     pub collections: OptU<Vec<String>>,
@@ -290,7 +300,7 @@ pub struct TaskOptions {
     pub connection: OptU<String>,
     /// Enable debugging tasks based on the state of the task result. See Debugging tasks.
     #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
-    pub debugger: OptU<bool>,
+    pub debugger: OptU<BoolOrString>,
     ///
     /// delay
     /// Number of seconds to delay between retries. This setting is only used in combination with until.
@@ -300,7 +310,7 @@ pub struct TaskOptions {
     /// delegate_facts
     /// Boolean that allows you to apply facts to a delegated host instead of inventory_hostname.
     #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
-    pub delegate_facts: OptU<bool>,
+    pub delegate_facts: OptU<BoolOrString>,
     /// Host to execute task instead of the target (inventory_hostname).
     /// Connection vars from the delegated host will also be used for the task.
     #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
@@ -308,7 +318,7 @@ pub struct TaskOptions {
 
     /// Toggle to make tasks return 'diff' information or not.
     #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
-    pub diff: OptU<bool>,
+    pub diff: OptU<BoolOrString>,
 
     /// A dictionary that gets converted into environment vars to be provided for the task upon execution.
     /// This can ONLY be used with modules. This is not supported for any other type of plugins nor Ansible itself nor its configuration,
@@ -322,12 +332,12 @@ pub struct TaskOptions {
 
     /// Boolean that allows you to ignore task failures and continue with play. It does not affect connection errors.
     #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
-    pub ignore_errors: OptU<bool>,
+    pub ignore_errors: OptU<BoolOrString>,
 
     /// Boolean that allows you to ignore task failures due to an unreachable host and continue with the play.
     /// This does not affect other task errors (see ignore_errors) but is useful for groups of volatile/ephemeral hosts.
     #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
-    pub ignore_unreachable: OptU<bool>,
+    pub ignore_unreachable: OptU<BoolOrString>,
 
     /// Same as action but also implies delegate_to: localhost
     #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
@@ -338,7 +348,7 @@ pub struct TaskOptions {
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset"
     )]
-    pub loop_: OptU<Vec<serde_json::Value>>,
+    pub loop_: OptU<StringOrVec>,
 
     /// Several keys here allow you to modify/set loop behavior in a task. See Adding controls to loops.
     #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
@@ -350,7 +360,7 @@ pub struct TaskOptions {
 
     /// Boolean that controls information disclosure.
     #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
-    pub no_log: OptU<bool>,
+    pub no_log: OptU<BoolOrString>,
     /// List of handlers to notify when the task returns a 'changed=True' status.
     #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
     pub notify: OptU<Vec<String>>,
@@ -377,7 +387,7 @@ pub struct TaskOptions {
     /// Boolean that will bypass the host loop, forcing the task to attempt to execute on the first host available
     /// and afterward apply any results and facts to all active hosts in the same batch.
     #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
-    pub run_once: OptU<bool>,
+    pub run_once: OptU<BoolOrString>,
 
     /// Tags applied to the task or included tasks, this allows selecting subsets of tasks from the command line.
     #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
@@ -408,73 +418,6 @@ pub struct TaskOptions {
     // FIXME: not supported yet!
     // with_<lookup_plugin>
     // The same as loop but magically adds the output of any lookup plugin to generate the item list.
-}
-
-/// A boolean or a string
-#[derive(Serialize, Clone, Debug, PartialEq)]
-#[serde(untagged)]
-pub enum BoolOrString {
-    Bool(bool),
-    String(String),
-}
-
-impl From<bool> for BoolOrString {
-    fn from(value: bool) -> Self {
-        Self::Bool(value)
-    }
-}
-
-impl From<String> for BoolOrString {
-    fn from(value: String) -> Self {
-        Self::String(value)
-    }
-}
-
-/// A string or a vector of strings
-#[derive(Serialize, Clone, Debug, PartialEq)]
-#[serde(untagged)]
-pub enum StringOrVecString {
-    String(String),
-    VecString(Vec<String>),
-}
-
-impl From<String> for StringOrVecString {
-    fn from(value: String) -> Self {
-        Self::String(value)
-    }
-}
-
-impl From<Vec<String>> for StringOrVecString {
-    fn from(value: Vec<String>) -> Self {
-        Self::VecString(value)
-    }
-}
-
-/// A boolean or a string or a vector of strings
-#[derive(Serialize, Clone, Debug, PartialEq)]
-#[serde(untagged)]
-pub enum BoolOrStringOrVecString {
-    Bool(bool),
-    String(String),
-    VecString(Vec<String>),
-}
-
-impl From<bool> for BoolOrStringOrVecString {
-    fn from(value: bool) -> Self {
-        Self::Bool(value)
-    }
-}
-
-impl From<String> for BoolOrStringOrVecString {
-    fn from(value: String) -> Self {
-        Self::String(value)
-    }
-}
-
-impl From<Vec<String>> for BoolOrStringOrVecString {
-    fn from(value: Vec<String>) -> Self {
-        Self::VecString(value)
-    }
 }
 
 #[cfg(test)]
@@ -522,24 +465,24 @@ mod tests {
                     }),
                 }],
                 options: PlayOptions {
-                    any_errors_fatal: OptU::Some(true),
-                    become_: OptU::Some(true),
+                    any_errors_fatal: OptU::Some(true.into()),
+                    become_: OptU::Some(true.into()),
                     become_exe: OptU::Some("become_exe".to_string()),
                     become_flags: OptU::Some("become_flags".to_string()),
                     become_method: OptU::Some("become_method".to_string()),
                     become_user: OptU::Some("become_user".to_string()),
-                    check_mode: OptU::Some(true),
+                    check_mode: OptU::Some(true.into()),
                     collections: OptU::Some(vec!["collection1".to_string()]),
                     connection: OptU::Some("connection1".to_string()),
-                    debugger: OptU::Some(true),
-                    diff: OptU::Some(true),
+                    debugger: OptU::Some(true.into()),
+                    diff: OptU::Some(true.into()),
                     environment: OptU::Some(IndexMap::from([(
                         "env1".to_string(),
                         "value1".to_string()
                     )])),
                     fact_path: OptU::Some("fact_path".to_string()),
-                    force_handlers: OptU::Some(true),
-                    gather_facts: OptU::Some(true),
+                    force_handlers: OptU::Some(true.into()),
+                    gather_facts: OptU::Some(true.into()),
                     gather_subset: OptU::Some(vec!["gather_subset1".to_string()]),
                     gather_timeout: OptU::Some(10),
                     handlers: OptU::Some(vec![Task {
@@ -549,14 +492,14 @@ mod tests {
                             x1: "x1".to_string(),
                         }),
                     }]),
-                    ignore_errors: OptU::Some(true),
-                    ignore_unreachable: OptU::Some(true),
+                    ignore_errors: OptU::Some(true.into()),
+                    ignore_unreachable: OptU::Some(true.into()),
                     max_fail_percentage: OptU::Some(10),
                     module_defaults: OptU::Some(IndexMap::from([(
                         "module1".to_string(),
                         serde_json::Value::String("value1".to_string())
                     )])),
-                    no_log: OptU::Some(true),
+                    no_log: OptU::Some(true.into()),
                     order: OptU::Some("order".to_string()),
                     port: OptU::Some(10),
                     post_tasks: OptU::Some(vec![Task {
@@ -575,7 +518,7 @@ mod tests {
                     }]),
                     remote_user: OptU::Some("remote_user".to_string()),
                     roles: OptU::Some(vec!["role1".to_string()]),
-                    run_once: OptU::Some(true),
+                    run_once: OptU::Some(true.into()),
                     serial: OptU::Some(10),
                     strategy: OptU::Some("strategy".to_string()),
                     tags: OptU::Some(vec!["tag1".to_string()]),
@@ -643,35 +586,35 @@ mod tests {
         assert_eq!(
             serde_json::to_string(&TaskOptions {
                 action: OptU::Some("action1".to_string()),
-                any_errors_fatal: OptU::Some(true),
+                any_errors_fatal: OptU::Some(true.into()),
                 args: OptU::Some(IndexMap::from([(
                     "arg1".to_string(),
                     serde_json::Value::String("value1".to_string())
                 )])),
                 async_: OptU::Some(10),
-                become_: OptU::Some(true),
+                become_: OptU::Some(true.into()),
                 become_exe: OptU::Some("become_exe".to_string()),
                 become_flags: OptU::Some("become_flags".to_string()),
                 become_method: OptU::Some("become_method".to_string()),
                 become_user: OptU::Some("become_user".to_string()),
                 changed_when: OptU::Some("changed_when".to_string().into()),
-                check_mode: OptU::Some(true),
+                check_mode: OptU::Some(true.into()),
                 collections: OptU::Some(vec!["collection1".to_string()]),
                 connection: OptU::Some("connection1".to_string()),
-                debugger: OptU::Some(true),
+                debugger: OptU::Some(true.into()),
                 delay: OptU::Some(10),
-                delegate_facts: OptU::Some(true),
+                delegate_facts: OptU::Some(true.into()),
                 delegate_to: OptU::Some("delegate_to".to_string()),
-                diff: OptU::Some(true),
+                diff: OptU::Some(true.into()),
                 environment: OptU::Some(IndexMap::from([(
                     "env1".to_string(),
                     "value1".to_string()
                 )])),
                 failed_when: OptU::Some("failed_when".to_string().into()),
-                ignore_errors: OptU::Some(true),
-                ignore_unreachable: OptU::Some(true),
+                ignore_errors: OptU::Some(true.into()),
+                ignore_unreachable: OptU::Some(true.into()),
                 local_action: OptU::Some("local_action".to_string()),
-                loop_: OptU::Some(vec![serde_json::Value::String("loop1".to_string())]),
+                loop_: OptU::Some(vec!["loop1".into()].into()),
                 loop_control: OptU::Some(IndexMap::from([(
                     "loop_control1".to_string(),
                     serde_json::Value::String("value1".to_string())
@@ -680,14 +623,14 @@ mod tests {
                     "module1".to_string(),
                     serde_json::Value::String("value1".to_string())
                 )])),
-                no_log: OptU::Some(true),
+                no_log: OptU::Some(true.into()),
                 notify: OptU::Some(vec!["notify1".to_string()]),
                 poll: OptU::Some(10),
                 port: OptU::Some(10),
                 register: OptU::Some("register".to_string()),
                 remote_user: OptU::Some("remote_user".to_string()),
                 retries: OptU::Some(10),
-                run_once: OptU::Some(true),
+                run_once: OptU::Some(true.into()),
                 tags: OptU::Some(vec!["tag1".to_string()]),
                 throttle: OptU::Some(10),
                 timeout: OptU::Some(10),

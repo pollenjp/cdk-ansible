@@ -51,7 +51,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "user_disabled"
     )]
-    pub user_disabled: OptU<bool>,
+    pub user_disabled: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -63,19 +63,19 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "user_gravatar"
     )]
-    pub user_gravatar: OptU<bool>,
+    pub user_gravatar: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "user_groups"
     )]
-    pub user_groups: OptU<Vec<::serde_json::Value>>,
+    pub user_groups: OptU<::cdk_ansible::StringOrVec>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "user_mac_addresses"
     )]
-    pub user_mac_addresses: OptU<Vec<::serde_json::Value>>,
+    pub user_mac_addresses: OptU<::cdk_ansible::StringOrVec>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -93,5 +93,5 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "validate_certs"
     )]
-    pub validate_certs: OptU<bool>,
+    pub validate_certs: OptU<::cdk_ansible::BoolOrString>,
 }

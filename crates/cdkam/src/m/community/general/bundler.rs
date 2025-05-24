@@ -21,31 +21,31 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "binstub_directory"
     )]
-    pub binstub_directory: OptU<std::path::PathBuf>,
+    pub binstub_directory: OptU<::cdk_ansible::StringOrPath>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "chdir"
     )]
-    pub chdir: OptU<std::path::PathBuf>,
+    pub chdir: OptU<::cdk_ansible::StringOrPath>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "clean"
     )]
-    pub clean: OptU<bool>,
+    pub clean: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "deployment_mode"
     )]
-    pub deployment_mode: OptU<bool>,
+    pub deployment_mode: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "exclude_groups"
     )]
-    pub exclude_groups: OptU<Vec<::serde_json::Value>>,
+    pub exclude_groups: OptU<::cdk_ansible::StringOrVec>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -63,19 +63,19 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "gem_path"
     )]
-    pub gem_path: OptU<std::path::PathBuf>,
+    pub gem_path: OptU<::cdk_ansible::StringOrPath>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "gemfile"
     )]
-    pub gemfile: OptU<std::path::PathBuf>,
+    pub gemfile: OptU<::cdk_ansible::StringOrPath>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "local"
     )]
-    pub local: OptU<bool>,
+    pub local: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -87,5 +87,5 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "user_install"
     )]
-    pub user_install: OptU<bool>,
+    pub user_install: OptU<::cdk_ansible::BoolOrString>,
 }

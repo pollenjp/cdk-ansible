@@ -69,7 +69,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "confirm"
     )]
-    pub confirm: OptU<bool>,
+    pub confirm: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -81,7 +81,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "external"
     )]
-    pub external: OptU<bool>,
+    pub external: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -93,13 +93,13 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "identities"
     )]
-    pub identities: OptU<Vec<::serde_json::Value>>,
+    pub identities: OptU<::cdk_ansible::StringOrVec>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "isadmin"
     )]
-    pub isadmin: OptU<bool>,
+    pub isadmin: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -111,7 +111,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "overwrite_identities"
     )]
-    pub overwrite_identities: OptU<bool>,
+    pub overwrite_identities: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -123,7 +123,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "reset_password"
     )]
-    pub reset_password: OptU<bool>,
+    pub reset_password: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -159,5 +159,5 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "validate_certs"
     )]
-    pub validate_certs: OptU<bool>,
+    pub validate_certs: OptU<::cdk_ansible::BoolOrString>,
 }

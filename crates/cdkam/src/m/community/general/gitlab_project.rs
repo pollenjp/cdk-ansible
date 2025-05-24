@@ -21,7 +21,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "allow_merge_on_skipped_pipeline"
     )]
-    pub allow_merge_on_skipped_pipeline: OptU<bool>,
+    pub allow_merge_on_skipped_pipeline: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -63,7 +63,13 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "avatar_path"
     )]
-    pub avatar_path: OptU<std::path::PathBuf>,
+    pub avatar_path: OptU<::cdk_ansible::StringOrPath>,
+    #[serde(
+        default = "OptU::default",
+        skip_serializing_if = "OptU::is_unset",
+        rename = "build_timeout"
+    )]
+    pub build_timeout: OptU<::cdk_ansible::IntOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -87,7 +93,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "container_expiration_policy"
     )]
-    pub container_expiration_policy: OptU<indexmap::IndexMap<String, ::serde_json::Value>>,
+    pub container_expiration_policy: OptU<::cdk_ansible::StringOrMap>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -147,7 +153,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "initialize_with_readme"
     )]
-    pub initialize_with_readme: OptU<bool>,
+    pub initialize_with_readme: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -159,13 +165,13 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "issues_enabled"
     )]
-    pub issues_enabled: OptU<bool>,
+    pub issues_enabled: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "lfs_enabled"
     )]
-    pub lfs_enabled: OptU<bool>,
+    pub lfs_enabled: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -177,7 +183,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "merge_requests_enabled"
     )]
-    pub merge_requests_enabled: OptU<bool>,
+    pub merge_requests_enabled: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -201,19 +207,19 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "only_allow_merge_if_all_discussions_are_resolved"
     )]
-    pub only_allow_merge_if_all_discussions_are_resolved: OptU<bool>,
+    pub only_allow_merge_if_all_discussions_are_resolved: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "only_allow_merge_if_pipeline_succeeds"
     )]
-    pub only_allow_merge_if_pipeline_succeeds: OptU<bool>,
+    pub only_allow_merge_if_pipeline_succeeds: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "packages_enabled"
     )]
-    pub packages_enabled: OptU<bool>,
+    pub packages_enabled: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -237,7 +243,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "remove_source_branch_after_merge"
     )]
-    pub remove_source_branch_after_merge: OptU<bool>,
+    pub remove_source_branch_after_merge: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -255,19 +261,19 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "service_desk_enabled"
     )]
-    pub service_desk_enabled: OptU<bool>,
+    pub service_desk_enabled: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "shared_runners_enabled"
     )]
-    pub shared_runners_enabled: OptU<bool>,
+    pub shared_runners_enabled: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "snippets_enabled"
     )]
-    pub snippets_enabled: OptU<bool>,
+    pub snippets_enabled: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -285,7 +291,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "topics"
     )]
-    pub topics: OptU<Vec<::serde_json::Value>>,
+    pub topics: OptU<::cdk_ansible::StringOrVec>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -297,7 +303,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "validate_certs"
     )]
-    pub validate_certs: OptU<bool>,
+    pub validate_certs: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -309,5 +315,5 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "wiki_enabled"
     )]
-    pub wiki_enabled: OptU<bool>,
+    pub wiki_enabled: OptU<::cdk_ansible::BoolOrString>,
 }

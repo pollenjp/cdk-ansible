@@ -21,43 +21,43 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "backup"
     )]
-    pub backup: OptU<bool>,
+    pub backup: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "basedir"
     )]
-    pub basedir: OptU<std::path::PathBuf>,
+    pub basedir: OptU<::cdk_ansible::StringOrPath>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "binary"
     )]
-    pub binary: OptU<bool>,
+    pub binary: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "dest"
     )]
-    pub dest: OptU<std::path::PathBuf>,
+    pub dest: OptU<::cdk_ansible::StringOrPath>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "ignore_whitespace"
     )]
-    pub ignore_whitespace: OptU<bool>,
+    pub ignore_whitespace: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "remote_src"
     )]
-    pub remote_src: OptU<bool>,
+    pub remote_src: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "src"
     )]
-    pub src: OptU<std::path::PathBuf>,
+    pub src: OptU<::cdk_ansible::StringOrPath>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -69,5 +69,5 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "strip"
     )]
-    pub strip: OptU<i64>,
+    pub strip: OptU<::cdk_ansible::IntOrString>,
 }

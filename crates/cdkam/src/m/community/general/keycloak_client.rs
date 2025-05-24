@@ -27,13 +27,13 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "always_display_in_console"
     )]
-    pub always_display_in_console: OptU<bool>,
+    pub always_display_in_console: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "attributes"
     )]
-    pub attributes: OptU<indexmap::IndexMap<String, ::serde_json::Value>>,
+    pub attributes: OptU<::cdk_ansible::StringOrMap>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -75,20 +75,19 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "authentication_flow_binding_overrides"
     )]
-    pub authentication_flow_binding_overrides:
-        OptU<indexmap::IndexMap<String, ::serde_json::Value>>,
+    pub authentication_flow_binding_overrides: OptU<::cdk_ansible::StringOrMap>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "authorization_services_enabled"
     )]
-    pub authorization_services_enabled: OptU<bool>,
+    pub authorization_services_enabled: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "authorization_settings"
     )]
-    pub authorization_settings: OptU<indexmap::IndexMap<String, ::serde_json::Value>>,
+    pub authorization_settings: OptU<::cdk_ansible::StringOrMap>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -100,7 +99,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "bearer_only"
     )]
-    pub bearer_only: OptU<bool>,
+    pub bearer_only: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -124,25 +123,25 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "connection_timeout"
     )]
-    pub connection_timeout: OptU<i64>,
+    pub connection_timeout: OptU<::cdk_ansible::IntOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "consent_required"
     )]
-    pub consent_required: OptU<bool>,
+    pub consent_required: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "default_client_scopes"
     )]
-    pub default_client_scopes: OptU<Vec<::serde_json::Value>>,
+    pub default_client_scopes: OptU<::cdk_ansible::StringOrVec>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "default_roles"
     )]
-    pub default_roles: OptU<Vec<::serde_json::Value>>,
+    pub default_roles: OptU<::cdk_ansible::StringOrVec>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -154,25 +153,25 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "direct_access_grants_enabled"
     )]
-    pub direct_access_grants_enabled: OptU<bool>,
+    pub direct_access_grants_enabled: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "enabled"
     )]
-    pub enabled: OptU<bool>,
+    pub enabled: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "frontchannel_logout"
     )]
-    pub frontchannel_logout: OptU<bool>,
+    pub frontchannel_logout: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "full_scope_allowed"
     )]
-    pub full_scope_allowed: OptU<bool>,
+    pub full_scope_allowed: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -190,7 +189,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "implicit_flow_enabled"
     )]
-    pub implicit_flow_enabled: OptU<bool>,
+    pub implicit_flow_enabled: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -202,19 +201,19 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "node_re_registration_timeout"
     )]
-    pub node_re_registration_timeout: OptU<i64>,
+    pub node_re_registration_timeout: OptU<::cdk_ansible::IntOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "not_before"
     )]
-    pub not_before: OptU<i64>,
+    pub not_before: OptU<::cdk_ansible::IntOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "optional_client_scopes"
     )]
-    pub optional_client_scopes: OptU<Vec<::serde_json::Value>>,
+    pub optional_client_scopes: OptU<::cdk_ansible::StringOrVec>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -226,13 +225,13 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "protocol_mappers"
     )]
-    pub protocol_mappers: OptU<Vec<::serde_json::Value>>,
+    pub protocol_mappers: OptU<::cdk_ansible::StringOrVec>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "public_client"
     )]
-    pub public_client: OptU<bool>,
+    pub public_client: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -244,13 +243,19 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "redirect_uris"
     )]
-    pub redirect_uris: OptU<Vec<::serde_json::Value>>,
+    pub redirect_uris: OptU<::cdk_ansible::StringOrVec>,
+    #[serde(
+        default = "OptU::default",
+        skip_serializing_if = "OptU::is_unset",
+        rename = "refresh_token"
+    )]
+    pub refresh_token: OptU<String>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "registered_nodes"
     )]
-    pub registered_nodes: OptU<indexmap::IndexMap<String, ::serde_json::Value>>,
+    pub registered_nodes: OptU<::cdk_ansible::StringOrMap>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -274,13 +279,13 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "service_accounts_enabled"
     )]
-    pub service_accounts_enabled: OptU<bool>,
+    pub service_accounts_enabled: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "standard_flow_enabled"
     )]
-    pub standard_flow_enabled: OptU<bool>,
+    pub standard_flow_enabled: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -292,7 +297,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "surrogate_auth_required"
     )]
-    pub surrogate_auth_required: OptU<bool>,
+    pub surrogate_auth_required: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -304,29 +309,29 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "use_template_config"
     )]
-    pub use_template_config: OptU<bool>,
+    pub use_template_config: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "use_template_mappers"
     )]
-    pub use_template_mappers: OptU<bool>,
+    pub use_template_mappers: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "use_template_scope"
     )]
-    pub use_template_scope: OptU<bool>,
+    pub use_template_scope: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "validate_certs"
     )]
-    pub validate_certs: OptU<bool>,
+    pub validate_certs: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "web_origins"
     )]
-    pub web_origins: OptU<Vec<::serde_json::Value>>,
+    pub web_origins: OptU<::cdk_ansible::StringOrVec>,
 }

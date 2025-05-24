@@ -21,31 +21,31 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "force"
     )]
-    pub force: OptU<bool>,
+    pub force: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "gid"
     )]
-    pub gid: OptU<i64>,
+    pub gid: OptU<::cdk_ansible::IntOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "gid_max"
     )]
-    pub gid_max: OptU<i64>,
+    pub gid_max: OptU<::cdk_ansible::IntOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "gid_min"
     )]
-    pub gid_min: OptU<i64>,
+    pub gid_min: OptU<::cdk_ansible::IntOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "local"
     )]
-    pub local: OptU<bool>,
+    pub local: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -57,7 +57,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "non_unique"
     )]
-    pub non_unique: OptU<bool>,
+    pub non_unique: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -69,5 +69,5 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "system"
     )]
-    pub system: OptU<bool>,
+    pub system: OptU<::cdk_ansible::BoolOrString>,
 }

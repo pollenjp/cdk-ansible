@@ -20,6 +20,8 @@ pub mod ali_instance_info;
 
 pub mod alternatives;
 
+pub mod android_sdk;
+
 pub mod ansible_galaxy_install;
 
 pub mod apache2_mod_proxy;
@@ -538,6 +540,8 @@ pub mod ldap_attrs;
 
 pub mod ldap_entry;
 
+pub mod ldap_inc;
+
 pub mod ldap_passwd;
 
 pub mod ldap_search;
@@ -756,6 +760,8 @@ pub mod ovh_monthly_billing;
 
 pub mod pacemaker_cluster;
 
+pub mod pacemaker_resource;
+
 pub mod packet_device;
 
 pub mod packet_ip_subnet;
@@ -837,6 +843,8 @@ pub mod profitbricks_volume_attachments;
 pub mod proxmox;
 
 pub mod proxmox_backup;
+
+pub mod proxmox_backup_info;
 
 pub mod proxmox_disk;
 
@@ -1060,6 +1068,12 @@ pub mod syspatch;
 
 pub mod sysrc;
 
+pub mod systemd_creds_decrypt;
+
+pub mod systemd_creds_encrypt;
+
+pub mod systemd_info;
+
 pub mod sysupgrade;
 
 pub mod taiga_issue;
@@ -1147,6 +1161,8 @@ pub mod xattr;
 pub mod xbps;
 
 pub mod xcc_redfish_command;
+
+pub mod xdg_mime;
 
 pub mod xenserver_facts;
 

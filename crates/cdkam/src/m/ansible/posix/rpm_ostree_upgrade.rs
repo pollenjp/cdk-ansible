@@ -21,13 +21,13 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "allow_downgrade"
     )]
-    pub allow_downgrade: OptU<bool>,
+    pub allow_downgrade: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "cache_only"
     )]
-    pub cache_only: OptU<bool>,
+    pub cache_only: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -39,5 +39,5 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "peer"
     )]
-    pub peer: OptU<bool>,
+    pub peer: OptU<::cdk_ansible::BoolOrString>,
 }

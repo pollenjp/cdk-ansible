@@ -21,25 +21,25 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "active_connection_states"
     )]
-    pub active_connection_states: OptU<Vec<::serde_json::Value>>,
+    pub active_connection_states: OptU<::cdk_ansible::StringOrVec>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "connect_timeout"
     )]
-    pub connect_timeout: OptU<i64>,
+    pub connect_timeout: OptU<::cdk_ansible::IntOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "delay"
     )]
-    pub delay: OptU<i64>,
+    pub delay: OptU<::cdk_ansible::IntOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "exclude_hosts"
     )]
-    pub exclude_hosts: OptU<Vec<::serde_json::Value>>,
+    pub exclude_hosts: OptU<::cdk_ansible::StringOrVec>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -57,13 +57,13 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "path"
     )]
-    pub path: OptU<std::path::PathBuf>,
+    pub path: OptU<::cdk_ansible::StringOrPath>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "port"
     )]
-    pub port: OptU<i64>,
+    pub port: OptU<::cdk_ansible::IntOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -75,7 +75,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "sleep"
     )]
-    pub sleep: OptU<i64>,
+    pub sleep: OptU<::cdk_ansible::IntOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -87,5 +87,5 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "timeout"
     )]
-    pub timeout: OptU<i64>,
+    pub timeout: OptU<::cdk_ansible::IntOrString>,
 }

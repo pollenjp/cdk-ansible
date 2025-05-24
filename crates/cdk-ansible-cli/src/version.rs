@@ -51,7 +51,6 @@ impl fmt::Display for VersionInfo {
 ///
 /// note: this function returns the version of `cdk-ansible-cli` crate
 ///       and need to be the same as the version of `cdk-ansible` crate.
-#[expect(clippy::single_call_fn, reason = "better readability")]
 const fn pkg_version() -> &'static str {
     env!("CARGO_PKG_VERSION")
 }

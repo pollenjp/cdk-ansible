@@ -33,13 +33,13 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "expired"
     )]
-    pub expired: OptU<bool>,
+    pub expired: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "ldap"
     )]
-    pub ldap: OptU<bool>,
+    pub ldap: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",

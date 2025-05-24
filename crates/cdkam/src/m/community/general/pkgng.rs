@@ -21,31 +21,31 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "annotation"
     )]
-    pub annotation: OptU<Vec<::serde_json::Value>>,
+    pub annotation: OptU<::cdk_ansible::StringOrVec>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "autoremove"
     )]
-    pub autoremove: OptU<bool>,
+    pub autoremove: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "cached"
     )]
-    pub cached: OptU<bool>,
+    pub cached: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "chroot"
     )]
-    pub chroot: OptU<std::path::PathBuf>,
+    pub chroot: OptU<::cdk_ansible::StringOrPath>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "ignore_osver"
     )]
-    pub ignore_osver: OptU<bool>,
+    pub ignore_osver: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -57,7 +57,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "name"
     )]
-    pub name: OptU<Vec<::serde_json::Value>>,
+    pub name: OptU<::cdk_ansible::StringOrVec>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -69,7 +69,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "rootdir"
     )]
-    pub rootdir: OptU<std::path::PathBuf>,
+    pub rootdir: OptU<::cdk_ansible::StringOrPath>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -81,5 +81,5 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "use_globs"
     )]
-    pub use_globs: OptU<bool>,
+    pub use_globs: OptU<::cdk_ansible::BoolOrString>,
 }

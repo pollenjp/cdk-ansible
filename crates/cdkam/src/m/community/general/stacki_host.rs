@@ -27,7 +27,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "force_install"
     )]
-    pub force_install: OptU<bool>,
+    pub force_install: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -63,13 +63,13 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "rack"
     )]
-    pub rack: OptU<i64>,
+    pub rack: OptU<::cdk_ansible::IntOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "rank"
     )]
-    pub rank: OptU<i64>,
+    pub rank: OptU<::cdk_ansible::IntOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",

@@ -33,7 +33,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "chain_management"
     )]
-    pub chain_management: OptU<bool>,
+    pub chain_management: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -45,7 +45,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "ctstate"
     )]
-    pub ctstate: OptU<Vec<::serde_json::Value>>,
+    pub ctstate: OptU<::cdk_ansible::StringOrVec>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -63,7 +63,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "destination_ports"
     )]
-    pub destination_ports: OptU<Vec<::serde_json::Value>>,
+    pub destination_ports: OptU<::cdk_ansible::StringOrVec>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -75,7 +75,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "flush"
     )]
-    pub flush: OptU<bool>,
+    pub flush: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -153,7 +153,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "match"
     )]
-    pub match_x_: OptU<Vec<::serde_json::Value>>,
+    pub match_x_: OptU<::cdk_ansible::StringOrVec>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -171,7 +171,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "numeric"
     )]
-    pub numeric: OptU<bool>,
+    pub numeric: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -261,7 +261,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "tcp_flags"
     )]
-    pub tcp_flags: OptU<indexmap::IndexMap<String, ::serde_json::Value>>,
+    pub tcp_flags: OptU<::cdk_ansible::StringOrMap>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",

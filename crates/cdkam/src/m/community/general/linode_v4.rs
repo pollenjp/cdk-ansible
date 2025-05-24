@@ -27,7 +27,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "authorized_keys"
     )]
-    pub authorized_keys: OptU<Vec<::serde_json::Value>>,
+    pub authorized_keys: OptU<::cdk_ansible::StringOrVec>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -51,7 +51,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "private_ip"
     )]
-    pub private_ip: OptU<bool>,
+    pub private_ip: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -69,13 +69,13 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "stackscript_data"
     )]
-    pub stackscript_data: OptU<indexmap::IndexMap<String, ::serde_json::Value>>,
+    pub stackscript_data: OptU<::cdk_ansible::StringOrMap>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "stackscript_id"
     )]
-    pub stackscript_id: OptU<i64>,
+    pub stackscript_id: OptU<::cdk_ansible::IntOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -87,7 +87,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "tags"
     )]
-    pub tags: OptU<Vec<::serde_json::Value>>,
+    pub tags: OptU<::cdk_ansible::StringOrVec>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",

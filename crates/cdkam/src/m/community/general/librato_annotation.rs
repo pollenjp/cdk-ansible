@@ -33,13 +33,13 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "end_time"
     )]
-    pub end_time: OptU<i64>,
+    pub end_time: OptU<::cdk_ansible::IntOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "links"
     )]
-    pub links: OptU<Vec<::serde_json::Value>>,
+    pub links: OptU<::cdk_ansible::StringOrVec>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -57,7 +57,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "start_time"
     )]
-    pub start_time: OptU<i64>,
+    pub start_time: OptU<::cdk_ansible::IntOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",

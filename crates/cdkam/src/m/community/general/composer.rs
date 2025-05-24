@@ -21,7 +21,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "apcu_autoloader"
     )]
-    pub apcu_autoloader: OptU<bool>,
+    pub apcu_autoloader: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -33,7 +33,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "classmap_authoritative"
     )]
-    pub classmap_authoritative: OptU<bool>,
+    pub classmap_authoritative: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -45,65 +45,65 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "composer_executable"
     )]
-    pub composer_executable: OptU<std::path::PathBuf>,
+    pub composer_executable: OptU<::cdk_ansible::StringOrPath>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "executable"
     )]
-    pub executable: OptU<std::path::PathBuf>,
+    pub executable: OptU<::cdk_ansible::StringOrPath>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "global_command"
     )]
-    pub global_command: OptU<bool>,
+    pub global_command: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "ignore_platform_reqs"
     )]
-    pub ignore_platform_reqs: OptU<bool>,
+    pub ignore_platform_reqs: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "no_dev"
     )]
-    pub no_dev: OptU<bool>,
+    pub no_dev: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "no_plugins"
     )]
-    pub no_plugins: OptU<bool>,
+    pub no_plugins: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "no_scripts"
     )]
-    pub no_scripts: OptU<bool>,
+    pub no_scripts: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "optimize_autoloader"
     )]
-    pub optimize_autoloader: OptU<bool>,
+    pub optimize_autoloader: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "prefer_dist"
     )]
-    pub prefer_dist: OptU<bool>,
+    pub prefer_dist: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "prefer_source"
     )]
-    pub prefer_source: OptU<bool>,
+    pub prefer_source: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "working_dir"
     )]
-    pub working_dir: OptU<std::path::PathBuf>,
+    pub working_dir: OptU<::cdk_ansible::StringOrPath>,
 }

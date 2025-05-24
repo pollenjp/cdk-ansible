@@ -21,7 +21,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "id"
     )]
-    pub id: OptU<Vec<::serde_json::Value>>,
+    pub id: OptU<::cdk_ansible::StringOrVec>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -33,5 +33,5 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "upgrade_all"
     )]
-    pub upgrade_all: OptU<bool>,
+    pub upgrade_all: OptU<::cdk_ansible::BoolOrString>,
 }

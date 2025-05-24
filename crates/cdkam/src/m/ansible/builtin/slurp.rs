@@ -21,5 +21,5 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "src"
     )]
-    pub src: OptU<std::path::PathBuf>,
+    pub src: OptU<::cdk_ansible::StringOrPath>,
 }

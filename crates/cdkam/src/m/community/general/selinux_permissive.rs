@@ -27,13 +27,13 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "no_reload"
     )]
-    pub no_reload: OptU<bool>,
+    pub no_reload: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "permissive"
     )]
-    pub permissive: OptU<bool>,
+    pub permissive: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",

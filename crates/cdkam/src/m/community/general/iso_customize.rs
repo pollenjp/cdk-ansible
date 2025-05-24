@@ -21,23 +21,23 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "add_files"
     )]
-    pub add_files: OptU<Vec<::serde_json::Value>>,
+    pub add_files: OptU<::cdk_ansible::StringOrVec>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "delete_files"
     )]
-    pub delete_files: OptU<Vec<::serde_json::Value>>,
+    pub delete_files: OptU<::cdk_ansible::StringOrVec>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "dest_iso"
     )]
-    pub dest_iso: OptU<std::path::PathBuf>,
+    pub dest_iso: OptU<::cdk_ansible::StringOrPath>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "src_iso"
     )]
-    pub src_iso: OptU<std::path::PathBuf>,
+    pub src_iso: OptU<::cdk_ansible::StringOrPath>,
 }

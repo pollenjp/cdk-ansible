@@ -51,7 +51,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "locked"
     )]
-    pub locked: OptU<bool>,
+    pub locked: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -75,13 +75,13 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "size"
     )]
-    pub size: OptU<i64>,
+    pub size: OptU<::cdk_ansible::IntOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "snapshot_policy"
     )]
-    pub snapshot_policy: OptU<indexmap::IndexMap<String, ::serde_json::Value>>,
+    pub snapshot_policy: OptU<::cdk_ansible::StringOrMap>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",

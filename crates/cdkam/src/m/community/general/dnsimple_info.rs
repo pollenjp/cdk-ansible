@@ -45,5 +45,5 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "sandbox"
     )]
-    pub sandbox: OptU<bool>,
+    pub sandbox: OptU<::cdk_ansible::BoolOrString>,
 }

@@ -21,7 +21,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "dictcheck"
     )]
-    pub dictcheck: OptU<bool>,
+    pub dictcheck: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -33,7 +33,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "gracelimit"
     )]
-    pub gracelimit: OptU<i64>,
+    pub gracelimit: OptU<::cdk_ansible::IntOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -63,7 +63,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "ipa_port"
     )]
-    pub ipa_port: OptU<i64>,
+    pub ipa_port: OptU<::cdk_ansible::IntOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -75,7 +75,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "ipa_timeout"
     )]
-    pub ipa_timeout: OptU<i64>,
+    pub ipa_timeout: OptU<::cdk_ansible::IntOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -105,13 +105,13 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "maxrepeat"
     )]
-    pub maxrepeat: OptU<i64>,
+    pub maxrepeat: OptU<::cdk_ansible::IntOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "maxsequence"
     )]
-    pub maxsequence: OptU<i64>,
+    pub maxsequence: OptU<::cdk_ansible::IntOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -147,11 +147,11 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "usercheck"
     )]
-    pub usercheck: OptU<bool>,
+    pub usercheck: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "validate_certs"
     )]
-    pub validate_certs: OptU<bool>,
+    pub validate_certs: OptU<::cdk_ansible::BoolOrString>,
 }

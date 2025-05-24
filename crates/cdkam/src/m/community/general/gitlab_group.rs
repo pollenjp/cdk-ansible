@@ -57,13 +57,13 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "auto_devops_enabled"
     )]
-    pub auto_devops_enabled: OptU<bool>,
+    pub auto_devops_enabled: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "avatar_path"
     )]
-    pub avatar_path: OptU<std::path::PathBuf>,
+    pub avatar_path: OptU<::cdk_ansible::StringOrPath>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -93,31 +93,31 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "force_delete"
     )]
-    pub force_delete: OptU<bool>,
+    pub force_delete: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "lfs_enabled"
     )]
-    pub lfs_enabled: OptU<bool>,
+    pub lfs_enabled: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "lock_duo_features_enabled"
     )]
-    pub lock_duo_features_enabled: OptU<bool>,
+    pub lock_duo_features_enabled: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "membership_lock"
     )]
-    pub membership_lock: OptU<bool>,
+    pub membership_lock: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "mentions_disabled"
     )]
-    pub mentions_disabled: OptU<bool>,
+    pub mentions_disabled: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -141,13 +141,13 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "prevent_forking_outside_group"
     )]
-    pub prevent_forking_outside_group: OptU<bool>,
+    pub prevent_forking_outside_group: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "prevent_sharing_groups_outside_hierarchy"
     )]
-    pub prevent_sharing_groups_outside_hierarchy: OptU<bool>,
+    pub prevent_sharing_groups_outside_hierarchy: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -159,25 +159,25 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "request_access_enabled"
     )]
-    pub request_access_enabled: OptU<bool>,
+    pub request_access_enabled: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "require_two_factor_authentication"
     )]
-    pub require_two_factor_authentication: OptU<bool>,
+    pub require_two_factor_authentication: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "service_access_tokens_expiration_enforced"
     )]
-    pub service_access_tokens_expiration_enforced: OptU<bool>,
+    pub service_access_tokens_expiration_enforced: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "share_with_group_lock"
     )]
-    pub share_with_group_lock: OptU<bool>,
+    pub share_with_group_lock: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -201,7 +201,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "validate_certs"
     )]
-    pub validate_certs: OptU<bool>,
+    pub validate_certs: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",

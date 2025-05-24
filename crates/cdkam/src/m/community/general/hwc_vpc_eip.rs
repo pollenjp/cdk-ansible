@@ -21,7 +21,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "dedicated_bandwidth"
     )]
-    pub dedicated_bandwidth: OptU<indexmap::IndexMap<String, ::serde_json::Value>>,
+    pub dedicated_bandwidth: OptU<::cdk_ansible::StringOrMap>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -51,7 +51,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "ip_version"
     )]
-    pub ip_version: OptU<i64>,
+    pub ip_version: OptU<::cdk_ansible::IntOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -99,7 +99,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "timeouts"
     )]
-    pub timeouts: OptU<indexmap::IndexMap<String, ::serde_json::Value>>,
+    pub timeouts: OptU<::cdk_ansible::StringOrMap>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",

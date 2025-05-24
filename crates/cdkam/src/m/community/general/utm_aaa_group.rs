@@ -21,13 +21,13 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "adirectory_groups"
     )]
-    pub adirectory_groups: OptU<Vec<::serde_json::Value>>,
+    pub adirectory_groups: OptU<::cdk_ansible::StringOrVec>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "adirectory_groups_sids"
     )]
-    pub adirectory_groups_sids: OptU<indexmap::IndexMap<String, ::serde_json::Value>>,
+    pub adirectory_groups_sids: OptU<::cdk_ansible::StringOrMap>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -51,13 +51,13 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "edirectory_groups"
     )]
-    pub edirectory_groups: OptU<Vec<::serde_json::Value>>,
+    pub edirectory_groups: OptU<::cdk_ansible::StringOrVec>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "headers"
     )]
-    pub headers: OptU<indexmap::IndexMap<String, ::serde_json::Value>>,
+    pub headers: OptU<::cdk_ansible::StringOrMap>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -81,7 +81,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "members"
     )]
-    pub members: OptU<Vec<::serde_json::Value>>,
+    pub members: OptU<::cdk_ansible::StringOrVec>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -99,7 +99,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "radius_groups"
     )]
-    pub radius_groups: OptU<Vec<::serde_json::Value>>,
+    pub radius_groups: OptU<::cdk_ansible::StringOrVec>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -111,7 +111,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "tacacs_groups"
     )]
-    pub tacacs_groups: OptU<Vec<::serde_json::Value>>,
+    pub tacacs_groups: OptU<::cdk_ansible::StringOrVec>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -123,7 +123,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "utm_port"
     )]
-    pub utm_port: OptU<i64>,
+    pub utm_port: OptU<::cdk_ansible::IntOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -141,5 +141,5 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "validate_certs"
     )]
-    pub validate_certs: OptU<bool>,
+    pub validate_certs: OptU<::cdk_ansible::BoolOrString>,
 }

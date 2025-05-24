@@ -21,7 +21,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "config"
     )]
-    pub config: OptU<std::path::PathBuf>,
+    pub config: OptU<::cdk_ansible::StringOrPath>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -57,13 +57,13 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "stop_before_removing"
     )]
-    pub stop_before_removing: OptU<bool>,
+    pub stop_before_removing: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "supervisorctl_path"
     )]
-    pub supervisorctl_path: OptU<std::path::PathBuf>,
+    pub supervisorctl_path: OptU<::cdk_ansible::StringOrPath>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",

@@ -39,13 +39,13 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "increment_float"
     )]
-    pub increment_float: OptU<String>,
+    pub increment_float: OptU<::serde_json::Value>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "increment_int"
     )]
-    pub increment_int: OptU<i64>,
+    pub increment_int: OptU<::cdk_ansible::IntOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -69,7 +69,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "login_port"
     )]
-    pub login_port: OptU<i64>,
+    pub login_port: OptU<::cdk_ansible::IntOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -81,11 +81,11 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "tls"
     )]
-    pub tls: OptU<bool>,
+    pub tls: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "validate_certs"
     )]
-    pub validate_certs: OptU<bool>,
+    pub validate_certs: OptU<::cdk_ansible::BoolOrString>,
 }

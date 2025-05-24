@@ -21,25 +21,25 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "clean"
     )]
-    pub clean: OptU<bool>,
+    pub clean: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "force"
     )]
-    pub force: OptU<bool>,
+    pub force: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "full_upgrade"
     )]
-    pub full_upgrade: OptU<bool>,
+    pub full_upgrade: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "name"
     )]
-    pub name: OptU<Vec<::serde_json::Value>>,
+    pub name: OptU<::cdk_ansible::StringOrVec>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -51,11 +51,11 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "update_cache"
     )]
-    pub update_cache: OptU<bool>,
+    pub update_cache: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "upgrade"
     )]
-    pub upgrade: OptU<bool>,
+    pub upgrade: OptU<::cdk_ansible::BoolOrString>,
 }

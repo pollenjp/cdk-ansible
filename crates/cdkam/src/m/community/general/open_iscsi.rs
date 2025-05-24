@@ -21,25 +21,25 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "auto_node_startup"
     )]
-    pub auto_node_startup: OptU<bool>,
+    pub auto_node_startup: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "auto_portal_startup"
     )]
-    pub auto_portal_startup: OptU<bool>,
+    pub auto_portal_startup: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "discover"
     )]
-    pub discover: OptU<bool>,
+    pub discover: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "login"
     )]
-    pub login: OptU<bool>,
+    pub login: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -87,13 +87,13 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "rescan"
     )]
-    pub rescan: OptU<bool>,
+    pub rescan: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "show_nodes"
     )]
-    pub show_nodes: OptU<bool>,
+    pub show_nodes: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",

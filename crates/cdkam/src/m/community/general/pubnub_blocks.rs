@@ -33,13 +33,13 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "cache"
     )]
-    pub cache: OptU<indexmap::IndexMap<String, ::serde_json::Value>>,
+    pub cache: OptU<::cdk_ansible::StringOrMap>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "changes"
     )]
-    pub changes: OptU<indexmap::IndexMap<String, ::serde_json::Value>>,
+    pub changes: OptU<::cdk_ansible::StringOrMap>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -57,7 +57,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "event_handlers"
     )]
-    pub event_handlers: OptU<Vec<::serde_json::Value>>,
+    pub event_handlers: OptU<::cdk_ansible::StringOrVec>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -87,5 +87,5 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "validate_certs"
     )]
-    pub validate_certs: OptU<bool>,
+    pub validate_certs: OptU<::cdk_ansible::BoolOrString>,
 }

@@ -27,7 +27,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "connect_timeout"
     )]
-    pub connect_timeout: OptU<i64>,
+    pub connect_timeout: OptU<::cdk_ansible::IntOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -39,13 +39,13 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "post_reboot_delay"
     )]
-    pub post_reboot_delay: OptU<i64>,
+    pub post_reboot_delay: OptU<::cdk_ansible::IntOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "pre_reboot_delay"
     )]
-    pub pre_reboot_delay: OptU<i64>,
+    pub pre_reboot_delay: OptU<::cdk_ansible::IntOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -57,13 +57,13 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "reboot_timeout"
     )]
-    pub reboot_timeout: OptU<i64>,
+    pub reboot_timeout: OptU<::cdk_ansible::IntOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "search_paths"
     )]
-    pub search_paths: OptU<Vec<::serde_json::Value>>,
+    pub search_paths: OptU<::cdk_ansible::StringOrVec>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",

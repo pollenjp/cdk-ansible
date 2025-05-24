@@ -45,7 +45,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "ipa_port"
     )]
-    pub ipa_port: OptU<i64>,
+    pub ipa_port: OptU<::cdk_ansible::IntOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -57,7 +57,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "ipa_timeout"
     )]
-    pub ipa_timeout: OptU<i64>,
+    pub ipa_timeout: OptU<::cdk_ansible::IntOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -87,7 +87,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "replace"
     )]
-    pub replace: OptU<bool>,
+    pub replace: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -105,11 +105,11 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "username"
     )]
-    pub username: OptU<Vec<::serde_json::Value>>,
+    pub username: OptU<::cdk_ansible::StringOrVec>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "validate_certs"
     )]
-    pub validate_certs: OptU<bool>,
+    pub validate_certs: OptU<::cdk_ansible::BoolOrString>,
 }

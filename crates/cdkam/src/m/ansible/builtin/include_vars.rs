@@ -21,25 +21,25 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "depth"
     )]
-    pub depth: OptU<i64>,
+    pub depth: OptU<::cdk_ansible::IntOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "dir"
     )]
-    pub dir: OptU<std::path::PathBuf>,
+    pub dir: OptU<::cdk_ansible::StringOrPath>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "extensions"
     )]
-    pub extensions: OptU<Vec<::serde_json::Value>>,
+    pub extensions: OptU<::cdk_ansible::StringOrVec>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "file"
     )]
-    pub file: OptU<std::path::PathBuf>,
+    pub file: OptU<::cdk_ansible::StringOrPath>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -63,13 +63,13 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "ignore_files"
     )]
-    pub ignore_files: OptU<Vec<::serde_json::Value>>,
+    pub ignore_files: OptU<::cdk_ansible::StringOrVec>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "ignore_unknown_extensions"
     )]
-    pub ignore_unknown_extensions: OptU<bool>,
+    pub ignore_unknown_extensions: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",

@@ -63,13 +63,13 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "connection_timeout"
     )]
-    pub connection_timeout: OptU<i64>,
+    pub connection_timeout: OptU<::cdk_ansible::IntOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "default_clientscopes"
     )]
-    pub default_clientscopes: OptU<Vec<::serde_json::Value>>,
+    pub default_clientscopes: OptU<::cdk_ansible::StringOrVec>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -81,13 +81,19 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "optional_clientscopes"
     )]
-    pub optional_clientscopes: OptU<Vec<::serde_json::Value>>,
+    pub optional_clientscopes: OptU<::cdk_ansible::StringOrVec>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "realm"
     )]
     pub realm: OptU<String>,
+    #[serde(
+        default = "OptU::default",
+        skip_serializing_if = "OptU::is_unset",
+        rename = "refresh_token"
+    )]
+    pub refresh_token: OptU<String>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -99,5 +105,5 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "validate_certs"
     )]
-    pub validate_certs: OptU<bool>,
+    pub validate_certs: OptU<::cdk_ansible::BoolOrString>,
 }

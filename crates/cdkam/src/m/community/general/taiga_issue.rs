@@ -21,7 +21,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "attachment"
     )]
-    pub attachment: OptU<std::path::PathBuf>,
+    pub attachment: OptU<::cdk_ansible::StringOrPath>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -81,7 +81,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "tags"
     )]
-    pub tags: OptU<Vec<::serde_json::Value>>,
+    pub tags: OptU<::cdk_ansible::StringOrVec>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",

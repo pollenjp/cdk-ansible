@@ -21,7 +21,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "alerts"
     )]
-    pub alerts: OptU<indexmap::IndexMap<String, ::serde_json::Value>>,
+    pub alerts: OptU<::cdk_ansible::StringOrMap>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -51,13 +51,13 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "manageiq_connection"
     )]
-    pub manageiq_connection: OptU<indexmap::IndexMap<String, ::serde_json::Value>>,
+    pub manageiq_connection: OptU<::cdk_ansible::StringOrMap>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "metrics"
     )]
-    pub metrics: OptU<indexmap::IndexMap<String, ::serde_json::Value>>,
+    pub metrics: OptU<::cdk_ansible::StringOrMap>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -75,7 +75,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "provider"
     )]
-    pub provider: OptU<indexmap::IndexMap<String, ::serde_json::Value>>,
+    pub provider: OptU<::cdk_ansible::StringOrMap>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -87,7 +87,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "ssh_keypair"
     )]
-    pub ssh_keypair: OptU<indexmap::IndexMap<String, ::serde_json::Value>>,
+    pub ssh_keypair: OptU<::cdk_ansible::StringOrMap>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -105,7 +105,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "tenant_mapping_enabled"
     )]
-    pub tenant_mapping_enabled: OptU<bool>,
+    pub tenant_mapping_enabled: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",

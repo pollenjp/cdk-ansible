@@ -51,5 +51,5 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "to_numbers"
     )]
-    pub to_numbers: OptU<Vec<::serde_json::Value>>,
+    pub to_numbers: OptU<::cdk_ansible::StringOrVec>,
 }

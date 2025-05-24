@@ -27,13 +27,13 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "enabled"
     )]
-    pub enabled: OptU<bool>,
+    pub enabled: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "expression"
     )]
-    pub expression: OptU<indexmap::IndexMap<String, ::serde_json::Value>>,
+    pub expression: OptU<::cdk_ansible::StringOrMap>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -45,13 +45,13 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "manageiq_connection"
     )]
-    pub manageiq_connection: OptU<indexmap::IndexMap<String, ::serde_json::Value>>,
+    pub manageiq_connection: OptU<::cdk_ansible::StringOrMap>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "options"
     )]
-    pub options: OptU<indexmap::IndexMap<String, ::serde_json::Value>>,
+    pub options: OptU<::cdk_ansible::StringOrMap>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",

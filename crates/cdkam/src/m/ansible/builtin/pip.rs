@@ -21,25 +21,25 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "break_system_packages"
     )]
-    pub break_system_packages: OptU<bool>,
+    pub break_system_packages: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "chdir"
     )]
-    pub chdir: OptU<std::path::PathBuf>,
+    pub chdir: OptU<::cdk_ansible::StringOrPath>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "editable"
     )]
-    pub editable: OptU<bool>,
+    pub editable: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "executable"
     )]
-    pub executable: OptU<std::path::PathBuf>,
+    pub executable: OptU<::cdk_ansible::StringOrPath>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -51,7 +51,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "name"
     )]
-    pub name: OptU<Vec<::serde_json::Value>>,
+    pub name: OptU<::cdk_ansible::StringOrVec>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -81,13 +81,13 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "virtualenv"
     )]
-    pub virtualenv: OptU<std::path::PathBuf>,
+    pub virtualenv: OptU<::cdk_ansible::StringOrPath>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "virtualenv_command"
     )]
-    pub virtualenv_command: OptU<std::path::PathBuf>,
+    pub virtualenv_command: OptU<::cdk_ansible::StringOrPath>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -99,5 +99,5 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "virtualenv_site_packages"
     )]
-    pub virtualenv_site_packages: OptU<bool>,
+    pub virtualenv_site_packages: OptU<::cdk_ansible::BoolOrString>,
 }

@@ -39,25 +39,25 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "cardinality"
     )]
-    pub cardinality: OptU<i64>,
+    pub cardinality: OptU<::cdk_ansible::IntOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "custom_attrs"
     )]
-    pub custom_attrs: OptU<indexmap::IndexMap<String, ::serde_json::Value>>,
+    pub custom_attrs: OptU<::cdk_ansible::StringOrMap>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "force"
     )]
-    pub force: OptU<bool>,
+    pub force: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "group_id"
     )]
-    pub group_id: OptU<i64>,
+    pub group_id: OptU<::cdk_ansible::IntOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -69,7 +69,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "owner_id"
     )]
-    pub owner_id: OptU<i64>,
+    pub owner_id: OptU<::cdk_ansible::IntOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -81,7 +81,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "service_id"
     )]
-    pub service_id: OptU<i64>,
+    pub service_id: OptU<::cdk_ansible::IntOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -99,7 +99,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "template_id"
     )]
-    pub template_id: OptU<i64>,
+    pub template_id: OptU<::cdk_ansible::IntOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -111,17 +111,17 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "unique"
     )]
-    pub unique: OptU<bool>,
+    pub unique: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "wait"
     )]
-    pub wait: OptU<bool>,
+    pub wait: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "wait_timeout"
     )]
-    pub wait_timeout: OptU<i64>,
+    pub wait_timeout: OptU<::cdk_ansible::IntOrString>,
 }

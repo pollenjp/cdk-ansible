@@ -27,13 +27,13 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "access_level_on_creation"
     )]
-    pub access_level_on_creation: OptU<bool>,
+    pub access_level_on_creation: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "active"
     )]
-    pub active: OptU<bool>,
+    pub active: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -93,25 +93,25 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "locked"
     )]
-    pub locked: OptU<bool>,
+    pub locked: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "maximum_timeout"
     )]
-    pub maximum_timeout: OptU<i64>,
+    pub maximum_timeout: OptU<::cdk_ansible::IntOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "owned"
     )]
-    pub owned: OptU<bool>,
+    pub owned: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "paused"
     )]
-    pub paused: OptU<bool>,
+    pub paused: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -129,7 +129,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "run_untagged"
     )]
-    pub run_untagged: OptU<bool>,
+    pub run_untagged: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -141,11 +141,11 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "tag_list"
     )]
-    pub tag_list: OptU<Vec<::serde_json::Value>>,
+    pub tag_list: OptU<::cdk_ansible::StringOrVec>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "validate_certs"
     )]
-    pub validate_certs: OptU<bool>,
+    pub validate_certs: OptU<::cdk_ansible::BoolOrString>,
 }

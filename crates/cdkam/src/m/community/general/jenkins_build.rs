@@ -21,19 +21,19 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "args"
     )]
-    pub args: OptU<indexmap::IndexMap<String, ::serde_json::Value>>,
+    pub args: OptU<::cdk_ansible::StringOrMap>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "build_number"
     )]
-    pub build_number: OptU<i64>,
+    pub build_number: OptU<::cdk_ansible::IntOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "detach"
     )]
-    pub detach: OptU<bool>,
+    pub detach: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -57,7 +57,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "time_between_checks"
     )]
-    pub time_between_checks: OptU<i64>,
+    pub time_between_checks: OptU<::cdk_ansible::IntOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",

@@ -21,7 +21,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "ignore_selinux_state"
     )]
-    pub ignore_selinux_state: OptU<bool>,
+    pub ignore_selinux_state: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -33,11 +33,11 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "persistent"
     )]
-    pub persistent: OptU<bool>,
+    pub persistent: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "state"
     )]
-    pub state: OptU<bool>,
+    pub state: OptU<::cdk_ansible::BoolOrString>,
 }

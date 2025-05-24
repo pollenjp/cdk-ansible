@@ -31,15 +31,27 @@ pub struct Opt {
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
+        rename = "ca_path"
+    )]
+    pub ca_path: OptU<::cdk_ansible::StringOrPath>,
+    #[serde(
+        default = "OptU::default",
+        skip_serializing_if = "OptU::is_unset",
         rename = "category"
     )]
     pub category: OptU<String>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
+        rename = "ciphers"
+    )]
+    pub ciphers: OptU<::cdk_ansible::StringOrVec>,
+    #[serde(
+        default = "OptU::default",
+        skip_serializing_if = "OptU::is_unset",
         rename = "command"
     )]
-    pub command: OptU<Vec<::serde_json::Value>>,
+    pub command: OptU<::cdk_ansible::StringOrVec>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -51,7 +63,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "request_body"
     )]
-    pub request_body: OptU<indexmap::IndexMap<String, ::serde_json::Value>>,
+    pub request_body: OptU<::cdk_ansible::StringOrMap>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -69,7 +81,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "timeout"
     )]
-    pub timeout: OptU<i64>,
+    pub timeout: OptU<::cdk_ansible::IntOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -79,7 +91,13 @@ pub struct Opt {
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
+        rename = "validate_certs"
+    )]
+    pub validate_certs: OptU<::cdk_ansible::BoolOrString>,
+    #[serde(
+        default = "OptU::default",
+        skip_serializing_if = "OptU::is_unset",
         rename = "virtual_media"
     )]
-    pub virtual_media: OptU<indexmap::IndexMap<String, ::serde_json::Value>>,
+    pub virtual_media: OptU<::cdk_ansible::StringOrMap>,
 }

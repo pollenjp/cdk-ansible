@@ -27,13 +27,13 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "package_params"
     )]
-    pub package_params: OptU<indexmap::IndexMap<String, ::serde_json::Value>>,
+    pub package_params: OptU<::cdk_ansible::StringOrMap>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "server_ids"
     )]
-    pub server_ids: OptU<Vec<::serde_json::Value>>,
+    pub server_ids: OptU<::cdk_ansible::StringOrVec>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",

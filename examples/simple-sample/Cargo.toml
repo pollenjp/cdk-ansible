@@ -8,7 +8,6 @@ rust-version.workspace = true
 
 [dependencies]
 cdk-ansible.workspace = true
-cdk-ansible-macro.workspace = true
 sample_cdkam_ansible = { path = "../sample_cdkam_ansible", features = [
     "ansible-builtin",
 ] }

@@ -21,7 +21,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "alert_recipients"
     )]
-    pub alert_recipients: OptU<Vec<::serde_json::Value>>,
+    pub alert_recipients: OptU<::cdk_ansible::StringOrVec>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -63,5 +63,5 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "threshold"
     )]
-    pub threshold: OptU<i64>,
+    pub threshold: OptU<::cdk_ansible::IntOrString>,
 }

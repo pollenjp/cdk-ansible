@@ -143,6 +143,10 @@ pub struct ModuleArgs {
         conflicts_with = "module_name"
     )]
     pub module_name_regex: Option<String>,
+    /// Exclude regex of the ansible module name. It can be specified multiple times.
+    /// (e.g. `--module-name-exclude 'ansible\.builtin\.meta' --module-name-exclude 'ansible\.builtin\.set_fact'`)
+    #[arg(long, required = false, verbatim_doc_comment)]
+    pub module_name_exclude: Option<Vec<String>>,
 }
 
 #[derive(Debug, Clone, ValueEnum, Eq, PartialEq)]

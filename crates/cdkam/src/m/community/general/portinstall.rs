@@ -33,5 +33,5 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "use_packages"
     )]
-    pub use_packages: OptU<bool>,
+    pub use_packages: OptU<::cdk_ansible::BoolOrString>,
 }

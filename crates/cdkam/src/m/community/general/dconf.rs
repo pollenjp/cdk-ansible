@@ -33,5 +33,5 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "value"
     )]
-    pub value: OptU<String>,
+    pub value: OptU<::serde_json::Value>,
 }

@@ -21,19 +21,19 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "dest_iso"
     )]
-    pub dest_iso: OptU<std::path::PathBuf>,
+    pub dest_iso: OptU<::cdk_ansible::StringOrPath>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "interchange_level"
     )]
-    pub interchange_level: OptU<i64>,
+    pub interchange_level: OptU<::cdk_ansible::IntOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "joliet"
     )]
-    pub joliet: OptU<i64>,
+    pub joliet: OptU<::cdk_ansible::IntOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -45,13 +45,13 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "src_files"
     )]
-    pub src_files: OptU<Vec<::serde_json::Value>>,
+    pub src_files: OptU<::cdk_ansible::StringOrVec>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "udf"
     )]
-    pub udf: OptU<bool>,
+    pub udf: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",

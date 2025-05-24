@@ -27,5 +27,5 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "parents"
     )]
-    pub parents: OptU<Vec<::serde_json::Value>>,
+    pub parents: OptU<::cdk_ansible::StringOrVec>,
 }

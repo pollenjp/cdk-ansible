@@ -21,7 +21,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "belongsto_filters"
     )]
-    pub belongsto_filters: OptU<Vec<::serde_json::Value>>,
+    pub belongsto_filters: OptU<::cdk_ansible::StringOrVec>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -39,7 +39,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "managed_filters"
     )]
-    pub managed_filters: OptU<indexmap::IndexMap<String, ::serde_json::Value>>,
+    pub managed_filters: OptU<::cdk_ansible::StringOrMap>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -51,7 +51,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "manageiq_connection"
     )]
-    pub manageiq_connection: OptU<indexmap::IndexMap<String, ::serde_json::Value>>,
+    pub manageiq_connection: OptU<::cdk_ansible::StringOrMap>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -63,7 +63,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "role_id"
     )]
-    pub role_id: OptU<i64>,
+    pub role_id: OptU<::cdk_ansible::IntOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -81,5 +81,5 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "tenant_id"
     )]
-    pub tenant_id: OptU<i64>,
+    pub tenant_id: OptU<::cdk_ansible::IntOrString>,
 }

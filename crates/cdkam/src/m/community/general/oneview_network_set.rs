@@ -21,19 +21,19 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "api_version"
     )]
-    pub api_version: OptU<i64>,
+    pub api_version: OptU<::cdk_ansible::IntOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "config"
     )]
-    pub config: OptU<std::path::PathBuf>,
+    pub config: OptU<::cdk_ansible::StringOrPath>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "data"
     )]
-    pub data: OptU<indexmap::IndexMap<String, ::serde_json::Value>>,
+    pub data: OptU<::cdk_ansible::StringOrMap>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -69,5 +69,5 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "validate_etag"
     )]
-    pub validate_etag: OptU<bool>,
+    pub validate_etag: OptU<::cdk_ansible::BoolOrString>,
 }

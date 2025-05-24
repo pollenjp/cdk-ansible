@@ -21,7 +21,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "delay"
     )]
-    pub delay: OptU<i64>,
+    pub delay: OptU<::cdk_ansible::IntOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -33,5 +33,5 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "search_paths"
     )]
-    pub search_paths: OptU<Vec<::serde_json::Value>>,
+    pub search_paths: OptU<::cdk_ansible::StringOrVec>,
 }

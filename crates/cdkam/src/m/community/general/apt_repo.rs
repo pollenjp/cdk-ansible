@@ -21,7 +21,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "remove_others"
     )]
-    pub remove_others: OptU<bool>,
+    pub remove_others: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -39,5 +39,5 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "update"
     )]
-    pub update: OptU<bool>,
+    pub update: OptU<::cdk_ansible::BoolOrString>,
 }

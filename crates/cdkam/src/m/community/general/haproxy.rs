@@ -21,7 +21,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "agent"
     )]
-    pub agent: OptU<bool>,
+    pub agent: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -33,19 +33,19 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "drain"
     )]
-    pub drain: OptU<bool>,
+    pub drain: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "fail_on_not_found"
     )]
-    pub fail_on_not_found: OptU<bool>,
+    pub fail_on_not_found: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "health"
     )]
-    pub health: OptU<bool>,
+    pub health: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -57,13 +57,13 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "shutdown_sessions"
     )]
-    pub shutdown_sessions: OptU<bool>,
+    pub shutdown_sessions: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "socket"
     )]
-    pub socket: OptU<std::path::PathBuf>,
+    pub socket: OptU<::cdk_ansible::StringOrPath>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -75,19 +75,19 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "wait"
     )]
-    pub wait: OptU<bool>,
+    pub wait: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "wait_interval"
     )]
-    pub wait_interval: OptU<i64>,
+    pub wait_interval: OptU<::cdk_ansible::IntOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "wait_retries"
     )]
-    pub wait_retries: OptU<i64>,
+    pub wait_retries: OptU<::cdk_ansible::IntOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",

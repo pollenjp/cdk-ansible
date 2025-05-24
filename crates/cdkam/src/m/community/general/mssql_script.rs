@@ -33,7 +33,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "login_port"
     )]
-    pub login_port: OptU<i64>,
+    pub login_port: OptU<::cdk_ansible::IntOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -57,7 +57,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "params"
     )]
-    pub params: OptU<indexmap::IndexMap<String, ::serde_json::Value>>,
+    pub params: OptU<::cdk_ansible::StringOrMap>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -69,5 +69,5 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "transaction"
     )]
-    pub transaction: OptU<bool>,
+    pub transaction: OptU<::cdk_ansible::BoolOrString>,
 }

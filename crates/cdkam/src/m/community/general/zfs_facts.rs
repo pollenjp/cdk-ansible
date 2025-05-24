@@ -21,7 +21,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "depth"
     )]
-    pub depth: OptU<i64>,
+    pub depth: OptU<::cdk_ansible::IntOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -33,7 +33,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "parsable"
     )]
-    pub parsable: OptU<bool>,
+    pub parsable: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -45,11 +45,11 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "recurse"
     )]
-    pub recurse: OptU<bool>,
+    pub recurse: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "type"
     )]
-    pub type_x_: OptU<String>,
+    pub type_x_: OptU<::cdk_ansible::StringOrVec>,
 }

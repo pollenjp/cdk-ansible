@@ -21,31 +21,31 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "chdir"
     )]
-    pub chdir: OptU<std::path::PathBuf>,
+    pub chdir: OptU<::cdk_ansible::StringOrPath>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "file"
     )]
-    pub file: OptU<std::path::PathBuf>,
+    pub file: OptU<::cdk_ansible::StringOrPath>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "jobs"
     )]
-    pub jobs: OptU<i64>,
+    pub jobs: OptU<::cdk_ansible::IntOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "make"
     )]
-    pub make: OptU<std::path::PathBuf>,
+    pub make: OptU<::cdk_ansible::StringOrPath>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "params"
     )]
-    pub params: OptU<indexmap::IndexMap<String, ::serde_json::Value>>,
+    pub params: OptU<::cdk_ansible::StringOrMap>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -57,5 +57,5 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "targets"
     )]
-    pub targets: OptU<Vec<::serde_json::Value>>,
+    pub targets: OptU<::cdk_ansible::StringOrVec>,
 }

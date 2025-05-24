@@ -19,15 +19,33 @@ pub struct Opt {
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
+        rename = "accept_pubkey"
+    )]
+    pub accept_pubkey: OptU<::cdk_ansible::BoolOrString>,
+    #[serde(
+        default = "OptU::default",
+        skip_serializing_if = "OptU::is_unset",
         rename = "name"
     )]
-    pub name: OptU<Vec<::serde_json::Value>>,
+    pub name: OptU<::cdk_ansible::StringOrVec>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "recurse"
     )]
-    pub recurse: OptU<bool>,
+    pub recurse: OptU<::cdk_ansible::BoolOrString>,
+    #[serde(
+        default = "OptU::default",
+        skip_serializing_if = "OptU::is_unset",
+        rename = "repositories"
+    )]
+    pub repositories: OptU<::cdk_ansible::StringOrVec>,
+    #[serde(
+        default = "OptU::default",
+        skip_serializing_if = "OptU::is_unset",
+        rename = "root"
+    )]
+    pub root: OptU<::cdk_ansible::StringOrPath>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -39,17 +57,17 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "update_cache"
     )]
-    pub update_cache: OptU<bool>,
+    pub update_cache: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "upgrade"
     )]
-    pub upgrade: OptU<bool>,
+    pub upgrade: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "upgrade_xbps"
     )]
-    pub upgrade_xbps: OptU<bool>,
+    pub upgrade_xbps: OptU<::cdk_ansible::BoolOrString>,
 }

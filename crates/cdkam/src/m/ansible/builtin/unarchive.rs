@@ -27,37 +27,37 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "copy"
     )]
-    pub copy: OptU<bool>,
+    pub copy: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "creates"
     )]
-    pub creates: OptU<std::path::PathBuf>,
+    pub creates: OptU<::cdk_ansible::StringOrPath>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "decrypt"
     )]
-    pub decrypt: OptU<bool>,
+    pub decrypt: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "dest"
     )]
-    pub dest: OptU<std::path::PathBuf>,
+    pub dest: OptU<::cdk_ansible::StringOrPath>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "exclude"
     )]
-    pub exclude: OptU<Vec<::serde_json::Value>>,
+    pub exclude: OptU<::cdk_ansible::StringOrVec>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "extra_opts"
     )]
-    pub extra_opts: OptU<Vec<::serde_json::Value>>,
+    pub extra_opts: OptU<::cdk_ansible::StringOrVec>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -69,31 +69,31 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "include"
     )]
-    pub include: OptU<Vec<::serde_json::Value>>,
+    pub include: OptU<::cdk_ansible::StringOrVec>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "io_buffer_size"
     )]
-    pub io_buffer_size: OptU<i64>,
+    pub io_buffer_size: OptU<::cdk_ansible::IntOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "keep_newer"
     )]
-    pub keep_newer: OptU<bool>,
+    pub keep_newer: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "list_files"
     )]
-    pub list_files: OptU<bool>,
+    pub list_files: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "mode"
     )]
-    pub mode: OptU<String>,
+    pub mode: OptU<::serde_json::Value>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -105,7 +105,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "remote_src"
     )]
-    pub remote_src: OptU<bool>,
+    pub remote_src: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -135,17 +135,17 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "src"
     )]
-    pub src: OptU<std::path::PathBuf>,
+    pub src: OptU<::cdk_ansible::StringOrPath>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "unsafe_writes"
     )]
-    pub unsafe_writes: OptU<bool>,
+    pub unsafe_writes: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "validate_certs"
     )]
-    pub validate_certs: OptU<bool>,
+    pub validate_certs: OptU<::cdk_ansible::BoolOrString>,
 }

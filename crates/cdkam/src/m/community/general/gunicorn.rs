@@ -27,19 +27,19 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "chdir"
     )]
-    pub chdir: OptU<std::path::PathBuf>,
+    pub chdir: OptU<::cdk_ansible::StringOrPath>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "config"
     )]
-    pub config: OptU<std::path::PathBuf>,
+    pub config: OptU<::cdk_ansible::StringOrPath>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "pid"
     )]
-    pub pid: OptU<std::path::PathBuf>,
+    pub pid: OptU<::cdk_ansible::StringOrPath>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -51,7 +51,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "venv"
     )]
-    pub venv: OptU<std::path::PathBuf>,
+    pub venv: OptU<::cdk_ansible::StringOrPath>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",

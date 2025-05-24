@@ -21,7 +21,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "chdir"
     )]
-    pub chdir: OptU<std::path::PathBuf>,
+    pub chdir: OptU<::cdk_ansible::StringOrPath>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -33,29 +33,29 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "creates"
     )]
-    pub creates: OptU<std::path::PathBuf>,
+    pub creates: OptU<::cdk_ansible::StringOrPath>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "echo"
     )]
-    pub echo: OptU<bool>,
+    pub echo: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "removes"
     )]
-    pub removes: OptU<std::path::PathBuf>,
+    pub removes: OptU<::cdk_ansible::StringOrPath>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "responses"
     )]
-    pub responses: OptU<indexmap::IndexMap<String, ::serde_json::Value>>,
+    pub responses: OptU<::cdk_ansible::StringOrMap>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "timeout"
     )]
-    pub timeout: OptU<String>,
+    pub timeout: OptU<::serde_json::Value>,
 }

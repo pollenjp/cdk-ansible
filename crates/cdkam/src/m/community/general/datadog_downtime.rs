@@ -45,25 +45,25 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "end"
     )]
-    pub end: OptU<i64>,
+    pub end: OptU<::cdk_ansible::IntOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "id"
     )]
-    pub id: OptU<i64>,
+    pub id: OptU<::cdk_ansible::IntOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "monitor_id"
     )]
-    pub monitor_id: OptU<i64>,
+    pub monitor_id: OptU<::cdk_ansible::IntOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "monitor_tags"
     )]
-    pub monitor_tags: OptU<Vec<::serde_json::Value>>,
+    pub monitor_tags: OptU<::cdk_ansible::StringOrVec>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -75,13 +75,13 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "scope"
     )]
-    pub scope: OptU<Vec<::serde_json::Value>>,
+    pub scope: OptU<::cdk_ansible::StringOrVec>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "start"
     )]
-    pub start: OptU<i64>,
+    pub start: OptU<::cdk_ansible::IntOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
