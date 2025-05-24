@@ -1,6 +1,5 @@
 use anyhow::{bail, Result};
-use cdk_ansible::{Child, Inventory, InventoryRoot, OptU};
-use cdk_ansible_macro::FieldCount;
+use cdk_ansible::{Child, FieldCount, Inventory, InventoryRoot, OptU};
 use indexmap::IndexMap;
 
 #[derive(Default, Debug, Clone, PartialEq, Eq, FieldCount)]
