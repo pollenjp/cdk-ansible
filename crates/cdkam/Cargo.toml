@@ -19,6 +19,7 @@ serde_json = { workspace = true }
 cdk-ansible = { workspace = true }
 
 [features]
+default = ["ansible", "community"]
 ansible = ["ansible-builtin", "ansible-posix"]
 ansible-builtin = []
 ansible-posix = []
