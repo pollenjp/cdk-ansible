@@ -90,7 +90,7 @@ dependencies = [
 
 [[package]]
 name = "cdk-ansible"
-version = "0.1.2"
+version = "0.1.3"
 dependencies = [
  "anyhow",
  "cargo_toml",
@@ -111,7 +111,7 @@ dependencies = [
 
 [[package]]
 name = "cdk-ansible-cli"
-version = "0.1.2"
+version = "0.1.3"
 dependencies = [
  "anyhow",
  "cargo_toml",
@@ -135,7 +135,7 @@ dependencies = [
 
 [[package]]
 name = "cdk-ansible-core"
-version = "0.0.10"
+version = "0.0.11"
 dependencies = [
  "dyn-clone",
  "erased-serde",
@@ -161,7 +161,7 @@ dependencies = [
 
 [[package]]
 name = "cdkam"
-version = "0.2.2"
+version = "0.2.3"
 dependencies = [
  "anyhow",
  "cdk-ansible",
@@ -451,9 +451,20 @@ version = "0.1.0"
 dependencies = [
  "anyhow",
  "cdk-ansible",
- "cdk-ansible-macro",
  "indexmap",
  "sample_cdkam_ansible",
+ "serde",
+ "serde_json",
+]
+
+[[package]]
+name = "simple-sample-for-cdkam"
+version = "0.1.0"
+dependencies = [
+ "anyhow",
+ "cdk-ansible",
+ "cdkam",
+ "indexmap",
  "serde",
  "serde_json",
 ]
