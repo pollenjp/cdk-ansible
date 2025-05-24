@@ -50,6 +50,8 @@ pub struct ModuleSettings {
     pub module_name: Option<String>,
     /// The regex for the module name
     pub module_name_regex: Option<String>,
+    /// The regex for the module name to exclude
+    pub module_name_exclude: Option<Vec<String>>,
 }
 
 impl ModuleSettings {
@@ -68,6 +70,7 @@ impl ModuleSettings {
             cache_dir: args.cache_dir,
             module_name: args.module_name,
             module_name_regex: args.module_name_regex,
+            module_name_exclude: args.module_name_exclude,
         }
     }
 }

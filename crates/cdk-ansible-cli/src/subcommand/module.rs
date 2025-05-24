@@ -1,6 +1,3 @@
-use crate::arg::ModuleArgs;
-use crate::settings::{ModuleSettings, PkgUnit};
-use crate::utils::ACRONYM_WITH_TWO_LOWER;
 use anyhow::{Context as _, Result, bail};
 use convert_case::{Boundary, Case, Casing as _};
 use core::fmt;
@@ -14,6 +11,10 @@ use std::fs;
 use std::io::Write as _;
 use std::path::{Path, PathBuf};
 use std::process::{Command, Stdio};
+
+use crate::arg::ModuleArgs;
+use crate::settings::{ModuleSettings, PkgUnit};
+use crate::utils::ACRONYM_WITH_TWO_LOWER;
 
 // FIXME: should be configurable
 /// The name of the submodule
@@ -35,6 +36,7 @@ static SUB_MOD_NAME: &str = "m";
 /// * `IoError` - If the configuration file is not found or cannot be read.
 pub fn module(args: ModuleArgs) -> Result<()> {
     let args = ModuleSettings::resolve(args);
+    let exclude_regexes = args.module_name_exclude.unwrap_or_default();
     let ans_modu_names = match (args.module_name, args.module_name_regex) {
         (Some(modu_name), None) => {
             vec![
@@ -42,8 +44,8 @@ pub fn module(args: ModuleArgs) -> Result<()> {
                     .with_context(|| format!("failed to parse module name: {modu_name}"))?,
             ]
         }
-        (None, Some(regex)) => match_module_name(&regex)?,
-        (None, None) => match_module_name("*")?,
+        (None, Some(regex)) => match_module_name(&regex, &exclude_regexes)?,
+        (None, None) => match_module_name("*", &exclude_regexes)?,
         (Some(_), Some(_)) => {
             // Already rejected at argument parsing
             bail!("failed to specify both module_name and module_name_regex");
@@ -71,13 +73,27 @@ pub fn module(args: ModuleArgs) -> Result<()> {
 ///
 /// * `name_regex` - e.g. '<namespace>\.<collection>\.*', '<namespace>\.*'
 ///
-fn match_module_name(name_regex: &str) -> Result<Vec<AnsibleModuleName>> {
-    // parse as regex
-    let regex = Regex::new(format!("^{name_regex}$").as_str())?;
+fn match_module_name(name_regex: &str, exclude_regex: &[String]) -> Result<Vec<AnsibleModuleName>> {
+    let regex = Regex::new(format!("^{name_regex}$").as_str())
+        .with_context(|| format!("failed to parse match regex: {name_regex}"))?;
+
+    let exclude_regexes = exclude_regex
+        .iter()
+        .map(|exclude_regex| {
+            Regex::new(format!("^{exclude_regex}$").as_str())
+                .with_context(|| format!("failed to parse exclude regex: {exclude_regex}"))
+        })
+        .collect::<Result<Vec<_>>>()?;
+
     let list_lines = get_ansible_modules_list()?;
     let ans_modu_names = list_lines
         .iter()
         .filter(|line| regex.is_match(line))
+        .filter(|line| {
+            !exclude_regexes
+                .iter()
+                .any(|exclude_regex| exclude_regex.is_match(line))
+        })
         .map(|line| {
             let am_name = AnsibleModuleName::new(line)
                 .with_context(|| format!("failed to parse module name: {line}"))?;
@@ -318,7 +334,7 @@ fn create_or_edit_cargo_toml(
 name = \"{pkg_name}\"
 version = \"0.1.0\"
 edition = \"2024\"
-rust-version = \"1.85\"
+rust-version = \"1.86\"
 "
         ))?;
         if let Some(package) = manifest.package.as_mut() {
@@ -725,14 +741,16 @@ fn generate_module_rs(module_json: &AnsModuleJson) -> Result<String> {
                     .unwrap_or_else(|| "str".to_owned())
                     .as_str()
                 {
-                    // FIXME: always include "string" because ansible can use template.
-                    "path" => "OptU<std::path::PathBuf>",
-                    "int" | "integer" => "OptU<i64>",
-                    "bool" | "boolean" => "OptU<bool>",
-                    "list" => "OptU<Vec<::serde_json::Value>>",
-                    "dict" => "OptU<indexmap::IndexMap<String, ::serde_json::Value>>",
-                    // `"str" | "string"` or default should be [`OptU<String>`]
-                    _ => "OptU<String>",
+                    // always include "string" because ansible can use template.
+                    // types are defined in `cdk-ansible-core/src/core/types.rs`
+                    "path" => "OptU<::cdk_ansible::StringOrPath>",
+                    "int" | "integer" => "OptU<::cdk_ansible::IntOrString>",
+                    "bool" | "boolean" => "OptU<::cdk_ansible::BoolOrString>",
+                    "list" => "OptU<::cdk_ansible::StringOrVec>",
+                    "dict" => "OptU<::cdk_ansible::StringOrMap>",
+                    "str" | "string" => "OptU<String>",
+                    // default should be [`OptU<String>`]
+                    _ => "OptU<::serde_json::Value>",
                 },
             )
             .with_context(|| format!("failed to parse type: {:?}", value.type_))?;

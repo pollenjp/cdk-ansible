@@ -2,6 +2,10 @@ use dyn_clone::{DynClone, clone_trait_object};
 use erased_serde::serialize_trait_object;
 use indexmap::IndexMap;
 use serde::Serialize;
+
+mod types;
+pub use types::*;
+
 #[derive(Default, Debug, Clone, PartialEq)]
 pub struct Inventory {
     pub name: String,
@@ -414,73 +418,6 @@ pub struct TaskOptions {
     // FIXME: not supported yet!
     // with_<lookup_plugin>
     // The same as loop but magically adds the output of any lookup plugin to generate the item list.
-}
-
-/// A boolean or a string
-#[derive(Serialize, Clone, Debug, PartialEq)]
-#[serde(untagged)]
-pub enum BoolOrString {
-    Bool(bool),
-    String(String),
-}
-
-impl From<bool> for BoolOrString {
-    fn from(value: bool) -> Self {
-        Self::Bool(value)
-    }
-}
-
-impl From<String> for BoolOrString {
-    fn from(value: String) -> Self {
-        Self::String(value)
-    }
-}
-
-/// A string or a vector of strings
-#[derive(Serialize, Clone, Debug, PartialEq)]
-#[serde(untagged)]
-pub enum StringOrVecString {
-    String(String),
-    VecString(Vec<String>),
-}
-
-impl From<String> for StringOrVecString {
-    fn from(value: String) -> Self {
-        Self::String(value)
-    }
-}
-
-impl From<Vec<String>> for StringOrVecString {
-    fn from(value: Vec<String>) -> Self {
-        Self::VecString(value)
-    }
-}
-
-/// A boolean or a string or a vector of strings
-#[derive(Serialize, Clone, Debug, PartialEq)]
-#[serde(untagged)]
-pub enum BoolOrStringOrVecString {
-    Bool(bool),
-    String(String),
-    VecString(Vec<String>),
-}
-
-impl From<bool> for BoolOrStringOrVecString {
-    fn from(value: bool) -> Self {
-        Self::Bool(value)
-    }
-}
-
-impl From<String> for BoolOrStringOrVecString {
-    fn from(value: String) -> Self {
-        Self::String(value)
-    }
-}
-
-impl From<Vec<String>> for BoolOrStringOrVecString {
-    fn from(value: Vec<String>) -> Self {
-        Self::VecString(value)
-    }
 }
 
 #[cfg(test)]
