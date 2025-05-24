@@ -27,7 +27,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "force_array"
     )]
-    pub force_array: OptU<bool>,
+    pub force_array: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -45,11 +45,11 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "value"
     )]
-    pub value: OptU<Vec<::serde_json::Value>>,
+    pub value: OptU<::cdk_ansible::StringOrVec>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "value_type"
     )]
-    pub value_type: OptU<Vec<::serde_json::Value>>,
+    pub value_type: OptU<::cdk_ansible::StringOrVec>,
 }

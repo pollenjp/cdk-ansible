@@ -21,13 +21,13 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "add_public_ip"
     )]
-    pub add_public_ip: OptU<bool>,
+    pub add_public_ip: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "additional_disks"
     )]
-    pub additional_disks: OptU<Vec<::serde_json::Value>>,
+    pub additional_disks: OptU<::cdk_ansible::StringOrVec>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -69,7 +69,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "count"
     )]
-    pub count: OptU<i64>,
+    pub count: OptU<::cdk_ansible::IntOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -81,7 +81,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "cpu"
     )]
-    pub cpu: OptU<i64>,
+    pub cpu: OptU<::cdk_ansible::IntOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -93,7 +93,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "custom_fields"
     )]
-    pub custom_fields: OptU<Vec<::serde_json::Value>>,
+    pub custom_fields: OptU<::cdk_ansible::StringOrVec>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -105,7 +105,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "exact_count"
     )]
-    pub exact_count: OptU<i64>,
+    pub exact_count: OptU<::cdk_ansible::IntOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -129,13 +129,13 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "managed_os"
     )]
-    pub managed_os: OptU<bool>,
+    pub managed_os: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "memory"
     )]
-    pub memory: OptU<i64>,
+    pub memory: OptU<::cdk_ansible::IntOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -159,7 +159,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "packages"
     )]
-    pub packages: OptU<Vec<::serde_json::Value>>,
+    pub packages: OptU<::cdk_ansible::StringOrVec>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -177,7 +177,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "public_ip_ports"
     )]
-    pub public_ip_ports: OptU<Vec<::serde_json::Value>>,
+    pub public_ip_ports: OptU<::cdk_ansible::StringOrVec>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -195,7 +195,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "server_ids"
     )]
-    pub server_ids: OptU<Vec<::serde_json::Value>>,
+    pub server_ids: OptU<::cdk_ansible::StringOrVec>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -237,5 +237,5 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "wait"
     )]
-    pub wait: OptU<bool>,
+    pub wait: OptU<::cdk_ansible::BoolOrString>,
 }

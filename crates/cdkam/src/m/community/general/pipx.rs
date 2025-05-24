@@ -21,31 +21,31 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "editable"
     )]
-    pub editable: OptU<bool>,
+    pub editable: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "executable"
     )]
-    pub executable: OptU<std::path::PathBuf>,
+    pub executable: OptU<::cdk_ansible::StringOrPath>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "force"
     )]
-    pub force: OptU<bool>,
+    pub force: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "global"
     )]
-    pub global: OptU<bool>,
+    pub global: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "include_injected"
     )]
-    pub include_injected: OptU<bool>,
+    pub include_injected: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -57,19 +57,19 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "inject_packages"
     )]
-    pub inject_packages: OptU<Vec<::serde_json::Value>>,
+    pub inject_packages: OptU<::cdk_ansible::StringOrVec>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "install_apps"
     )]
-    pub install_apps: OptU<bool>,
+    pub install_apps: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "install_deps"
     )]
-    pub install_deps: OptU<bool>,
+    pub install_deps: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -99,7 +99,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "spec_metadata"
     )]
-    pub spec_metadata: OptU<std::path::PathBuf>,
+    pub spec_metadata: OptU<::cdk_ansible::StringOrPath>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -117,5 +117,5 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "system_site_packages"
     )]
-    pub system_site_packages: OptU<bool>,
+    pub system_site_packages: OptU<::cdk_ansible::BoolOrString>,
 }

@@ -21,7 +21,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "all_infrastructure_affected"
     )]
-    pub all_infrastructure_affected: OptU<bool>,
+    pub all_infrastructure_affected: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -39,19 +39,19 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "automation"
     )]
-    pub automation: OptU<bool>,
+    pub automation: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "components"
     )]
-    pub components: OptU<Vec<::serde_json::Value>>,
+    pub components: OptU<::cdk_ansible::StringOrVec>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "containers"
     )]
-    pub containers: OptU<Vec<::serde_json::Value>>,
+    pub containers: OptU<::cdk_ansible::StringOrVec>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -69,31 +69,31 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "maintenance_notify_1_hr"
     )]
-    pub maintenance_notify_1_hr: OptU<bool>,
+    pub maintenance_notify_1_hr: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "maintenance_notify_24_hr"
     )]
-    pub maintenance_notify_24_hr: OptU<bool>,
+    pub maintenance_notify_24_hr: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "maintenance_notify_72_hr"
     )]
-    pub maintenance_notify_72_hr: OptU<bool>,
+    pub maintenance_notify_72_hr: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "maintenance_notify_now"
     )]
-    pub maintenance_notify_now: OptU<bool>,
+    pub maintenance_notify_now: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "minutes"
     )]
-    pub minutes: OptU<i64>,
+    pub minutes: OptU<::cdk_ansible::IntOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",

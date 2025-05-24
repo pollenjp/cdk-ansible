@@ -21,11 +21,11 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "active_zones"
     )]
-    pub active_zones: OptU<bool>,
+    pub active_zones: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "zones"
     )]
-    pub zones: OptU<Vec<::serde_json::Value>>,
+    pub zones: OptU<::cdk_ansible::StringOrVec>,
 }

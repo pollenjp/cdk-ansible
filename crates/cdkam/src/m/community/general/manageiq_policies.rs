@@ -21,19 +21,19 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "manageiq_connection"
     )]
-    pub manageiq_connection: OptU<indexmap::IndexMap<String, ::serde_json::Value>>,
+    pub manageiq_connection: OptU<::cdk_ansible::StringOrMap>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "policy_profiles"
     )]
-    pub policy_profiles: OptU<Vec<::serde_json::Value>>,
+    pub policy_profiles: OptU<::cdk_ansible::StringOrVec>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "resource_id"
     )]
-    pub resource_id: OptU<i64>,
+    pub resource_id: OptU<::cdk_ansible::IntOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",

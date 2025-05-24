@@ -39,7 +39,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "priority"
     )]
-    pub priority: OptU<i64>,
+    pub priority: OptU<::cdk_ansible::IntOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -51,19 +51,19 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "record_ids"
     )]
-    pub record_ids: OptU<Vec<::serde_json::Value>>,
+    pub record_ids: OptU<::cdk_ansible::StringOrVec>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "sandbox"
     )]
-    pub sandbox: OptU<bool>,
+    pub sandbox: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "solo"
     )]
-    pub solo: OptU<bool>,
+    pub solo: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -75,7 +75,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "ttl"
     )]
-    pub ttl: OptU<i64>,
+    pub ttl: OptU<::cdk_ansible::IntOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",

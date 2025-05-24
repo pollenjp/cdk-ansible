@@ -21,13 +21,13 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "clone"
     )]
-    pub clone: OptU<bool>,
+    pub clone: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "dest"
     )]
-    pub dest: OptU<std::path::PathBuf>,
+    pub dest: OptU<::cdk_ansible::StringOrPath>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -39,13 +39,13 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "force"
     )]
-    pub force: OptU<bool>,
+    pub force: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "purge"
     )]
-    pub purge: OptU<bool>,
+    pub purge: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -63,5 +63,5 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "update"
     )]
-    pub update: OptU<bool>,
+    pub update: OptU<::cdk_ansible::BoolOrString>,
 }

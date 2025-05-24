@@ -51,13 +51,13 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "proxy_slot_number"
     )]
-    pub proxy_slot_number: OptU<i64>,
+    pub proxy_slot_number: OptU<::cdk_ansible::IntOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "timeout"
     )]
-    pub timeout: OptU<i64>,
+    pub timeout: OptU<::cdk_ansible::IntOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",

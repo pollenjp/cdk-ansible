@@ -69,13 +69,13 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "secure"
     )]
-    pub secure: OptU<bool>,
+    pub secure: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "set_size"
     )]
-    pub set_size: OptU<i64>,
+    pub set_size: OptU<::cdk_ansible::IntOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",

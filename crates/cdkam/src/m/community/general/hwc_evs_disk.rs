@@ -45,19 +45,19 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "enable_full_clone"
     )]
-    pub enable_full_clone: OptU<bool>,
+    pub enable_full_clone: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "enable_scsi"
     )]
-    pub enable_scsi: OptU<bool>,
+    pub enable_scsi: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "enable_share"
     )]
-    pub enable_share: OptU<bool>,
+    pub enable_share: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -117,7 +117,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "size"
     )]
-    pub size: OptU<i64>,
+    pub size: OptU<::cdk_ansible::IntOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -135,7 +135,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "timeouts"
     )]
-    pub timeouts: OptU<indexmap::IndexMap<String, ::serde_json::Value>>,
+    pub timeouts: OptU<::cdk_ansible::StringOrMap>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",

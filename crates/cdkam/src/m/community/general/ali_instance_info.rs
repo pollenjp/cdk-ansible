@@ -27,7 +27,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "alicloud_assume_role"
     )]
-    pub alicloud_assume_role: OptU<indexmap::IndexMap<String, ::serde_json::Value>>,
+    pub alicloud_assume_role: OptU<::cdk_ansible::StringOrMap>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -39,7 +39,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "alicloud_assume_role_session_expiration"
     )]
-    pub alicloud_assume_role_session_expiration: OptU<i64>,
+    pub alicloud_assume_role_session_expiration: OptU<::cdk_ansible::IntOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -75,7 +75,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "filters"
     )]
-    pub filters: OptU<indexmap::IndexMap<String, ::serde_json::Value>>,
+    pub filters: OptU<::cdk_ansible::StringOrMap>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -99,5 +99,5 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "tags"
     )]
-    pub tags: OptU<indexmap::IndexMap<String, ::serde_json::Value>>,
+    pub tags: OptU<::cdk_ansible::StringOrMap>,
 }

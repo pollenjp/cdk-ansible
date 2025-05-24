@@ -21,23 +21,23 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "connect_timeout"
     )]
-    pub connect_timeout: OptU<i64>,
+    pub connect_timeout: OptU<::cdk_ansible::IntOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "delay"
     )]
-    pub delay: OptU<i64>,
+    pub delay: OptU<::cdk_ansible::IntOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "sleep"
     )]
-    pub sleep: OptU<i64>,
+    pub sleep: OptU<::cdk_ansible::IntOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "timeout"
     )]
-    pub timeout: OptU<i64>,
+    pub timeout: OptU<::cdk_ansible::IntOrString>,
 }

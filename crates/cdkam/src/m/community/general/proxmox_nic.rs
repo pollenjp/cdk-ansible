@@ -33,7 +33,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "api_port"
     )]
-    pub api_port: OptU<i64>,
+    pub api_port: OptU<::cdk_ansible::IntOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -63,7 +63,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "firewall"
     )]
-    pub firewall: OptU<bool>,
+    pub firewall: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -75,7 +75,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "link_down"
     )]
-    pub link_down: OptU<bool>,
+    pub link_down: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -93,7 +93,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "mtu"
     )]
-    pub mtu: OptU<i64>,
+    pub mtu: OptU<::cdk_ansible::IntOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -105,13 +105,13 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "queues"
     )]
-    pub queues: OptU<i64>,
+    pub queues: OptU<::cdk_ansible::IntOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "rate"
     )]
-    pub rate: OptU<String>,
+    pub rate: OptU<::serde_json::Value>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -123,23 +123,23 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "tag"
     )]
-    pub tag: OptU<i64>,
+    pub tag: OptU<::cdk_ansible::IntOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "trunks"
     )]
-    pub trunks: OptU<Vec<::serde_json::Value>>,
+    pub trunks: OptU<::cdk_ansible::StringOrVec>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "validate_certs"
     )]
-    pub validate_certs: OptU<bool>,
+    pub validate_certs: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "vmid"
     )]
-    pub vmid: OptU<i64>,
+    pub vmid: OptU<::cdk_ansible::IntOrString>,
 }

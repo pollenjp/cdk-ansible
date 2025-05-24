@@ -27,7 +27,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "plugin_bin"
     )]
-    pub plugin_bin: OptU<std::path::PathBuf>,
+    pub plugin_bin: OptU<::cdk_ansible::StringOrPath>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",

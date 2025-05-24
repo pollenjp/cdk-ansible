@@ -45,13 +45,13 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "nfsCustomSettings"
     )]
-    pub nfs_custom_settings: OptU<Vec<::serde_json::Value>>,
+    pub nfs_custom_settings: OptU<::cdk_ansible::StringOrVec>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "nfs_hosts"
     )]
-    pub nfs_hosts: OptU<Vec<::serde_json::Value>>,
+    pub nfs_hosts: OptU<::cdk_ansible::StringOrVec>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -69,13 +69,13 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "path"
     )]
-    pub path: OptU<std::path::PathBuf>,
+    pub path: OptU<::cdk_ansible::StringOrPath>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "root_squash"
     )]
-    pub root_squash: OptU<bool>,
+    pub root_squash: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -87,13 +87,13 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "sambaBlockingLocks"
     )]
-    pub samba_blocking_locks: OptU<bool>,
+    pub samba_blocking_locks: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "sambaBrowseable"
     )]
-    pub samba_browseable: OptU<bool>,
+    pub samba_browseable: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -111,7 +111,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "sambaCustomSettings"
     )]
-    pub samba_custom_settings: OptU<Vec<::serde_json::Value>>,
+    pub samba_custom_settings: OptU<::cdk_ansible::StringOrVec>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -129,31 +129,31 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "sambaDosFilemode"
     )]
-    pub samba_dos_filemode: OptU<bool>,
+    pub samba_dos_filemode: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "sambaFakeOplocks"
     )]
-    pub samba_fake_oplocks: OptU<bool>,
+    pub samba_fake_oplocks: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "sambaForceCreateMode"
     )]
-    pub samba_force_create_mode: OptU<bool>,
+    pub samba_force_create_mode: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "sambaForceDirectoryMode"
     )]
-    pub samba_force_directory_mode: OptU<bool>,
+    pub samba_force_directory_mode: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "sambaForceDirectorySecurityMode"
     )]
-    pub samba_force_directory_security_mode: OptU<bool>,
+    pub samba_force_directory_security_mode: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -165,7 +165,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "sambaForceSecurityMode"
     )]
-    pub samba_force_security_mode: OptU<bool>,
+    pub samba_force_security_mode: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -183,37 +183,37 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "sambaHideUnreadable"
     )]
-    pub samba_hide_unreadable: OptU<bool>,
+    pub samba_hide_unreadable: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "sambaHostsAllow"
     )]
-    pub samba_hosts_allow: OptU<Vec<::serde_json::Value>>,
+    pub samba_hosts_allow: OptU<::cdk_ansible::StringOrVec>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "sambaHostsDeny"
     )]
-    pub samba_hosts_deny: OptU<Vec<::serde_json::Value>>,
+    pub samba_hosts_deny: OptU<::cdk_ansible::StringOrVec>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "sambaInheritAcls"
     )]
-    pub samba_inherit_acls: OptU<bool>,
+    pub samba_inherit_acls: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "sambaInheritOwner"
     )]
-    pub samba_inherit_owner: OptU<bool>,
+    pub samba_inherit_owner: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "sambaInheritPermissions"
     )]
-    pub samba_inherit_permissions: OptU<bool>,
+    pub samba_inherit_permissions: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -225,19 +225,19 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "sambaLevel2Oplocks"
     )]
-    pub samba_level2_oplocks: OptU<bool>,
+    pub samba_level2_oplocks: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "sambaLocking"
     )]
-    pub samba_locking: OptU<bool>,
+    pub samba_locking: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "sambaMSDFSRoot"
     )]
-    pub samba_msdfs_root: OptU<bool>,
+    pub samba_msdfs_root: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -249,13 +249,13 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "sambaNtAclSupport"
     )]
-    pub samba_nt_acl_support: OptU<bool>,
+    pub samba_nt_acl_support: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "sambaOplocks"
     )]
-    pub samba_oplocks: OptU<bool>,
+    pub samba_oplocks: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -273,7 +273,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "sambaPublic"
     )]
-    pub samba_public: OptU<bool>,
+    pub samba_public: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -309,7 +309,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "sambaWriteable"
     )]
-    pub samba_writeable: OptU<bool>,
+    pub samba_writeable: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -321,7 +321,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "subtree_checking"
     )]
-    pub subtree_checking: OptU<bool>,
+    pub subtree_checking: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -333,5 +333,5 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "writeable"
     )]
-    pub writeable: OptU<bool>,
+    pub writeable: OptU<::cdk_ansible::BoolOrString>,
 }

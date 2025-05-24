@@ -27,13 +27,13 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "fail_on_missing"
     )]
-    pub fail_on_missing: OptU<bool>,
+    pub fail_on_missing: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "flat"
     )]
-    pub flat: OptU<bool>,
+    pub flat: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -45,5 +45,5 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "validate_checksum"
     )]
-    pub validate_checksum: OptU<bool>,
+    pub validate_checksum: OptU<::cdk_ansible::BoolOrString>,
 }

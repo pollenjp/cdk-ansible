@@ -21,115 +21,115 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "backtrack"
     )]
-    pub backtrack: OptU<i64>,
+    pub backtrack: OptU<::cdk_ansible::IntOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "changed_use"
     )]
-    pub changed_use: OptU<bool>,
+    pub changed_use: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "deep"
     )]
-    pub deep: OptU<bool>,
+    pub deep: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "depclean"
     )]
-    pub depclean: OptU<bool>,
+    pub depclean: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "getbinpkg"
     )]
-    pub getbinpkg: OptU<bool>,
+    pub getbinpkg: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "getbinpkgonly"
     )]
-    pub getbinpkgonly: OptU<bool>,
+    pub getbinpkgonly: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "jobs"
     )]
-    pub jobs: OptU<i64>,
+    pub jobs: OptU<::cdk_ansible::IntOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "keepgoing"
     )]
-    pub keepgoing: OptU<bool>,
+    pub keepgoing: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "loadavg"
     )]
-    pub loadavg: OptU<String>,
+    pub loadavg: OptU<::serde_json::Value>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "newuse"
     )]
-    pub newuse: OptU<bool>,
+    pub newuse: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "nodeps"
     )]
-    pub nodeps: OptU<bool>,
+    pub nodeps: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "noreplace"
     )]
-    pub noreplace: OptU<bool>,
+    pub noreplace: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "oneshot"
     )]
-    pub oneshot: OptU<bool>,
+    pub oneshot: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "onlydeps"
     )]
-    pub onlydeps: OptU<bool>,
+    pub onlydeps: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "package"
     )]
-    pub package: OptU<Vec<::serde_json::Value>>,
+    pub package: OptU<::cdk_ansible::StringOrVec>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "quiet"
     )]
-    pub quiet: OptU<bool>,
+    pub quiet: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "quietbuild"
     )]
-    pub quietbuild: OptU<bool>,
+    pub quietbuild: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "quietfail"
     )]
-    pub quietfail: OptU<bool>,
+    pub quietfail: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "select"
     )]
-    pub select: OptU<bool>,
+    pub select: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -147,29 +147,29 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "update"
     )]
-    pub update: OptU<bool>,
+    pub update: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "usepkg"
     )]
-    pub usepkg: OptU<bool>,
+    pub usepkg: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "usepkgonly"
     )]
-    pub usepkgonly: OptU<bool>,
+    pub usepkgonly: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "verbose"
     )]
-    pub verbose: OptU<bool>,
+    pub verbose: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "withbdeps"
     )]
-    pub withbdeps: OptU<bool>,
+    pub withbdeps: OptU<::cdk_ansible::BoolOrString>,
 }

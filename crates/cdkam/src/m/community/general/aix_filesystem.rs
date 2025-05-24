@@ -21,19 +21,19 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "account_subsystem"
     )]
-    pub account_subsystem: OptU<bool>,
+    pub account_subsystem: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "attributes"
     )]
-    pub attributes: OptU<Vec<::serde_json::Value>>,
+    pub attributes: OptU<::cdk_ansible::StringOrVec>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "auto_mount"
     )]
-    pub auto_mount: OptU<bool>,
+    pub auto_mount: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -75,7 +75,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "rm_mount_point"
     )]
-    pub rm_mount_point: OptU<bool>,
+    pub rm_mount_point: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",

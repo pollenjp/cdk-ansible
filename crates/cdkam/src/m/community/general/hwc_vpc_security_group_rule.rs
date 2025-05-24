@@ -63,13 +63,13 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "port_range_max"
     )]
-    pub port_range_max: OptU<i64>,
+    pub port_range_max: OptU<::cdk_ansible::IntOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "port_range_min"
     )]
-    pub port_range_min: OptU<i64>,
+    pub port_range_min: OptU<::cdk_ansible::IntOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",

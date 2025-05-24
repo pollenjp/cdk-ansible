@@ -21,41 +21,41 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "appdirect"
     )]
-    pub appdirect: OptU<i64>,
+    pub appdirect: OptU<::cdk_ansible::IntOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "appdirect_interleaved"
     )]
-    pub appdirect_interleaved: OptU<bool>,
+    pub appdirect_interleaved: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "memorymode"
     )]
-    pub memorymode: OptU<i64>,
+    pub memorymode: OptU<::cdk_ansible::IntOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "namespace"
     )]
-    pub namespace: OptU<Vec<::serde_json::Value>>,
+    pub namespace: OptU<::cdk_ansible::StringOrVec>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "namespace_append"
     )]
-    pub namespace_append: OptU<bool>,
+    pub namespace_append: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "reserved"
     )]
-    pub reserved: OptU<i64>,
+    pub reserved: OptU<::cdk_ansible::IntOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "socket"
     )]
-    pub socket: OptU<Vec<::serde_json::Value>>,
+    pub socket: OptU<::cdk_ansible::StringOrVec>,
 }

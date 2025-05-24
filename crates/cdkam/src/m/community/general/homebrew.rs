@@ -21,25 +21,25 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "force_formula"
     )]
-    pub force_formula: OptU<bool>,
+    pub force_formula: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "install_options"
     )]
-    pub install_options: OptU<Vec<::serde_json::Value>>,
+    pub install_options: OptU<::cdk_ansible::StringOrVec>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "name"
     )]
-    pub name: OptU<Vec<::serde_json::Value>>,
+    pub name: OptU<::cdk_ansible::StringOrVec>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "path"
     )]
-    pub path: OptU<std::path::PathBuf>,
+    pub path: OptU<::cdk_ansible::StringOrPath>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -51,17 +51,17 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "update_homebrew"
     )]
-    pub update_homebrew: OptU<bool>,
+    pub update_homebrew: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "upgrade_all"
     )]
-    pub upgrade_all: OptU<bool>,
+    pub upgrade_all: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "upgrade_options"
     )]
-    pub upgrade_options: OptU<Vec<::serde_json::Value>>,
+    pub upgrade_options: OptU<::cdk_ansible::StringOrVec>,
 }

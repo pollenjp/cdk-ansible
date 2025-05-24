@@ -27,7 +27,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "auto_attach"
     )]
-    pub auto_attach: OptU<bool>,
+    pub auto_attach: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -57,7 +57,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "force_register"
     )]
-    pub force_register: OptU<bool>,
+    pub force_register: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -75,7 +75,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "pool_ids"
     )]
-    pub pool_ids: OptU<Vec<::serde_json::Value>>,
+    pub pool_ids: OptU<::cdk_ansible::StringOrVec>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -159,7 +159,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "syspurpose"
     )]
-    pub syspurpose: OptU<indexmap::IndexMap<String, ::serde_json::Value>>,
+    pub syspurpose: OptU<::cdk_ansible::StringOrMap>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",

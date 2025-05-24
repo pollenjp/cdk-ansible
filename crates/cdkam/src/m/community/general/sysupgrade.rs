@@ -21,13 +21,13 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "fetch_only"
     )]
-    pub fetch_only: OptU<bool>,
+    pub fetch_only: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "force"
     )]
-    pub force: OptU<bool>,
+    pub force: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -39,11 +39,11 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "keep_files"
     )]
-    pub keep_files: OptU<bool>,
+    pub keep_files: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "snapshot"
     )]
-    pub snapshot: OptU<bool>,
+    pub snapshot: OptU<::cdk_ansible::BoolOrString>,
 }

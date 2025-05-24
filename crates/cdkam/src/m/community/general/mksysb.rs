@@ -21,37 +21,37 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "backup_crypt_files"
     )]
-    pub backup_crypt_files: OptU<bool>,
+    pub backup_crypt_files: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "backup_dmapi_fs"
     )]
-    pub backup_dmapi_fs: OptU<bool>,
+    pub backup_dmapi_fs: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "create_map_files"
     )]
-    pub create_map_files: OptU<bool>,
+    pub create_map_files: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "exclude_files"
     )]
-    pub exclude_files: OptU<bool>,
+    pub exclude_files: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "exclude_wpar_files"
     )]
-    pub exclude_wpar_files: OptU<bool>,
+    pub exclude_wpar_files: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "extended_attrs"
     )]
-    pub extended_attrs: OptU<bool>,
+    pub extended_attrs: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -63,13 +63,13 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "new_image_data"
     )]
-    pub new_image_data: OptU<bool>,
+    pub new_image_data: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "software_packing"
     )]
-    pub software_packing: OptU<bool>,
+    pub software_packing: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -81,5 +81,5 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "use_snapshot"
     )]
-    pub use_snapshot: OptU<bool>,
+    pub use_snapshot: OptU<::cdk_ansible::BoolOrString>,
 }

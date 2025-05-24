@@ -45,7 +45,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "order"
     )]
-    pub order: OptU<i64>,
+    pub order: OptU<::cdk_ansible::IntOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -57,19 +57,19 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "port"
     )]
-    pub port: OptU<i64>,
+    pub port: OptU<::cdk_ansible::IntOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "preference"
     )]
-    pub preference: OptU<i64>,
+    pub preference: OptU<::cdk_ansible::IntOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "priority"
     )]
-    pub priority: OptU<i64>,
+    pub priority: OptU<::cdk_ansible::IntOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -99,7 +99,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "ttl"
     )]
-    pub ttl: OptU<i64>,
+    pub ttl: OptU<::cdk_ansible::IntOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -117,5 +117,5 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "weight"
     )]
-    pub weight: OptU<i64>,
+    pub weight: OptU<::cdk_ansible::IntOrString>,
 }

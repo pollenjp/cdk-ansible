@@ -21,7 +21,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "bindir"
     )]
-    pub bindir: OptU<std::path::PathBuf>,
+    pub bindir: OptU<::cdk_ansible::StringOrPath>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -33,43 +33,43 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "env_shebang"
     )]
-    pub env_shebang: OptU<bool>,
+    pub env_shebang: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "executable"
     )]
-    pub executable: OptU<std::path::PathBuf>,
+    pub executable: OptU<::cdk_ansible::StringOrPath>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "force"
     )]
-    pub force: OptU<bool>,
+    pub force: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "gem_source"
     )]
-    pub gem_source: OptU<std::path::PathBuf>,
+    pub gem_source: OptU<::cdk_ansible::StringOrPath>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "include_dependencies"
     )]
-    pub include_dependencies: OptU<bool>,
+    pub include_dependencies: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "include_doc"
     )]
-    pub include_doc: OptU<bool>,
+    pub include_doc: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "install_dir"
     )]
-    pub install_dir: OptU<std::path::PathBuf>,
+    pub install_dir: OptU<::cdk_ansible::StringOrPath>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -81,13 +81,13 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "norc"
     )]
-    pub norc: OptU<bool>,
+    pub norc: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "pre_release"
     )]
-    pub pre_release: OptU<bool>,
+    pub pre_release: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -105,7 +105,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "user_install"
     )]
-    pub user_install: OptU<bool>,
+    pub user_install: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",

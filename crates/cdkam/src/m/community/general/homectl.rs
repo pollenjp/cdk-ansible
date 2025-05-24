@@ -39,13 +39,13 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "gid"
     )]
-    pub gid: OptU<i64>,
+    pub gid: OptU<::cdk_ansible::IntOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "homedir"
     )]
-    pub homedir: OptU<std::path::PathBuf>,
+    pub homedir: OptU<::cdk_ansible::StringOrPath>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -57,7 +57,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "imagepath"
     )]
-    pub imagepath: OptU<std::path::PathBuf>,
+    pub imagepath: OptU<::cdk_ansible::StringOrPath>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -75,7 +75,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "locked"
     )]
-    pub locked: OptU<bool>,
+    pub locked: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -99,13 +99,13 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "notafter"
     )]
-    pub notafter: OptU<i64>,
+    pub notafter: OptU<::cdk_ansible::IntOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "notbefore"
     )]
-    pub notbefore: OptU<i64>,
+    pub notbefore: OptU<::cdk_ansible::IntOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -135,7 +135,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "resize"
     )]
-    pub resize: OptU<bool>,
+    pub resize: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -147,7 +147,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "skeleton"
     )]
-    pub skeleton: OptU<std::path::PathBuf>,
+    pub skeleton: OptU<::cdk_ansible::StringOrPath>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -177,11 +177,11 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "uid"
     )]
-    pub uid: OptU<i64>,
+    pub uid: OptU<::cdk_ansible::IntOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "umask"
     )]
-    pub umask: OptU<i64>,
+    pub umask: OptU<::cdk_ansible::IntOrString>,
 }

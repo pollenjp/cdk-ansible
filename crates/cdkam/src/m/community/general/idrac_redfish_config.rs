@@ -31,21 +31,33 @@ pub struct Opt {
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
+        rename = "ca_path"
+    )]
+    pub ca_path: OptU<::cdk_ansible::StringOrPath>,
+    #[serde(
+        default = "OptU::default",
+        skip_serializing_if = "OptU::is_unset",
         rename = "category"
     )]
     pub category: OptU<String>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
+        rename = "ciphers"
+    )]
+    pub ciphers: OptU<::cdk_ansible::StringOrVec>,
+    #[serde(
+        default = "OptU::default",
+        skip_serializing_if = "OptU::is_unset",
         rename = "command"
     )]
-    pub command: OptU<Vec<::serde_json::Value>>,
+    pub command: OptU<::cdk_ansible::StringOrVec>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "manager_attributes"
     )]
-    pub manager_attributes: OptU<indexmap::IndexMap<String, ::serde_json::Value>>,
+    pub manager_attributes: OptU<::cdk_ansible::StringOrMap>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -63,11 +75,17 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "timeout"
     )]
-    pub timeout: OptU<i64>,
+    pub timeout: OptU<::cdk_ansible::IntOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "username"
     )]
     pub username: OptU<String>,
+    #[serde(
+        default = "OptU::default",
+        skip_serializing_if = "OptU::is_unset",
+        rename = "validate_certs"
+    )]
+    pub validate_certs: OptU<::cdk_ansible::BoolOrString>,
 }

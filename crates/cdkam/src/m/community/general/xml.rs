@@ -21,19 +21,19 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "add_children"
     )]
-    pub add_children: OptU<Vec<::serde_json::Value>>,
+    pub add_children: OptU<::cdk_ansible::StringOrVec>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "attribute"
     )]
-    pub attribute: OptU<String>,
+    pub attribute: OptU<::serde_json::Value>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "backup"
     )]
-    pub backup: OptU<bool>,
+    pub backup: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -45,7 +45,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "count"
     )]
-    pub count: OptU<bool>,
+    pub count: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -57,43 +57,43 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "insertafter"
     )]
-    pub insertafter: OptU<bool>,
+    pub insertafter: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "insertbefore"
     )]
-    pub insertbefore: OptU<bool>,
+    pub insertbefore: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "namespaces"
     )]
-    pub namespaces: OptU<indexmap::IndexMap<String, ::serde_json::Value>>,
+    pub namespaces: OptU<::cdk_ansible::StringOrMap>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "path"
     )]
-    pub path: OptU<std::path::PathBuf>,
+    pub path: OptU<::cdk_ansible::StringOrPath>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "pretty_print"
     )]
-    pub pretty_print: OptU<bool>,
+    pub pretty_print: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "print_match"
     )]
-    pub print_match: OptU<bool>,
+    pub print_match: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "set_children"
     )]
-    pub set_children: OptU<Vec<::serde_json::Value>>,
+    pub set_children: OptU<::cdk_ansible::StringOrVec>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -105,13 +105,13 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "strip_cdata_tags"
     )]
-    pub strip_cdata_tags: OptU<bool>,
+    pub strip_cdata_tags: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "value"
     )]
-    pub value: OptU<String>,
+    pub value: OptU<::serde_json::Value>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",

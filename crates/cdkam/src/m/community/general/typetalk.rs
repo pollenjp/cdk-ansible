@@ -39,5 +39,5 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "topic"
     )]
-    pub topic: OptU<i64>,
+    pub topic: OptU<::cdk_ansible::IntOrString>,
 }

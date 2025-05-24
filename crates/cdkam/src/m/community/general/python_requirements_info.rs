@@ -21,5 +21,5 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "dependencies"
     )]
-    pub dependencies: OptU<Vec<::serde_json::Value>>,
+    pub dependencies: OptU<::cdk_ansible::StringOrVec>,
 }

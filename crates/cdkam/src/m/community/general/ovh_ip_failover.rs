@@ -57,17 +57,17 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "timeout"
     )]
-    pub timeout: OptU<i64>,
+    pub timeout: OptU<::cdk_ansible::IntOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "wait_completion"
     )]
-    pub wait_completion: OptU<bool>,
+    pub wait_completion: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "wait_task_completion"
     )]
-    pub wait_task_completion: OptU<i64>,
+    pub wait_task_completion: OptU<::cdk_ansible::IntOrString>,
 }

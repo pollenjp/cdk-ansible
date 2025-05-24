@@ -27,5 +27,5 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "include_non_listening"
     )]
-    pub include_non_listening: OptU<bool>,
+    pub include_non_listening: OptU<::cdk_ansible::BoolOrString>,
 }

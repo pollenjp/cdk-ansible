@@ -27,5 +27,5 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "poll"
     )]
-    pub poll: OptU<bool>,
+    pub poll: OptU<::cdk_ansible::BoolOrString>,
 }

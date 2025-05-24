@@ -27,25 +27,25 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "classic"
     )]
-    pub classic: OptU<bool>,
+    pub classic: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "dangerous"
     )]
-    pub dangerous: OptU<bool>,
+    pub dangerous: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "name"
     )]
-    pub name: OptU<Vec<::serde_json::Value>>,
+    pub name: OptU<::cdk_ansible::StringOrVec>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "options"
     )]
-    pub options: OptU<Vec<::serde_json::Value>>,
+    pub options: OptU<::cdk_ansible::StringOrVec>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",

@@ -33,25 +33,25 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "filters"
     )]
-    pub filters: OptU<Vec<::serde_json::Value>>,
+    pub filters: OptU<::cdk_ansible::StringOrVec>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "handle_flapping"
     )]
-    pub handle_flapping: OptU<bool>,
+    pub handle_flapping: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "handle_silenced"
     )]
-    pub handle_silenced: OptU<bool>,
+    pub handle_silenced: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "handlers"
     )]
-    pub handlers: OptU<Vec<::serde_json::Value>>,
+    pub handlers: OptU<::cdk_ansible::StringOrVec>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -69,19 +69,19 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "pipe"
     )]
-    pub pipe: OptU<indexmap::IndexMap<String, ::serde_json::Value>>,
+    pub pipe: OptU<::cdk_ansible::StringOrMap>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "severities"
     )]
-    pub severities: OptU<Vec<::serde_json::Value>>,
+    pub severities: OptU<::cdk_ansible::StringOrVec>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "socket"
     )]
-    pub socket: OptU<indexmap::IndexMap<String, ::serde_json::Value>>,
+    pub socket: OptU<::cdk_ansible::StringOrMap>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -93,7 +93,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "timeout"
     )]
-    pub timeout: OptU<i64>,
+    pub timeout: OptU<::cdk_ansible::IntOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",

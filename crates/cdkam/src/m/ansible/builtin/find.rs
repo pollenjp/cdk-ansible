@@ -39,7 +39,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "depth"
     )]
-    pub depth: OptU<i64>,
+    pub depth: OptU<::cdk_ansible::IntOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -51,13 +51,13 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "exact_mode"
     )]
-    pub exact_mode: OptU<bool>,
+    pub exact_mode: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "excludes"
     )]
-    pub excludes: OptU<Vec<::serde_json::Value>>,
+    pub excludes: OptU<::cdk_ansible::StringOrVec>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -69,55 +69,55 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "follow"
     )]
-    pub follow: OptU<bool>,
+    pub follow: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "get_checksum"
     )]
-    pub get_checksum: OptU<bool>,
+    pub get_checksum: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "hidden"
     )]
-    pub hidden: OptU<bool>,
+    pub hidden: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "limit"
     )]
-    pub limit: OptU<i64>,
+    pub limit: OptU<::cdk_ansible::IntOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "mode"
     )]
-    pub mode: OptU<String>,
+    pub mode: OptU<::serde_json::Value>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "paths"
     )]
-    pub paths: OptU<Vec<::serde_json::Value>>,
+    pub paths: OptU<::cdk_ansible::StringOrVec>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "patterns"
     )]
-    pub patterns: OptU<Vec<::serde_json::Value>>,
+    pub patterns: OptU<::cdk_ansible::StringOrVec>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "read_whole_file"
     )]
-    pub read_whole_file: OptU<bool>,
+    pub read_whole_file: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "recurse"
     )]
-    pub recurse: OptU<bool>,
+    pub recurse: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -129,5 +129,5 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "use_regex"
     )]
-    pub use_regex: OptU<bool>,
+    pub use_regex: OptU<::cdk_ansible::BoolOrString>,
 }

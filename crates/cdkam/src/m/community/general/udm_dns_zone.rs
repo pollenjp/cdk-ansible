@@ -27,37 +27,37 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "expire"
     )]
-    pub expire: OptU<i64>,
+    pub expire: OptU<::cdk_ansible::IntOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "interfaces"
     )]
-    pub interfaces: OptU<Vec<::serde_json::Value>>,
+    pub interfaces: OptU<::cdk_ansible::StringOrVec>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "mx"
     )]
-    pub mx: OptU<Vec<::serde_json::Value>>,
+    pub mx: OptU<::cdk_ansible::StringOrVec>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "nameserver"
     )]
-    pub nameserver: OptU<Vec<::serde_json::Value>>,
+    pub nameserver: OptU<::cdk_ansible::StringOrVec>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "refresh"
     )]
-    pub refresh: OptU<i64>,
+    pub refresh: OptU<::cdk_ansible::IntOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "retry"
     )]
-    pub retry: OptU<i64>,
+    pub retry: OptU<::cdk_ansible::IntOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -69,7 +69,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "ttl"
     )]
-    pub ttl: OptU<i64>,
+    pub ttl: OptU<::cdk_ansible::IntOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",

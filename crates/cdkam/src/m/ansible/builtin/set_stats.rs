@@ -21,17 +21,17 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "aggregate"
     )]
-    pub aggregate: OptU<bool>,
+    pub aggregate: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "data"
     )]
-    pub data: OptU<indexmap::IndexMap<String, ::serde_json::Value>>,
+    pub data: OptU<::cdk_ansible::StringOrMap>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "per_host"
     )]
-    pub per_host: OptU<bool>,
+    pub per_host: OptU<::cdk_ansible::BoolOrString>,
 }

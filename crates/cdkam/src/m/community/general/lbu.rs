@@ -21,17 +21,17 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "commit"
     )]
-    pub commit: OptU<bool>,
+    pub commit: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "exclude"
     )]
-    pub exclude: OptU<Vec<::serde_json::Value>>,
+    pub exclude: OptU<::cdk_ansible::StringOrVec>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "include"
     )]
-    pub include: OptU<Vec<::serde_json::Value>>,
+    pub include: OptU<::cdk_ansible::StringOrVec>,
 }

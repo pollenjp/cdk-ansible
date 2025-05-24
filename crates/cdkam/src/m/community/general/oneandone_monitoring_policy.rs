@@ -21,19 +21,19 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "add_ports"
     )]
-    pub add_ports: OptU<Vec<::serde_json::Value>>,
+    pub add_ports: OptU<::cdk_ansible::StringOrVec>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "add_processes"
     )]
-    pub add_processes: OptU<Vec<::serde_json::Value>>,
+    pub add_processes: OptU<::cdk_ansible::StringOrVec>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "add_servers"
     )]
-    pub add_servers: OptU<Vec<::serde_json::Value>>,
+    pub add_servers: OptU<::cdk_ansible::StringOrVec>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -81,31 +81,31 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "ports"
     )]
-    pub ports: OptU<Vec<::serde_json::Value>>,
+    pub ports: OptU<::cdk_ansible::StringOrVec>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "processes"
     )]
-    pub processes: OptU<Vec<::serde_json::Value>>,
+    pub processes: OptU<::cdk_ansible::StringOrVec>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "remove_ports"
     )]
-    pub remove_ports: OptU<Vec<::serde_json::Value>>,
+    pub remove_ports: OptU<::cdk_ansible::StringOrVec>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "remove_processes"
     )]
-    pub remove_processes: OptU<Vec<::serde_json::Value>>,
+    pub remove_processes: OptU<::cdk_ansible::StringOrVec>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "remove_servers"
     )]
-    pub remove_servers: OptU<Vec<::serde_json::Value>>,
+    pub remove_servers: OptU<::cdk_ansible::StringOrVec>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -117,35 +117,35 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "thresholds"
     )]
-    pub thresholds: OptU<Vec<::serde_json::Value>>,
+    pub thresholds: OptU<::cdk_ansible::StringOrVec>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "update_ports"
     )]
-    pub update_ports: OptU<Vec<::serde_json::Value>>,
+    pub update_ports: OptU<::cdk_ansible::StringOrVec>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "update_processes"
     )]
-    pub update_processes: OptU<Vec<::serde_json::Value>>,
+    pub update_processes: OptU<::cdk_ansible::StringOrVec>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "wait"
     )]
-    pub wait: OptU<bool>,
+    pub wait: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "wait_interval"
     )]
-    pub wait_interval: OptU<i64>,
+    pub wait_interval: OptU<::cdk_ansible::IntOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "wait_timeout"
     )]
-    pub wait_timeout: OptU<i64>,
+    pub wait_timeout: OptU<::cdk_ansible::IntOrString>,
 }

@@ -69,11 +69,11 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "timeout"
     )]
-    pub timeout: OptU<i64>,
+    pub timeout: OptU<::cdk_ansible::IntOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "weight"
     )]
-    pub weight: OptU<i64>,
+    pub weight: OptU<::cdk_ansible::IntOrString>,
 }

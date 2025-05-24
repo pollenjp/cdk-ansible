@@ -21,17 +21,17 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "auto_login"
     )]
-    pub auto_login: OptU<indexmap::IndexMap<String, ::serde_json::Value>>,
+    pub auto_login: OptU<::cdk_ansible::StringOrMap>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "cli_path"
     )]
-    pub cli_path: OptU<std::path::PathBuf>,
+    pub cli_path: OptU<::cdk_ansible::StringOrPath>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "search_terms"
     )]
-    pub search_terms: OptU<Vec<::serde_json::Value>>,
+    pub search_terms: OptU<::cdk_ansible::StringOrVec>,
 }

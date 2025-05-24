@@ -21,5 +21,5 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "parallel"
     )]
-    pub parallel: OptU<bool>,
+    pub parallel: OptU<::cdk_ansible::BoolOrString>,
 }

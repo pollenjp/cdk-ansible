@@ -21,13 +21,13 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "active"
     )]
-    pub active: OptU<bool>,
+    pub active: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "force"
     )]
-    pub force: OptU<bool>,
+    pub force: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -45,19 +45,19 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "pvs"
     )]
-    pub pvs: OptU<Vec<::serde_json::Value>>,
+    pub pvs: OptU<::cdk_ansible::StringOrVec>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "resizefs"
     )]
-    pub resizefs: OptU<bool>,
+    pub resizefs: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "shrink"
     )]
-    pub shrink: OptU<bool>,
+    pub shrink: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",

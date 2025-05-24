@@ -15,4 +15,11 @@ pub struct Args {
 }
 #[derive(Clone, Debug, Default, Serialize)]
 #[serde(rename_all = "snake_case")]
-pub struct Opt {}
+pub struct Opt {
+    #[serde(
+        default = "OptU::default",
+        skip_serializing_if = "OptU::is_unset",
+        rename = "multivalues"
+    )]
+    pub multivalues: OptU<::cdk_ansible::BoolOrString>,
+}

@@ -33,7 +33,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "ipa_port"
     )]
-    pub ipa_port: OptU<i64>,
+    pub ipa_port: OptU<::cdk_ansible::IntOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -45,7 +45,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "ipa_timeout"
     )]
-    pub ipa_timeout: OptU<i64>,
+    pub ipa_timeout: OptU<::cdk_ansible::IntOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -57,7 +57,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "ipaconfigstring"
     )]
-    pub ipaconfigstring: OptU<Vec<::serde_json::Value>>,
+    pub ipaconfigstring: OptU<::cdk_ansible::StringOrVec>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -81,13 +81,13 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "ipagroupobjectclasses"
     )]
-    pub ipagroupobjectclasses: OptU<Vec<::serde_json::Value>>,
+    pub ipagroupobjectclasses: OptU<::cdk_ansible::StringOrVec>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "ipagroupsearchfields"
     )]
-    pub ipagroupsearchfields: OptU<Vec<::serde_json::Value>>,
+    pub ipagroupsearchfields: OptU<::cdk_ansible::StringOrVec>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -99,59 +99,59 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "ipakrbauthzdata"
     )]
-    pub ipakrbauthzdata: OptU<Vec<::serde_json::Value>>,
+    pub ipakrbauthzdata: OptU<::cdk_ansible::StringOrVec>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "ipamaxusernamelength"
     )]
-    pub ipamaxusernamelength: OptU<i64>,
+    pub ipamaxusernamelength: OptU<::cdk_ansible::IntOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "ipapwdexpadvnotify"
     )]
-    pub ipapwdexpadvnotify: OptU<i64>,
+    pub ipapwdexpadvnotify: OptU<::cdk_ansible::IntOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "ipasearchrecordslimit"
     )]
-    pub ipasearchrecordslimit: OptU<i64>,
+    pub ipasearchrecordslimit: OptU<::cdk_ansible::IntOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "ipasearchtimelimit"
     )]
-    pub ipasearchtimelimit: OptU<i64>,
+    pub ipasearchtimelimit: OptU<::cdk_ansible::IntOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "ipaselinuxusermaporder"
     )]
-    pub ipaselinuxusermaporder: OptU<Vec<::serde_json::Value>>,
+    pub ipaselinuxusermaporder: OptU<::cdk_ansible::StringOrVec>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "ipauserauthtype"
     )]
-    pub ipauserauthtype: OptU<Vec<::serde_json::Value>>,
+    pub ipauserauthtype: OptU<::cdk_ansible::StringOrVec>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "ipauserobjectclasses"
     )]
-    pub ipauserobjectclasses: OptU<Vec<::serde_json::Value>>,
+    pub ipauserobjectclasses: OptU<::cdk_ansible::StringOrVec>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "ipausersearchfields"
     )]
-    pub ipausersearchfields: OptU<Vec<::serde_json::Value>>,
+    pub ipausersearchfields: OptU<::cdk_ansible::StringOrVec>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "validate_certs"
     )]
-    pub validate_certs: OptU<bool>,
+    pub validate_certs: OptU<::cdk_ansible::BoolOrString>,
 }

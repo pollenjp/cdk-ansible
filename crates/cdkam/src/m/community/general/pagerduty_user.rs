@@ -39,7 +39,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "pd_teams"
     )]
-    pub pd_teams: OptU<Vec<::serde_json::Value>>,
+    pub pd_teams: OptU<::cdk_ansible::StringOrVec>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",

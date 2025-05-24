@@ -21,7 +21,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "append"
     )]
-    pub append: OptU<bool>,
+    pub append: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -39,25 +39,25 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "create_home"
     )]
-    pub create_home: OptU<bool>,
+    pub create_home: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "expires"
     )]
-    pub expires: OptU<String>,
+    pub expires: OptU<::serde_json::Value>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "force"
     )]
-    pub force: OptU<bool>,
+    pub force: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "generate_ssh_key"
     )]
-    pub generate_ssh_key: OptU<bool>,
+    pub generate_ssh_key: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -69,25 +69,25 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "groups"
     )]
-    pub groups: OptU<Vec<::serde_json::Value>>,
+    pub groups: OptU<::cdk_ansible::StringOrVec>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "hidden"
     )]
-    pub hidden: OptU<bool>,
+    pub hidden: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "home"
     )]
-    pub home: OptU<std::path::PathBuf>,
+    pub home: OptU<::cdk_ansible::StringOrPath>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "local"
     )]
-    pub local: OptU<bool>,
+    pub local: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -99,7 +99,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "move_home"
     )]
-    pub move_home: OptU<bool>,
+    pub move_home: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -111,7 +111,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "non_unique"
     )]
-    pub non_unique: OptU<bool>,
+    pub non_unique: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -123,31 +123,31 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "password_expire_account_disable"
     )]
-    pub password_expire_account_disable: OptU<i64>,
+    pub password_expire_account_disable: OptU<::cdk_ansible::IntOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "password_expire_max"
     )]
-    pub password_expire_max: OptU<i64>,
+    pub password_expire_max: OptU<::cdk_ansible::IntOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "password_expire_min"
     )]
-    pub password_expire_min: OptU<i64>,
+    pub password_expire_min: OptU<::cdk_ansible::IntOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "password_expire_warn"
     )]
-    pub password_expire_warn: OptU<i64>,
+    pub password_expire_warn: OptU<::cdk_ansible::IntOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "password_lock"
     )]
-    pub password_lock: OptU<bool>,
+    pub password_lock: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -159,7 +159,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "remove"
     )]
-    pub remove: OptU<bool>,
+    pub remove: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -177,7 +177,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "shell"
     )]
-    pub shell: OptU<std::path::PathBuf>,
+    pub shell: OptU<::cdk_ansible::StringOrPath>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -189,7 +189,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "ssh_key_bits"
     )]
-    pub ssh_key_bits: OptU<i64>,
+    pub ssh_key_bits: OptU<::cdk_ansible::IntOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -201,7 +201,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "ssh_key_file"
     )]
-    pub ssh_key_file: OptU<std::path::PathBuf>,
+    pub ssh_key_file: OptU<::cdk_ansible::StringOrPath>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -225,25 +225,25 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "system"
     )]
-    pub system: OptU<bool>,
+    pub system: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "uid"
     )]
-    pub uid: OptU<i64>,
+    pub uid: OptU<::cdk_ansible::IntOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "uid_max"
     )]
-    pub uid_max: OptU<i64>,
+    pub uid_max: OptU<::cdk_ansible::IntOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "uid_min"
     )]
-    pub uid_min: OptU<i64>,
+    pub uid_min: OptU<::cdk_ansible::IntOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",

@@ -21,13 +21,13 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "add_rules"
     )]
-    pub add_rules: OptU<Vec<::serde_json::Value>>,
+    pub add_rules: OptU<::cdk_ansible::StringOrVec>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "add_server_ips"
     )]
-    pub add_server_ips: OptU<Vec<::serde_json::Value>>,
+    pub add_server_ips: OptU<::cdk_ansible::StringOrVec>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -99,7 +99,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "persistence"
     )]
-    pub persistence: OptU<bool>,
+    pub persistence: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -111,19 +111,19 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "remove_rules"
     )]
-    pub remove_rules: OptU<Vec<::serde_json::Value>>,
+    pub remove_rules: OptU<::cdk_ansible::StringOrVec>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "remove_server_ips"
     )]
-    pub remove_server_ips: OptU<Vec<::serde_json::Value>>,
+    pub remove_server_ips: OptU<::cdk_ansible::StringOrVec>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "rules"
     )]
-    pub rules: OptU<Vec<::serde_json::Value>>,
+    pub rules: OptU<::cdk_ansible::StringOrVec>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -135,17 +135,17 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "wait"
     )]
-    pub wait: OptU<bool>,
+    pub wait: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "wait_interval"
     )]
-    pub wait_interval: OptU<i64>,
+    pub wait_interval: OptU<::cdk_ansible::IntOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "wait_timeout"
     )]
-    pub wait_timeout: OptU<i64>,
+    pub wait_timeout: OptU<::cdk_ansible::IntOrString>,
 }

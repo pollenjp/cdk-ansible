@@ -27,13 +27,13 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "file"
     )]
-    pub file: OptU<std::path::PathBuf>,
+    pub file: OptU<::cdk_ansible::StringOrPath>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "force_update"
     )]
-    pub force_update: OptU<bool>,
+    pub force_update: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -45,7 +45,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "keyring"
     )]
-    pub keyring: OptU<std::path::PathBuf>,
+    pub keyring: OptU<::cdk_ansible::StringOrPath>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -69,5 +69,5 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "verify"
     )]
-    pub verify: OptU<bool>,
+    pub verify: OptU<::cdk_ansible::BoolOrString>,
 }

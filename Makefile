@@ -27,9 +27,19 @@ CDKAM_GEN_CMD := ${UV_RUN} cargo run --package cdk-ansible-cli \
 
 .PHONY: cdkam
 cdkam:  ## utility to generate cdkam modules (manual editing required afterwards)
-	${CDKAM_GEN_CMD} --module-name-regex 'ansible\.builtin\..*'
+	${CDKAM_GEN_CMD} --module-name-regex 'ansible\.builtin\..*' \
+		--module-name-exclude 'ansible\.builtin\.meta' \
+		--module-name-exclude 'ansible\.builtin\.set_fact'
 	${CDKAM_GEN_CMD} --module-name-regex 'ansible\.posix\..*'
 	${CDKAM_GEN_CMD} --module-name-regex 'community\.general\..*'
+
+.PHONY: cdkam-check
+cdkam-check:
+# re-write
+	@echo "src/m/ansible/builtin/meta.rs"
+	@echo "src/m/ansible/builtin/set_fact.rs"
+	@find ./crates/cdkam -name "mod.rs"
+	@find ./crates/cdkam -name "Cargo.toml"
 
 .PHONY: build
 build:

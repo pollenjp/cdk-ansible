@@ -33,13 +33,13 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "dhcp_enable"
     )]
-    pub dhcp_enable: OptU<bool>,
+    pub dhcp_enable: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "dns_address"
     )]
-    pub dns_address: OptU<Vec<::serde_json::Value>>,
+    pub dns_address: OptU<::cdk_ansible::StringOrVec>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -99,7 +99,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "timeouts"
     )]
-    pub timeouts: OptU<indexmap::IndexMap<String, ::serde_json::Value>>,
+    pub timeouts: OptU<::cdk_ansible::StringOrMap>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",

@@ -21,19 +21,19 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "apps"
     )]
-    pub apps: OptU<Vec<::serde_json::Value>>,
+    pub apps: OptU<::cdk_ansible::StringOrVec>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "database"
     )]
-    pub database: OptU<Vec<::serde_json::Value>>,
+    pub database: OptU<::cdk_ansible::StringOrVec>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "deploy"
     )]
-    pub deploy: OptU<bool>,
+    pub deploy: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -45,7 +45,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "pythonpath"
     )]
-    pub pythonpath: OptU<std::path::PathBuf>,
+    pub pythonpath: OptU<::cdk_ansible::StringOrPath>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -57,29 +57,29 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "skip_checks"
     )]
-    pub skip_checks: OptU<bool>,
+    pub skip_checks: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "tags"
     )]
-    pub tags: OptU<Vec<::serde_json::Value>>,
+    pub tags: OptU<::cdk_ansible::StringOrVec>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "traceback"
     )]
-    pub traceback: OptU<bool>,
+    pub traceback: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "venv"
     )]
-    pub venv: OptU<std::path::PathBuf>,
+    pub venv: OptU<::cdk_ansible::StringOrPath>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "verbosity"
     )]
-    pub verbosity: OptU<i64>,
+    pub verbosity: OptU<::cdk_ansible::IntOrString>,
 }

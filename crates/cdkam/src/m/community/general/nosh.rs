@@ -21,7 +21,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "enabled"
     )]
-    pub enabled: OptU<bool>,
+    pub enabled: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -33,7 +33,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "preset"
     )]
-    pub preset: OptU<bool>,
+    pub preset: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -45,5 +45,5 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "user"
     )]
-    pub user: OptU<bool>,
+    pub user: OptU<::cdk_ansible::BoolOrString>,
 }

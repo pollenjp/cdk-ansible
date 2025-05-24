@@ -33,5 +33,5 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "verbosity"
     )]
-    pub verbosity: OptU<i64>,
+    pub verbosity: OptU<::cdk_ansible::IntOrString>,
 }

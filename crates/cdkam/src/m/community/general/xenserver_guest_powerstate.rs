@@ -45,7 +45,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "state_change_timeout"
     )]
-    pub state_change_timeout: OptU<i64>,
+    pub state_change_timeout: OptU<::cdk_ansible::IntOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -63,11 +63,11 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "validate_certs"
     )]
-    pub validate_certs: OptU<bool>,
+    pub validate_certs: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "wait_for_ip_address"
     )]
-    pub wait_for_ip_address: OptU<bool>,
+    pub wait_for_ip_address: OptU<::cdk_ansible::BoolOrString>,
 }

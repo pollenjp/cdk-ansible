@@ -21,23 +21,23 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "fact_path"
     )]
-    pub fact_path: OptU<std::path::PathBuf>,
+    pub fact_path: OptU<::cdk_ansible::StringOrPath>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "filter"
     )]
-    pub filter: OptU<Vec<::serde_json::Value>>,
+    pub filter: OptU<::cdk_ansible::StringOrVec>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "gather_subset"
     )]
-    pub gather_subset: OptU<Vec<::serde_json::Value>>,
+    pub gather_subset: OptU<::cdk_ansible::StringOrVec>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "gather_timeout"
     )]
-    pub gather_timeout: OptU<i64>,
+    pub gather_timeout: OptU<::cdk_ansible::IntOrString>,
 }

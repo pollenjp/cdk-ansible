@@ -51,31 +51,31 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "local"
     )]
-    pub local: OptU<bool>,
+    pub local: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "node_identities"
     )]
-    pub node_identities: OptU<Vec<::serde_json::Value>>,
+    pub node_identities: OptU<::cdk_ansible::StringOrVec>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "policies"
     )]
-    pub policies: OptU<Vec<::serde_json::Value>>,
+    pub policies: OptU<::cdk_ansible::StringOrVec>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "port"
     )]
-    pub port: OptU<i64>,
+    pub port: OptU<::cdk_ansible::IntOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "roles"
     )]
-    pub roles: OptU<Vec<::serde_json::Value>>,
+    pub roles: OptU<::cdk_ansible::StringOrVec>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -93,7 +93,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "service_identities"
     )]
-    pub service_identities: OptU<Vec<::serde_json::Value>>,
+    pub service_identities: OptU<::cdk_ansible::StringOrVec>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -105,7 +105,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "templated_policies"
     )]
-    pub templated_policies: OptU<Vec<::serde_json::Value>>,
+    pub templated_policies: OptU<::cdk_ansible::StringOrVec>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -117,5 +117,5 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "validate_certs"
     )]
-    pub validate_certs: OptU<bool>,
+    pub validate_certs: OptU<::cdk_ansible::BoolOrString>,
 }

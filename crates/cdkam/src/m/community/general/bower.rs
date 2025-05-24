@@ -27,25 +27,25 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "offline"
     )]
-    pub offline: OptU<bool>,
+    pub offline: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "path"
     )]
-    pub path: OptU<std::path::PathBuf>,
+    pub path: OptU<::cdk_ansible::StringOrPath>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "production"
     )]
-    pub production: OptU<bool>,
+    pub production: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "relative_execpath"
     )]
-    pub relative_execpath: OptU<std::path::PathBuf>,
+    pub relative_execpath: OptU<::cdk_ansible::StringOrPath>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",

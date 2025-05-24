@@ -33,7 +33,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "api_user_key_file"
     )]
-    pub api_user_key_file: OptU<std::path::PathBuf>,
+    pub api_user_key_file: OptU<::cdk_ansible::StringOrPath>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -75,7 +75,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "defined_tags"
     )]
-    pub defined_tags: OptU<indexmap::IndexMap<String, ::serde_json::Value>>,
+    pub defined_tags: OptU<::cdk_ansible::StringOrMap>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -93,19 +93,19 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "force_create"
     )]
-    pub force_create: OptU<bool>,
+    pub force_create: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "freeform_tags"
     )]
-    pub freeform_tags: OptU<indexmap::IndexMap<String, ::serde_json::Value>>,
+    pub freeform_tags: OptU<::cdk_ansible::StringOrMap>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "key_by"
     )]
-    pub key_by: OptU<Vec<::serde_json::Value>>,
+    pub key_by: OptU<::cdk_ansible::StringOrVec>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -135,13 +135,13 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "wait"
     )]
-    pub wait: OptU<bool>,
+    pub wait: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "wait_timeout"
     )]
-    pub wait_timeout: OptU<i64>,
+    pub wait_timeout: OptU<::cdk_ansible::IntOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",

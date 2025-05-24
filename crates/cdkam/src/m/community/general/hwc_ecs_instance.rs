@@ -33,7 +33,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "data_volumes"
     )]
-    pub data_volumes: OptU<Vec<::serde_json::Value>>,
+    pub data_volumes: OptU<::cdk_ansible::StringOrVec>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -57,7 +57,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "enable_auto_recovery"
     )]
-    pub enable_auto_recovery: OptU<bool>,
+    pub enable_auto_recovery: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -99,7 +99,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "nics"
     )]
-    pub nics: OptU<Vec<::serde_json::Value>>,
+    pub nics: OptU<::cdk_ansible::StringOrVec>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -123,25 +123,25 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "root_volume"
     )]
-    pub root_volume: OptU<indexmap::IndexMap<String, ::serde_json::Value>>,
+    pub root_volume: OptU<::cdk_ansible::StringOrMap>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "security_groups"
     )]
-    pub security_groups: OptU<Vec<::serde_json::Value>>,
+    pub security_groups: OptU<::cdk_ansible::StringOrVec>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "server_metadata"
     )]
-    pub server_metadata: OptU<indexmap::IndexMap<String, ::serde_json::Value>>,
+    pub server_metadata: OptU<::cdk_ansible::StringOrMap>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "server_tags"
     )]
-    pub server_tags: OptU<indexmap::IndexMap<String, ::serde_json::Value>>,
+    pub server_tags: OptU<::cdk_ansible::StringOrMap>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -159,7 +159,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "timeouts"
     )]
-    pub timeouts: OptU<indexmap::IndexMap<String, ::serde_json::Value>>,
+    pub timeouts: OptU<::cdk_ansible::StringOrMap>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",

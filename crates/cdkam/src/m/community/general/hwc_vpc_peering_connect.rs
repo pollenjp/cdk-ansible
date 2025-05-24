@@ -63,7 +63,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "peering_vpc"
     )]
-    pub peering_vpc: OptU<indexmap::IndexMap<String, ::serde_json::Value>>,
+    pub peering_vpc: OptU<::cdk_ansible::StringOrMap>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -87,7 +87,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "timeouts"
     )]
-    pub timeouts: OptU<indexmap::IndexMap<String, ::serde_json::Value>>,
+    pub timeouts: OptU<::cdk_ansible::StringOrMap>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",

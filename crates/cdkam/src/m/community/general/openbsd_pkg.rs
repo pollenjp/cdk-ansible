@@ -21,37 +21,37 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "build"
     )]
-    pub build: OptU<bool>,
+    pub build: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "clean"
     )]
-    pub clean: OptU<bool>,
+    pub clean: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "name"
     )]
-    pub name: OptU<Vec<::serde_json::Value>>,
+    pub name: OptU<::cdk_ansible::StringOrVec>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "ports_dir"
     )]
-    pub ports_dir: OptU<std::path::PathBuf>,
+    pub ports_dir: OptU<::cdk_ansible::StringOrPath>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "quick"
     )]
-    pub quick: OptU<bool>,
+    pub quick: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "snapshot"
     )]
-    pub snapshot: OptU<bool>,
+    pub snapshot: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",

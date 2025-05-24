@@ -33,7 +33,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "debug"
     )]
-    pub debug: OptU<bool>,
+    pub debug: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -63,7 +63,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "facts"
     )]
-    pub facts: OptU<indexmap::IndexMap<String, ::serde_json::Value>>,
+    pub facts: OptU<::cdk_ansible::StringOrMap>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -87,7 +87,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "noop"
     )]
-    pub noop: OptU<bool>,
+    pub noop: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -99,25 +99,25 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "show_diff"
     )]
-    pub show_diff: OptU<bool>,
+    pub show_diff: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "skip_tags"
     )]
-    pub skip_tags: OptU<Vec<::serde_json::Value>>,
+    pub skip_tags: OptU<::cdk_ansible::StringOrVec>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "summarize"
     )]
-    pub summarize: OptU<bool>,
+    pub summarize: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "tags"
     )]
-    pub tags: OptU<Vec<::serde_json::Value>>,
+    pub tags: OptU<::cdk_ansible::StringOrVec>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -129,13 +129,13 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "use_srv_records"
     )]
-    pub use_srv_records: OptU<bool>,
+    pub use_srv_records: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "verbose"
     )]
-    pub verbose: OptU<bool>,
+    pub verbose: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",

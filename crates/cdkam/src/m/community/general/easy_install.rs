@@ -51,5 +51,5 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "virtualenv_site_packages"
     )]
-    pub virtualenv_site_packages: OptU<bool>,
+    pub virtualenv_site_packages: OptU<::cdk_ansible::BoolOrString>,
 }

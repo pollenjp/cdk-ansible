@@ -21,7 +21,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "acpi"
     )]
-    pub acpi: OptU<bool>,
+    pub acpi: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -45,7 +45,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "api_port"
     )]
-    pub api_port: OptU<i64>,
+    pub api_port: OptU<::cdk_ansible::IntOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -79,15 +79,21 @@ pub struct Opt {
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
+        rename = "audio"
+    )]
+    pub audio: OptU<::cdk_ansible::StringOrMap>,
+    #[serde(
+        default = "OptU::default",
+        skip_serializing_if = "OptU::is_unset",
         rename = "autostart"
     )]
-    pub autostart: OptU<bool>,
+    pub autostart: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "balloon"
     )]
-    pub balloon: OptU<i64>,
+    pub balloon: OptU<::cdk_ansible::IntOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -129,7 +135,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "ciupgrade"
     )]
-    pub ciupgrade: OptU<bool>,
+    pub ciupgrade: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -147,7 +153,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "cores"
     )]
-    pub cores: OptU<i64>,
+    pub cores: OptU<::cdk_ansible::IntOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -159,13 +165,13 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "cpulimit"
     )]
-    pub cpulimit: OptU<i64>,
+    pub cpulimit: OptU<::cdk_ansible::IntOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "cpuunits"
     )]
-    pub cpuunits: OptU<i64>,
+    pub cpuunits: OptU<::cdk_ansible::IntOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -189,13 +195,13 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "efidisk0"
     )]
-    pub efidisk0: OptU<indexmap::IndexMap<String, ::serde_json::Value>>,
+    pub efidisk0: OptU<::cdk_ansible::StringOrMap>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "force"
     )]
-    pub force: OptU<bool>,
+    pub force: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -207,13 +213,13 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "freeze"
     )]
-    pub freeze: OptU<bool>,
+    pub freeze: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "full"
     )]
-    pub full: OptU<bool>,
+    pub full: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -225,7 +231,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "hostpci"
     )]
-    pub hostpci: OptU<indexmap::IndexMap<String, ::serde_json::Value>>,
+    pub hostpci: OptU<::cdk_ansible::StringOrMap>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -243,13 +249,13 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "ide"
     )]
-    pub ide: OptU<indexmap::IndexMap<String, ::serde_json::Value>>,
+    pub ide: OptU<::cdk_ansible::StringOrMap>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "ipconfig"
     )]
-    pub ipconfig: OptU<indexmap::IndexMap<String, ::serde_json::Value>>,
+    pub ipconfig: OptU<::cdk_ansible::StringOrMap>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -261,13 +267,13 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "kvm"
     )]
-    pub kvm: OptU<bool>,
+    pub kvm: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "localtime"
     )]
-    pub localtime: OptU<bool>,
+    pub localtime: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -285,25 +291,25 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "memory"
     )]
-    pub memory: OptU<i64>,
+    pub memory: OptU<::cdk_ansible::IntOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "migrate"
     )]
-    pub migrate: OptU<bool>,
+    pub migrate: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "migrate_downtime"
     )]
-    pub migrate_downtime: OptU<i64>,
+    pub migrate_downtime: OptU<::cdk_ansible::IntOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "migrate_speed"
     )]
-    pub migrate_speed: OptU<i64>,
+    pub migrate_speed: OptU<::cdk_ansible::IntOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -315,19 +321,19 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "nameservers"
     )]
-    pub nameservers: OptU<Vec<::serde_json::Value>>,
+    pub nameservers: OptU<::cdk_ansible::StringOrVec>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "net"
     )]
-    pub net: OptU<indexmap::IndexMap<String, ::serde_json::Value>>,
+    pub net: OptU<::cdk_ansible::StringOrMap>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "newid"
     )]
-    pub newid: OptU<i64>,
+    pub newid: OptU<::cdk_ansible::IntOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -339,19 +345,19 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "numa"
     )]
-    pub numa: OptU<indexmap::IndexMap<String, ::serde_json::Value>>,
+    pub numa: OptU<::cdk_ansible::StringOrMap>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "numa_enabled"
     )]
-    pub numa_enabled: OptU<bool>,
+    pub numa_enabled: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "onboot"
     )]
-    pub onboot: OptU<bool>,
+    pub onboot: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -363,7 +369,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "parallel"
     )]
-    pub parallel: OptU<indexmap::IndexMap<String, ::serde_json::Value>>,
+    pub parallel: OptU<::cdk_ansible::StringOrMap>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -375,13 +381,13 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "protection"
     )]
-    pub protection: OptU<bool>,
+    pub protection: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "reboot"
     )]
-    pub reboot: OptU<bool>,
+    pub reboot: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -393,13 +399,13 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "sata"
     )]
-    pub sata: OptU<indexmap::IndexMap<String, ::serde_json::Value>>,
+    pub sata: OptU<::cdk_ansible::StringOrMap>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "scsi"
     )]
-    pub scsi: OptU<indexmap::IndexMap<String, ::serde_json::Value>>,
+    pub scsi: OptU<::cdk_ansible::StringOrMap>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -411,25 +417,25 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "searchdomains"
     )]
-    pub searchdomains: OptU<Vec<::serde_json::Value>>,
+    pub searchdomains: OptU<::cdk_ansible::StringOrVec>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "serial"
     )]
-    pub serial: OptU<indexmap::IndexMap<String, ::serde_json::Value>>,
+    pub serial: OptU<::cdk_ansible::StringOrMap>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "shares"
     )]
-    pub shares: OptU<i64>,
+    pub shares: OptU<::cdk_ansible::IntOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "skiplock"
     )]
-    pub skiplock: OptU<bool>,
+    pub skiplock: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -447,7 +453,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "sockets"
     )]
-    pub sockets: OptU<i64>,
+    pub sockets: OptU<::cdk_ansible::IntOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -483,13 +489,13 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "tablet"
     )]
-    pub tablet: OptU<bool>,
+    pub tablet: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "tags"
     )]
-    pub tags: OptU<Vec<::serde_json::Value>>,
+    pub tags: OptU<::cdk_ansible::StringOrVec>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -501,55 +507,55 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "tdf"
     )]
-    pub tdf: OptU<bool>,
+    pub tdf: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "template"
     )]
-    pub template: OptU<bool>,
+    pub template: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "timeout"
     )]
-    pub timeout: OptU<i64>,
+    pub timeout: OptU<::cdk_ansible::IntOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "tpmstate0"
     )]
-    pub tpmstate0: OptU<indexmap::IndexMap<String, ::serde_json::Value>>,
+    pub tpmstate0: OptU<::cdk_ansible::StringOrMap>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "update"
     )]
-    pub update: OptU<bool>,
+    pub update: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "update_unsafe"
     )]
-    pub update_unsafe: OptU<bool>,
+    pub update_unsafe: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "usb"
     )]
-    pub usb: OptU<indexmap::IndexMap<String, ::serde_json::Value>>,
+    pub usb: OptU<::cdk_ansible::StringOrMap>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "validate_certs"
     )]
-    pub validate_certs: OptU<bool>,
+    pub validate_certs: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "vcpus"
     )]
-    pub vcpus: OptU<i64>,
+    pub vcpus: OptU<::cdk_ansible::IntOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -561,13 +567,13 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "virtio"
     )]
-    pub virtio: OptU<indexmap::IndexMap<String, ::serde_json::Value>>,
+    pub virtio: OptU<::cdk_ansible::StringOrMap>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "vmid"
     )]
-    pub vmid: OptU<i64>,
+    pub vmid: OptU<::cdk_ansible::IntOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",

@@ -21,13 +21,13 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "expiration_days"
     )]
-    pub expiration_days: OptU<i64>,
+    pub expiration_days: OptU<::cdk_ansible::IntOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "server_ids"
     )]
-    pub server_ids: OptU<Vec<::serde_json::Value>>,
+    pub server_ids: OptU<::cdk_ansible::StringOrVec>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",

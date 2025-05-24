@@ -21,7 +21,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "add_keys_to_agent"
     )]
-    pub add_keys_to_agent: OptU<bool>,
+    pub add_keys_to_agent: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -51,7 +51,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "forward_agent"
     )]
-    pub forward_agent: OptU<bool>,
+    pub forward_agent: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -81,13 +81,19 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "identities_only"
     )]
-    pub identities_only: OptU<bool>,
+    pub identities_only: OptU<::cdk_ansible::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "identity_file"
     )]
-    pub identity_file: OptU<std::path::PathBuf>,
+    pub identity_file: OptU<::cdk_ansible::StringOrPath>,
+    #[serde(
+        default = "OptU::default",
+        skip_serializing_if = "OptU::is_unset",
+        rename = "other_options"
+    )]
+    pub other_options: OptU<::cdk_ansible::StringOrMap>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -117,7 +123,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "ssh_config_file"
     )]
-    pub ssh_config_file: OptU<std::path::PathBuf>,
+    pub ssh_config_file: OptU<::cdk_ansible::StringOrPath>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
