@@ -19,6 +19,14 @@ While Ansible's `playbook` and `inventory` files are written in YAML format, man
 
 ## Install Command
 
+### mise
+
+[MISE](https://github.com/jdx/mise) is recommended as it allows you to keep the versions of the cdk-ansible crate and CLI in sync.
+
+```bash
+mise use cargo:cdk-ansible-cli
+```
+
 ### binstall
 
 [binstall](https://crates.io/crates/cargo-binstall)
