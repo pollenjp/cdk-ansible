@@ -2,10 +2,7 @@
 set -euCx -o pipefail
 
 proj_root=$(git rev-parse --show-toplevel)
-ansible_uv=(
-  uv
-  --project "${proj_root}/tools/ansible"
-)
+ansible_uv=(uv --project "${proj_root}/tools/ansible")
 
 random_str=$(dd if=/dev/urandom bs=1024 count=1 2>/dev/null | tr -dc A-Za-z0-9 | fold -w 10 | awk 'NR<=1')
 date_str=$(date +%Y%m%d-%H%M%S)

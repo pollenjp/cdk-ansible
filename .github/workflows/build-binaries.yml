@@ -8,6 +8,7 @@ on:
   pull_request:
     paths:
       - .github/workflows/build-binaries.yml
+      - xtasks/build/release
   workflow_dispatch:
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -80,7 +81,7 @@ jobs:
         with:
           fetch-depth: ${{ env.FETCH_DEPTH }}
       - name: Build binaries
-        run: ./tools/build/build.sh
+        run: ./xtasks/build/release
         env:
           PKG_NAME: ${{ env.PKG_NAME }}
           BUILD_BINARY_TARGET: ${{ matrix.target }}

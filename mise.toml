@@ -1,0 +1,44 @@
+[tools]
+"aqua:mvdan/sh" = "3.11.0"
+"cargo:cargo-zigbuild" = "0.20.0"
+rust = "1.86.0"
+shellcheck = "0.10.0"
+uv = "0.7.12"
+yq = "4.45.4"
+zig = "0.14.1"
+
+[env]
+SAMPLE_ANSIBLE_ROOT = "tools/ansible"
+RS_OUT_DIR = "examples"
+
+[tasks.help]
+run = [
+    'RUST_BACKTRACE=1 cargo run --package simple-sample -- synth --help',
+    'uv --project "${SAMPLE_ANSIBLE_ROOT}" run cargo run --package cdk-ansible-cli -- module --help',
+]
+
+[tasks.'cdkam:gen']
+run = '''
+#!/usr/bin/env bash
+set -euo pipefail
+module_cmd=(
+    uv --project "${SAMPLE_ANSIBLE_ROOT}" run \
+    cargo run --package cdk-ansible-cli \
+    module --output-dir './crates' --pkg-unit 'none'
+)
+
+"${module_cmd[@]}" \
+    --module-name-regex 'ansible\.builtin\..*' \
+    --module-name-exclude 'ansible\.builtin\.meta' \
+    --module-name-exclude 'ansible\.builtin\.set_fact'
+"${module_cmd[@]}" --module-name-regex 'ansible\.posix\..*'
+"${module_cmd[@]}" --module-name-regex 'community\.general\..*'
+
+echo "src/m/ansible/builtin/meta.rs"
+echo "src/m/ansible/builtin/set_fact.rs"
+find ./crates/cdkam -name "mod.rs"
+find ./crates/cdkam -name "Cargo.toml"
+'''
+
+[task_config]
+includes = ["tasks.toml", "xtasks"]
