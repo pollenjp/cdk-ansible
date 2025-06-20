@@ -20,8 +20,9 @@ jobs:
           log_level: debug # [default: info] log level
           working_directory: .
       - run: rustup update stable && rustup default stable
+      - run: rustup component add clippy
       - name: Lint
-        run: mise run lint:rust
+        run: mise run lint:clippy
         working-directory: .
   test:
     runs-on: ubuntu-latest
@@ -40,7 +41,8 @@ jobs:
           install: true
           cache: true # [default: true] cache mise using GitHub's cache
           log_level: debug # [default: info] log level
-      - run: mise run test:under-tools
+      - run: rustup component add rustfmt
+      - run: mise run test
   test-simple-sample:
     runs-on: ubuntu-latest
     steps:
@@ -51,6 +53,7 @@ jobs:
           install: true
           cache: true # [default: true] cache mise using GitHub's cache
           log_level: debug # [default: info] log level
+      - run: rustup component add rustfmt
       - run: mise run test:simple-sample
       - name: Check dirty
         run: |

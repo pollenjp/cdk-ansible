@@ -50,6 +50,12 @@ curl --proto '=https' --tlsv1.2 -LsSf https://github.com/pollenjp/cdk-ansible/re
 cargo install cdk-ansible-cli
 ```
 
+## Requirements
+
+- cdk-ansible-cli
+  - rustfmt
+    - `rustup component add rustfmt`
+
 ## Usage
 
 ### Init cdk-ansible project
