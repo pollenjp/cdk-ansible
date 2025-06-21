@@ -9,11 +9,14 @@ module_names=(
   'ansible\.builtin\.debug'
   'ansible\.builtin\.service_facts'
 )
-module_regex=$(IFS='|'; echo "${module_names[*]}")
+module_regex=$(
+  IFS='|'
+  echo "${module_names[*]}"
+)
 
 uv --project "${SAMPLE_ANSIBLE_ROOT:?}" run \
   cargo run --package cdk-ansible-cli -- \
-    module --pkg-prefix 'sample_cdkam' --output-dir "${RS_OUT_DIR}" --module-name-regex "${module_regex}"
+  module --pkg-prefix 'sample_cdkam' --output-dir "${RS_OUT_DIR}" --module-name-regex "${module_regex}"
 
 # Run 'synth' to generate playbooks and inventory
 cargo run --package simple-sample -- synth --output-dir "${SAMPLE_ANSIBLE_ROOT}"

@@ -18,7 +18,7 @@ cleanup() {
 
 trap cleanup EXIT
 
-cat <<__EOF__ > "${temp_dir}/Cargo.toml"
+cat <<__EOF__ >"${temp_dir}/Cargo.toml"
 [workspace]
 members = ["crates/*"]
 
