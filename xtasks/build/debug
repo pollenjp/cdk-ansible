@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# build packages one by one
+cargo build --package cdk-ansible-macro
+cargo build --package cdk-ansible-static
+cargo build --package cdk-ansible-core
+cargo build --package cdk-ansible-cli
+cargo build --package cdk-ansible
+# include examples
+cargo build --workspace

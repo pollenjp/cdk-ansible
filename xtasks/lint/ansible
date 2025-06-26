@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+#MISE description="Lint ansible under sample-ansible directory"
+#MISE dir="tools/ansible"
+#MISE sources=["tools/ansible/**/*.yaml", "tools/ansible/**/*.yml"]
+#MISE outputs.auto=true
+
+set -euo pipefail
+
+uv run ansible-lint -v

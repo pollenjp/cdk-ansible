@@ -142,7 +142,7 @@ pub struct PlayOptions {
     pub gather_subset: OptU<Vec<String>>,
     /// Allows you to set the timeout for the fact gathering plugin controlled by gather_facts.
     #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
-    pub gather_timeout: OptU<i64>,
+    pub gather_timeout: OptU<IntOrString>,
     /// A section with tasks that are treated as handlers, these won't get executed normally,
     /// only when notified after each section of tasks is complete.
     /// A handler's listen field is not templatable.
@@ -158,7 +158,7 @@ pub struct PlayOptions {
     /// Can be used to abort the run after a given percentage of hosts in the current batch has failed.
     /// This only works on linear or linear-derived strategies.
     #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
-    pub max_fail_percentage: OptU<i64>,
+    pub max_fail_percentage: OptU<IntOrString>,
     /// Specifies default parameter values for modules.
     #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
     pub module_defaults: OptU<IndexMap<String, serde_json::Value>>,
@@ -171,7 +171,7 @@ pub struct PlayOptions {
     pub order: OptU<String>,
     /// Used to override the default port used in a connection.
     #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
-    pub port: OptU<i64>,
+    pub port: OptU<IntOrString>,
     /// A list of tasks to execute after the tasks section.
     #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
     pub post_tasks: OptU<Vec<Task>>,
@@ -190,7 +190,7 @@ pub struct PlayOptions {
     pub run_once: OptU<BoolOrString>,
     /// Explicitly define how Ansible batches the execution of the current play on the play's target. See Setting the batch size with serial.
     #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
-    pub serial: OptU<i64>,
+    pub serial: OptU<IntOrString>,
     /// Allows you to choose the strategy plugin to use for the play. See Strategy plugins.
     #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
     pub strategy: OptU<String>,
@@ -199,10 +199,10 @@ pub struct PlayOptions {
     pub tags: OptU<Vec<String>>,
     /// Limit the number of concurrent task runs on task, block and playbook level. This is independent of the forks and serial settings, but cannot be set higher than those limits. For example, if forks is set to 10 and the throttle is set to 15, at most 10 hosts will be operated on in parallel.
     #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
-    pub throttle: OptU<i64>,
+    pub throttle: OptU<IntOrString>,
     /// Time limit for the task action to execute in, if exceeded, Ansible will interrupt the process. Timeout does not include templating or looping.
     #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
-    pub timeout: OptU<i64>,
+    pub timeout: OptU<IntOrString>,
     /// Dictionary/map of variables
     #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
     pub vars: OptU<IndexMap<String, serde_json::Value>>,
@@ -262,7 +262,7 @@ pub struct TaskOptions {
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset"
     )]
-    pub async_: OptU<i64>,
+    pub async_: OptU<IntOrString>,
     /// Boolean that controls if privilege escalation is used or not on Task execution.
     /// Implemented by the become plugin. See Become plugins.
     #[serde(
@@ -305,7 +305,7 @@ pub struct TaskOptions {
     /// delay
     /// Number of seconds to delay between retries. This setting is only used in combination with until.
     #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
-    pub delay: OptU<i64>,
+    pub delay: OptU<IntOrString>,
     //
     /// delegate_facts
     /// Boolean that allows you to apply facts to a delegated host instead of inventory_hostname.
@@ -367,11 +367,11 @@ pub struct TaskOptions {
 
     /// Sets the polling interval in seconds for async tasks (default 10s).
     #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
-    pub poll: OptU<i64>,
+    pub poll: OptU<IntOrString>,
 
     /// Used to override the default port used in a connection.
     #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
-    pub port: OptU<i64>,
+    pub port: OptU<IntOrString>,
 
     /// Name of variable that will contain task status and module return data.
     #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
@@ -383,7 +383,7 @@ pub struct TaskOptions {
 
     /// Number of retries before giving up in a until loop. This setting is only used in combination with until.
     #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
-    pub retries: OptU<i64>,
+    pub retries: OptU<IntOrString>,
     /// Boolean that will bypass the host loop, forcing the task to attempt to execute on the first host available
     /// and afterward apply any results and facts to all active hosts in the same batch.
     #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
@@ -397,12 +397,12 @@ pub struct TaskOptions {
     /// This is independent of the forks and serial settings, but cannot be set higher than those limits.
     /// For example, if forks is set to 10 and the throttle is set to 15, at most 10 hosts will be operated on in parallel.
     #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
-    pub throttle: OptU<i64>,
+    pub throttle: OptU<IntOrString>,
 
     /// Time limit for the task action to execute in, if exceeded, Ansible will interrupt the process.
     /// Timeout does not include templating or looping.
     #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
-    pub timeout: OptU<i64>,
+    pub timeout: OptU<IntOrString>,
 
     /// This keyword implies a 'retries loop' that will go on until the condition supplied here is met or we hit the retries limit.
     #[serde(default = "OptU::default", skip_serializing_if = "OptU::is_unset")]
@@ -484,7 +484,7 @@ mod tests {
                     force_handlers: OptU::Some(true.into()),
                     gather_facts: OptU::Some(true.into()),
                     gather_subset: OptU::Some(vec!["gather_subset1".to_string()]),
-                    gather_timeout: OptU::Some(10),
+                    gather_timeout: OptU::Some(10.into()),
                     handlers: OptU::Some(vec![Task {
                         name: "handler1".to_string(),
                         options: TaskOptions::default(),
@@ -494,14 +494,14 @@ mod tests {
                     }]),
                     ignore_errors: OptU::Some(true.into()),
                     ignore_unreachable: OptU::Some(true.into()),
-                    max_fail_percentage: OptU::Some(10),
+                    max_fail_percentage: OptU::Some(10.into()),
                     module_defaults: OptU::Some(IndexMap::from([(
                         "module1".to_string(),
                         serde_json::Value::String("value1".to_string())
                     )])),
                     no_log: OptU::Some(true.into()),
                     order: OptU::Some("order".to_string()),
-                    port: OptU::Some(10),
+                    port: OptU::Some(10.into()),
                     post_tasks: OptU::Some(vec![Task {
                         name: "post_task1".to_string(),
                         options: TaskOptions::default(),
@@ -519,11 +519,11 @@ mod tests {
                     remote_user: OptU::Some("remote_user".to_string()),
                     roles: OptU::Some(vec!["role1".to_string()]),
                     run_once: OptU::Some(true.into()),
-                    serial: OptU::Some(10),
+                    serial: OptU::Some(10.into()),
                     strategy: OptU::Some("strategy".to_string()),
                     tags: OptU::Some(vec!["tag1".to_string()]),
-                    throttle: OptU::Some(10),
-                    timeout: OptU::Some(10),
+                    throttle: OptU::Some(10.into()),
+                    timeout: OptU::Some(10.into()),
                     vars: OptU::Some(IndexMap::from([(
                         "var1".to_string(),
                         serde_json::Value::String("value1".to_string())
@@ -591,7 +591,7 @@ mod tests {
                     "arg1".to_string(),
                     serde_json::Value::String("value1".to_string())
                 )])),
-                async_: OptU::Some(10),
+                async_: OptU::Some(10.into()),
                 become_: OptU::Some(true.into()),
                 become_exe: OptU::Some("become_exe".to_string()),
                 become_flags: OptU::Some("become_flags".to_string()),
@@ -602,7 +602,11 @@ mod tests {
                 collections: OptU::Some(vec!["collection1".to_string()]),
                 connection: OptU::Some("connection1".to_string()),
                 debugger: OptU::Some(true.into()),
-                delay: OptU::Some(10),
+                delay: OptU::Some(
+                    // random filter is useful to avoid congestion
+                    // Include `IntOrString`'s test
+                    "{{ 10 | ansible.builtin.random(seed=inventory_hostname) }}".into(),
+                ),
                 delegate_facts: OptU::Some(true.into()),
                 delegate_to: OptU::Some("delegate_to".to_string()),
                 diff: OptU::Some(true.into()),
@@ -625,15 +629,15 @@ mod tests {
                 )])),
                 no_log: OptU::Some(true.into()),
                 notify: OptU::Some(vec!["notify1".to_string()]),
-                poll: OptU::Some(10),
-                port: OptU::Some(10),
+                poll: OptU::Some(10.into()),
+                port: OptU::Some(10.into()),
                 register: OptU::Some("register".to_string()),
                 remote_user: OptU::Some("remote_user".to_string()),
-                retries: OptU::Some(10),
+                retries: OptU::Some(10.into()),
                 run_once: OptU::Some(true.into()),
                 tags: OptU::Some(vec!["tag1".to_string()]),
-                throttle: OptU::Some(10),
-                timeout: OptU::Some(10),
+                throttle: OptU::Some(10.into()),
+                timeout: OptU::Some(10.into()),
                 until: OptU::Some("until".to_string()),
                 vars: OptU::Some(IndexMap::from([(
                     "var1".to_string(),
@@ -658,7 +662,7 @@ mod tests {
                 + r#""collections":["collection1"],"#
                 + r#""connection":"connection1","#
                 + r#""debugger":true,"#
-                + r#""delay":10,"#
+                + r#""delay":"{{ 10 | ansible.builtin.random(seed=inventory_hostname) }}","#
                 + r#""delegate_facts":true,"#
                 + r#""delegate_to":"delegate_to","#
                 + r#""diff":true,"#

@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# shellcheck disable=SC2016
+shell_filter_script=$(
+  cat <<'__EOF__'
+set -euo pipefail
+awk "NR<=1" "$1" | grep -q -E "#!/.*(sh|bash)$" && echo "$1" || true
+__EOF__
+)
+
+# find start with shebang and run shell
+git ls-files --exclude-standard -co \
+  | grep -vE '.*\.(rs|yaml|yml|toml|json|md|ini)$' \
+  | xargs -P0 -I{} bash -c "${shell_filter_script}" _ {} \
+  | xargs -P0 -I{} -t shellcheck "{}"

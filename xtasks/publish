@@ -15,7 +15,7 @@ for pkg in "${pkgs[@]}"; do
   random_s=$(dd if=/dev/urandom bs=1024 count=1 2>/dev/null | tr -dc A-Za-z0-9 | fold -w 10 | awk 'NR<=1')
   err_txt_file="/tmp/stderr_$random_s.txt"
   set +e
-  cargo publish --package "$pkg" 2> "$err_txt_file"
+  cargo publish --package "$pkg" 2>"$err_txt_file"
   exit_code=$?
   err_msg=$(cat "$err_txt_file")
   rm "$err_txt_file"

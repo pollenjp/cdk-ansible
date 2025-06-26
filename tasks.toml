@@ -1,0 +1,4 @@
+build = { depends = ["build:*"] }
+fmt = { depends = ["fmt:*"] }
+lint = { depends = ["lint:*"] }
+test = { depends = ["test:*"] }

@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+cargo hack check --rust-version --workspace --all-targets --ignore-private

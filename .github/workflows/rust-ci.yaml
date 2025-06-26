@@ -12,9 +12,17 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - uses: jdx/mise-action@v2
+        with:
+          version: 2025.6.1
+          install: true
+          cache: true # [default: true] cache mise using GitHub's cache
+          log_level: debug # [default: info] log level
+          working_directory: .
       - run: rustup update stable && rustup default stable
+      - run: rustup component add clippy
       - name: Lint
-        run: make lint-rust
+        run: mise run lint:clippy
         working-directory: .
   test:
     runs-on: ubuntu-latest
@@ -27,16 +35,26 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: astral-sh/setup-uv@v5
-      - run: rustup update stable && rustup default stable
-      - run: make test-under-tools
+      - uses: jdx/mise-action@v2
+        with:
+          version: 2025.6.1
+          install: true
+          cache: true # [default: true] cache mise using GitHub's cache
+          log_level: debug # [default: info] log level
+      - run: rustup component add rustfmt
+      - run: mise run test
   test-simple-sample:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: astral-sh/setup-uv@v5
-      - run: rustup update stable && rustup default stable
-      - run: make test-simple-sample
+      - uses: jdx/mise-action@v2
+        with:
+          version: 2025.6.1
+          install: true
+          cache: true # [default: true] cache mise using GitHub's cache
+          log_level: debug # [default: info] log level
+      - run: rustup component add rustfmt
+      - run: mise run test:simple-sample
       - name: Check dirty
         run: |
           status=$(git status --porcelain)

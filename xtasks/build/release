@@ -1,8 +1,7 @@
 #!/usr/bin/env bash
-# Requirements
-# pip install --user cargo-zigbuild
-
-set -eux -o pipefail
+#MISE description="Build locally with zigbuild"
+#MISE env={BUILD_BINARY_TARGET="x86_64-unknown-linux-gnu", PKG_NAME="cdk-ansible-cli"}
+set -euo pipefail
 
 # https://opensource.axo.dev/cargo-dist/book/custom-builds.html#understanding-build-commands
 # x86_64-unknown-linux-gnu
