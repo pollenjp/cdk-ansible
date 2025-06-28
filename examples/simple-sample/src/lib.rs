@@ -1,59 +1,59 @@
 use anyhow::Result;
-use cdk_ansible::settings;
-use cdk_ansible::{run, settings::SynthSettings, Synthesizer};
-use cdk_ansible::{Inventory, Playbook};
+use cdk_ansible::{
+    DeployApp, DeployStack, ExPlay, ExSequential, ExSingle, OptU, Play, PlayOptions, TaskOptions,
+};
 
-mod inventory;
-mod playbooks;
+// mod inventory;
+// mod playbooks;
 
-use inventory::get_hosts;
-use playbooks::generate_all;
+// use inventory::get_hosts;
+// use playbooks::generate_all;
 
 #[inline]
-pub fn main() -> Result<()> {
-    run(std::env::args_os(), CustomSynthesizer {})?;
-    Ok(())
-}
-
-struct CustomSynthesizer;
-
-impl Synthesizer for CustomSynthesizer {
-    fn synth_playbooks(&self, args: &SynthSettings) -> Result<Vec<Playbook>> {
-        let playbooks = generate_all(&PlaybookSynthConfig {
-            synth_settings: args.clone(),
-            hosts: get_hosts()?,
-        })?;
-        Ok(playbooks)
-    }
-
-    fn synth_inventory(&self, args: &SynthSettings) -> Result<Inventory> {
-        dbg!(&args); // FIXME: remove this
-        let hosts = get_hosts()?;
-        let inventory = hosts.to_inventory()?;
-        Ok(inventory)
+pub fn main() {
+    if let Err(e) = main2() {
+        eprintln!("Error: {e:?}");
+        std::process::exit(1);
     }
 }
 
-trait PlaybookGenArgs {
-    #[expect(dead_code, reason = "not used yet")]
-    fn get_synth_settings(&self) -> &settings::SynthSettings;
-    fn get_hosts(&self) -> &inventory::Hosts;
+pub fn main2() -> Result<()> {
+    let mut app = DeployApp::new(std::env::args().collect());
+    app.add_stack(Box::new(SampleStack {}))?;
+    app.run()
 }
 
-/// A simple struct to implement [`PlaybookGenArgs`]
-#[derive(Debug, Clone)]
-struct PlaybookSynthConfig {
-    #[expect(dead_code, reason = "not used yet")]
-    pub synth_settings: settings::SynthSettings,
-    pub hosts: inventory::Hosts,
+struct SampleStack;
+
+impl DeployStack for SampleStack {
+    fn name(&self) -> &str {
+        "sample"
+    }
+
+    fn plays(&self) -> Result<ExPlay> {
+        Ok(ExSequential(vec![
+            ExSingle(create_play_helper("sample1")),
+            ExSingle(create_play_helper("sample2")),
+        ]))
+    }
 }
 
-impl PlaybookGenArgs for PlaybookSynthConfig {
-    fn get_synth_settings(&self) -> &settings::SynthSettings {
-        &self.synth_settings
-    }
-
-    fn get_hosts(&self) -> &inventory::Hosts {
-        &self.hosts
-    }
+fn create_play_helper(name: &str) -> Box<Play> {
+    Box::new(Play {
+        name: name.into(),
+        hosts: "localhost".into(),
+        options: PlayOptions::default(),
+        tasks: vec![::cdk_ansible::Task {
+            name: "debug".into(),
+            options: TaskOptions::default(),
+            command: Box::new(::sample_cdkam_ansible::builtin::debug::Module {
+                module: ::sample_cdkam_ansible::builtin::debug::Args {
+                    options: ::sample_cdkam_ansible::builtin::debug::Opt {
+                        msg: OptU::Some("Hello, world!".into()),
+                        ..Default::default()
+                    },
+                },
+            }),
+        }],
+    })
 }

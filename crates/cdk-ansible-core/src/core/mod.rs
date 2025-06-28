@@ -239,7 +239,7 @@ pub struct Task {
 /// }
 /// impl TaskModule for SampleTaskModule {}
 /// ```
-pub trait TaskModule: erased_serde::Serialize + DynClone + std::fmt::Debug {}
+pub trait TaskModule: erased_serde::Serialize + DynClone + std::fmt::Debug + Send {}
 
 serialize_trait_object!(TaskModule);
 clone_trait_object!(TaskModule);
