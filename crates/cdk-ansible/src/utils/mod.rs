@@ -1,9 +1,9 @@
 use anyhow::{Context as _, Result};
 use cdk_ansible_core::core::Playbook;
-use std::path::PathBuf;
+use std::path::Path;
 use tokio::fs;
 
-pub async fn playbook_dump(playbook: Playbook, dirpath: PathBuf) -> Result<()> {
+pub async fn playbook_dump(playbook: &Playbook, dirpath: &Path) -> Result<()> {
     let filepath = dirpath.join(format!("{}.json", playbook.name));
     fs::create_dir_all(
         filepath

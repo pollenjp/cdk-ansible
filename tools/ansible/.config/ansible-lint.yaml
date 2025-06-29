@@ -1,9 +1,14 @@
 ---
-# exclude_paths: []
+exclude_paths: []
 parseable: true
 use_default_rules: true
 skip_list:
-  - "yaml" # Disable YAML linting since it's done by yamllint
+  - complexity[play]
+  - name[casing]
+  - no-handler
+  - no-tabs
+  - run-once[play] # instead prohibit run-once[task]
+  - yaml # Disable YAML linting since it's done by yamllint
 enable_list:
   # ansible-lint -L | grep -e "opt-in" -e "experimental" | tr -s ' ' | cut -d ' ' -f2
   # ansible-lint -L | tr -s ' ' | cut -d ' ' -f2

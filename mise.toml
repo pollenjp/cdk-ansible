@@ -1,5 +1,6 @@
 [tools]
 "aqua:mvdan/sh" = "3.11.0"
+"cargo:cargo-hack" = "0.6.36"
 "cargo:cargo-zigbuild" = "0.20.0"
 rust = "1.88.0"
 shellcheck = "0.10.0"

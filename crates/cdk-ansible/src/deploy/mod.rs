@@ -47,6 +47,7 @@ pub use types::*;
 #[derive(Debug)]
 pub struct DeployApp {
     args: Vec<String>,
+    /// key is an unique stack name. Forbidden to be duplicated.
     stacks: IndexMap<String, ExPlay>,
 }
 
