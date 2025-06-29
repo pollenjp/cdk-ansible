@@ -9,10 +9,40 @@ pub use types::*;
 /// Main entry point for the cdk-ansible CLI.
 ///
 /// ```rust
-/// use cdk_ansible::SynthApp;
+/// use anyhow::Result;
+/// use cdk_ansible::{DeployApp, DeployStack, ExPlay, ExSingle, Play, PlayOptions};
 ///
-/// let app = SynthApp::new();
-/// app.run(::std::env::args_os());
+/// fn create_play_helper(name: &str) -> Box<Play> {
+///     Box::new(Play {
+///         name: name.to_string(),
+///         hosts: "localhost".into(),
+///         options: PlayOptions::default(),
+///         tasks: vec![],
+///     })
+/// }
+///
+/// struct SampleStack;
+///
+/// impl SampleStack {
+///   pub fn new() -> Self {
+///     Self {
+///       // customize
+///     }
+///   }
+/// }
+///
+/// impl DeployStack for SampleStack {
+///     fn name(&self) -> &str {
+///         "sample"
+///     }
+///     fn plays(&self) -> Result<ExPlay> {
+///         Ok(ExSingle(create_play_helper("sample")))
+///     }
+/// }
+///
+/// let mut app = DeployApp::new(vec!["help".to_string()]);
+/// app.add_stack(Box::new(SampleStack::new()))
+///     .expect("Failed to add sample stack");
 /// ```
 #[derive(Debug)]
 pub struct DeployApp {

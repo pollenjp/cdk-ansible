@@ -5,20 +5,23 @@ use crate::Play;
 /// ```rust
 /// use cdk_ansible::{Play, PlayOptions, ExSequential, ExSingle, ExParallel};
 ///
-/// let play = Play {
-///     name: "play1".into(),
-///     hosts: "localhost".into(),
-///     options: PlayOptions::default(),
-///     tasks: vec![],
-/// };
+/// /// Helper function to create sample play
+/// fn create_play_helper(name: &str) -> Box<Play> {
+///     Box::new(Play {
+///         name: name.to_string(),
+///         hosts: "localhost".into(),
+///         options: PlayOptions::default(),
+///         tasks: vec![],
+///     })
+/// }
 ///
 /// let _play_exec = ExSequential(vec![
-///     Box::new(ExSingle(Box::new(play.clone()))),
-///     Box::new(ExParallel(vec![
-///         Box::new(ExSingle(Box::new(play.clone()))),
-///         Box::new(ExSingle(Box::new(play.clone()))),
-///     ])),
-///     Box::new(ExSingle(Box::new(play.clone()))),
+///     ExSingle(create_play_helper("sample1")),
+///     ExSingle(create_play_helper("sample2")),
+///     ExParallel(vec![
+///         ExSingle(create_play_helper("sample3")),
+///         ExSingle(create_play_helper("sample4")),
+///     ]),
 /// ]);
 /// ```
 #[derive(Debug, Clone)]
@@ -29,7 +32,6 @@ pub enum ExPlay {
     Parallel(Vec<ExPlay>),
     /// Single Play
     Single(Box<Play>),
-    // Single(Play),
 }
 
 pub use ExPlay::Parallel as ExParallel;
