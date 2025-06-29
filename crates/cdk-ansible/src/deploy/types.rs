@@ -29,6 +29,7 @@ pub enum ExPlay {
     Parallel(Vec<ExPlay>),
     /// Single Play
     Single(Box<Play>),
+    // Single(Play),
 }
 
 pub use ExPlay::Parallel as ExParallel;
@@ -40,34 +41,30 @@ mod tests {
     use super::*;
     use cdk_ansible_core::core::{Play, PlayOptions};
 
-    /// Helper function to create sample plays
-    fn create_sample_plays(num_plays: usize) -> Vec<Play> {
-        (0..num_plays)
-            .map(|i| Play {
-                name: format!("play{}", i + 1),
-                hosts: "localhost".into(),
-                options: PlayOptions::default(),
-                tasks: vec![],
-            })
-            .collect()
+    /// Helper function to create sample play
+    fn create_play_helper(name: &str) -> Box<Play> {
+        Box::new(Play {
+            name: name.to_string(),
+            hosts: "localhost".into(),
+            options: PlayOptions::default(),
+            tasks: vec![],
+        })
     }
 
-    // #[test]
-    // fn test_single_play_exec() {
-    //     let mut plays = create_sample_plays(1);
-    //     let _play_exec = ExSingle(Box::new(plays.pop().expect("play not found").clone()));
-    // }
+    #[test]
+    fn test_single_play_exec() {
+        let _play_exec = ExSingle(create_play_helper("sample"));
+    }
 
-    // #[test]
-    // fn test_sequential_play_exec() {
-    //     let play = create_sample_plays(1).pop().expect("play not found");
-    //     let _play_exec = ExSequential(vec![
-    //         Box::new(ExSingle(Box::new(play.clone()))),
-    //         Box::new(ExSingle(Box::new(play.clone()))),
-    //         Box::new(ExParallel(vec![
-    //             Box::new(ExSingle(Box::new(play.clone()))),
-    //             Box::new(ExSingle(Box::new(play.clone()))),
-    //         ])),
-    //     ]);
-    // }
+    #[test]
+    fn test_sequential_play_exec() {
+        let _play_exec = ExSequential(vec![
+            ExSingle(create_play_helper("sample1")),
+            ExSingle(create_play_helper("sample2")),
+            ExParallel(vec![
+                ExSingle(create_play_helper("sample3")),
+                ExSingle(create_play_helper("sample4")),
+            ]),
+        ]);
+    }
 }

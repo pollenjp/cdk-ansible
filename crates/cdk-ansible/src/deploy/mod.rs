@@ -61,7 +61,7 @@ mod tests {
     use cdk_ansible_core::core::{Play, PlayOptions};
 
     /// Helper function to create sample play
-    fn create_play(name: &str) -> Box<Play> {
+    fn create_play_helper(name: &str) -> Box<Play> {
         Box::new(Play {
             name: name.to_string(),
             hosts: "localhost".into(),
@@ -79,7 +79,7 @@ mod tests {
                 "sample"
             }
             fn plays(&self) -> Result<ExPlay> {
-                Ok(ExPlay::Single(create_play("sample")))
+                Ok(ExPlay::Single(create_play_helper("sample")))
             }
         }
 
@@ -99,7 +99,7 @@ mod tests {
                 STACK_NAME
             }
             fn plays(&self) -> Result<ExPlay> {
-                Ok(ExPlay::Single(create_play("sample1")))
+                Ok(ExPlay::Single(create_play_helper("sample1")))
             }
         }
 
@@ -110,7 +110,7 @@ mod tests {
                 STACK_NAME
             }
             fn plays(&self) -> Result<ExPlay> {
-                Ok(ExPlay::Single(create_play("sample2")))
+                Ok(ExPlay::Single(create_play_helper("sample2")))
             }
         }
 
