@@ -47,23 +47,34 @@ pub use types::*;
 #[derive(Debug)]
 pub struct DeployApp {
     args: Vec<String>,
-    /// key is an unique stack name. Forbidden to be duplicated.
-    stacks: IndexMap<String, ExPlay>,
+    /// key is an unique name of stack. Forbidden to be duplicated.
+    ex_playbooks: IndexMap<String, ExPlaybook>,
 }
 
 impl DeployApp {
     pub fn new(args: Vec<String>) -> Self {
         Self {
             args,
-            stacks: IndexMap::new(),
+            ex_playbooks: IndexMap::new(),
         }
     }
 
     pub fn add_stack(&mut self, stack: Box<dyn DeployStack>) -> Result<()> {
-        let old_value = self.stacks.insert(stack.name().to_owned(), stack.plays()?);
-        if old_value.is_some() {
-            anyhow::bail!("conflicting stack name: {}", stack.name());
+        let ex_plays = stack.plays()?;
+
+        // ExPlaybook
+        let old_ex_playbook = self.ex_playbooks.insert(
+            stack.name().to_owned(),
+            ExPlaybook::from_ex_play(stack.name(), ex_plays),
+        );
+        if let Some(old_ex_playbook) = old_ex_playbook {
+            anyhow::bail!(
+                "conflicting stack name: {} ({:?})",
+                stack.name(),
+                old_ex_playbook
+            );
         }
+
         Ok(())
     }
 

@@ -43,14 +43,13 @@ pub enum Commands {
 impl Cli {
     pub async fn run(app: &DeployApp) -> Result<()> {
         let cli = Cli::parse_from(app.args.clone());
-        let global_args = cli.global_args;
         if let Some(command) = cli.command {
             match *command {
                 Commands::Synth(cmd) => {
-                    cmd.run(app, global_args).await?;
+                    cmd.run(app, &cli.global_args).await?;
                 }
                 Commands::Deploy(cmd) => {
-                    cmd.run(app, global_args).await?;
+                    cmd.run(app, &cli.global_args).await?;
                 }
             }
         } else {

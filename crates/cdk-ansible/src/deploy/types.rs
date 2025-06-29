@@ -1,6 +1,6 @@
-use crate::Play;
+use crate::{Play, Playbook};
 
-/// Play execution definition
+/// Play execution definition for end users
 ///
 /// ```rust
 /// use cdk_ansible::{Play, PlayOptions, ExSequential, ExSingle, ExParallel};
@@ -37,6 +37,42 @@ pub enum ExPlay {
 pub use ExPlay::Parallel as ExParallel;
 pub use ExPlay::Sequential as ExSequential;
 pub use ExPlay::Single as ExSingle;
+
+/// Playbook execution definition for deployment
+#[derive(Debug, Clone)]
+pub enum ExPlaybook {
+    Sequential(Vec<ExPlaybook>),
+    Parallel(Vec<ExPlaybook>),
+    Single(Box<Playbook>),
+}
+
+impl ExPlaybook {
+    pub fn from_ex_play(name: &str, ex_play: ExPlay) -> Self {
+        match ex_play {
+            ExPlay::Sequential(plays) => Self::Sequential(
+                plays
+                    .into_iter()
+                    .enumerate()
+                    .map(|(i, ex_play)| Self::from_ex_play(&format!("{name}_seq{i}"), ex_play))
+                    .collect(),
+            ),
+            ExPlay::Parallel(plays) => Self::Parallel(
+                plays
+                    .into_iter()
+                    .enumerate()
+                    .map(|(i, ex_play)| Self::from_ex_play(&format!("{name}_par{i}"), ex_play))
+                    .collect(),
+            ),
+            ExPlay::Single(play) => Self::Single(Box::new(Playbook {
+                name: format!(
+                    "{name}_{}",
+                    play.name.as_str().to_lowercase().replace(' ', "_")
+                ),
+                plays: vec![*play],
+            })),
+        }
+    }
+}
 
 #[cfg(test)]
 mod tests {

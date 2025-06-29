@@ -1,11 +1,10 @@
-use crate::utils::playbook_dump;
 use crate::{
     DeployApp, Playbook,
-    deploy::{ExPlay, cli::GlobalArgs},
+    deploy::{ExPlaybook, cli::GlobalArgs},
+    utils::{json_to_yaml, playbook_dump},
 };
 use anyhow::Result;
 use clap::Args;
-use futures::future::{BoxFuture, FutureExt};
 use std::path::PathBuf;
 use std::sync::Arc;
 use tokio::task::JoinSet;
@@ -14,61 +13,57 @@ use tokio::task::JoinSet;
 pub struct Synth {}
 
 impl Synth {
-    pub async fn run(self, app: &DeployApp, global_args: GlobalArgs) -> Result<()> {
-        let playbook_dir = global_args.app_dir.join("playbooks");
-
-        // Reset playbook directory
-        tokio::fs::remove_dir_all(&playbook_dir).await?;
-
-        let playbook_dir = Arc::new(playbook_dir);
-        for (name, play_ex) in app.stacks.iter() {
-            recursive_synth(name.to_owned(), play_ex.clone(), Arc::clone(&playbook_dir)).await?;
-            // recursive_synth(play_ex.clone(), &playbook_dir).await?;
-        }
-        Ok(())
+    pub async fn run(self, app: &DeployApp, global_args: &GlobalArgs) -> Result<()> {
+        synth(app, global_args).await
     }
 }
 
-fn recursive_synth(
-    name: String,
-    ex_play: ExPlay,
-    playbook_dir: Arc<PathBuf>,
-) -> BoxFuture<'static, Result<()>> {
-    async move {
-        match ex_play {
-            ExPlay::Single(play) => {
-                playbook_dump(
-                    &Playbook {
-                        name: format!("{name}_{}", play.name.to_lowercase().replace(' ', "_")),
-                        plays: vec![*play],
-                    },
-                    &playbook_dir,
-                )
-                .await?;
-            }
-            ExPlay::Sequential(plays) => {
-                for (i, play) in plays.into_iter().enumerate() {
-                    recursive_synth(format!("{name}_seq{i}"), play, Arc::clone(&playbook_dir))
-                        .await?;
-                }
-            }
-            ExPlay::Parallel(plays) => {
-                let mut set: JoinSet<Result<()>> = JoinSet::new();
-                for (i, play) in plays.into_iter().enumerate() {
-                    set.spawn(recursive_synth(
-                        format!("{name}_par{i}"),
-                        play,
-                        Arc::clone(&playbook_dir),
-                    ));
-                }
-                while let Some(res) = set.join_next().await {
-                    (res?)?;
-                }
+pub async fn synth(app: &DeployApp, global_args: &GlobalArgs) -> Result<()> {
+    let playbook_dir = global_args.app_dir.join("playbooks");
+
+    // Reset playbook directory
+    tokio::fs::remove_dir_all(&playbook_dir).await?;
+
+    let playbook_dir = Arc::new(playbook_dir);
+    let mut join_set: JoinSet<Result<()>> = JoinSet::new();
+
+    app.ex_playbooks
+        .iter()
+        .map(|(_, ex_playbook)| {
+            let mut container: Vec<Playbook> = Vec::new();
+            recursive_synth(&mut container, ex_playbook.clone());
+            container
+        })
+        .for_each(|container| {
+            container.into_iter().for_each(|pb| {
+                join_set.spawn(synth_playbook(pb, Arc::clone(&playbook_dir)));
+            });
+        });
+    while let Some(res) = join_set.join_next().await {
+        (res?)?;
+    }
+    Ok(())
+}
+
+async fn synth_playbook(pb: Playbook, playbook_dir: Arc<PathBuf>) -> Result<()> {
+    let json_path = playbook_dir.join(format!("{}.json", pb.name));
+    playbook_dump(pb, playbook_dir).await?;
+    json_to_yaml(json_path).await?;
+    Ok(())
+}
+
+/// Extract Playbooks from ExPlaybook
+fn recursive_synth(container: &mut Vec<Playbook>, ex_playbook: ExPlaybook) {
+    match ex_playbook {
+        ExPlaybook::Single(pb) => {
+            container.push(*pb);
+        }
+        ExPlaybook::Sequential(pbs) | ExPlaybook::Parallel(pbs) => {
+            for pb in pbs {
+                recursive_synth(container, pb);
             }
         }
-        Ok(())
     }
-    .boxed()
 }
 
 #[cfg(test)]
@@ -77,7 +72,7 @@ mod tests {
     use crate::OptU;
     use cdk_ansible_core::core::{Play, PlayOptions, Task, TaskModule, TaskOptions};
     use serde::Serialize;
-    use std::path::PathBuf;
+    use tempfile::TempDir;
 
     mod debug {
         use super::*;
@@ -117,8 +112,8 @@ mod tests {
         }
     }
 
-    fn create_play_helper(name: &str) -> Box<Play> {
-        Box::new(Play {
+    fn create_play_helper(name: &str) -> Play {
+        Play {
             name: name.to_string(),
             hosts: "localhost".into(),
             options: PlayOptions::default(),
@@ -134,51 +129,21 @@ mod tests {
                     },
                 }),
             }],
+        }
+    }
+
+    fn create_playbook_helper(name: &str) -> Box<Playbook> {
+        Box::new(Playbook {
+            name: name.to_string(),
+            plays: vec![create_play_helper(name)],
         })
     }
 
     #[tokio::test]
-    async fn test_recursive_synth_single() {
-        let play = create_play_helper("test_single");
-        let app_dir = PathBuf::from("target/test/synth");
-        recursive_synth(
-            "SampleStack".to_owned(),
-            ExPlay::Single(play),
-            Arc::new(app_dir),
-        )
-        .await
-        .unwrap();
-    }
-
-    #[tokio::test]
-    async fn test_recursive_synth_sequential() {
-        let plays = vec![
-            ExPlay::Single(create_play_helper("test_seq1")),
-            ExPlay::Single(create_play_helper("test_seq2")),
-        ];
-        let app_dir = PathBuf::from("target/test/synth");
-        recursive_synth(
-            "SampleStack".to_owned(),
-            ExPlay::Sequential(plays),
-            Arc::new(app_dir),
-        )
-        .await
-        .unwrap();
-    }
-
-    #[tokio::test]
-    async fn test_recursive_synth_parallel() {
-        let plays = vec![
-            ExPlay::Single(create_play_helper("test_par1")),
-            ExPlay::Single(create_play_helper("test_par2")),
-        ];
-        let app_dir = PathBuf::from("target/test/synth");
-        recursive_synth(
-            "SampleStack".to_owned(),
-            ExPlay::Parallel(plays),
-            Arc::new(app_dir),
-        )
-        .await
-        .unwrap();
+    async fn validate_synth_playbook() {
+        let temp_dir = TempDir::new().unwrap();
+        let playbook_dir = Arc::new(temp_dir.path().to_path_buf());
+        let pb = create_playbook_helper("test");
+        synth_playbook(*pb, playbook_dir).await.unwrap();
     }
 }

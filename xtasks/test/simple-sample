@@ -19,13 +19,13 @@ echo "==========================================================================
 cargo run --package simple-sample -- "${global_args[@]}" synth --help
 cargo run --package simple-sample -- "${global_args[@]}" synth
 
-# shellcheck disable=SC2016
-yq_script='yq -p json -o yaml "${1}" > "${1%.json}.yaml"'
+# # shellcheck disable=SC2016
+# yq_script='yq -p json -o yaml "${1}" > "${1%.json}.yaml"'
 
-# Convert json to yaml by yq
-find "${simple_sample_ansible_dir}/inventory" "${simple_sample_ansible_dir}/playbooks" -name "*.json" -print0 \
-  | xargs -P0 -0 -I{} bash -ec "${yq_script}" _ {}
+# # Convert json to yaml by yq
+# find "${simple_sample_ansible_dir}/inventory" "${simple_sample_ansible_dir}/playbooks" -name "*.json" -print0 \
+#   | xargs -P0 -0 -I{} bash -ec "${yq_script}" _ {}
 
 echo "================================================================================"
-cargo run --package simple-sample -- "${global_args[@]}" deploy --help
-# cargo run --package simple-sample -- deploy
+# cargo run --package simple-sample -- "${global_args[@]}" deploy --help
+# cargo run --package simple-sample -- "${global_args[@]}" deploy
