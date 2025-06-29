@@ -1,6 +1,8 @@
 !*.code-workspace
 .python-version
 .cdk-ansible*.out
+.cdka
+.ansible
 
 ##################
 # Rust.gitignore #

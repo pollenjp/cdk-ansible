@@ -1,29 +1,31 @@
 #!/usr/bin/env bash
 #MISE description="Test simple sample"
-#MISE env.RUST_BACKTRACE=1
-#MISE depends_post=["lint:ansible"]
+#MISE env={ RUST_BACKTRACE = "1" }
+#MISE depends=["test:simple-sample-module"]
+#MISE depends_post=["lint:simple-sample-ansible"]
 
-set -euo pipefail
+set -euo pipefail -x
 
-module_names=(
-  'ansible\.builtin\.debug'
-  'ansible\.builtin\.service_facts'
-)
-module_regex=$(
-  IFS='|'
-  echo "${module_names[*]}"
+simple_sample_ansible_dir=./tools/ansible
+
+global_args=(
+  --app-dir "${simple_sample_ansible_dir}"
 )
 
-uv --project "${SAMPLE_ANSIBLE_ROOT:?}" run \
-  cargo run --package cdk-ansible-cli -- \
-  module --pkg-prefix 'sample_cdkam' --output-dir "${RS_OUT_DIR}" --module-name-regex "${module_regex}"
+echo "================================================================================"
+cargo run --package simple-sample -- "${global_args[@]}" help
 
-# Run 'synth' to generate playbooks and inventory
-cargo run --package simple-sample -- synth --output-dir "${SAMPLE_ANSIBLE_ROOT}"
+echo "================================================================================"
+cargo run --package simple-sample -- "${global_args[@]}" synth --help
+cargo run --package simple-sample -- "${global_args[@]}" synth
 
-# shellcheck disable=SC2016
-yq_script='yq -p json -o yaml "${1}" > "${1%.json}.yaml"'
+# # shellcheck disable=SC2016
+# yq_script='yq -p json -o yaml "${1}" > "${1%.json}.yaml"'
 
-# Convert json to yaml by yq
-find "${SAMPLE_ANSIBLE_ROOT:?}/playbooks" "${SAMPLE_ANSIBLE_ROOT:?}/inventory" -name "*.json" -print0 \
-  | xargs -P0 -0 -I{} bash -c "${yq_script}" _ {}
+# # Convert json to yaml by yq
+# find "${simple_sample_ansible_dir}/inventory" "${simple_sample_ansible_dir}/playbooks" -name "*.json" -print0 \
+#   | xargs -P0 -0 -I{} bash -ec "${yq_script}" _ {}
+
+echo "================================================================================"
+# cargo run --package simple-sample -- "${global_args[@]}" deploy --help
+# cargo run --package simple-sample -- "${global_args[@]}" deploy

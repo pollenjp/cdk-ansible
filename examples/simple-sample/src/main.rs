@@ -1,6 +1,5 @@
-use anyhow::Result;
 use simple_sample::main as simple_sample_main;
 
-fn main() -> Result<()> {
+fn main() {
     simple_sample_main()
 }

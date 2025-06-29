@@ -33,7 +33,7 @@ mod test {
     use super::*;
 
     #[test]
-    fn test_validate_playbook_names() {
+    fn validate_playbook_names_works() {
         let playbooks = vec![
             Playbook {
                 name: "playbook".to_owned(),

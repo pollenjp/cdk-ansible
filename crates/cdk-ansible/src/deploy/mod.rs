@@ -1,0 +1,165 @@
+use anyhow::Result;
+use indexmap::IndexMap;
+
+mod cli;
+use cli::Cli;
+mod types;
+pub use types::*;
+
+/// Main entry point for the cdk-ansible CLI.
+///
+/// ```rust
+/// use anyhow::Result;
+/// use cdk_ansible::{DeployApp, DeployStack, ExPlay, ExSingle, Play, PlayOptions};
+///
+/// fn create_play_helper(name: &str) -> Box<Play> {
+///     Box::new(Play {
+///         name: name.to_string(),
+///         hosts: "localhost".into(),
+///         options: PlayOptions::default(),
+///         tasks: vec![],
+///     })
+/// }
+///
+/// struct SampleStack;
+///
+/// impl SampleStack {
+///   pub fn new() -> Self {
+///     Self {
+///       // customize
+///     }
+///   }
+/// }
+///
+/// impl DeployStack for SampleStack {
+///     fn name(&self) -> &str {
+///         "sample"
+///     }
+///     fn plays(&self) -> Result<ExPlay> {
+///         Ok(ExSingle(create_play_helper("sample")))
+///     }
+/// }
+///
+/// let mut app = DeployApp::new(vec!["help".to_string()]);
+/// app.add_stack(Box::new(SampleStack::new()))
+///     .expect("Failed to add sample stack");
+/// ```
+#[derive(Debug)]
+pub struct DeployApp {
+    args: Vec<String>,
+    /// key is an unique name of stack. Forbidden to be duplicated.
+    ex_playbooks: IndexMap<String, ExPlaybook>,
+}
+
+impl DeployApp {
+    pub fn new(args: Vec<String>) -> Self {
+        Self {
+            args,
+            ex_playbooks: IndexMap::new(),
+        }
+    }
+
+    pub fn add_stack(&mut self, stack: Box<dyn DeployStack>) -> Result<()> {
+        let ex_plays = stack.plays()?;
+
+        // ExPlaybook
+        let old_ex_playbook = self.ex_playbooks.insert(
+            stack.name().to_owned(),
+            ExPlaybook::from_ex_play(stack.name(), ex_plays),
+        );
+        if let Some(old_ex_playbook) = old_ex_playbook {
+            anyhow::bail!(
+                "conflicting stack name: {} ({:?})",
+                stack.name(),
+                old_ex_playbook
+            );
+        }
+
+        Ok(())
+    }
+
+    /// Main entry point for end users
+    pub fn run(&self) -> Result<()> {
+        let nprocs = std::thread::available_parallelism()
+            .map(|n| n.get())
+            .unwrap_or_default();
+        let threads = nprocs; // TODO: use env var
+        tokio::runtime::Builder::new_multi_thread()
+            .enable_all()
+            .worker_threads(threads)
+            .build()?
+            .block_on(Cli::run(self))
+    }
+}
+
+pub trait DeployStack {
+    fn name(&self) -> &str;
+    fn plays(&self) -> Result<ExPlay>;
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use cdk_ansible_core::core::{Play, PlayOptions};
+
+    /// Helper function to create sample play
+    fn create_play_helper(name: &str) -> Box<Play> {
+        Box::new(Play {
+            name: name.to_string(),
+            hosts: "localhost".into(),
+            options: PlayOptions::default(),
+            tasks: vec![],
+        })
+    }
+
+    #[test]
+    fn test_sample_stack() {
+        struct SampleStack;
+
+        impl DeployStack for SampleStack {
+            fn name(&self) -> &str {
+                "sample"
+            }
+            fn plays(&self) -> Result<ExPlay> {
+                Ok(ExPlay::Single(create_play_helper("sample")))
+            }
+        }
+
+        let mut app = DeployApp::new(vec!["help".to_string()]);
+        app.add_stack(Box::new(SampleStack {}))
+            .expect("Failed to add sample stack");
+    }
+
+    #[test]
+    fn test_stack_name_confliction() {
+        static STACK_NAME: &str = "sample";
+
+        struct SampleStack1;
+
+        impl DeployStack for SampleStack1 {
+            fn name(&self) -> &str {
+                STACK_NAME
+            }
+            fn plays(&self) -> Result<ExPlay> {
+                Ok(ExPlay::Single(create_play_helper("sample1")))
+            }
+        }
+
+        struct SampleStack2;
+
+        impl DeployStack for SampleStack2 {
+            fn name(&self) -> &str {
+                STACK_NAME
+            }
+            fn plays(&self) -> Result<ExPlay> {
+                Ok(ExPlay::Single(create_play_helper("sample2")))
+            }
+        }
+
+        let mut app = DeployApp::new(vec!["help".to_string()]);
+        app.add_stack(Box::new(SampleStack1 {}))
+            .expect("Failed to add sample stack");
+        app.add_stack(Box::new(SampleStack2 {}))
+            .expect_err("should be error");
+    }
+}

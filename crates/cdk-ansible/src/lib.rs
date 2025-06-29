@@ -10,6 +10,9 @@ pub mod settings;
 mod subcommand;
 pub use cdk_ansible_core::core::*;
 pub use subcommand::synth::Synthesizer;
+mod deploy;
+pub use deploy::*;
+mod utils;
 
 // Re-export macros
 pub use cdk_ansible_macro::FieldCount;

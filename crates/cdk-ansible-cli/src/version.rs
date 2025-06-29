@@ -98,7 +98,7 @@ mod tests {
     use super::*;
 
     #[test]
-    fn test_get_version() {
+    fn get_version() {
         let v_ = version();
         assert_eq!(v_.version, env!("CARGO_PKG_VERSION").to_owned());
     }
