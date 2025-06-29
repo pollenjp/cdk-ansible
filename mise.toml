@@ -1,7 +1,7 @@
 [tools]
 "aqua:mvdan/sh" = "3.11.0"
 "cargo:cargo-zigbuild" = "0.20.0"
-rust = "1.86.0"
+rust = "1.88.0"
 shellcheck = "0.10.0"
 uv = "0.7.12"
 yq = "4.45.4"
