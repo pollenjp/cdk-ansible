@@ -1,0 +1,36 @@
+# https://release-plz.dev/docs/config
+[workspace]
+changelog_update = true
+publish = false
+git_release_enable = false
+git_tag_enable = true
+
+[[package]]
+name = "cdk-ansible"
+
+[[package]]
+name = "cdk-ansible-cli"
+
+[[package]]
+name = "cdk-ansible-core"
+
+[[package]]
+name = "cdk-ansible-static"
+
+[[package]]
+name = "cdk-ansible-macro"
+
+[[package]]
+name = "cdkam"
+
+[[package]]
+name = "sample_cdkam_ansible"
+release = false
+
+[[package]]
+name = "simple-sample"
+release = false
+
+[[package]]
+name = "simple-sample-for-cdkam"
+release = false

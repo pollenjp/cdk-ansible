@@ -39,7 +39,7 @@ jobs:
           fi
       - name: Run release-plz
         uses: release-plz/action@v0.5
-        with:
-          command: release-pr
+        # with:
+        #   command: release-pr
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
