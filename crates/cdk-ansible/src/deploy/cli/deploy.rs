@@ -11,6 +11,7 @@ use futures::future::{BoxFuture, FutureExt as _};
 use std::path::PathBuf;
 use std::sync::Arc;
 use tokio::process::Command;
+use tokio::sync::Semaphore;
 use tokio::task::JoinSet;
 
 #[derive(Args, Debug, Clone)]
@@ -22,14 +23,23 @@ pub struct Deploy {
     /// The default is `ansible-playbook`.
     ///
     /// Example: If you want to run `uv run ansible-playbook -v some_playbook`, pass `uv run ansible-playbook -v` to [`Deploy::playbook_command`].
-    #[arg(short, long, required = false, default_value = "ansible-playbook")]
+    #[arg(
+        short = 'c',
+        long,
+        required = false,
+        default_value = "ansible-playbook"
+    )]
     pub playbook_command: String,
+    /// The maximum number of concurrent playbook processes.
+    #[arg(short = 'P', long, required = false, default_value = "2")]
+    pub max_concurrent: usize,
 }
 
 impl Deploy {
     pub async fn run(self, app: &DeployApp, global_config: Arc<GlobalConfig>) -> Result<()> {
         let deploy_config = Arc::new(DeployConfig::new(self)?);
         synth(app, &global_config).await?;
+
         deploy(app, &global_config, &deploy_config).await?;
         Ok(())
     }
@@ -38,6 +48,7 @@ impl Deploy {
 #[derive(Debug, Clone)]
 struct DeployConfig {
     playbook_command: Vec<String>,
+    max_concurrent: usize,
 }
 
 impl DeployConfig {
@@ -45,6 +56,7 @@ impl DeployConfig {
         Ok(Self {
             playbook_command: ::shlex::split(&args.playbook_command)
                 .with_context(|| "parsing playbook command")?,
+            max_concurrent: args.max_concurrent,
         })
     }
 }
@@ -55,12 +67,16 @@ async fn deploy(
     deploy_config: &Arc<DeployConfig>,
 ) -> Result<()> {
     let playbook_dir = Arc::new(global_config.playbook_dir.clone());
-    // FIXME: use stack name from args
+
+    // Semaphore for limiting the number of concurrent ansible-playbook processes
+    let pb_semaphore = Arc::new(Semaphore::new(deploy_config.max_concurrent));
+
     for (_, ex_playbook) in app.ex_playbooks.iter() {
         recursive_deploy(
             ex_playbook.clone(),
             Arc::clone(&playbook_dir),
             Arc::clone(deploy_config),
+            Arc::clone(&pb_semaphore),
         )
         .await?;
     }
@@ -71,6 +87,7 @@ fn recursive_deploy(
     ex_playbook: ExPlaybook,
     playbook_dir: Arc<PathBuf>,
     deploy_config: Arc<DeployConfig>,
+    pb_semaphore: Arc<Semaphore>,
 ) -> BoxFuture<'static, Result<()>> {
     async move {
         match ex_playbook {
@@ -82,6 +99,8 @@ fn recursive_deploy(
                     .playbook_command
                     .first()
                     .with_context(|| "getting 1st playbook command")?;
+
+                let _permit = pb_semaphore.clone().acquire_owned().await?;
                 let output = Command::new(cmd)
                     .args(deploy_config.playbook_command.get(1..).unwrap_or_default())
                     .args([
@@ -101,8 +120,13 @@ fn recursive_deploy(
             }
             ExPlaybook::Sequential(pbs) => {
                 for pb in pbs {
-                    recursive_deploy(pb, Arc::clone(&playbook_dir), Arc::clone(&deploy_config))
-                        .await?;
+                    recursive_deploy(
+                        pb,
+                        Arc::clone(&playbook_dir),
+                        Arc::clone(&deploy_config),
+                        Arc::clone(&pb_semaphore),
+                    )
+                    .await?;
                 }
             }
             ExPlaybook::Parallel(pbs) => {
@@ -112,6 +136,7 @@ fn recursive_deploy(
                         pb,
                         Arc::clone(&playbook_dir),
                         Arc::clone(&deploy_config),
+                        Arc::clone(&pb_semaphore),
                     ));
                 }
                 while let Some(res) = set.join_next().await {
