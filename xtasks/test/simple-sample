@@ -12,20 +12,13 @@ global_args=(
   --app-dir "${simple_sample_ansible_dir}"
 )
 
-echo "================================================================================"
-cargo run --package simple-sample -- "${global_args[@]}" help
-
-echo "================================================================================"
-cargo run --package simple-sample -- "${global_args[@]}" synth --help
 cargo run --package simple-sample -- "${global_args[@]}" synth
 
-# # shellcheck disable=SC2016
-# yq_script='yq -p json -o yaml "${1}" > "${1%.json}.yaml"'
-
-# # Convert json to yaml by yq
-# find "${simple_sample_ansible_dir}/inventory" "${simple_sample_ansible_dir}/playbooks" -name "*.json" -print0 \
-#   | xargs -P0 -0 -I{} bash -ec "${yq_script}" _ {}
-
-echo "================================================================================"
-# cargo run --package simple-sample -- "${global_args[@]}" deploy --help
-# cargo run --package simple-sample -- "${global_args[@]}" deploy
+stringify_cmd=(uv run python -c 'import sys; from shlex import join; print(join(sys.argv[1:]))')
+playbook_command_str=$(
+  "${stringify_cmd[@]}" \
+  uv --project "${simple_sample_ansible_dir}" \
+  run --directory "${simple_sample_ansible_dir}" \
+  ansible-playbook -v
+)
+cargo run --package simple-sample -- "${global_args[@]}" deploy --playbook-command "${playbook_command_str}"

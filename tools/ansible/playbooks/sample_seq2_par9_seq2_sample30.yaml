@@ -1,4 +1,4 @@
-- name: sample2
+- name: sample30
   hosts: localhost
   tasks:
     - name: debug

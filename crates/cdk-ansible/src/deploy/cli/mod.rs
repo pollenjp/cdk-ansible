@@ -1,7 +1,8 @@
 use crate::deploy::DeployApp;
-use anyhow::Result;
+use anyhow::{Context as _, Result};
 use clap::{Args, Parser, Subcommand, command};
 use std::path::PathBuf;
+use std::sync::Arc;
 
 mod deploy;
 mod synth;
@@ -29,6 +30,28 @@ pub struct GlobalArgs {
     #[arg(short, long, required = false, default_value = ".cdka")]
     #[arg(help = "A directory saving generated files. Default is '.cdka' in current directory.")]
     pub app_dir: PathBuf,
+    #[arg(short, required = false)]
+    pub uv_project: Option<PathBuf>,
+}
+
+#[derive(Debug, Clone)]
+pub struct GlobalConfig {
+    pub app_dir: PathBuf,
+    pub playbook_dir: PathBuf,
+}
+
+impl GlobalConfig {
+    pub fn from_args(args: &GlobalArgs) -> Result<Self> {
+        let app_dir = args
+            .app_dir
+            .canonicalize()
+            .context("canonicalizing app_dir")?;
+        let playbook_dir = app_dir.join("playbooks");
+        Ok(Self {
+            app_dir,
+            playbook_dir,
+        })
+    }
 }
 
 #[derive(Subcommand)]
@@ -43,13 +66,14 @@ pub enum Commands {
 impl Cli {
     pub async fn run(app: &DeployApp) -> Result<()> {
         let cli = Cli::parse_from(app.args.clone());
+        let global_config = Arc::new(GlobalConfig::from_args(&cli.global_args)?);
         if let Some(command) = cli.command {
             match *command {
                 Commands::Synth(cmd) => {
-                    cmd.run(app, &cli.global_args).await?;
+                    cmd.run(app, Arc::clone(&global_config)).await?;
                 }
                 Commands::Deploy(cmd) => {
-                    cmd.run(app, &cli.global_args).await?;
+                    cmd.run(app, Arc::clone(&global_config)).await?;
                 }
             }
         } else {

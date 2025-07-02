@@ -1,6 +1,6 @@
 use crate::{
     DeployApp, Playbook,
-    deploy::{ExPlaybook, cli::GlobalArgs},
+    deploy::{ExPlaybook, cli::GlobalConfig},
     utils::{json_to_yaml, playbook_dump},
 };
 use anyhow::Result;
@@ -13,18 +13,17 @@ use tokio::task::JoinSet;
 pub struct Synth {}
 
 impl Synth {
-    pub async fn run(self, app: &DeployApp, global_args: &GlobalArgs) -> Result<()> {
-        synth(app, global_args).await
+    pub async fn run(self, app: &DeployApp, global_config: Arc<GlobalConfig>) -> Result<()> {
+        synth(app, &global_config).await
     }
 }
 
-pub async fn synth(app: &DeployApp, global_args: &GlobalArgs) -> Result<()> {
-    let playbook_dir = global_args.app_dir.join("playbooks");
+pub async fn synth(app: &DeployApp, global_config: &GlobalConfig) -> Result<()> {
+    let playbook_dir = Arc::new(global_config.playbook_dir.clone());
 
     // Reset playbook directory
-    tokio::fs::remove_dir_all(&playbook_dir).await?;
+    tokio::fs::remove_dir_all(&global_config.playbook_dir).await?;
 
-    let playbook_dir = Arc::new(playbook_dir);
     let mut join_set: JoinSet<Result<()>> = JoinSet::new();
 
     app.ex_playbooks

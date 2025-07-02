@@ -4,3 +4,7 @@
     - name: debug
       ansible.builtin.debug:
         msg: Hello, world!
+    - name: sleep 10 seconds
+      changed_when: false
+      ansible.builtin.shell:
+        cmd: sleep 3
