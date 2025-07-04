@@ -833,6 +833,16 @@ dependencies = [
 ]
 
 [[package]]
+name = "test-suite"
+version = "0.1.0"
+dependencies = [
+ "anyhow",
+ "cdk-ansible",
+ "indexmap",
+ "serde_json",
+]
+
+[[package]]
 name = "tokio"
 version = "1.45.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"

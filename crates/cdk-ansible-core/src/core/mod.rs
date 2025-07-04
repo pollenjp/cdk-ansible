@@ -20,18 +20,21 @@ impl Inventory {
 
 #[derive(Default, Debug, Clone, PartialEq, Serialize)]
 pub struct InventoryRoot {
-    pub all: Child,
+    pub all: InventoryChild,
 }
 
 #[derive(Default, Debug, Clone, PartialEq, Serialize)]
-pub struct Child {
+pub struct InventoryChild {
     #[serde(skip_serializing_if = "OptU::is_unset")]
-    pub hosts: OptU<IndexMap<String, Option<IndexMap<String, serde_json::Value>>>>,
+    pub hosts: OptU<InventoryHosts>,
     #[serde(skip_serializing_if = "OptU::is_unset")]
-    pub children: OptU<IndexMap<String, Child>>,
+    pub children: OptU<IndexMap<String, InventoryChild>>,
     #[serde(skip_serializing_if = "OptU::is_unset")]
-    pub vars: OptU<IndexMap<String, serde_json::Value>>,
+    pub vars: OptU<InventoryVars>,
 }
+
+pub type InventoryHosts = IndexMap<String, Option<InventoryVars>>;
+pub type InventoryVars = IndexMap<String, serde_json::Value>;
 
 #[derive(Clone, Debug)]
 pub struct Playbook {

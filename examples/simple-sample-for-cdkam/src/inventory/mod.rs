@@ -1,5 +1,5 @@
 use anyhow::{bail, Result};
-use cdk_ansible::{Child, FieldCount, Inventory, InventoryRoot, OptU};
+use cdk_ansible::{FieldCount, Inventory, InventoryChild, InventoryRoot, OptU};
 use indexmap::IndexMap;
 
 #[derive(Default, Debug, Clone, PartialEq, Eq, FieldCount)]
@@ -25,7 +25,7 @@ impl Hosts {
         let inventory = Inventory {
             name: "inventory".to_owned(),
             root: InventoryRoot {
-                all: Child {
+                all: InventoryChild {
                     hosts: OptU::Some(
                         vec![(
                             self.host_a.fqdn.clone(),

@@ -1,10 +1,10 @@
-- name: sample7
+- name: sample8
   hosts: localhost
   tasks:
     - name: debug
       ansible.builtin.debug:
         msg: Hello, world!
-    - name: sleep 10 seconds
+    - name: sleep 2 seconds
       changed_when: false
-      ansible.builtin.shell:
+      ansible.builtin.command:
         cmd: sleep 3

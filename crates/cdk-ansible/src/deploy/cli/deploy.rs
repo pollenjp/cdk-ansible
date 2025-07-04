@@ -1,8 +1,8 @@
 use crate::{
-    ExPlaybook,
+    ExePlaybook,
     deploy::{
         DeployApp,
-        cli::{GlobalArgs, GlobalConfig, synth::synth},
+        cli::{GlobalConfig, synth::synth_playbooks},
     },
 };
 use anyhow::{Context as _, Result};
@@ -30,6 +30,11 @@ pub struct Deploy {
         default_value = "ansible-playbook"
     )]
     pub playbook_command: String,
+    /// Inventory name.
+    ///
+    /// The candidates are inventories added to the [`crate::deploy::DeployApp`] ([`crate::deploy::DeployApp::add_inventory`])
+    #[arg(short = 'i', long, required = true)]
+    pub inventory: String,
     /// The maximum number of concurrent playbook processes.
     #[arg(short = 'P', long, required = false, default_value = "2")]
     pub max_concurrent: usize,
@@ -38,7 +43,7 @@ pub struct Deploy {
 impl Deploy {
     pub async fn run(self, app: &DeployApp, global_config: Arc<GlobalConfig>) -> Result<()> {
         let deploy_config = Arc::new(DeployConfig::new(self)?);
-        synth(app, &global_config).await?;
+        synth_playbooks(app, &global_config).await?;
 
         deploy(app, &global_config, &deploy_config).await?;
         Ok(())
@@ -48,6 +53,7 @@ impl Deploy {
 #[derive(Debug, Clone)]
 struct DeployConfig {
     playbook_command: Vec<String>,
+    inventory: String,
     max_concurrent: usize,
 }
 
@@ -56,6 +62,7 @@ impl DeployConfig {
         Ok(Self {
             playbook_command: ::shlex::split(&args.playbook_command)
                 .with_context(|| "parsing playbook command")?,
+            inventory: args.inventory,
             max_concurrent: args.max_concurrent,
         })
     }
@@ -67,14 +74,16 @@ async fn deploy(
     deploy_config: &Arc<DeployConfig>,
 ) -> Result<()> {
     let playbook_dir = Arc::new(global_config.playbook_dir.clone());
+    let inventory_dir = Arc::new(global_config.inventory_dir.clone());
 
     // Semaphore for limiting the number of concurrent ansible-playbook processes
     let pb_semaphore = Arc::new(Semaphore::new(deploy_config.max_concurrent));
 
-    for (_, ex_playbook) in app.ex_playbooks.iter() {
+    for (_, exe_playbook) in app.exe_playbooks().iter() {
         recursive_deploy(
-            ex_playbook.clone(),
+            exe_playbook.clone(),
             Arc::clone(&playbook_dir),
+            Arc::clone(&inventory_dir),
             Arc::clone(deploy_config),
             Arc::clone(&pb_semaphore),
         )
@@ -84,17 +93,22 @@ async fn deploy(
 }
 
 fn recursive_deploy(
-    ex_playbook: ExPlaybook,
+    exe_playbook: ExePlaybook,
     playbook_dir: Arc<PathBuf>,
+    inventory_dir: Arc<PathBuf>,
     deploy_config: Arc<DeployConfig>,
     pb_semaphore: Arc<Semaphore>,
 ) -> BoxFuture<'static, Result<()>> {
     async move {
-        match ex_playbook {
-            ExPlaybook::Single(pb) => {
+        match exe_playbook {
+            ExePlaybook::Single(pb) => {
                 // Run 'ansible-playbook' command
 
                 let pb_path = playbook_dir.join(pb.name.clone()).with_extension("yaml");
+                let inventory_path = inventory_dir
+                    .join(deploy_config.inventory.clone())
+                    .with_extension("yaml");
+
                 let cmd = deploy_config
                     .playbook_command
                     .first()
@@ -105,36 +119,41 @@ fn recursive_deploy(
                     .args(deploy_config.playbook_command.get(1..).unwrap_or_default())
                     .args([
                         "-i",
-                        "localhost",
+                        inventory_path
+                            .to_str()
+                            .with_context(|| "stringifying path")?,
                         pb_path.to_str().with_context(|| "stringifying path")?,
                     ])
                     .output()
                     .await?;
                 if !output.status.success() {
                     anyhow::bail!(
-                        "running ansible-playbook: {}",
+                        "running ansible-playbook:\n{}\n{}",
+                        String::from_utf8_lossy(&output.stdout),
                         String::from_utf8_lossy(&output.stderr)
                     );
                 }
                 println!("{}", String::from_utf8_lossy(&output.stdout));
             }
-            ExPlaybook::Sequential(pbs) => {
+            ExePlaybook::Sequential(pbs) => {
                 for pb in pbs {
                     recursive_deploy(
                         pb,
                         Arc::clone(&playbook_dir),
+                        Arc::clone(&inventory_dir),
                         Arc::clone(&deploy_config),
                         Arc::clone(&pb_semaphore),
                     )
                     .await?;
                 }
             }
-            ExPlaybook::Parallel(pbs) => {
+            ExePlaybook::Parallel(pbs) => {
                 let mut set: JoinSet<Result<()>> = JoinSet::new();
                 for pb in pbs {
                     set.spawn(recursive_deploy(
                         pb,
                         Arc::clone(&playbook_dir),
+                        Arc::clone(&inventory_dir),
                         Arc::clone(&deploy_config),
                         Arc::clone(&pb_semaphore),
                     ));

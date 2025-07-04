@@ -23,6 +23,12 @@
       "path": "./crates/cdkam"
     },
     {
+      "path": "./examples/simple-sample"
+    },
+    {
+      "path": "./examples/sample_cdkam_ansible/"
+    },
+    {
       "name": "root",
       "path": "."
     },

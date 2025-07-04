@@ -1,9 +1,23 @@
 use anyhow::{Context as _, Result};
 use cdk_ansible_core::core::Playbook;
+use serde::Serialize;
 use std::path::PathBuf;
 use std::sync::Arc;
 use tokio::fs;
 use tokio::process::Command;
+
+pub async fn dump_json(filepath: PathBuf, obj: impl Serialize) -> Result<()> {
+    fs::create_dir_all(
+        filepath
+            .parent()
+            .with_context(|| format!("getting parent directory of {}", filepath.display()))?,
+    )
+    .await?;
+    fs::write(&filepath, serde_json::to_string_pretty(&obj)?)
+        .await
+        .with_context(|| format!("writing to {}", filepath.display()))?;
+    Ok(())
+}
 
 pub async fn playbook_dump(playbook: Playbook, dirpath: Arc<PathBuf>) -> Result<()> {
     let filepath = dirpath.join(format!("{}.json", playbook.name));

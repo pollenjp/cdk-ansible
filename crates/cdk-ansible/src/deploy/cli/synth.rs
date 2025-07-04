@@ -1,7 +1,7 @@
 use crate::{
     DeployApp, Playbook,
-    deploy::{ExPlaybook, cli::GlobalConfig},
-    utils::{json_to_yaml, playbook_dump},
+    deploy::{ExePlaybook, cli::GlobalConfig},
+    utils::{dump_json, json_to_yaml, playbook_dump},
 };
 use anyhow::Result;
 use clap::Args;
@@ -14,23 +14,56 @@ pub struct Synth {}
 
 impl Synth {
     pub async fn run(self, app: &DeployApp, global_config: Arc<GlobalConfig>) -> Result<()> {
-        synth(app, &global_config).await
+        let (inv_res, pb_res) = tokio::join!(
+            synth_inventory(app, &global_config),
+            synth_playbooks(app, &global_config),
+        );
+        inv_res?;
+        pb_res?;
+        Ok(())
     }
 }
 
-pub async fn synth(app: &DeployApp, global_config: &GlobalConfig) -> Result<()> {
-    let playbook_dir = Arc::new(global_config.playbook_dir.clone());
-
-    // Reset playbook directory
-    tokio::fs::remove_dir_all(&global_config.playbook_dir).await?;
+pub async fn synth_inventory(app: &DeployApp, global_config: &GlobalConfig) -> Result<()> {
+    // Reset inventory directory
+    if global_config.inventory_dir.exists() {
+        tokio::fs::remove_dir_all(&global_config.inventory_dir).await?;
+    }
 
     let mut join_set: JoinSet<Result<()>> = JoinSet::new();
+    // Create inventory file
+    for (_, inventory) in app.inventories.iter() {
+        let inventory_path = global_config
+            .inventory_dir
+            .join(format!("{}.json", inventory.name));
+        let inv_root = inventory.root.clone();
+        join_set.spawn(async move {
+            dump_json(inventory_path.clone(), inv_root).await?;
+            json_to_yaml(inventory_path).await?;
+            Ok(())
+        });
+    }
+    while let Some(res) = join_set.join_next().await {
+        (res?)?;
+    }
 
-    app.ex_playbooks
+    Ok(())
+}
+
+pub async fn synth_playbooks(app: &DeployApp, global_config: &GlobalConfig) -> Result<()> {
+    // Reset playbook directory
+    if global_config.playbook_dir.exists() {
+        tokio::fs::remove_dir_all(&global_config.playbook_dir).await?;
+    }
+
+    let playbook_dir = Arc::new(global_config.playbook_dir.clone());
+    let mut join_set: JoinSet<Result<()>> = JoinSet::new();
+
+    app.exe_playbooks()
         .iter()
-        .map(|(_, ex_playbook)| {
+        .map(|(_, exe_playbook)| {
             let mut container: Vec<Playbook> = Vec::new();
-            recursive_synth(&mut container, ex_playbook.clone());
+            recursive_synth(&mut container, exe_playbook.clone());
             container
         })
         .for_each(|container| {
@@ -51,13 +84,13 @@ async fn synth_playbook(pb: Playbook, playbook_dir: Arc<PathBuf>) -> Result<()> 
     Ok(())
 }
 
-/// Extract Playbooks from ExPlaybook
-fn recursive_synth(container: &mut Vec<Playbook>, ex_playbook: ExPlaybook) {
-    match ex_playbook {
-        ExPlaybook::Single(pb) => {
+/// Extract Playbooks from ExePlaybook
+fn recursive_synth(container: &mut Vec<Playbook>, exe_playbook: ExePlaybook) {
+    match exe_playbook {
+        ExePlaybook::Single(pb) => {
             container.push(*pb);
         }
-        ExPlaybook::Sequential(pbs) | ExPlaybook::Parallel(pbs) => {
+        ExePlaybook::Sequential(pbs) | ExePlaybook::Parallel(pbs) => {
             for pb in pbs {
                 recursive_synth(container, pb);
             }

@@ -8,7 +8,7 @@ mod deploy;
 mod synth;
 
 #[derive(Parser)]
-#[command(name = "Personalized cdk-ansible command")]
+#[command(name = "cargo run --package your-app --")]
 #[command(about = "about")]
 #[command(
     // after_help = "Use `help` subcommand for more details.",
@@ -36,8 +36,9 @@ pub struct GlobalArgs {
 
 #[derive(Debug, Clone)]
 pub struct GlobalConfig {
-    pub app_dir: PathBuf,
+    // pub app_dir: PathBuf,
     pub playbook_dir: PathBuf,
+    pub inventory_dir: PathBuf,
 }
 
 impl GlobalConfig {
@@ -47,9 +48,11 @@ impl GlobalConfig {
             .canonicalize()
             .context("canonicalizing app_dir")?;
         let playbook_dir = app_dir.join("playbooks");
+        let inventory_dir = app_dir.join("inventory");
         Ok(Self {
-            app_dir,
+            // app_dir,
             playbook_dir,
+            inventory_dir,
         })
     }
 }

@@ -15,7 +15,8 @@ workspace = true
 
 [features]
 ansible = ["ansible-builtin"]
-ansible-builtin = ["ansible-builtin-debug", "ansible-builtin-service_facts", "ansible-builtin-shell"]
+ansible-builtin = ["ansible-builtin-command", "ansible-builtin-debug", "ansible-builtin-service_facts", "ansible-builtin-shell"]
 ansible-builtin-debug = []
 ansible-builtin-service_facts = []
 ansible-builtin-shell = []
+ansible-builtin-command = []

@@ -6,3 +6,6 @@ pub mod service_facts;
 
 #[cfg(feature = "ansible-builtin-shell")]
 pub mod shell;
+
+#[cfg(feature = "ansible-builtin-command")]
+pub mod command;
