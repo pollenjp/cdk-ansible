@@ -5,12 +5,6 @@ use ::cdk_ansible::{
     Play, PlayOptions, StringOrVecString, TaskOptions,
 };
 
-// mod inventory;
-// mod playbooks;
-
-// use inventory::get_hosts;
-// use playbooks::generate_all;
-
 #[inline]
 pub fn main() {
     if let Err(e) = main2() {
