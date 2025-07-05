@@ -28,7 +28,3 @@ release = true
 [[package]]
 name = "cdk-ansible-macro"
 release = true
-
-[[package]]
-name = "cdkam"
-release = true
