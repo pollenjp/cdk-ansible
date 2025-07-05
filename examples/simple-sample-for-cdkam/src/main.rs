@@ -1,6 +1,12 @@
-use anyhow::Result;
-use simple_sample_for_cdkam::main as main_;
+use simple_sample_for_cdkam::run;
 
-fn main() -> Result<()> {
-    main_()
+#[inline]
+pub fn main() -> std::result::Result<(), i32> {
+    #[expect(clippy::print_stderr, reason = "use anyhow::Result interface")]
+    if let Err(e) = run() {
+        eprintln!("Error: {e}");
+        Err(1)
+    } else {
+        Ok(())
+    }
 }

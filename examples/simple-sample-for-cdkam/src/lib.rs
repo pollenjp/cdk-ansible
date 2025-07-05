@@ -1,59 +1,54 @@
-use anyhow::Result;
-use cdk_ansible::settings;
-use cdk_ansible::{run, settings::SynthSettings, Synthesizer};
-use cdk_ansible::{Inventory, Playbook};
+use ::anyhow::Result;
+use ::cdk_ansible::{
+    AllInventoryVarsGen, DeployApp, HostInventoryVars, HostInventoryVarsGenerator, Inventory,
+    InventoryChild, InventoryRoot, OptU,
+};
 
-mod inventory;
-mod playbooks;
-
-use inventory::get_hosts;
-use playbooks::generate_all;
+mod sample_stack;
+use sample_stack::SampleStack;
 
 #[inline]
-pub fn main() -> Result<()> {
-    run(std::env::args_os(), CustomSynthesizer {})?;
-    Ok(())
+pub fn run() -> Result<()> {
+    let host_pool = HostPool {
+        localhost: LocalHost {
+            name: "localhost".into(),
+        },
+    };
+
+    let mut app = DeployApp::new(std::env::args().collect());
+    app.add_inventory(host_pool.to_inventory()?)?;
+    app.add_stack(Box::new(SampleStack::new(&host_pool)))?;
+    app.run()
 }
 
-struct CustomSynthesizer;
+#[derive(AllInventoryVarsGen)]
+struct HostPool {
+    pub localhost: LocalHost,
+}
 
-impl Synthesizer for CustomSynthesizer {
-    fn synth_playbooks(&self, args: &SynthSettings) -> Result<Vec<Playbook>> {
-        let playbooks = generate_all(&PlaybookSynthConfig {
-            synth_settings: args.clone(),
-            hosts: get_hosts()?,
-        })?;
-        Ok(playbooks)
+impl HostPool {
+    fn to_inventory(&self) -> Result<Inventory> {
+        Ok(Inventory {
+            name: "inventory".into(), // generate 'inventory.yaml' file
+            root: InventoryRoot {
+                all: InventoryChild {
+                    hosts: OptU::Some(self.inventory_vars()?.into_iter().collect()),
+                    ..Default::default()
+                },
+            },
+        })
     }
-
-    fn synth_inventory(&self, args: &SynthSettings) -> Result<Inventory> {
-        dbg!(&args); // FIXME: remove this
-        let hosts = get_hosts()?;
-        let inventory = hosts.to_inventory()?;
-        Ok(inventory)
-    }
 }
 
-trait PlaybookGenArgs {
-    #[expect(dead_code, reason = "not used yet")]
-    fn get_synth_settings(&self) -> &settings::SynthSettings;
-    fn get_hosts(&self) -> &inventory::Hosts;
+struct LocalHost {
+    name: String,
 }
 
-/// A simple struct to implement [`PlaybookGenArgs`]
-#[derive(Debug, Clone)]
-struct PlaybookSynthConfig {
-    #[expect(dead_code, reason = "not used yet")]
-    pub synth_settings: settings::SynthSettings,
-    pub hosts: inventory::Hosts,
-}
-
-impl PlaybookGenArgs for PlaybookSynthConfig {
-    fn get_synth_settings(&self) -> &settings::SynthSettings {
-        &self.synth_settings
-    }
-
-    fn get_hosts(&self) -> &inventory::Hosts {
-        &self.hosts
+impl HostInventoryVarsGenerator for LocalHost {
+    fn gen_host_vars(&self) -> Result<HostInventoryVars> {
+        Ok(HostInventoryVars {
+            ansible_host: self.name.clone(),
+            inventory_vars: vec![],
+        })
     }
 }
