@@ -3,7 +3,10 @@
 release = false
 changelog_update = true
 publish = false
+
+# Only 'cdk-ansible-cli' is released and it is released through 'dist'
 git_release_enable = false
+
 git_tag_enable = true
 
 [[package]]
