@@ -45,7 +45,7 @@ jobs:
           log_level: debug # [default: info] log level
       - run: rustup component add rustfmt
       - run: mise run test
-  test-simple-sample:
+  test-simple-sample-module:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -56,7 +56,7 @@ jobs:
           cache: true # [default: true] cache mise using GitHub's cache
           log_level: debug # [default: info] log level
       - run: rustup component add rustfmt
-      - run: mise run test:simple-sample
+      - run: mise run test:simple-sample-module
       - name: Check dirty
         run: |
           status=$(git status --porcelain)
