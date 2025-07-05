@@ -7,12 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [0.2.0](https://github.com/pollenjp/cdk-ansible/compare/cdk-ansible-v0.1.5...cdk-ansible-v0.2.0) - 2025-07-05
+## [0.2.5](https://github.com/pollenjp/cdk-ansible/compare/cdkam-v0.2.4...cdkam-v0.2.5) - 2025-07-05
 
 ### Other
 
-- remove v0.1 features
-- move version to each Cargo.toml
-- [deploy subcommand]Add inventory
-- Merge branch 'main' into feature/deploy-subcommand
-- release v0.1.6
+- updated the following local packages: cdk-ansible
