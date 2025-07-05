@@ -7,11 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [0.1.6](https://github.com/pollenjp/cdk-ansible/compare/cdk-ansible-v0.1.5...cdk-ansible-v0.1.6) - 2025-07-05
+## [0.0.5](https://github.com/pollenjp/cdk-ansible/compare/cdk-ansible-macro-v0.0.4...cdk-ansible-macro-v0.0.5) - 2025-07-05
 
 ### Other
 
-- move version to each Cargo.toml
 - [deploy subcommand]Add inventory
-- Merge branch 'main' into feature/deploy-subcommand
-- release v0.1.6
