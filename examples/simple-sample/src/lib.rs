@@ -96,21 +96,24 @@ fn create_play_helper(name: &str, hosts: StringOrVecString, n: usize) -> Box<Pla
         }),
     }];
 
-    tasks.extend((0..n).map(|_| ::cdk_ansible::Task {
-        name: "sleep 2 seconds".into(),
-        options: TaskOptions {
-            changed_when: OptU::Some(false.into()),
-            ..Default::default()
-        },
-        command: Box::new(::sample_cdkam_ansible::builtin::command::Module {
-            module: ::sample_cdkam_ansible::builtin::command::Args {
-                options: ::sample_cdkam_ansible::builtin::command::Opt {
-                    cmd: OptU::Some("sleep 3".into()),
-                    ..Default::default()
-                },
+    // Don't sleep in CI
+    if std::env::var("CI_JOB").is_err() {
+        tasks.extend((0..n).map(|_| ::cdk_ansible::Task {
+            name: "sleep 2 seconds".into(),
+            options: TaskOptions {
+                changed_when: OptU::Some(false.into()),
+                ..Default::default()
             },
-        }),
-    }));
+            command: Box::new(::sample_cdkam_ansible::builtin::command::Module {
+                module: ::sample_cdkam_ansible::builtin::command::Args {
+                    options: ::sample_cdkam_ansible::builtin::command::Opt {
+                        cmd: OptU::Some("sleep 3".into()),
+                        ..Default::default()
+                    },
+                },
+            }),
+        }));
+    }
 
     // tasks.push(::cdk_ansible::Task {
     //     name: "interrupt play".into(),
