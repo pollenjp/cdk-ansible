@@ -3,7 +3,6 @@ members = ["crates/*", "examples/*"]
 resolver = "3"
 
 [workspace.package]
-version = "0.1.6"
 edition = "2024"
 rust-version = "1.85"
 description = "cdk-ansible is a tool to generate Ansible playbooks from Rust code."
