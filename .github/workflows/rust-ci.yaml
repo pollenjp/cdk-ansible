@@ -33,7 +33,7 @@ jobs:
       - run: rustup update stable && rustup default stable
       - name: Test
         run: cargo test --all-features --verbose
-  test-under-tools:
+  mise-test:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -45,7 +45,7 @@ jobs:
           log_level: debug # [default: info] log level
       - run: rustup component add rustfmt
       - run: mise run test
-  test-simple-sample-module:
+  mise-test-simple-sample-module:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
