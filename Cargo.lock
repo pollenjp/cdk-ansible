@@ -200,17 +200,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "cdkam"
-version = "0.2.4"
-dependencies = [
- "anyhow",
- "cdk-ansible",
- "indexmap",
- "serde",
- "serde_json",
-]
-
-[[package]]
 name = "cfg-if"
 version = "1.0.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -756,18 +745,6 @@ dependencies = [
  "serde",
  "serde_json",
  "tokio",
-]
-
-[[package]]
-name = "simple-sample-for-cdkam"
-version = "0.1.0"
-dependencies = [
- "anyhow",
- "cdk-ansible",
- "cdkam",
- "indexmap",
- "serde",
- "serde_json",
 ]
 
 [[package]]

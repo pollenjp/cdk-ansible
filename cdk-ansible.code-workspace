@@ -23,6 +23,9 @@
       "path": "./crates/cdkam"
     },
     {
+      "path": "./crates/test-suite"
+    },
+    {
       "path": "./examples/simple-sample"
     },
     {
