@@ -1,36 +1,34 @@
 # https://release-plz.dev/docs/config
 [workspace]
+release = false
 changelog_update = true
 publish = false
+
+# Only 'cdk-ansible-cli' is released and it is released through 'dist'
 git_release_enable = false
+
 git_tag_enable = true
 
 [[package]]
 name = "cdk-ansible"
+release = true
 
 [[package]]
 name = "cdk-ansible-cli"
+release = true
 
 [[package]]
 name = "cdk-ansible-core"
+release = true
 
 [[package]]
 name = "cdk-ansible-static"
+release = true
 
 [[package]]
 name = "cdk-ansible-macro"
+release = true
 
 [[package]]
 name = "cdkam"
-
-[[package]]
-name = "sample_cdkam_ansible"
-release = false
-
-[[package]]
-name = "simple-sample"
-release = false
-
-[[package]]
-name = "simple-sample-for-cdkam"
-release = false
+release = true

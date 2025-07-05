@@ -1,0 +1,46 @@
+- name: sample1
+  hosts: localhost
+  tasks:
+    - name: debug
+      ansible.builtin.debug:
+        msg: Hello, world!
+    - name: sleep 2 seconds
+      changed_when: false
+      ansible.builtin.command:
+        cmd: sleep 3
+    - name: sleep 2 seconds
+      changed_when: false
+      ansible.builtin.command:
+        cmd: sleep 3
+    - name: sleep 2 seconds
+      changed_when: false
+      ansible.builtin.command:
+        cmd: sleep 3
+    - name: sleep 2 seconds
+      changed_when: false
+      ansible.builtin.command:
+        cmd: sleep 3
+    - name: sleep 2 seconds
+      changed_when: false
+      ansible.builtin.command:
+        cmd: sleep 3
+    - name: sleep 2 seconds
+      changed_when: false
+      ansible.builtin.command:
+        cmd: sleep 3
+    - name: sleep 2 seconds
+      changed_when: false
+      ansible.builtin.command:
+        cmd: sleep 3
+    - name: sleep 2 seconds
+      changed_when: false
+      ansible.builtin.command:
+        cmd: sleep 3
+    - name: sleep 2 seconds
+      changed_when: false
+      ansible.builtin.command:
+        cmd: sleep 3
+    - name: sleep 2 seconds
+      changed_when: false
+      ansible.builtin.command:
+        cmd: sleep 3

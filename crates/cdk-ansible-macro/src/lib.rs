@@ -2,6 +2,13 @@ use proc_macro::TokenStream;
 use quote::quote;
 use syn::{Attribute, ImplItem, ItemImpl, ItemStruct, LitStr, parse_macro_input};
 
+mod inventory_derive;
+
+#[proc_macro_derive(AllInventoryVarsGen)]
+pub fn all_inventory_vars_gen_derive(input: TokenStream) -> TokenStream {
+    inventory_derive::vars_gen_derive(input)
+}
+
 // MIT License
 // Copyright (c) 2021-2023 Astral Sh
 // https://github.com/astral-sh/uv/blob/cfd1e670ddb803f4e67d4abd069fad271e1d1c7f/crates/uv-macros/src/lib.rs

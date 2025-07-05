@@ -4,15 +4,21 @@ use clap::Parser;
 use clap::error::{ContextKind, ContextValue};
 use serde::Deserialize;
 use std::ffi::OsString;
+
 pub mod arg;
 use arg::{Cli, Commands};
 pub mod settings;
 mod subcommand;
 pub use cdk_ansible_core::core::*;
 pub use subcommand::synth::Synthesizer;
+mod deploy;
+pub use deploy::*;
+mod inventory;
+pub use inventory::*;
+mod utils;
 
 // Re-export macros
-pub use cdk_ansible_macro::FieldCount;
+pub use cdk_ansible_macro::*;
 
 /// Options for the application.
 #[derive(Debug, Clone, Default, Deserialize)]

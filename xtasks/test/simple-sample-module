@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+#MISE description="Test simple sample"
+#MISE env = { RUST_BACKTRACE = "1" }
+
+set -euo pipefail
+
+module_names=(
+  'ansible\.builtin\.command'
+  'ansible\.builtin\.debug'
+  'ansible\.builtin\.service_facts'
+  'ansible\.builtin\.shell'
+)
+module_regex=$(
+  IFS='|'
+  echo "${module_names[*]}"
+)
+
+uv --project "${SAMPLE_ANSIBLE_ROOT:?}" run \
+  cargo run --package cdk-ansible-cli -- \
+  module --pkg-prefix 'sample_cdkam' --output-dir "${RS_OUT_DIR}" --module-name-regex "${module_regex}"
