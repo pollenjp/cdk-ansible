@@ -1,3 +1,0 @@
-//! Subcommands
-
-pub mod module;
