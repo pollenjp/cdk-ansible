@@ -1,5 +1,7 @@
 //! cdk-ansible is a development framework for defining Ansible applications, similar to AWS CDK.
 //!
+//! NOTE: The basic implementation is completely different from AWS CDK.
+//!
 //! cdk-ansible provides the following features:
 //!
 //! * Define Ansible Plays and Tasks using Rust code (wraps Ansible YAML files)
@@ -85,6 +87,11 @@
 //!     }
 //! }
 //! ```
+//!
+//! ## Tutorial
+//!
+//! ### Install cdk-ansible-cli
+//!
 
 pub mod arg;
 pub mod settings;
