@@ -18,6 +18,9 @@ pub fn main2() -> Result<()> {
         localhost: LocalHost {
             name: "localhost".into(),
         },
+        host_a: HostA {
+            name: "host_a".into(),
+        },
     };
 
     let mut app = DeployApp::new(std::env::args().collect());
@@ -136,6 +139,7 @@ fn create_play_helper(name: &str, hosts: StringOrVecString, n: usize) -> Box<Pla
 #[derive(AllInventoryVarsGen)]
 struct HostPool {
     pub localhost: LocalHost,
+    pub host_a: HostA,
 }
 
 impl HostPool {
@@ -157,6 +161,19 @@ struct LocalHost {
 }
 
 impl HostInventoryVarsGenerator for LocalHost {
+    fn gen_host_vars(&self) -> Result<HostInventoryVars> {
+        Ok(HostInventoryVars {
+            ansible_host: self.name.clone(),
+            inventory_vars: vec![],
+        })
+    }
+}
+
+struct HostA {
+    name: String,
+}
+
+impl HostInventoryVarsGenerator for HostA {
     fn gen_host_vars(&self) -> Result<HostInventoryVars> {
         Ok(HostInventoryVars {
             ansible_host: self.name.clone(),

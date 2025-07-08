@@ -14,14 +14,19 @@ pub struct Synth {}
 
 impl Synth {
     pub async fn run(self, app: &DeployApp, global_config: Arc<GlobalConfig>) -> Result<()> {
-        let (inv_res, pb_res) = tokio::join!(
-            synth_inventory(app, &global_config),
-            synth_playbooks(app, &global_config),
-        );
-        inv_res?;
-        pb_res?;
+        synth(app, &global_config).await?;
         Ok(())
     }
+}
+
+pub async fn synth(app: &DeployApp, global_config: &Arc<GlobalConfig>) -> Result<()> {
+    let (inv_res, pb_res) = tokio::join!(
+        synth_inventory(app, global_config),
+        synth_playbooks(app, global_config),
+    );
+    inv_res?;
+    pb_res?;
+    Ok(())
 }
 
 pub async fn synth_inventory(app: &DeployApp, global_config: &GlobalConfig) -> Result<()> {

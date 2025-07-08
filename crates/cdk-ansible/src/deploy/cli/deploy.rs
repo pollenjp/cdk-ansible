@@ -2,7 +2,7 @@ use crate::{
     ExePlaybook,
     deploy::{
         DeployApp,
-        cli::{GlobalConfig, synth::synth_playbooks},
+        cli::{GlobalConfig, synth::synth},
     },
 };
 use anyhow::{Context as _, Result};
@@ -43,7 +43,7 @@ pub struct Deploy {
 impl Deploy {
     pub async fn run(self, app: &DeployApp, global_config: Arc<GlobalConfig>) -> Result<()> {
         let deploy_config = Arc::new(DeployConfig::new(self)?);
-        synth_playbooks(app, &global_config).await?;
+        synth(app, &global_config).await?;
 
         deploy(app, &global_config, &deploy_config).await?;
         Ok(())

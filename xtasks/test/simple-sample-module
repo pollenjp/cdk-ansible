@@ -7,7 +7,6 @@ set -euo pipefail
 module_names=(
   'ansible\.builtin\.command'
   'ansible\.builtin\.debug'
-  'ansible\.builtin\.service_facts'
   'ansible\.builtin\.shell'
 )
 module_regex=$(

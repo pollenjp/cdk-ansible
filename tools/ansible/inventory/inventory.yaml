@@ -1,3 +1,4 @@
 all:
   hosts:
-    localhost: {}
+    localhost: null
+    host_a: null
