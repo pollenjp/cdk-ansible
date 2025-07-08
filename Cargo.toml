@@ -9,7 +9,7 @@ description = "cdk-ansible is a tool to generate Ansible playbooks from Rust cod
 homepage = "https://github.com/pollenjp/cdk-ansible"
 documentation = "https://docs.rs/cdk-ansible"
 repository = "https://github.com/pollenjp/cdk-ansible"
-authors = ["pollenjp"]
+authors = ["pollenjp <polleninjp@gmail.com>"]
 license = "MIT"
 keywords = ["ansible", "cdk", "cdk-ansible"]
 
