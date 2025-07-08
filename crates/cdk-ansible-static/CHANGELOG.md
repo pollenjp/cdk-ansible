@@ -7,16 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [0.2.0](https://github.com/pollenjp/cdk-ansible/compare/cdk-ansible-cli-v0.1.5...cdk-ansible-cli-v0.2.0) - 2025-07-08
+## [0.0.3](https://github.com/pollenjp/cdk-ansible/compare/cdk-ansible-static-v0.0.2...cdk-ansible-static-v0.0.3) - 2025-07-08
 
 ### Other
 
 - [cdk-ansible-cli]async implementation of 'module' sub command
-- move version to each Cargo.toml
-- release v0.1.6
-
-## [0.1.6](https://github.com/pollenjp/cdk-ansible/compare/cdk-ansible-cli-v0.1.5...cdk-ansible-cli-v0.1.6) - 2025-07-02
-
-### Other
-
-- update Cargo.lock dependencies
