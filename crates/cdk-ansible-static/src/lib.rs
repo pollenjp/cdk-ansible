@@ -17,7 +17,6 @@ pub struct EnvVars;
 
 #[attribute_env_vars_metadata]
 impl EnvVars {
-    pub const CDK_ANSIBLE_CONFIG_FILE: &'static str = "CDK_ANSIBLE_CONFIG_FILE";
     /// Used at build time via `build.rs`.
     #[attr_hidden]
     pub const CARGO_MANIFEST_DIR: &'static str = "CARGO_MANIFEST_DIR";
