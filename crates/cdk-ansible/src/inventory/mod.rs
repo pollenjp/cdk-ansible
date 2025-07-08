@@ -155,15 +155,19 @@ impl FromIterator<HostInventoryVars> for InventoryHosts {
             .map(|host_inventory_vars| {
                 (
                     host_inventory_vars.ansible_host,
-                    Some(
-                        host_inventory_vars
-                            .inventory_vars
-                            .into_iter()
-                            .collect::<InventoryVars>(),
-                    ),
+                    if host_inventory_vars.inventory_vars.is_empty() {
+                        None
+                    } else {
+                        Some(
+                            host_inventory_vars
+                                .inventory_vars
+                                .into_iter()
+                                .collect::<InventoryVars>(),
+                        )
+                    },
                 )
             })
-            .collect()
+            .collect::<InventoryHosts>()
     }
 }
 
