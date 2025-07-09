@@ -21,4 +21,4 @@ playbook_command_str=$(
     run --directory "${simple_sample_ansible_dir}" \
     ansible-playbook -v
 )
-cargo run --package simple-sample -- "${global_args[@]}" deploy -P 3 --playbook-command "${playbook_command_str}" -i dev
+cargo run --package simple-sample -- "${global_args[@]}" deploy -P 3 --playbook-command "${playbook_command_str}" -i dev SampleStack

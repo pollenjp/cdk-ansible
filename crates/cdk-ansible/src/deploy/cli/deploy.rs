@@ -1,3 +1,4 @@
+use crate::StackName;
 use crate::{
     ExePlaybook,
     deploy::{
@@ -38,6 +39,9 @@ pub struct Deploy {
     /// The maximum number of concurrent playbook processes.
     #[arg(short = 'P', long, required = false, default_value = "2")]
     pub max_concurrent: usize,
+    // The stack name to deploy.
+    #[arg(required = true)]
+    pub stack_name: String,
 }
 
 impl Deploy {
@@ -55,6 +59,7 @@ struct DeployConfig {
     playbook_command: Vec<String>,
     inventory: String,
     max_concurrent: usize,
+    stack_name: String,
 }
 
 impl DeployConfig {
@@ -64,6 +69,7 @@ impl DeployConfig {
                 .with_context(|| "parsing playbook command")?,
             inventory: args.inventory,
             max_concurrent: args.max_concurrent,
+            stack_name: args.stack_name,
         })
     }
 }
@@ -79,16 +85,18 @@ async fn deploy(
     // Semaphore for limiting the number of concurrent ansible-playbook processes
     let pb_semaphore = Arc::new(Semaphore::new(deploy_config.max_concurrent));
 
-    for (_, exe_playbook) in app.exe_playbooks().iter() {
-        recursive_deploy(
-            exe_playbook.clone(),
-            Arc::clone(&playbook_dir),
-            Arc::clone(&inventory_dir),
-            Arc::clone(deploy_config),
-            Arc::clone(&pb_semaphore),
-        )
-        .await?;
-    }
+    let exe_playbook = app
+        .exe_playbooks()
+        .get(&StackName::from(deploy_config.stack_name.as_str()))
+        .with_context(|| "getting exe_playbook")?;
+    recursive_deploy(
+        exe_playbook.clone(),
+        Arc::clone(&playbook_dir),
+        Arc::clone(&inventory_dir),
+        Arc::clone(deploy_config),
+        Arc::clone(&pb_semaphore),
+    )
+    .await?;
     Ok(())
 }
 
