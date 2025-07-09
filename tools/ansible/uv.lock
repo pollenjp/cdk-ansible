@@ -78,14 +78,6 @@ wheels = [
 ]
 
 [[package]]
-name = "ansible-lint-custom-strict-naming"
-version = "1.1.3"
-source = { git = "https://github.com/pollenjp/ansible-lint-custom-strict-naming.git?branch=release%2Fv1.1.3#9beb297a88e210f0e29a4ec20687f1f3b6764a80" }
-dependencies = [
-    { name = "ansible-lint", marker = "sys_platform != 'win32'" },
-]
-
-[[package]]
 name = "attrs"
 version = "25.3.0"
 source = { registry = "https://pypi.org/simple" }
@@ -333,17 +325,13 @@ dependencies = [
 [package.dev-dependencies]
 dev = [
     { name = "ansible-lint", marker = "sys_platform != 'win32'" },
-    { name = "ansible-lint-custom-strict-naming", marker = "sys_platform != 'win32'" },
 ]
 
 [package.metadata]
-requires-dist = [{ name = "ansible", specifier = ">=10.3.0" }]
+requires-dist = [{ name = "ansible", specifier = ">=11" }]
 
 [package.metadata.requires-dev]
-dev = [
-    { name = "ansible-lint", specifier = ">=24.10.0" },
-    { name = "ansible-lint-custom-strict-naming", git = "https://github.com/pollenjp/ansible-lint-custom-strict-naming.git?branch=release%2Fv1.1.3" },
-]
+dev = [{ name = "ansible-lint", specifier = ">=25" }]
 
 [[package]]
 name = "pycparser"
