@@ -145,7 +145,7 @@ struct HostPool {
 impl HostPool {
     fn to_inventory(&self) -> Result<Inventory> {
         Ok(Inventory {
-            name: "inventory".into(), // generate 'inventory.yaml' file
+            name: "dev".into(), // generate 'dev.yaml' file
             root: InventoryRoot {
                 all: InventoryChild {
                     hosts: OptU::Some(self.inventory_vars()?.into_iter().collect()),

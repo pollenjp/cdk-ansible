@@ -105,9 +105,16 @@ fn recursive_deploy(
                 // Run 'ansible-playbook' command
 
                 let pb_path = playbook_dir.join(pb.name.clone()).with_extension("yaml");
+                if !pb_path.exists() {
+                    anyhow::bail!("playbook file not found: {}", pb_path.display());
+                }
+
                 let inventory_path = inventory_dir
                     .join(deploy_config.inventory.clone())
                     .with_extension("yaml");
+                if !inventory_path.exists() {
+                    anyhow::bail!("inventory file not found: {}", inventory_path.display());
+                }
 
                 let cmd = deploy_config
                     .playbook_command
