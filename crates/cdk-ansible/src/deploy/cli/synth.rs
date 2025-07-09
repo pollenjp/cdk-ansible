@@ -1,5 +1,5 @@
 use crate::{
-    DeployApp, Playbook,
+    App, Playbook,
     deploy::{ExePlaybook, cli::GlobalConfig},
     utils::{dump_json, json_to_yaml, playbook_dump},
 };
@@ -13,13 +13,13 @@ use tokio::task::JoinSet;
 pub struct Synth {}
 
 impl Synth {
-    pub async fn run(self, app: &DeployApp, global_config: Arc<GlobalConfig>) -> Result<()> {
+    pub async fn run(self, app: &App, global_config: Arc<GlobalConfig>) -> Result<()> {
         synth(app, &global_config).await?;
         Ok(())
     }
 }
 
-pub async fn synth(app: &DeployApp, global_config: &Arc<GlobalConfig>) -> Result<()> {
+pub async fn synth(app: &App, global_config: &Arc<GlobalConfig>) -> Result<()> {
     let (inv_res, pb_res) = tokio::join!(
         synth_inventory(app, global_config),
         synth_playbooks(app, global_config),
@@ -29,7 +29,7 @@ pub async fn synth(app: &DeployApp, global_config: &Arc<GlobalConfig>) -> Result
     Ok(())
 }
 
-pub async fn synth_inventory(app: &DeployApp, global_config: &GlobalConfig) -> Result<()> {
+pub async fn synth_inventory(app: &App, global_config: &GlobalConfig) -> Result<()> {
     // Reset inventory directory
     if global_config.inventory_dir.exists() {
         tokio::fs::remove_dir_all(&global_config.inventory_dir).await?;
@@ -55,7 +55,7 @@ pub async fn synth_inventory(app: &DeployApp, global_config: &GlobalConfig) -> R
     Ok(())
 }
 
-pub async fn synth_playbooks(app: &DeployApp, global_config: &GlobalConfig) -> Result<()> {
+pub async fn synth_playbooks(app: &App, global_config: &GlobalConfig) -> Result<()> {
     // Reset playbook directory
     if global_config.playbook_dir.exists() {
         tokio::fs::remove_dir_all(&global_config.playbook_dir).await?;

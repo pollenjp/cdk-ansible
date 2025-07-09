@@ -2,7 +2,7 @@ use crate::StackName;
 use crate::{
     ExePlaybook,
     deploy::{
-        DeployApp,
+        App,
         cli::{GlobalConfig, synth::synth},
     },
 };
@@ -33,7 +33,7 @@ pub struct Deploy {
     pub playbook_command: String,
     /// Inventory name.
     ///
-    /// The candidates are inventories added to the [`crate::deploy::DeployApp`] ([`crate::deploy::DeployApp::add_inventory`])
+    /// The candidates are inventories added to the [`crate::deploy::App`] ([`crate::deploy::App::add_inventory`])
     #[arg(short = 'i', long, required = true)]
     pub inventory: String,
     /// The maximum number of concurrent playbook processes.
@@ -45,7 +45,7 @@ pub struct Deploy {
 }
 
 impl Deploy {
-    pub async fn run(self, app: &DeployApp, global_config: Arc<GlobalConfig>) -> Result<()> {
+    pub async fn run(self, app: &App, global_config: Arc<GlobalConfig>) -> Result<()> {
         let deploy_config = Arc::new(DeployConfig::new(self)?);
         synth(app, &global_config).await?;
 
@@ -75,7 +75,7 @@ impl DeployConfig {
 }
 
 async fn deploy(
-    app: &DeployApp,
+    app: &App,
     global_config: &Arc<GlobalConfig>,
     deploy_config: &Arc<DeployConfig>,
 ) -> Result<()> {

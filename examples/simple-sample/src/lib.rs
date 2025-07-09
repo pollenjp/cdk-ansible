@@ -1,8 +1,8 @@
 use ::anyhow::Result;
 use ::cdk_ansible::{
-    AllInventoryVarsGen, DeployApp, DeployStack, ExeParallel, ExePlay, ExeSequential, ExeSingle,
-    HostInventoryVars, HostInventoryVarsGenerator, Inventory, InventoryChild, InventoryRoot, OptU,
-    Play, PlayOptions, StringOrVecString, TaskOptions,
+    AllInventoryVarsGen, App, ExeParallel, ExePlay, ExeSequential, ExeSingle, HostInventoryVars,
+    HostInventoryVarsGenerator, Inventory, InventoryChild, InventoryRoot, OptU, Play, PlayOptions,
+    Stack, StringOrVecString, TaskOptions,
 };
 
 #[inline]
@@ -23,7 +23,7 @@ pub fn main2() -> Result<()> {
         },
     };
 
-    let mut app = DeployApp::new(std::env::args().collect());
+    let mut app = App::new(std::env::args().collect());
     app.add_inventory(host_pool.to_inventory()?)?;
     app.add_stack(Box::new(SampleStack::new(&host_pool)))?;
     app.run()
@@ -64,7 +64,7 @@ impl SampleStack {
     }
 }
 
-impl DeployStack for SampleStack {
+impl Stack for SampleStack {
     /// TODO: May be converted to derive macro in the future
     #[expect(clippy::expect_used, reason = "Logical failure")]
     fn name(&self) -> &str {

@@ -1,4 +1,4 @@
-use crate::deploy::DeployApp;
+use crate::deploy::App;
 use anyhow::{Context as _, Result};
 use clap::{Args, Parser, Subcommand, command};
 use std::path::{PathBuf, absolute};
@@ -64,7 +64,7 @@ pub enum Commands {
 }
 
 impl Cli {
-    pub async fn run(app: &DeployApp) -> Result<()> {
+    pub async fn run(app: &App) -> Result<()> {
         let cli = Cli::parse_from(app.args.clone());
         let global_config = Arc::new(GlobalConfig::from_args(&cli.global_args)?);
         if let Some(command) = cli.command {
