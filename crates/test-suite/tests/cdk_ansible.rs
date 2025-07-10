@@ -2,8 +2,8 @@
 mod test {
     use ::anyhow::Result;
     use ::cdk_ansible::{
-        DeployApp, DeployStack, ExeParallel, ExePlay, ExeSequential, ExeSingle, Inventory,
-        InventoryChild, InventoryRoot, OptU, Play, PlayOptions,
+        App, ExeParallel, ExePlay, ExeSequential, ExeSingle, Inventory, InventoryChild,
+        InventoryRoot, OptU, Play, PlayOptions, Stack,
     };
 
     // Define a sample stack
@@ -37,8 +37,8 @@ mod test {
         }
     }
 
-    // Stack should implement the `DeployStack` trait
-    impl DeployStack for SampleStack {
+    // Stack should implement the `Stack` trait
+    impl Stack for SampleStack {
         fn name(&self) -> &str {
             std::any::type_name::<Self>()
                 .split("::")
@@ -52,7 +52,7 @@ mod test {
     }
 
     fn run() -> Result<()> {
-        let mut app = DeployApp::new(std::env::args().collect());
+        let mut app = App::new(std::env::args().collect());
         let inventory = Inventory {
             name: "inventory".into(), // generate 'inventory.yaml' file
             root: InventoryRoot {

@@ -4,10 +4,10 @@ version = "0.1.0"
 description = "Add your description here"
 readme = "README.md"
 requires-python = ">= 3.12"
-dependencies = ["ansible>=10.3.0"]
+dependencies = ["ansible>=11"]
 
 [dependency-groups]
-dev = ["ansible-lint>=24.10.0", "ansible-lint-custom-strict-naming"]
+dev = ["ansible-lint>=25"]
 
 [tool.uv]
 # FIXME: https://github.com/astral-sh/uv/issues/6127#issuecomment-2298975659

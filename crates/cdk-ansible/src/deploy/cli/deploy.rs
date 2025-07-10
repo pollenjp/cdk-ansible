@@ -1,8 +1,9 @@
+use crate::StackName;
 use crate::{
     ExePlaybook,
     deploy::{
-        DeployApp,
-        cli::{GlobalConfig, synth::synth_playbooks},
+        App,
+        cli::{GlobalConfig, synth::synth},
     },
 };
 use anyhow::{Context as _, Result};
@@ -32,18 +33,21 @@ pub struct Deploy {
     pub playbook_command: String,
     /// Inventory name.
     ///
-    /// The candidates are inventories added to the [`crate::deploy::DeployApp`] ([`crate::deploy::DeployApp::add_inventory`])
+    /// The candidates are inventories added to the [`crate::deploy::App`] ([`crate::deploy::App::add_inventory`])
     #[arg(short = 'i', long, required = true)]
     pub inventory: String,
     /// The maximum number of concurrent playbook processes.
     #[arg(short = 'P', long, required = false, default_value = "2")]
     pub max_concurrent: usize,
+    // The stack name to deploy.
+    #[arg(required = true)]
+    pub stack_name: String,
 }
 
 impl Deploy {
-    pub async fn run(self, app: &DeployApp, global_config: Arc<GlobalConfig>) -> Result<()> {
+    pub async fn run(self, app: &App, global_config: Arc<GlobalConfig>) -> Result<()> {
         let deploy_config = Arc::new(DeployConfig::new(self)?);
-        synth_playbooks(app, &global_config).await?;
+        synth(app, &global_config).await?;
 
         deploy(app, &global_config, &deploy_config).await?;
         Ok(())
@@ -55,6 +59,7 @@ struct DeployConfig {
     playbook_command: Vec<String>,
     inventory: String,
     max_concurrent: usize,
+    stack_name: String,
 }
 
 impl DeployConfig {
@@ -64,12 +69,13 @@ impl DeployConfig {
                 .with_context(|| "parsing playbook command")?,
             inventory: args.inventory,
             max_concurrent: args.max_concurrent,
+            stack_name: args.stack_name,
         })
     }
 }
 
 async fn deploy(
-    app: &DeployApp,
+    app: &App,
     global_config: &Arc<GlobalConfig>,
     deploy_config: &Arc<DeployConfig>,
 ) -> Result<()> {
@@ -79,16 +85,18 @@ async fn deploy(
     // Semaphore for limiting the number of concurrent ansible-playbook processes
     let pb_semaphore = Arc::new(Semaphore::new(deploy_config.max_concurrent));
 
-    for (_, exe_playbook) in app.exe_playbooks().iter() {
-        recursive_deploy(
-            exe_playbook.clone(),
-            Arc::clone(&playbook_dir),
-            Arc::clone(&inventory_dir),
-            Arc::clone(deploy_config),
-            Arc::clone(&pb_semaphore),
-        )
-        .await?;
-    }
+    let exe_playbook = app
+        .exe_playbooks()
+        .get(&StackName::from(deploy_config.stack_name.as_str()))
+        .with_context(|| "getting exe_playbook")?;
+    recursive_deploy(
+        exe_playbook.clone(),
+        Arc::clone(&playbook_dir),
+        Arc::clone(&inventory_dir),
+        Arc::clone(deploy_config),
+        Arc::clone(&pb_semaphore),
+    )
+    .await?;
     Ok(())
 }
 
@@ -105,9 +113,16 @@ fn recursive_deploy(
                 // Run 'ansible-playbook' command
 
                 let pb_path = playbook_dir.join(pb.name.clone()).with_extension("yaml");
+                if !pb_path.exists() {
+                    anyhow::bail!("playbook file not found: {}", pb_path.display());
+                }
+
                 let inventory_path = inventory_dir
                     .join(deploy_config.inventory.clone())
                     .with_extension("yaml");
+                if !inventory_path.exists() {
+                    anyhow::bail!("inventory file not found: {}", inventory_path.display());
+                }
 
                 let cmd = deploy_config
                     .playbook_command

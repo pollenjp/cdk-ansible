@@ -1,7 +1,7 @@
-use crate::deploy::DeployApp;
+use crate::deploy::App;
 use anyhow::{Context as _, Result};
 use clap::{Args, Parser, Subcommand, command};
-use std::path::PathBuf;
+use std::path::{PathBuf, absolute};
 use std::sync::Arc;
 
 mod deploy;
@@ -43,10 +43,7 @@ pub struct GlobalConfig {
 
 impl GlobalConfig {
     pub fn from_args(args: &GlobalArgs) -> Result<Self> {
-        let app_dir = args
-            .app_dir
-            .canonicalize()
-            .context("canonicalizing app_dir")?;
+        let app_dir = absolute(&args.app_dir).with_context(|| "absolute path of app_dir")?;
         let playbook_dir = app_dir.join("playbooks");
         let inventory_dir = app_dir.join("inventory");
         Ok(Self {
@@ -67,7 +64,7 @@ pub enum Commands {
 }
 
 impl Cli {
-    pub async fn run(app: &DeployApp) -> Result<()> {
+    pub async fn run(app: &App) -> Result<()> {
         let cli = Cli::parse_from(app.args.clone());
         let global_config = Arc::new(GlobalConfig::from_args(&cli.global_args)?);
         if let Some(command) = cli.command {

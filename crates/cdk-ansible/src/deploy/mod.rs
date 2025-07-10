@@ -11,7 +11,7 @@ pub use types::*;
 ///
 /// ```rust
 /// use anyhow::Result;
-/// use cdk_ansible::{DeployApp, DeployStack, ExePlay, ExeSingle, Play, PlayOptions};
+/// use cdk_ansible::{App, Stack, ExePlay, ExeSingle, Play, PlayOptions};
 ///
 /// fn create_play_helper(name: &str) -> Box<Play> {
 ///     Box::new(Play {
@@ -34,7 +34,7 @@ pub use types::*;
 ///   }
 /// }
 ///
-/// impl DeployStack for SampleStack {
+/// impl Stack for SampleStack {
 ///     fn name(&self) -> &str {
 ///         "sample"
 ///     }
@@ -43,24 +43,24 @@ pub use types::*;
 ///     }
 /// }
 ///
-/// let mut app = DeployApp::new(vec!["help".to_string()]);
+/// let mut app = App::new(vec!["help".to_string()]);
 /// app.add_stack(Box::new(SampleStack::new()))
 ///     .expect("Failed to add sample stack");
 /// ```
-pub struct DeployApp {
+pub struct App {
     args: Vec<String>,
     /// key is an unique name of stack. Forbidden to be duplicated.
-    stacks: IndexMap<StackName, Box<dyn DeployStack>>,
+    stacks: IndexMap<StackName, Box<dyn Stack>>,
     /// key is only used for check duplication.
     inventories: IndexMap<String, Inventory>,
-    /// Don't use this directly. Use [`DeployApp::exe_playbooks`] method.
+    /// Don't use this directly. Use [`App::exe_playbooks`] method.
     /// Memoization of ExePlaybooks.
     /// key is an unique name of stack. Forbidden to be duplicated.
     #[doc(hidden)]
     exe_playbooks: IndexMap<StackName, ExePlaybook>,
 }
 
-impl DeployApp {
+impl App {
     pub fn new(args: Vec<String>) -> Self {
         Self {
             args,
@@ -78,7 +78,7 @@ impl DeployApp {
         Ok(())
     }
 
-    pub fn add_stack(&mut self, stack: Box<dyn DeployStack>) -> Result<()> {
+    pub fn add_stack(&mut self, stack: Box<dyn Stack>) -> Result<()> {
         // Memoization of ExePlaybook
         let old_exe_playbook = self.exe_playbooks.insert(
             stack.name().into(),
@@ -120,7 +120,7 @@ impl DeployApp {
 }
 
 /// 副作用の無いコードを書くこと
-pub trait DeployStack {
+pub trait Stack {
     fn name(&self) -> &str;
     fn exe_play(&self) -> &ExePlay;
 }
@@ -169,7 +169,7 @@ mod tests {
             }
         }
 
-        impl DeployStack for SampleStack {
+        impl Stack for SampleStack {
             fn name(&self) -> &str {
                 ::std::any::type_name::<Self>()
             }
@@ -178,7 +178,7 @@ mod tests {
             }
         }
 
-        let mut app = DeployApp::new(vec!["help".to_string()]);
+        let mut app = App::new(vec!["help".to_string()]);
         app.add_stack(Box::new(SampleStack::new()))
             .expect("Failed to add sample stack");
     }
@@ -198,7 +198,7 @@ mod tests {
                 }
             }
         }
-        impl DeployStack for SampleStack1 {
+        impl Stack for SampleStack1 {
             fn name(&self) -> &str {
                 &self.name
             }
@@ -220,7 +220,7 @@ mod tests {
             }
         }
 
-        impl DeployStack for SampleStack2 {
+        impl Stack for SampleStack2 {
             fn name(&self) -> &str {
                 &self.name
             }
@@ -229,7 +229,7 @@ mod tests {
             }
         }
 
-        let mut app = DeployApp::new(vec!["help".to_string()]);
+        let mut app = App::new(vec!["help".to_string()]);
         app.add_stack(Box::new(SampleStack1::new("sample")))
             .expect("Failed to add sample stack");
         app.add_stack(Box::new(SampleStack2::new("sample")))

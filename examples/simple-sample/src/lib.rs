@@ -1,8 +1,8 @@
 use ::anyhow::Result;
 use ::cdk_ansible::{
-    AllInventoryVarsGen, DeployApp, DeployStack, ExeParallel, ExePlay, ExeSequential, ExeSingle,
-    HostInventoryVars, HostInventoryVarsGenerator, Inventory, InventoryChild, InventoryRoot, OptU,
-    Play, PlayOptions, StringOrVecString, TaskOptions,
+    AllInventoryVarsGen, App, ExeParallel, ExePlay, ExeSequential, ExeSingle, HostInventoryVars,
+    HostInventoryVarsGenerator, Inventory, InventoryChild, InventoryRoot, OptU, Play, PlayOptions,
+    Stack, StringOrVecString, TaskOptions,
 };
 
 #[inline]
@@ -18,9 +18,12 @@ pub fn main2() -> Result<()> {
         localhost: LocalHost {
             name: "localhost".into(),
         },
+        host_a: HostA {
+            name: "host_a".into(),
+        },
     };
 
-    let mut app = DeployApp::new(std::env::args().collect());
+    let mut app = App::new(std::env::args().collect());
     app.add_inventory(host_pool.to_inventory()?)?;
     app.add_stack(Box::new(SampleStack::new(&host_pool)))?;
     app.run()
@@ -61,7 +64,7 @@ impl SampleStack {
     }
 }
 
-impl DeployStack for SampleStack {
+impl Stack for SampleStack {
     /// TODO: May be converted to derive macro in the future
     #[expect(clippy::expect_used, reason = "Logical failure")]
     fn name(&self) -> &str {
@@ -136,12 +139,13 @@ fn create_play_helper(name: &str, hosts: StringOrVecString, n: usize) -> Box<Pla
 #[derive(AllInventoryVarsGen)]
 struct HostPool {
     pub localhost: LocalHost,
+    pub host_a: HostA,
 }
 
 impl HostPool {
     fn to_inventory(&self) -> Result<Inventory> {
         Ok(Inventory {
-            name: "inventory".into(), // generate 'inventory.yaml' file
+            name: "dev".into(), // generate 'dev.yaml' file
             root: InventoryRoot {
                 all: InventoryChild {
                     hosts: OptU::Some(self.inventory_vars()?.into_iter().collect()),
@@ -157,6 +161,19 @@ struct LocalHost {
 }
 
 impl HostInventoryVarsGenerator for LocalHost {
+    fn gen_host_vars(&self) -> Result<HostInventoryVars> {
+        Ok(HostInventoryVars {
+            ansible_host: self.name.clone(),
+            inventory_vars: vec![("ansible_connection".into(), "local".into())],
+        })
+    }
+}
+
+struct HostA {
+    name: String,
+}
+
+impl HostInventoryVarsGenerator for HostA {
     fn gen_host_vars(&self) -> Result<HostInventoryVars> {
         Ok(HostInventoryVars {
             ansible_host: self.name.clone(),
