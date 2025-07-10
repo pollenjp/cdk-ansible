@@ -176,7 +176,7 @@ dependencies = [
 
 [[package]]
 name = "cdk-ansible-core"
-version = "0.0.14"
+version = "0.1.0"
 dependencies = [
  "dyn-clone",
  "erased-serde",
@@ -195,7 +195,7 @@ dependencies = [
 
 [[package]]
 name = "cdk-ansible-static"
-version = "0.0.3"
+version = "0.1.0"
 dependencies = [
  "cdk-ansible-macro",
 ]

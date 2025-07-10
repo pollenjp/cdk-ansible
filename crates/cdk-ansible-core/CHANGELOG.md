@@ -7,7 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [0.0.14](https://github.com/pollenjp/cdk-ansible/compare/cdk-ansible-core-v0.0.13...cdk-ansible-core-v0.0.14) - 2025-07-10
+## [0.1.0](https://github.com/pollenjp/cdk-ansible/compare/cdk-ansible-core-v0.0.13...cdk-ansible-core-v0.1.0) - 2025-07-10
 
 ### Other
 
