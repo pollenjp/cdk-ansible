@@ -14,8 +14,8 @@ license = "MIT"
 keywords = ["ansible", "cdk", "cdk-ansible"]
 
 [workspace.dependencies]
-cdk-ansible = { version = "0.1", path = "crates/cdk-ansible" }
-cdk-ansible-cli = { version = "0.1", path = "crates/cdk-ansible-cli" }
+cdk-ansible = { version = "0.2", path = "crates/cdk-ansible" }
+cdk-ansible-cli = { version = "0.2", path = "crates/cdk-ansible-cli" }
 cdk-ansible-core = { version = "0.0", path = "crates/cdk-ansible-core" }
 cdk-ansible-static = { version = "0.0", path = "crates/cdk-ansible-static" }
 cdk-ansible-macro = { version = "0.0", path = "crates/cdk-ansible-macro" }
