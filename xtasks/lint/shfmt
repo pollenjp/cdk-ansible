@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# shellcheck disable=SC2016
 shell_filter_script=$(
   cat <<'__EOF__'
 set -euo pipefail

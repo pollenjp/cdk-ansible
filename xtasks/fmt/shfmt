@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-#MISE depends_post=["lint:shfmt"]
 set -euo pipefail
 
 # shellcheck disable=SC2016
