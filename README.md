@@ -2,10 +2,13 @@
 
 **This project is under construction.**
 
-[![Crates.io][crates-badge]][crates-url]
+- cdk-ansible [![Crates.io][crates-badge-cdk-ansible]][crates-url-cdk-ansible]
+- cdk-ansible-cli [![Crates.io][crates-badge-cdk-ansible-cli]][crates-url-cdk-ansible-cli]
 
-[crates-badge]: https://img.shields.io/crates/v/cdk-ansible.svg
-[crates-url]: https://crates.io/crates/cdk-ansible
+[crates-badge-cdk-ansible]: https://img.shields.io/crates/v/cdk-ansible.svg
+[crates-url-cdk-ansible]: https://crates.io/crates/cdk-ansible
+[crates-badge-cdk-ansible-cli]: https://img.shields.io/crates/v/cdk-ansible-cli.svg
+[crates-url-cdk-ansible-cli]: https://crates.io/crates/cdk-ansible-cli
 
 `cdk-ansible` is a CDK (Cloud Development Kit) for Ansible, and inspired by AWS CDK.
 
@@ -37,12 +40,7 @@ cargo binstall cdk-ansible-cli
 
 ### shell
 
-See [the latest release page](https://github.com/pollenjp/cdk-ansible/releases/latest) and run the command like below.
-
-```sh
-# ex) vX.Y.Z
-curl --proto '=https' --tlsv1.2 -LsSf https://github.com/pollenjp/cdk-ansible/releases/download/vX.Y.Z/cdk-ansible-cli-installer.sh | sh
-```
+See [the latest release page](https://github.com/pollenjp/cdk-ansible/releases/latest).
 
 ### cargo install
 
