@@ -10,19 +10,167 @@
 [crates-badge-cdk-ansible-cli]: https://img.shields.io/crates/v/cdk-ansible-cli.svg
 [crates-url-cdk-ansible-cli]: https://crates.io/crates/cdk-ansible-cli
 
-`cdk-ansible` is a CDK (Cloud Development Kit) for Ansible, and inspired by AWS CDK.
+CDK-Ansible is a CDK (Cloud Development Kit) for Ansible, and inspired by AWS CDK.
 
 While Ansible's `playbook` and `inventory` files are written in YAML format, managing YAML templating can be challenging.
-`cdk-ansible` enables you to generate Ansible files using **Rust** as a type-safe programming language.
+CDK-Ansible enables you to generate Ansible files using **Rust** as a type-safe programming language.
 
 ## Features
 
-- [**cdk-ansible**](https://crates.io/crates/cdk-ansible) crate helps you to generate Ansible **Playbook** and **Inventory** files.
-- [**cdk-ansible-cli**](https://crates.io/crates/cdk-ansible-cli) (`cdk-ansible` command) generates Rust packages for existing Ansible modules.
+- [**cdk-ansible**](https://crates.io/crates/cdk-ansible) can define an abstract Ansible Playbook using Rust.
+- [**cdk-ansible-cli**](https://crates.io/crates/cdk-ansible-cli) (`cdk-ansible` command) generates Rust code compatible with existing Ansible modules.
 
-## Install Command
+## What can cdk-ansible do?
 
-### mise
+Full example project can see in [cdk-ansible-examples](https://github.com/pollenjp/cdk-ansible-examples)'s cli-init directory.
+
+Define Ansible **Play** in Rust.
+
+```rust
+let play = Box::new(Play {
+    name: "sample-play".into(),
+    hosts: hosts.into(),
+    options: PlayOptions::default(),
+    tasks: vec![Task {
+        name: "Debug".into(),
+        options: TaskOptions::default(),
+        command: Box::new(::cdkam::ansible::builtin::debug::Module {
+            module: ::cdkam::ansible::builtin::debug::Args {
+                options: ::cdkam::ansible::builtin::debug::Opt {
+                    msg: OptU::Some("Hello, world!".into()),
+                    ..Default::default()
+                },
+            },
+        }),
+    }],
+}),
+```
+
+Create cdk-ansible's Stack and define the relationship between **Play** in Rust (Sequential, Parallel, etc.).
+
+```rust
+// let play1, play2, play3, ...
+
+pub struct SampleStack {
+    exe_play: ExePlay,
+}
+
+impl SampleStack {
+    pub fn new(hp: &HostPool) -> Self {
+        let hosts = hp.localhost.name.as_str();
+
+        Self {
+            exe_play: ExeSequential(vec![
+                ExeSingle(Box::new(play1)),
+                ExeSingle(Box::new(play2)),
+                ExeParallel(vec![
+                    ExeParallel(vec![
+                        ExeSingle(Box::new(play3)),
+                        ExeSingle(Box::new(play4)),
+                        ExeSingle(Box::new(play5)),
+                    ]),
+                    ExeSequential(vec![
+                        ExeSingle(Box::new(play6)),
+                        ExeSingle(Box::new(play7)),
+                    ]),
+                    ExeSingle(Box::new(play8)),
+                ]),
+                ExeSingle(Box::new(play9)),
+            ]),
+        }
+    }
+}
+```
+
+```mermaid
+graph TD
+  subgraph Sequential_Root
+    S1[play1] --> S2[play2]
+    S2 --> P1[Parallel]
+
+    subgraph P1[Parallel Block]
+      direction LR
+      subgraph P2[Parallel_1]
+        P2_1[play3]
+        P2_2[play4]
+        P2_3[play5]
+      end
+
+      subgraph Seq1[Sequential_1]
+        direction TB
+        Seq1_1[play6] --> Seq1_2[play7]
+        S2 --> P2_1
+        S2 --> P2_2
+        S2 --> P2_3
+        S2 --> Seq1_1
+      end
+
+      S2 --> P3
+      P3[play8]
+    end
+
+    Seq1_2 --> P4
+    P3 --> P4
+    P2_1 --> P4
+    P2_2 --> P4
+    P2_3 --> P4
+
+    P4[play9]
+
+  end
+
+
+  %% Style definitions
+  classDef sequential fill:#f9f,stroke:#333,stroke-width:2px;
+  classDef parallel fill:#bbf,stroke:#333,stroke-width:2px;
+  classDef single fill:#fff,stroke:#333,stroke-width:1px;
+
+  %% Apply styles
+  class Sequential_Root,Seq1 sequential;
+  class P1,P2 parallel;
+  class S1,S2,P2_1,P2_2,P2_3,Seq1_1,Seq1_2,P3,P4 single;
+```
+
+Instantiate CDK-Ansible's App and add **Inventory** and **Stack** to it.
+
+```rust
+pub fn run() -> Result<()> {
+    let host_pool = HostPool {
+        localhost: LocalHost {
+            name: "localhost".into(),
+        },
+        host_a: Rc::new(HostA {
+            name: "host-a".into(),
+            fqdn: "host-a.example.com".into(),
+        }),
+        host_b: RefCell::new(HostB {
+            name: "host-b".into(),
+            fqdn: "host-b.example.com".into(),
+        }),
+    };
+
+    let mut app = App::new(std::env::args().collect());
+    app.add_inventory(host_pool.to_inventory()?)?;
+    app.add_stack(Box::new(SampleStack::new(&host_pool)))?;
+    app.run()
+}
+```
+
+Run your app.
+
+```bash
+cargo run --package my-app -- deploy -P 3 -i dev SampleStack
+```
+
+If your ansible command is installed through `uv`, pass `--playbook-command` option like below.
+
+<https://github.com/pollenjp/cdk-ansible-examples/blob/a5d5568fa170047fae4b7327b26c5ba16a37f88f/cli-init/xtasks/test/cdk-ansible-cli-init#L33-L40>
+
+## cdk-ansible-cli (cdk-ansible command)
+
+### Install
+
+#### mise
 
 [MISE](https://github.com/jdx/mise) is recommended as it allows you to keep the versions of the cdk-ansible crate and CLI in sync.
 
@@ -30,7 +178,7 @@ While Ansible's `playbook` and `inventory` files are written in YAML format, man
 mise use cargo:cdk-ansible-cli
 ```
 
-### binstall
+#### binstall
 
 [binstall](https://crates.io/crates/cargo-binstall)
 
@@ -38,42 +186,57 @@ mise use cargo:cdk-ansible-cli
 cargo binstall cdk-ansible-cli
 ```
 
-### shell
+#### shell
 
 See [the latest release page](https://github.com/pollenjp/cdk-ansible/releases/latest).
 
-### cargo install
+#### cargo install
 
 ```bash
 cargo install cdk-ansible-cli
 ```
 
-## Requirements
+### Requirements
 
 - cdk-ansible-cli
   - rustfmt
     - `rustup component add rustfmt`
 
-## Usage
+## Tutorial
 
 ### Init cdk-ansible project
 
-Note: (Future feature) `cdk-ansible project` to create a new cdk-ansible's template project.
+While we plan to provide an init command in the future, for now it is recommended to copy the following sample project.
 
-```text
-proj-root/
-`-- cdk-ansible/
-    `-- Cargo.toml          ... workspace cargo
-                                define `workspace.dependencies.cdk-ansible`.
-```
+- <https://github.com/pollenjp/cdk-ansible-examples/tree/main/cli-init>
 
 ### Create Ansible Module package for the workspace
 
+Running `cdk-ansible module` command generates a Rust package for the specified Ansible module.
+
 ```bash
-# specify module name like below.
-#
 # '<namespace>.<collection>.<module>' only generates the specified module.
 cdk-ansible module --output-dir crates/ --module-name ansible.builtin.debug
+```
+
+`cdkam_ansible` in below example is auto-generated by `cdk-ansible module` command.
+
+```text
+your-cdk-ansible-app/
+|-- Cargo.toml
+`-- crates/
+    `-- my-app/         ... your app (run `cdk_ansible::App`)
+    `-- cdkam_ansible/  ... auto-generated by `cdk-ansible module` command
+        |-- Cargo.toml
+        `-- src/
+            |-- lib.rs
+            |-- m/ansible/builtin/debug.rs
+            `-- ...
+```
+
+`cdk-ansible module` command has other options.
+
+```bash
 # '<namespace>.<collection>' generates all modules in the collection.
 cdk-ansible module --output-dir crates/ --module-name-regex 'ansible\.builtin\..*'
 # '<namespace>' generates all modules in the namespace.
@@ -86,58 +249,4 @@ cdk-ansible module --output-dir crates/
 # If you are using uv to manage your ansible project, move to the directory or specify the `--project` option.
 uv --project /path/to/your/ansible-project run \
   cdk-ansible module --output-dir crates/ --module-name ansible.builtin.debug
-```
-
-```text
-proj-root/
-`-- cdk-ansible/
-  |-- Cargo.toml
-  `-- crates/
-      `-- cdkam_ansible/  ... auto-generated by `cdk-ansible module` command
-          |-- Cargo.toml
-          `-- src/
-              |-- lib.rs
-              |-- m/ansible/builtin/debug.rs
-              `-- ...
-```
-
-### Define your app
-
-`your-app` project should be like [simple-sample](examples/simple-sample).
-
-```text
-proj-root/
-`-- cdk-ansible/
-  `-- crates/
-      |-- cdkam_ansible/
-      `-- your-app/       ... Implement `cdk_ansible::Synthesizer` and call `cdk_ansible::run`
-```
-
-### Synthesize Ansible files
-
-```bash
-cd cdk-ansible
-cargo run --package your-app -- synth --output-dir ../ansible
-```
-
-```text
-proj-root/
-|-- cdk-ansible/
-`-- ansible/              ... Your ansible project
-    |-- inventory/        ... auto-generated by `cdk-ansible synth` command
-    |-- playbooks/        ... auto-generated by `cdk-ansible synth` command
-    |-- ...
-    `-- pyproject.toml
-```
-
-Because `synth` subcommand generates 'json' files, **not yaml yet**, you need to convert them to yaml manually.
-
-```bash
-cd ansible
-find playbooks inventory -name "*.json" \
-  | xargs -I{} bash -c \
-    'set -eu; \
-    filepath_json={}; \
-    filepath_yaml="${filepath_json%.json}.yaml"; \
-    yq -p json -o yaml "${filepath_json}" > "${filepath_yaml}"'
 ```
