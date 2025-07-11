@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.2.1](https://github.com/pollenjp/cdk-ansible/compare/cdk-ansible-cli-v0.2.0...cdk-ansible-cli-v0.2.1) - 2025-07-11
+
+### Other
+
+- update Cargo.lock dependencies
+
 ## [0.2.0](https://github.com/pollenjp/cdk-ansible/compare/cdk-ansible-cli-v0.1.5...cdk-ansible-cli-v0.2.0) - 2025-07-10
 
 ### Other
