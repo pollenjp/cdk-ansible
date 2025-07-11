@@ -37,18 +37,19 @@ release = true
 # https://github.com/axodotdev/cargo-dist/blob/5ded22494ed88797a7b6ca48228a982a9f842671/axoproject/src/changelog.rs#L81-L93
 # https://release-plz.dev/docs/changelog/format
 body = """
-## {{ package }}-v{{ version }}
+{% if version %}\
+    ## {{ package }}-v{{ version }}
 
-[{{ version }}]{%- if release_link -%}({{ release_link }}){% endif %} - {{ timestamp | date(format="%Y-%m-%d") }}
-
+    [{{ version | trim_start_matches(pat="v") }}] - {{ timestamp | date(format="%Y-%m-%d") }}
+{% else %}\
+    ## [unreleased]
+{% endif %}\
 {% for group, commits in commits | group_by(attribute="group") %}
-### {{ group | upper_first }}
-{% for commit in commits %}
-{%- if commit.scope -%}
-- *({{commit.scope}})* {% if commit.breaking %}[**breaking**] {% endif %}{{ commit.message }}{%- if commit.links %} ({% for link in commit.links %}[{{link.text}}]({{link.href}}) {% endfor -%}){% endif %}
-{% else -%}
-- {% if commit.breaking %}[**breaking**] {% endif %}{{ commit.message }}
-{% endif -%}
-{% endfor -%}
+    ### {{ group | striptags | trim | upper_first }}
+    {% for commit in commits %}
+        - {% if commit.scope %}*({{ commit.scope }})* {% endif %}\
+            {% if commit.breaking %}[**breaking**] {% endif %}\
+            {{ commit.message | upper_first }}\
+    {% endfor %}
 {% endfor %}
 """
