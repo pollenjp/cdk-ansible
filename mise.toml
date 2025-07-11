@@ -1,5 +1,7 @@
 [tools]
 "aqua:mvdan/sh" = "3.11.0"
+cargo-binstall = "1.14.1"
+"cargo:cargo-dist" = "latest"
 "cargo:cargo-hack" = "0.6.36"
 "cargo:cargo-zigbuild" = "0.20.0"
 rust = "1.88.0"
