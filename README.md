@@ -83,38 +83,33 @@ impl SampleStack {
 ```
 
 ```mermaid
-graph LR
-  subgraph Sequential_Root
-    direction TB
-    S1[play1]
-    S2[play2]
-    S1 --> S2
-
-    S2 --> P2
-    S2 --> Seq1
-    S2 --> P3
-
-    subgraph P1[Parallel Block]
-      direction LR
-      subgraph P2[Parallel_1]
-        direction LR
-        P2_1[play3]
-        P2_2[play4]
-        P2_3[play5]
-        P2_1 ~~~ P2_2 ~~~ P2_3
-      end
-      subgraph Seq1[Sequential_1]
-        direction TB
-        Seq1_1[play6]
-        Seq1_2[play7]
-        Seq1_1 --> Seq1_2
-      end
-      P3[play8]
-    end
-
-    P4[play9]
-    P1 --> P4
-  end
+stateDiagram-v2
+  [*] --> ExeSequential1
+  state ExeSequential1 {
+    [*] --> play1
+    play1 --> play2
+    play2 --> ExeParallel1
+    state ExeParallel1 {
+      [*] --> ExeParallel2
+      state ExeParallel2 {
+        [*] --> play3
+        --
+        [*] --> play4
+        --
+        [*] --> play5
+      }
+      --
+      [*] --> ExeSequential2
+      state ExeSequential2 {
+        [*] --> play6
+        play6 --> play7
+      }
+      --
+      [*] --> play8
+    }
+    ExeParallel1 --> play9
+    play9 --> [*]
+  }
 ```
 
 Instantiate CDK-Ansible's App and add **Inventory** and **Stack** to it.
