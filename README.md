@@ -83,52 +83,38 @@ impl SampleStack {
 ```
 
 ```mermaid
-graph TD
+graph LR
   subgraph Sequential_Root
-    S1[play1] --> S2[play2]
-    S2 --> P1[Parallel]
+    direction TB
+    S1[play1]
+    S2[play2]
+    S1 --> S2
+
+    S2 --> P2
+    S2 --> Seq1
+    S2 --> P3
 
     subgraph P1[Parallel Block]
       direction LR
       subgraph P2[Parallel_1]
+        direction LR
         P2_1[play3]
         P2_2[play4]
         P2_3[play5]
+        P2_1 ~~~ P2_2 ~~~ P2_3
       end
-
       subgraph Seq1[Sequential_1]
         direction TB
-        Seq1_1[play6] --> Seq1_2[play7]
-        S2 --> P2_1
-        S2 --> P2_2
-        S2 --> P2_3
-        S2 --> Seq1_1
+        Seq1_1[play6]
+        Seq1_2[play7]
+        Seq1_1 --> Seq1_2
       end
-
-      S2 --> P3
       P3[play8]
     end
 
-    Seq1_2 --> P4
-    P3 --> P4
-    P2_1 --> P4
-    P2_2 --> P4
-    P2_3 --> P4
-
     P4[play9]
-
+    P1 --> P4
   end
-
-
-  %% Style definitions
-  classDef sequential fill:#f9f,stroke:#333,stroke-width:2px;
-  classDef parallel fill:#bbf,stroke:#333,stroke-width:2px;
-  classDef single fill:#fff,stroke:#333,stroke-width:1px;
-
-  %% Apply styles
-  class Sequential_Root,Seq1 sequential;
-  class P1,P2 parallel;
-  class S1,S2,P2_1,P2_2,P2_3,Seq1_1,Seq1_2,P3,P4 single;
 ```
 
 Instantiate CDK-Ansible's App and add **Inventory** and **Stack** to it.
