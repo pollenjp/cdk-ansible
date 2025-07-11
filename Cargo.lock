@@ -126,7 +126,7 @@ dependencies = [
 
 [[package]]
 name = "cdk-ansible"
-version = "0.2.0"
+version = "0.2.1"
 dependencies = [
  "anyhow",
  "cargo_toml",
@@ -195,7 +195,7 @@ dependencies = [
 
 [[package]]
 name = "cdk-ansible-static"
-version = "0.1.0"
+version = "0.1.1"
 dependencies = [
  "cdk-ansible-macro",
 ]
