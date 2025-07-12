@@ -36,9 +36,9 @@ pub struct Deploy {
     /// The candidates are inventories added to the [`crate::deploy::App`] ([`crate::deploy::App::add_inventory`])
     #[arg(short = 'i', long, required = true)]
     pub inventory: String,
-    /// The maximum number of concurrent playbook processes.
+    /// The maximum number of playbook processes.
     #[arg(short = 'P', long, required = false, default_value = "2")]
-    pub max_concurrent: usize,
+    pub max_procs: usize,
     // The stack name to deploy.
     #[arg(required = true)]
     pub stack_name: String,
@@ -58,7 +58,7 @@ impl Deploy {
 struct DeployConfig {
     playbook_command: Vec<String>,
     inventory: String,
-    max_concurrent: usize,
+    max_procs: usize,
     stack_name: String,
 }
 
@@ -68,7 +68,7 @@ impl DeployConfig {
             playbook_command: ::shlex::split(&args.playbook_command)
                 .with_context(|| "parsing playbook command")?,
             inventory: args.inventory,
-            max_concurrent: args.max_concurrent,
+            max_procs: args.max_procs,
             stack_name: args.stack_name,
         })
     }
@@ -83,7 +83,7 @@ async fn deploy(
     let inventory_dir = Arc::new(global_config.inventory_dir.clone());
 
     // Semaphore for limiting the number of concurrent ansible-playbook processes
-    let pb_semaphore = Arc::new(Semaphore::new(deploy_config.max_concurrent));
+    let pb_semaphore = Arc::new(Semaphore::new(deploy_config.max_procs));
 
     let exe_playbook = app
         .exe_playbooks()

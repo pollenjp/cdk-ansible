@@ -90,7 +90,7 @@ pub struct ModuleCmd {
         verbatim_doc_comment,
         default_value = "2"
     )]
-    pub parallel: usize,
+    pub max_procs: usize,
 }
 
 impl ModuleCmd {
@@ -117,7 +117,7 @@ impl ModuleCmd {
 
         // define semaphore for file read/write
         let file_rw_semaphore = Arc::new(Semaphore::new(1));
-        let child_process_semaphore = Arc::new(Semaphore::new(config.parallel));
+        let child_process_semaphore = Arc::new(Semaphore::new(config.max_procs));
         let mut join_set: JoinSet<Result<()>> = JoinSet::new();
         for ans_modu_name in ans_modu_names {
             join_set.spawn(create_rust_package_project(
@@ -166,7 +166,7 @@ pub struct ModuleSettings {
     /// The regex for the module name to exclude
     pub module_name_exclude: Option<Vec<String>>,
     /// The number of child processes to run in parallel.
-    pub parallel: usize,
+    pub max_procs: usize,
 }
 
 impl ModuleSettings {
@@ -186,7 +186,7 @@ impl ModuleSettings {
             module_name: args.module_name,
             module_name_regex: args.module_name_regex,
             module_name_exclude: args.module_name_exclude,
-            parallel: args.parallel,
+            max_procs: args.max_procs,
         }
     }
 }
