@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 #MISE description="Test simple sample"
 #MISE env = { RUST_BACKTRACE = "1" }
-
+#MISE depends=[]
+#MISE depends_post=[]
 set -euo pipefail
 
 module_names=(
@@ -13,6 +14,7 @@ module_regex=$(
   IFS='|'
   echo "${module_names[*]}"
 )
+module_regex="(${module_regex})"
 
 uv --project "${SAMPLE_ANSIBLE_ROOT:?}" run \
   cargo run --package cdk-ansible-cli -- \
