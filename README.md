@@ -1,6 +1,6 @@
 # CDK Ansible by Rust
 
-**This project is under construction.**
+**This project is in an alpha state.**
 
 - cdk-ansible [![Crates.io][crates-badge-cdk-ansible]][crates-url-cdk-ansible]
 - cdk-ansible-cli [![Crates.io][crates-badge-cdk-ansible-cli]][crates-url-cdk-ansible-cli]
@@ -14,6 +14,8 @@ CDK-Ansible is a CDK (Cloud Development Kit) for Ansible, and inspired by AWS CD
 
 While Ansible's `playbook` and `inventory` files are written in YAML format, managing YAML templating can be challenging.
 CDK-Ansible enables you to generate Ansible files using **Rust** as a type-safe programming language.
+
+WARNING: This project does not use [JSii](https://github.com/aws/jsii).
 
 ## Features
 
