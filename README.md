@@ -85,34 +85,29 @@ impl SampleStack {
 ```
 
 ```mermaid
-stateDiagram-v2
+%%{init: {'theme': 'redux', 'themeVariables': { 'fontSize': '30pt'}}}%%
+stateDiagram
+  direction LR
+  state ForkExeParallel1 <<fork>>
+  state ForkExeParallel2 <<fork>>
+  state JoinExeParallel2 <<join>>
+  state JoinExeParallel1 <<join>>
   [*] --> play1
   play1 --> play2
-  state ForkExeParallel1 <<fork>>
-    play2 --> ForkExeParallel1
-
-    state ForkExeParallel2 <<fork>>
-      ForkExeParallel1 --> ForkExeParallel2
-
-      ForkExeParallel2 --> play3
-      ForkExeParallel2 --> play4
-      ForkExeParallel2 --> play5
-
-      state JoinExeParallel2 <<join>>
-      play3 --> JoinExeParallel2
-      play4 --> JoinExeParallel2
-      play5 --> JoinExeParallel2
-
-    ForkExeParallel1 --> play6
-    play6 --> play7
-
-    ForkExeParallel1 --> play8
-
-    state JoinExeParallel1 <<join>>
-    JoinExeParallel2 --> JoinExeParallel1
-    play7 --> JoinExeParallel1
-    play8 --> JoinExeParallel1
-
+  play2 --> ForkExeParallel1
+  ForkExeParallel1 --> ForkExeParallel2
+  ForkExeParallel2 --> play3
+  ForkExeParallel2 --> play4
+  ForkExeParallel2 --> play5
+  play3 --> JoinExeParallel2
+  play4 --> JoinExeParallel2
+  play5 --> JoinExeParallel2
+  ForkExeParallel1 --> play6
+  play6 --> play7
+  ForkExeParallel1 --> play8
+  JoinExeParallel2 --> JoinExeParallel1
+  play7 --> JoinExeParallel1
+  play8 --> JoinExeParallel1
   JoinExeParallel1 --> play9
   play9 --> [*]
 ```
