@@ -12,22 +12,27 @@ git_tag_enable = true
 [[package]]
 name = "cdk-ansible"
 release = true
+publish = true
 
 [[package]]
 name = "cdk-ansible-cli"
 release = true
+publish = true
 
 [[package]]
 name = "cdk-ansible-core"
 release = true
+publish = true
 
 [[package]]
 name = "cdk-ansible-static"
 release = true
+publish = true
 
 [[package]]
 name = "cdk-ansible-macro"
 release = true
+publish = true
 
 [changelog]
 # default body: https://github.com/release-plz/release-plz/blob/df66f3613195201c400931885f7fe7665fbce80c/crates/release_plz_core/src/changelog.rs#L414
