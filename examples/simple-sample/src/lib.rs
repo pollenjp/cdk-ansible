@@ -39,25 +39,23 @@ impl SampleStack {
 
         Self {
             exe_play: ExeSequential(vec![
-                // ExeSingle(create_play_helper("sample1", hosts.into())),
-                // ExeSingle(create_play_helper("sample2", hosts.into())),
                 ExeParallel(vec![
                     ExeParallel(vec![
-                        ExeSingle(create_play_helper("sample0", hosts.into(), 5)),
-                        ExeSingle(create_play_helper("sample1", hosts.into(), 10)),
-                        ExeSingle(create_play_helper("sample2", hosts.into(), 15)),
+                        ExeSingle(create_play_helper("sample0", hosts.into(), 5).into()),
+                        ExeSingle(create_play_helper("sample1", hosts.into(), 10).into()),
+                        ExeSingle(create_play_helper("sample2", hosts.into(), 15).into()),
                     ]),
                     ExeSequential(vec![
-                        ExeSingle(create_play_helper("sample3", hosts.into(), 1)),
-                        ExeSingle(create_play_helper("sample4", hosts.into(), 1)),
-                        ExeSingle(create_play_helper("sample5", hosts.into(), 1)),
+                        ExeSingle(create_play_helper("sample3", hosts.into(), 1).into()),
+                        ExeSingle(create_play_helper("sample4", hosts.into(), 1).into()),
+                        ExeSingle(create_play_helper("sample5", hosts.into(), 1).into()),
                     ]),
-                    ExeSingle(create_play_helper("sample6", hosts.into(), 1)),
-                    ExeSequential(vec![
-                        ExeSingle(create_play_helper("sample7", hosts.into(), 1)),
-                        ExeSingle(create_play_helper("sample8", hosts.into(), 1)),
-                        ExeSingle(create_play_helper("sample9", hosts.into(), 1)),
-                    ]),
+                    ExeSingle(create_play_helper("sample6", hosts.into(), 1).into()),
+                ]),
+                ExeSequential(vec![
+                    ExeSingle(create_play_helper("sample7", hosts.into(), 1).into()),
+                    ExeSingle(create_play_helper("sample8", hosts.into(), 1).into()),
+                    ExeSingle(create_play_helper("sample9", hosts.into(), 1).into()),
                 ]),
             ]),
         }
@@ -79,7 +77,7 @@ impl Stack for SampleStack {
     }
 }
 
-fn create_play_helper(name: &str, hosts: StringOrVecString, n: usize) -> Box<Play> {
+fn create_play_helper(name: &str, hosts: StringOrVecString, n: usize) -> Play {
     let mut tasks = vec![::cdk_ansible::Task {
         name: "debug".into(),
         options: TaskOptions::default(),
@@ -128,12 +126,12 @@ fn create_play_helper(name: &str, hosts: StringOrVecString, n: usize) -> Box<Pla
     //     }),
     // });
 
-    Box::new(Play {
+    Play {
         name: name.into(),
         hosts,
         options: PlayOptions::default(),
         tasks,
-    })
+    }
 }
 
 #[derive(AllInventoryVarsGen)]

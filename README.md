@@ -22,6 +22,16 @@ WARNING: This project does not use [JSii](https://github.com/aws/jsii).
 - [**cdk-ansible**](https://crates.io/crates/cdk-ansible) can define an abstract Ansible Playbook using Rust.
 - [**cdk-ansible-cli**](https://crates.io/crates/cdk-ansible-cli) (`cdk-ansible` command) generates Rust code compatible with existing Ansible modules.
 
+## Compatibility
+
+`{cdk-ansible,cdk-ansible-cli}>=v0.2.3`
+
+|            | cdk-ansible | cdk-ansible-cli |
+| ---------- | ----------- | --------------- |
+| `>=v0.2.*` | ✅          | ✅              |
+
+`{cdk-ansible,cdk-ansible-cli}<v0.2.3` are guaranteed to work only with matching versions.
+
 ## What can cdk-ansible do?
 
 Full example project can see in [cdk-ansible-examples](https://github.com/pollenjp/cdk-ansible-examples)'s cli-init directory.
