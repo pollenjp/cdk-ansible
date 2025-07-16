@@ -1,6 +1,6 @@
 use crate::{
-    App, Playbook,
-    deploy::{ExePlaybook, cli::GlobalConfig},
+    App, ExePlaybook, Playbook,
+    deploy::cli::GlobalConfig,
     utils::{dump_json, json_to_yaml, playbook_dump},
 };
 use anyhow::Result;
@@ -106,68 +106,8 @@ fn recursive_synth(container: &mut Vec<Playbook>, exe_playbook: ExePlaybook) {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::OptU;
-    use cdk_ansible_core::core::{Play, PlayOptions, Task, TaskModule, TaskOptions};
-    use serde::Serialize;
+    use crate::utils::test::*;
     use tempfile::TempDir;
-
-    mod debug {
-        use super::*;
-
-        #[derive(Clone, Debug, Serialize)]
-        pub struct Module {
-            #[serde(rename = "ansible.builtin.debug")]
-            pub module: Args,
-        }
-        impl TaskModule for Module {}
-        #[derive(Clone, Debug, Serialize)]
-        pub struct Args {
-            #[serde(flatten)]
-            pub options: Opt,
-        }
-        #[derive(Clone, Debug, Default, Serialize)]
-        #[serde(rename_all = "snake_case")]
-        pub struct Opt {
-            #[serde(
-                default = "OptU::default",
-                skip_serializing_if = "OptU::is_unset",
-                rename = "msg"
-            )]
-            pub msg: OptU<String>,
-            #[serde(
-                default = "OptU::default",
-                skip_serializing_if = "OptU::is_unset",
-                rename = "var"
-            )]
-            pub var: OptU<String>,
-            #[serde(
-                default = "OptU::default",
-                skip_serializing_if = "OptU::is_unset",
-                rename = "verbosity"
-            )]
-            pub verbosity: OptU<crate::IntOrString>,
-        }
-    }
-
-    fn create_play_helper(name: &str) -> Play {
-        Play {
-            name: name.to_string(),
-            hosts: "localhost".into(),
-            options: PlayOptions::default(),
-            tasks: vec![Task {
-                name: "debug".into(),
-                options: TaskOptions::default(),
-                command: Box::new(debug::Module {
-                    module: debug::Args {
-                        options: debug::Opt {
-                            msg: OptU::Some("Hello, world!".into()),
-                            ..Default::default()
-                        },
-                    },
-                }),
-            }],
-        }
-    }
 
     fn create_playbook_helper(name: &str) -> Box<Playbook> {
         Box::new(Playbook {

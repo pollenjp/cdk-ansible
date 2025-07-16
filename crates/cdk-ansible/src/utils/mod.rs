@@ -6,6 +6,9 @@ use std::sync::Arc;
 use tokio::fs;
 use tokio::process::Command;
 
+#[cfg(test)]
+pub mod test;
+
 pub async fn dump_json(filepath: PathBuf, obj: impl Serialize) -> Result<()> {
     fs::create_dir_all(
         filepath

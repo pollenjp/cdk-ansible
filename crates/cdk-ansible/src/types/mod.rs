@@ -1,28 +1,52 @@
+pub mod trait_impl;
 use crate::{Play, Playbook};
 
-/// Play execution definition for end users
+/// Play execution definition
 ///
 /// ```rust
 /// use cdk_ansible::{Play, PlayOptions, ExeSequential, ExeSingle, ExeParallel};
 ///
 /// /// Helper function to create sample play
-/// fn create_play_helper(name: &str) -> Box<Play> {
-///     Box::new(Play {
+/// fn create_play_helper(name: &str) -> Play {
+///     Play {
 ///         name: name.to_string(),
 ///         hosts: "localhost".into(),
 ///         options: PlayOptions::default(),
 ///         tasks: vec![],
-///     })
+///     }
 /// }
 ///
+/// // Example of creating ExePlay simply
 /// let _play_exec = ExeSequential(vec![
-///     ExeSingle(create_play_helper("sample1")),
-///     ExeSingle(create_play_helper("sample2")),
+///     ExeSingle(Box::new(create_play_helper("sample1"))),
+///     ExeSingle(Box::new(create_play_helper("sample2"))),
 ///     ExeParallel(vec![
-///         ExeSingle(create_play_helper("sample3")),
-///         ExeSingle(create_play_helper("sample4")),
+///         ExeSingle(Box::new(create_play_helper("sample3"))),
+///         ExeSequential(vec![
+///             ExeSingle(Box::new(create_play_helper("sample4"))),
+///             ExeSingle(Box::new(create_play_helper("sample5"))),
+///         ]),
 ///     ]),
 /// ]);
+///
+/// // Example of creating ExePlay using IntoExePlayParallel and IntoExePlaySequential
+/// use cdk_ansible::prelude::*;
+///
+/// let _play_exec = vec![
+///     create_play_helper("sample1").into(),
+///     create_play_helper("sample2").into(),
+///     vec![
+///         create_play_helper("sample3").into(),
+///         vec![
+///             create_play_helper("sample4").into(),
+///             create_play_helper("sample5").into(),
+///         ]
+///         .into_exe_play_parallel(),
+///     ]
+///     .into_exe_play_sequential(),
+/// ]
+/// .into_exe_play_sequential();
+///
 /// ```
 #[derive(Debug, Clone)]
 pub enum ExePlay {
@@ -39,13 +63,23 @@ pub use ExePlay::Sequential as ExeSequential;
 pub use ExePlay::Single as ExeSingle;
 
 impl ExePlay {
-    /// Convert to parallel execution
-    /// Convert from only [`ExeSequential`] is recommended.
-    pub fn into_parallel(self) -> Self {
+    /// Experimental feature: Push a play to the end of the execution
+    ///
+    /// - ExeSingle -> ExeSequential
+    /// - ExeSequential -> ExeSequential
+    /// - ExeParallel -> ExeParallel
+    ///
+    /// # Example
+    ///
+    /// TODO: fill in
+    pub fn push(&mut self, play: Play) {
         match self {
-            ExePlay::Sequential(plays) => ExePlay::Parallel(plays),
-            ExePlay::Parallel(plays) => ExePlay::Parallel(plays),
-            ExePlay::Single(play) => ExePlay::Parallel(vec![play.into()]),
+            ExePlay::Sequential(plays) => plays.push(play.into()),
+            ExePlay::Parallel(plays) => plays.push(play.into()),
+            ExePlay::Single(_) => {
+                let p = self.clone();
+                *self = ExeSequential(vec![p, play.into()]);
+            }
         }
     }
 }
@@ -107,22 +141,7 @@ impl ExePlaybook {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use cdk_ansible_core::core::{Play, PlayOptions};
-
-    /// Helper function to create sample play
-    fn create_play_helper(name: &str) -> Play {
-        Play {
-            name: name.to_string(),
-            hosts: "localhost".into(),
-            options: PlayOptions::default(),
-            tasks: vec![],
-        }
-    }
-
-    #[test]
-    fn test_single_play_exec() {
-        let _play_exec = ExeSingle(Box::new(create_play_helper("sample")));
-    }
+    use crate::utils::test::*;
 
     #[test]
     fn test_sequential_play_exec() {
@@ -163,15 +182,36 @@ mod tests {
         }
     }
     #[test]
-    fn test_into_parallel() {
-        let plays = vec![
-            create_play_helper("sample1").into(),
-            create_play_helper("sample2").into(),
-            create_play_helper("sample3").into(),
-        ];
-        let exe_play: ExePlay = plays.into();
-        match exe_play.into_parallel() {
-            ExePlay::Parallel(_) => {
+    fn test_exe_play_single_push() {
+        let mut exe_play = ExeSingle(create_play_helper("sample1").into());
+        exe_play.push(create_play_helper("sample2"));
+        match exe_play {
+            ExePlay::Sequential(plays) => {
+                assert_eq!(plays.len(), 2);
+                // OK
+            }
+            _ => unreachable!("exe_play should be ExeSequential"),
+        }
+    }
+    #[test]
+    fn test_exe_play_sequential_push() {
+        let mut exe_play = ExeSequential(vec![create_play_helper("sample1").into()]);
+        exe_play.push(create_play_helper("sample2"));
+        match exe_play {
+            ExePlay::Sequential(plays) => {
+                assert_eq!(plays.len(), 2);
+                // OK
+            }
+            _ => unreachable!("exe_play should be ExeSequential"),
+        }
+    }
+    #[test]
+    fn test_exe_play_parallel_push() {
+        let mut exe_play = ExeParallel(vec![create_play_helper("sample1").into()]);
+        exe_play.push(create_play_helper("sample2"));
+        match exe_play {
+            ExePlay::Parallel(plays) => {
+                assert_eq!(plays.len(), 2);
                 // OK
             }
             _ => unreachable!("exe_play should be ExeParallel"),
