@@ -174,7 +174,7 @@ mod tests {
             ExePlay::Parallel(_) => {
                 // OK
             }
-            _ => unreachable!("exe_play should be ExeParallel"),
+            _ => unreachable!("exe_play should be ExeSequential"),
         }
     }
 }
