@@ -33,13 +33,11 @@ jobs:
       - name: Install Rust toolchain
         uses: dtolnay/rust-toolchain@stable
 
-      # Release packages to crates.io only if manually triggered with `release-package` flag
       # https://crates.io/docs/trusted-publishing
-      - if: inputs.release-package
-        uses: rust-lang/crates-io-auth-action@v1
+      # FIXME: If there is no releases to be published, skip this step.
+      #        What is the best way to check this?
+      - uses: rust-lang/crates-io-auth-action@v1
         id: auth
-      - if: inputs.release-package
-        run: echo "CARGO_REGISTRY_TOKEN=${{ steps.auth.outputs.token }}" >> $GITHUB_ENV
 
       - name: Run release-plz
         uses: release-plz/action@v0.5
@@ -47,3 +45,4 @@ jobs:
           command: release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          CARGO_REGISTRY_TOKEN: ${{ steps.auth.outputs.token }}
