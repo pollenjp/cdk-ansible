@@ -30,7 +30,7 @@ pub trait IntoExePlaySequential {
 ///     ExePlay::Sequential(_) => {
 ///         // OK
 ///     }
-///     _ => unreachable!("exe_play should be ExeParallel"),
+///     _ => unreachable!("exe_play should be ExeSequential"),
 /// }
 /// ```
 impl IntoExePlaySequential for Vec<ExePlay> {
@@ -55,7 +55,7 @@ mod test_into_exe_play_sequential {
             ExePlay::Sequential(_) => {
                 // OK
             }
-            _ => unreachable!("exe_play should be ExeParallel"),
+            _ => unreachable!("exe_play should be ExeSequential"),
         }
     }
 }
