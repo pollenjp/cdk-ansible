@@ -24,7 +24,7 @@ pub fn create_play_helper(name: &str) -> Play {
 }
 
 pub mod debug {
-    use crate::{OptU, PlayOptions, Task, TaskModule, TaskOptions};
+    use crate::{OptU, TaskModule};
     use serde::Serialize;
 
     #[derive(Clone, Debug, Serialize)]
