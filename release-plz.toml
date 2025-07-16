@@ -32,6 +32,7 @@ release = true
 [changelog]
 # default body: https://github.com/release-plz/release-plz/blob/df66f3613195201c400931885f7fe7665fbce80c/crates/release_plz_core/src/changelog.rs#L414
 body = """
+
 ## [{{ version }}]{%- if release_link -%}({{ release_link }}){% endif %} - {{ timestamp | date(format="%Y-%m-%d") }} ({{ package }})
 {% for group, commits in commits | group_by(attribute="group") %}
 ### {{ group | upper_first }}
