@@ -23,7 +23,8 @@ jobs:
     name: Release-plz release
     runs-on: ubuntu-latest
     permissions:
-      contents: write
+      contents: write # Required for release-plz to create tags
+      id-token: write # Required for OIDC token exchange
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
