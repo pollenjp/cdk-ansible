@@ -38,6 +38,36 @@ pub use ExePlay::Parallel as ExeParallel;
 pub use ExePlay::Sequential as ExeSequential;
 pub use ExePlay::Single as ExeSingle;
 
+impl ExePlay {
+    /// Convert to parallel execution
+    /// Convert from only [`ExeSequential`] is recommended.
+    pub fn into_parallel(self) -> Self {
+        match self {
+            ExePlay::Sequential(plays) => ExePlay::Parallel(plays),
+            ExePlay::Parallel(plays) => ExePlay::Parallel(plays),
+            ExePlay::Single(play) => ExePlay::Parallel(vec![play.into()]),
+        }
+    }
+}
+
+impl From<Play> for ExePlay {
+    fn from(play: Play) -> Self {
+        ExePlay::Single(Box::new(play))
+    }
+}
+
+impl From<Box<Play>> for ExePlay {
+    fn from(play: Box<Play>) -> Self {
+        ExePlay::Single(play)
+    }
+}
+
+impl From<Vec<ExePlay>> for ExePlay {
+    fn from(plays: Vec<ExePlay>) -> Self {
+        ExePlay::Sequential(plays)
+    }
+}
+
 /// Playbook execution definition for deployment
 #[derive(Debug, Clone)]
 pub enum ExePlaybook {
@@ -80,29 +110,71 @@ mod tests {
     use cdk_ansible_core::core::{Play, PlayOptions};
 
     /// Helper function to create sample play
-    fn create_play_helper(name: &str) -> Box<Play> {
-        Box::new(Play {
+    fn create_play_helper(name: &str) -> Play {
+        Play {
             name: name.to_string(),
             hosts: "localhost".into(),
             options: PlayOptions::default(),
             tasks: vec![],
-        })
+        }
     }
 
     #[test]
     fn test_single_play_exec() {
-        let _play_exec = ExeSingle(create_play_helper("sample"));
+        let _play_exec = ExeSingle(Box::new(create_play_helper("sample")));
     }
 
     #[test]
     fn test_sequential_play_exec() {
         let _play_exec = ExeSequential(vec![
-            ExeSingle(create_play_helper("sample1")),
-            ExeSingle(create_play_helper("sample2")),
+            ExeSingle(Box::new(create_play_helper("sample1"))),
+            ExeSingle(Box::new(create_play_helper("sample2"))),
             ExeParallel(vec![
-                ExeSingle(create_play_helper("sample3")),
-                ExeSingle(create_play_helper("sample4")),
+                ExeSingle(Box::new(create_play_helper("sample3"))),
+                ExeSingle(Box::new(create_play_helper("sample4"))),
             ]),
         ]);
+    }
+
+    #[test]
+    fn test_exe_play_from_play() {
+        let play = create_play_helper("sample");
+        let exe_play: ExePlay = play.into();
+        match exe_play {
+            ExePlay::Single(_) => {
+                // OK
+            }
+            _ => unreachable!("exe_play should be ExeSingle"),
+        }
+    }
+    #[test]
+    fn test_exe_play_from_play_vec() {
+        let plays = vec![
+            create_play_helper("sample1").into(),
+            create_play_helper("sample2").into(),
+            create_play_helper("sample3").into(),
+        ];
+        let exe_play: ExePlay = plays.into();
+        match exe_play {
+            ExePlay::Sequential(_) => {
+                // OK
+            }
+            _ => unreachable!("exe_play should be ExeSequential"),
+        }
+    }
+    #[test]
+    fn test_into_parallel() {
+        let plays = vec![
+            create_play_helper("sample1").into(),
+            create_play_helper("sample2").into(),
+            create_play_helper("sample3").into(),
+        ];
+        let exe_play: ExePlay = plays.into();
+        match exe_play.into_parallel() {
+            ExePlay::Parallel(_) => {
+                // OK
+            }
+            _ => unreachable!("exe_play should be ExeParallel"),
+        }
     }
 }
