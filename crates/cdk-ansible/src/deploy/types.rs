@@ -38,6 +38,36 @@ pub use ExePlay::Parallel as ExeParallel;
 pub use ExePlay::Sequential as ExeSequential;
 pub use ExePlay::Single as ExeSingle;
 
+impl ExePlay {
+    /// Convert to parallel execution
+    /// Convert from only [`ExeSequential`] is recommended.
+    pub fn into_parallel(self) -> Self {
+        match self {
+            ExePlay::Sequential(plays) => ExePlay::Parallel(plays),
+            ExePlay::Parallel(plays) => ExePlay::Parallel(plays),
+            ExePlay::Single(play) => ExePlay::Parallel(vec![play.into()]),
+        }
+    }
+}
+
+impl From<Play> for ExePlay {
+    fn from(play: Play) -> Self {
+        ExePlay::Single(Box::new(play))
+    }
+}
+
+impl From<Box<Play>> for ExePlay {
+    fn from(play: Box<Play>) -> Self {
+        ExePlay::Single(play)
+    }
+}
+
+impl From<Vec<ExePlay>> for ExePlay {
+    fn from(plays: Vec<ExePlay>) -> Self {
+        ExePlay::Sequential(plays)
+    }
+}
+
 /// Playbook execution definition for deployment
 #[derive(Debug, Clone)]
 pub enum ExePlaybook {
