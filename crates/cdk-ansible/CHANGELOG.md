@@ -7,12 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [0.3.0](https://github.com/pollenjp/cdk-ansible/compare/cdk-ansible-v0.2.3...cdk-ansible-v0.3.0) - 2025-07-17 (cdk-ansible)
+## [0.2.4](https://github.com/pollenjp/cdk-ansible/compare/cdk-ansible-v0.2.3...cdk-ansible-v0.2.4) - 2025-07-17 (cdk-ansible)
 
 ### Added
 
 - IntoExePlaySequential and IntoExePlayParallel trait ([#64](https://github.com/pollenjp/cdk-ansible/pull/64))
-
 
 ## [0.2.3](https://github.com/pollenjp/cdk-ansible/compare/cdk-ansible-v0.2.2...cdk-ansible-v0.2.3) - 2025-07-16 (cdk-ansible)
 
