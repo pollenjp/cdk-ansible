@@ -1,11 +1,9 @@
-use crate::Inventory;
+use crate::{ExePlay, ExePlaybook, Inventory};
 use anyhow::Result;
 use indexmap::IndexMap;
 
 mod cli;
 use cli::Cli;
-mod types;
-pub use types::*;
 
 /// Main entry point for the cdk-ansible CLI.
 ///
@@ -143,17 +141,7 @@ impl std::fmt::Display for StackName {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use cdk_ansible_core::core::{Play, PlayOptions};
-
-    /// Helper function to create sample play
-    fn create_play_helper(name: &str) -> Box<Play> {
-        Box::new(Play {
-            name: name.to_string(),
-            hosts: "localhost".into(),
-            options: PlayOptions::default(),
-            tasks: vec![],
-        })
-    }
+    use crate::utils::test::*;
 
     #[test]
     fn test_sample_stack() {
@@ -164,7 +152,7 @@ mod tests {
         impl SampleStack {
             fn new() -> Self {
                 Self {
-                    exe_play: ExePlay::Single(create_play_helper("sample")),
+                    exe_play: create_play_helper("sample").into(),
                 }
             }
         }
@@ -194,7 +182,7 @@ mod tests {
             fn new(n: &str) -> Self {
                 Self {
                     name: n.to_string(),
-                    exe_play: ExePlay::Single(create_play_helper("sample1")),
+                    exe_play: create_play_helper("sample1").into(),
                 }
             }
         }
@@ -215,7 +203,7 @@ mod tests {
             fn new(n: &str) -> Self {
                 Self {
                     name: n.to_string(),
-                    exe_play: ExePlay::Single(create_play_helper("sample2")),
+                    exe_play: create_play_helper("sample2").into(),
                 }
             }
         }
