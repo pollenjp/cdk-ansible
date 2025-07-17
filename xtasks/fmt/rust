@@ -1,5 +1,19 @@
 #!/usr/bin/env bash
+#MISE description="Format Rust"
+#MISE env={ RUST_BACKTRACE = "1" }
+#MISE depends=[]
+#MISE depends_post=[]
 set -euo pipefail
 
-cargo fix --allow-staged
+pushd "${PROJ_CDK_ANSIBLE:?}" >/dev/null 2>&1
+
+# if ! git diff-index --quiet HEAD -- .; then
+if ! git diff --quiet -- .; then
+  echo "dirty" >&2
+  exit 1
+fi
+
+cargo fix --allow-dirty
 cargo fmt --all
+
+popd >/dev/null 2>&1
