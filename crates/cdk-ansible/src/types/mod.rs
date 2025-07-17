@@ -62,6 +62,24 @@ pub use ExePlay::Parallel as ExeParallel;
 pub use ExePlay::Sequential as ExeSequential;
 pub use ExePlay::Single as ExeSingle;
 
+#[cfg(test)]
+mod test_exe_play_struct {
+    use super::*;
+    use crate::utils::test::*;
+
+    #[test]
+    fn test_sequential_play_exec() {
+        let _play_exec = ExeSequential(vec![
+            ExeSingle(Box::new(create_play_helper("sample1"))),
+            ExeSingle(Box::new(create_play_helper("sample2"))),
+            ExeParallel(vec![
+                ExeSingle(Box::new(create_play_helper("sample3"))),
+                ExeSingle(Box::new(create_play_helper("sample4"))),
+            ]),
+        ]);
+    }
+}
+
 impl ExePlay {
     /// Experimental feature: Push a play to the end of the execution
     ///
@@ -72,14 +90,67 @@ impl ExePlay {
     /// # Example
     ///
     /// TODO: fill in
-    pub fn push(&mut self, play: Play) {
+    pub fn push(&mut self, p: ExePlay) {
         match self {
-            ExePlay::Sequential(plays) => plays.push(play.into()),
-            ExePlay::Parallel(plays) => plays.push(play.into()),
+            ExePlay::Sequential(plays) => plays.push(p),
+            ExePlay::Parallel(plays) => plays.push(p),
             ExePlay::Single(_) => {
-                let p = self.clone();
-                *self = ExeSequential(vec![p, play.into()]);
+                let p1 = self.clone();
+                *self = ExeSequential(vec![p1, p]);
             }
+        }
+    }
+    pub fn push_play(&mut self, p: Play) {
+        match self {
+            ExePlay::Sequential(plays) => plays.push(p.into()),
+            ExePlay::Parallel(plays) => plays.push(p.into()),
+            ExePlay::Single(_) => {
+                let p1 = self.clone();
+                *self = ExeSequential(vec![p1, p.into()]);
+            }
+        }
+    }
+}
+
+#[cfg(test)]
+mod test_exe_play {
+    use super::*;
+    use crate::utils::test::*;
+
+    #[test]
+    fn test_exe_play_single_push() {
+        let mut exe_play = ExeSingle(create_play_helper("sample1").into());
+        exe_play.push(create_play_helper("sample2").into());
+        match exe_play {
+            ExePlay::Sequential(plays) => {
+                assert_eq!(plays.len(), 2);
+                // OK
+            }
+            _ => unreachable!("exe_play should be ExeSequential"),
+        }
+    }
+    #[test]
+    fn test_exe_play_sequential_push() {
+        let mut exe_play = ExeSequential(vec![create_play_helper("sample1").into()]);
+        exe_play.push(create_play_helper("sample2").into());
+        match exe_play {
+            ExePlay::Sequential(plays) => {
+                assert_eq!(plays.len(), 2);
+                // OK
+            }
+            _ => unreachable!("exe_play should be ExeSequential"),
+        }
+    }
+    #[test]
+    fn test_exe_play_parallel_push() {
+        let mut exe_play = ExeParallel(vec![create_play_helper("sample1").into()]);
+        exe_play.push(create_play_helper("sample2").into());
+        match exe_play {
+            ExePlay::Parallel(plays) => {
+                assert_eq!(plays.len(), 2);
+                // OK
+            }
+            _ => unreachable!("exe_play should be ExeParallel"),
         }
     }
 }
@@ -99,6 +170,39 @@ impl From<Box<Play>> for ExePlay {
 impl From<Vec<ExePlay>> for ExePlay {
     fn from(plays: Vec<ExePlay>) -> Self {
         ExePlay::Sequential(plays)
+    }
+}
+
+#[cfg(test)]
+mod test_exe_play_from_impl {
+    use super::*;
+    use crate::utils::test::*;
+
+    #[test]
+    fn test_exe_play_from_play() {
+        let play = create_play_helper("sample");
+        let exe_play: ExePlay = play.into();
+        match exe_play {
+            ExePlay::Single(_) => {
+                // OK
+            }
+            _ => unreachable!("exe_play should be ExeSingle"),
+        }
+    }
+    #[test]
+    fn test_exe_play_from_play_vec() {
+        let plays = vec![
+            create_play_helper("sample1").into(),
+            create_play_helper("sample2").into(),
+            create_play_helper("sample3").into(),
+        ];
+        let exe_play: ExePlay = plays.into();
+        match exe_play {
+            ExePlay::Sequential(_) => {
+                // OK
+            }
+            _ => unreachable!("exe_play should be ExeSequential"),
+        }
     }
 }
 
@@ -134,87 +238,6 @@ impl ExePlaybook {
                 ),
                 plays: vec![*play],
             })),
-        }
-    }
-}
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-    use crate::utils::test::*;
-
-    #[test]
-    fn test_sequential_play_exec() {
-        let _play_exec = ExeSequential(vec![
-            ExeSingle(Box::new(create_play_helper("sample1"))),
-            ExeSingle(Box::new(create_play_helper("sample2"))),
-            ExeParallel(vec![
-                ExeSingle(Box::new(create_play_helper("sample3"))),
-                ExeSingle(Box::new(create_play_helper("sample4"))),
-            ]),
-        ]);
-    }
-
-    #[test]
-    fn test_exe_play_from_play() {
-        let play = create_play_helper("sample");
-        let exe_play: ExePlay = play.into();
-        match exe_play {
-            ExePlay::Single(_) => {
-                // OK
-            }
-            _ => unreachable!("exe_play should be ExeSingle"),
-        }
-    }
-    #[test]
-    fn test_exe_play_from_play_vec() {
-        let plays = vec![
-            create_play_helper("sample1").into(),
-            create_play_helper("sample2").into(),
-            create_play_helper("sample3").into(),
-        ];
-        let exe_play: ExePlay = plays.into();
-        match exe_play {
-            ExePlay::Sequential(_) => {
-                // OK
-            }
-            _ => unreachable!("exe_play should be ExeSequential"),
-        }
-    }
-    #[test]
-    fn test_exe_play_single_push() {
-        let mut exe_play = ExeSingle(create_play_helper("sample1").into());
-        exe_play.push(create_play_helper("sample2"));
-        match exe_play {
-            ExePlay::Sequential(plays) => {
-                assert_eq!(plays.len(), 2);
-                // OK
-            }
-            _ => unreachable!("exe_play should be ExeSequential"),
-        }
-    }
-    #[test]
-    fn test_exe_play_sequential_push() {
-        let mut exe_play = ExeSequential(vec![create_play_helper("sample1").into()]);
-        exe_play.push(create_play_helper("sample2"));
-        match exe_play {
-            ExePlay::Sequential(plays) => {
-                assert_eq!(plays.len(), 2);
-                // OK
-            }
-            _ => unreachable!("exe_play should be ExeSequential"),
-        }
-    }
-    #[test]
-    fn test_exe_play_parallel_push() {
-        let mut exe_play = ExeParallel(vec![create_play_helper("sample1").into()]);
-        exe_play.push(create_play_helper("sample2"));
-        match exe_play {
-            ExePlay::Parallel(plays) => {
-                assert_eq!(plays.len(), 2);
-                // OK
-            }
-            _ => unreachable!("exe_play should be ExeParallel"),
         }
     }
 }
