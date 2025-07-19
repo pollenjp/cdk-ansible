@@ -1,9 +1,10 @@
 use crate::{
-    deploy::{
-        App,
+    ExePlaybook,
+    l2::deploy::{
+        AppL2,
         cli::{GlobalConfig, synth::synth},
     },
-    types::{ExePlaybook, StackName},
+    types::StackName,
 };
 use anyhow::{Context as _, Result};
 use clap::Args;
@@ -32,7 +33,7 @@ pub struct Deploy {
     pub playbook_command: String,
     /// Inventory name.
     ///
-    /// The candidates are inventories added to the [`crate::deploy::App`] ([`crate::deploy::App::add_inventory`])
+    /// The candidates are inventories added to the [`crate::l2::deploy::App`] ([`crate::l2::deploy::App::add_inventory`])
     #[arg(short = 'i', long, required = true)]
     pub inventory: String,
     /// The maximum number of playbook processes.
@@ -44,7 +45,7 @@ pub struct Deploy {
 }
 
 impl Deploy {
-    pub async fn run(self, app: &App, global_config: Arc<GlobalConfig>) -> Result<()> {
+    pub async fn run(self, app: &AppL2, global_config: Arc<GlobalConfig>) -> Result<()> {
         let deploy_config = Arc::new(DeployConfig::new(self)?);
         synth(app, &global_config).await?;
 
@@ -74,7 +75,7 @@ impl DeployConfig {
 }
 
 async fn deploy(
-    app: &App,
+    app: &AppL2,
     global_config: &Arc<GlobalConfig>,
     deploy_config: &Arc<DeployConfig>,
 ) -> Result<()> {
@@ -85,6 +86,8 @@ async fn deploy(
     let pb_semaphore = Arc::new(Semaphore::new(deploy_config.max_procs));
 
     let exe_playbook = app
+        .inner
+        .stack_container
         .exe_playbooks()
         .get(&StackName::from(deploy_config.stack_name.as_str()))
         .with_context(|| "getting exe_playbook")?;

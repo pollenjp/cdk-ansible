@@ -1,5 +1,6 @@
-pub mod trait_impl;
+pub(crate) mod trait_impl;
 use crate::{Play, Playbook};
+use std::fmt;
 
 /// Play execution definition
 ///
@@ -61,6 +62,21 @@ pub enum ExePlay {
 pub use ExePlay::Parallel as ExeParallel;
 pub use ExePlay::Sequential as ExeSequential;
 pub use ExePlay::Single as ExeSingle;
+
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
+pub struct StackName(String);
+
+impl From<&str> for StackName {
+    fn from(s: &str) -> Self {
+        StackName(s.to_string())
+    }
+}
+
+impl fmt::Display for StackName {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f, "{}", self.0)
+    }
+}
 
 #[cfg(test)]
 mod test_exe_play_struct {
