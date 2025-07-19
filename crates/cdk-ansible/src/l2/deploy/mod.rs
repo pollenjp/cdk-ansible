@@ -1,11 +1,13 @@
 mod cli;
-use crate::{
-    Inventory,
-    types::{ExePlay, ExePlaybook, StackName},
-};
+mod stack_container;
+// use crate::{ExePlay, ExePlaybook, Inventory};
+use crate::types::{ExePlay, ExePlaybook};
 use anyhow::Result;
+use cdk_ansible_core::core::Inventory;
 use cli::Cli;
 use indexmap::IndexMap;
+use stack_container::StackContainer;
+use std::{fmt, ops::DerefMut, sync::Arc};
 
 /// Main entry point for the cdk-ansible CLI.
 ///
@@ -47,58 +49,61 @@ use indexmap::IndexMap;
 /// app.add_stack(Box::new(SampleStack::new()))
 ///     .expect("Failed to add sample stack");
 /// ```
-pub struct App {
-    args: Vec<String>,
-    /// key is an unique name of stack. Forbidden to be duplicated.
-    stacks: IndexMap<StackName, Box<dyn Stack>>,
-    /// key is only used for check duplication.
-    inventories: IndexMap<String, Inventory>,
-    /// Don't use this directly. Use [`App::exe_playbooks`] method.
-    /// Memoization of ExePlaybooks.
-    /// key is an unique name of stack. Forbidden to be duplicated.
-    #[doc(hidden)]
-    exe_playbooks: IndexMap<StackName, ExePlaybook>,
+#[derive(Debug)]
+pub struct AppL2 {
+    inner: Arc<AppL2Inner>,
 }
 
-impl App {
+#[derive(Debug)]
+struct AppL2Inner {
+    args: Vec<String>,
+    stack_container: StackContainer,
+    /// key is only used for check duplication.
+    inventories: IndexMap<String, Inventory>,
+}
+
+impl AppL2 {
     pub fn new(args: Vec<String>) -> Self {
         Self {
-            args,
-            inventories: IndexMap::new(),
-            stacks: IndexMap::new(),
-            exe_playbooks: IndexMap::new(),
+            inner: Arc::new(AppL2Inner {
+                args,
+                inventories: IndexMap::new(),
+                stack_container: StackContainer::new(),
+            }),
         }
     }
 
-    pub fn add_inventory(&mut self, inventory: Inventory) -> Result<()> {
-        let old_inventory = self.inventories.insert(inventory.name.clone(), inventory);
+    fn into_inner(self) -> AppL2Inner {
+        // Arc::new(self.inner)
+        match Arc::try_unwrap(self.inner) {
+            Ok(inner) => inner,
+            Err(arc) => AppL2Inner {
+                args: arc.args.clone(),
+                stack_container: arc.stack_container.clone(),
+                inventories: arc.inventories.clone(),
+            },
+        }
+    }
+
+    pub fn inventory(self, inventory: Inventory) -> Result<Self> {
+        let mut inner = self.into_inner();
+        let old_inventory = inner.inventories.insert(inventory.name.clone(), inventory);
         if let Some(old_inventory) = old_inventory {
             anyhow::bail!("conflicting inventory name: {}", old_inventory.name);
         }
-        Ok(())
+        Ok(AppL2 {
+            inner: Arc::new(inner),
+        })
     }
 
-    pub fn add_stack(&mut self, stack: Box<dyn Stack>) -> Result<()> {
-        // Memoization of ExePlaybook
-        let old_exe_playbook = self.exe_playbooks.insert(
-            stack.name().into(),
-            ExePlaybook::from_exe_play(stack.name(), stack.exe_play().clone()),
-        );
-        if let Some(old_exe_playbook) = old_exe_playbook {
-            anyhow::bail!(
-                "conflicting stack name: {} ({:?})",
-                stack.name(),
-                old_exe_playbook
-            );
-        }
-
-        // Store a stack
-        let old_stack = self.stacks.insert(stack.name().into(), stack);
-        if let Some(old_stack) = old_stack {
-            anyhow::bail!("conflicting stack name: {}", old_stack.name());
-        }
-
-        Ok(())
+    pub fn stack(self, stack: Arc<dyn StackL2>) -> Result<Self> {
+        let inner = self.into_inner();
+        Ok(AppL2 {
+            inner: Arc::new(AppL2Inner {
+                stack_container: inner.stack_container.stack(stack)?,
+                ..inner
+            }),
+        })
     }
 
     /// Main entry point for end users
@@ -113,14 +118,10 @@ impl App {
             .build()?
             .block_on(Cli::run(self))
     }
-
-    fn exe_playbooks(&self) -> &IndexMap<StackName, ExePlaybook> {
-        &self.exe_playbooks
-    }
 }
 
 /// 副作用の無いコードを書くこと
-pub trait Stack {
+pub trait StackL2 {
     fn name(&self) -> &str;
     fn exe_play(&self) -> &ExePlay;
 }
@@ -144,7 +145,7 @@ mod tests {
             }
         }
 
-        impl Stack for SampleStack {
+        impl StackL2 for SampleStack {
             fn name(&self) -> &str {
                 ::std::any::type_name::<Self>()
             }
@@ -153,8 +154,8 @@ mod tests {
             }
         }
 
-        let mut app = App::new(vec!["help".to_string()]);
-        app.add_stack(Box::new(SampleStack::new()))
+        let _app = AppL2::new(vec!["help".to_string()])
+            .stack(Arc::new(SampleStack::new()))
             .expect("Failed to add sample stack");
     }
 
@@ -173,7 +174,7 @@ mod tests {
                 }
             }
         }
-        impl Stack for SampleStack1 {
+        impl StackL2 for SampleStack1 {
             fn name(&self) -> &str {
                 &self.name
             }
@@ -195,7 +196,7 @@ mod tests {
             }
         }
 
-        impl Stack for SampleStack2 {
+        impl StackL2 for SampleStack2 {
             fn name(&self) -> &str {
                 &self.name
             }
@@ -204,10 +205,10 @@ mod tests {
             }
         }
 
-        let mut app = App::new(vec!["help".to_string()]);
-        app.add_stack(Box::new(SampleStack1::new("sample")))
-            .expect("Failed to add sample stack");
-        app.add_stack(Box::new(SampleStack2::new("sample")))
+        let _app = AppL2::new(vec!["help".to_string()])
+            .stack(Arc::new(SampleStack1::new("sample")))
+            .expect("Failed to add sample stack")
+            .stack(Arc::new(SampleStack2::new("sample")))
             .expect_err("should be duplicated error");
     }
 }

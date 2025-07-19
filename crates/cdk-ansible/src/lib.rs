@@ -95,12 +95,15 @@
 
 mod deploy;
 mod inventory;
+mod l2;
 pub mod prelude;
 mod types;
 mod utils;
 pub use cdk_ansible_core::core::*;
 pub use deploy::*;
 pub use inventory::*;
+pub use l2::deploy::*;
+pub use l2::types::*;
 pub use types::*;
 
 // Re-export macros
