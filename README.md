@@ -17,6 +17,8 @@ CDK-Ansible enables you to generate Ansible files using **Rust** as a type-safe 
 
 WARNING: This project does not use [JSii](https://github.com/aws/jsii).
 
+![cdk-ansible](/img/what_cdk_ansible_does_details.drawio.png)
+
 ## Features
 
 - [**cdk-ansible**](https://crates.io/crates/cdk-ansible) can define an abstract Ansible Playbook using Rust.
