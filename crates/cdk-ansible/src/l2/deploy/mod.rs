@@ -6,6 +6,7 @@ use cdk_ansible_core::core::Inventory;
 use cli::Cli;
 use indexmap::IndexMap;
 use stack_container::StackContainer;
+use std::rc::Rc;
 use std::{fmt, ops::DerefMut, sync::Arc};
 
 /// Main entry point for the cdk-ansible CLI.
@@ -13,6 +14,7 @@ use std::{fmt, ops::DerefMut, sync::Arc};
 /// ```rust
 /// use anyhow::Result;
 /// use cdk_ansible::{AppL2, StackL2, ExePlayL2, ExeSingle, Play, PlayOptions, LazyPlayL2, PlayL2, HostsL2, HostInventoryVarsGenerator, HostInventoryVars};
+/// use std::rc::Rc;
 /// use std::sync::Arc;
 /// use futures::future::{BoxFuture, FutureExt as _};
 ///
@@ -80,55 +82,39 @@ use std::{fmt, ops::DerefMut, sync::Arc};
 /// ```
 #[derive(Debug)]
 pub struct AppL2 {
-    inner: Arc<AppL2Inner>,
+    inner: Rc<AppL2Inner>,
 }
 
 #[derive(Debug)]
 struct AppL2Inner {
     args: Vec<String>,
     stack_container: StackContainer,
-    /// key is only used for check duplication.
-    inventories: IndexMap<String, Inventory>,
 }
 
 impl AppL2 {
     pub fn new(args: Vec<String>) -> Self {
         Self {
-            inner: Arc::new(AppL2Inner {
+            inner: Rc::new(AppL2Inner {
                 args,
-                inventories: IndexMap::new(),
                 stack_container: StackContainer::new(),
             }),
         }
     }
 
     fn into_inner(self) -> AppL2Inner {
-        // Arc::new(self.inner)
-        match Arc::try_unwrap(self.inner) {
+        match Rc::try_unwrap(self.inner) {
             Ok(inner) => inner,
             Err(arc) => AppL2Inner {
                 args: arc.args.clone(),
                 stack_container: arc.stack_container.clone(),
-                inventories: arc.inventories.clone(),
             },
         }
-    }
-
-    pub fn inventory(self, inventory: Inventory) -> Result<Self> {
-        let mut inner = self.into_inner();
-        let old_inventory = inner.inventories.insert(inventory.name.clone(), inventory);
-        if let Some(old_inventory) = old_inventory {
-            anyhow::bail!("conflicting inventory name: {}", old_inventory.name);
-        }
-        Ok(AppL2 {
-            inner: Arc::new(inner),
-        })
     }
 
     pub fn stack(self, stack: Arc<dyn StackL2>) -> Result<Self> {
         let inner = self.into_inner();
         Ok(AppL2 {
-            inner: Arc::new(AppL2Inner {
+            inner: Rc::new(AppL2Inner {
                 stack_container: inner.stack_container.stack(stack)?,
                 ..inner
             }),
