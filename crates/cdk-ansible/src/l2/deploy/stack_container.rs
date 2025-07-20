@@ -31,4 +31,8 @@ impl StackContainer {
         }
         Ok(self)
     }
+
+    pub fn get_stack(&self, name: &StackName) -> Option<Arc<dyn StackL2>> {
+        self.stacks.get(name).map(Arc::clone)
+    }
 }

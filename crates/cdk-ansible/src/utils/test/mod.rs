@@ -93,7 +93,7 @@ impl SampleLazyPlayL2Helper {
 }
 
 impl LazyPlayL2 for SampleLazyPlayL2Helper {
-    fn exe_play(&self) -> BoxFuture<'static, Result<PlayL2>> {
+    fn create_play_l2(&self) -> BoxFuture<'static, Result<PlayL2>> {
         let name = self.name.to_owned();
         async move { Ok(create_play_l2_helper(&name)) }.boxed()
     }

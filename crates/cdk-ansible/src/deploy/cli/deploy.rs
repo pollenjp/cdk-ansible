@@ -58,7 +58,7 @@ struct DeployConfig {
     playbook_command: Vec<String>,
     inventory: String,
     max_procs: usize,
-    stack_name: String,
+    stack_name: StackName,
 }
 
 impl DeployConfig {
@@ -68,7 +68,7 @@ impl DeployConfig {
                 .with_context(|| "parsing playbook command")?,
             inventory: args.inventory,
             max_procs: args.max_procs,
-            stack_name: args.stack_name,
+            stack_name: StackName::from(args.stack_name.as_str()),
         })
     }
 }
@@ -86,7 +86,7 @@ async fn deploy(
 
     let exe_playbook = app
         .exe_playbooks()
-        .get(&StackName::from(deploy_config.stack_name.as_str()))
+        .get(&deploy_config.stack_name)
         .with_context(|| "getting exe_playbook")?;
     recursive_deploy(
         exe_playbook.clone(),

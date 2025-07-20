@@ -38,28 +38,30 @@ pub trait LazyPlayL2 {
     /// // ...
     ///
     /// impl LazyPlayL2 for SampleLazyPlay {
-    ///     async move {
-    ///         let hosts = get_hosts()?;
-    ///         Ok(PlayL2 {
-    ///             name: "sample1".to_string(),
-    ///             hosts: HostsL2::new(vec![
-    ///                 Arc::clone(hosts.aaa),
-    ///                 Arc::clone(hosts.bbb),
-    ///             ]),
-    ///             options: PlayOptions::default(),
-    ///             tasks: vec![],
-    ///         })
-    ///     }.boxed()
+    ///     fn play_l2(&self) -> BoxFuture<'static, Result<PlayL2>> {
+    ///         async move {
+    ///             let hosts = get_hosts()?;
+    ///             Ok(PlayL2 {
+    ///                 name: "sample1".to_string(),
+    ///                 hosts: HostsL2::new(vec![
+    ///                     Arc::clone(hosts.aaa),
+    ///                     Arc::clone(hosts.bbb),
+    ///                 ]),
+    ///                 options: PlayOptions::default(),
+    ///                 tasks: vec![],
+    ///             })
+    ///         }.boxed()
+    ///     }
     /// }
     /// ```
-    fn exe_play(&self) -> BoxFuture<'static, Result<PlayL2>>;
+    fn create_play_l2(&self) -> BoxFuture<'static, Result<PlayL2>>;
 }
 
 #[derive(Clone)]
-pub struct HostsL2(Vec<Arc<dyn HostInventoryVarsGenerator>>);
+pub struct HostsL2(Vec<Arc<dyn HostInventoryVarsGenerator + Send + Sync>>);
 
 impl HostsL2 {
-    pub fn new(hosts: Vec<Arc<dyn HostInventoryVarsGenerator>>) -> Self {
+    pub fn new(hosts: Vec<Arc<dyn HostInventoryVarsGenerator + Send + Sync>>) -> Self {
         Self(hosts)
     }
 
@@ -75,21 +77,18 @@ impl HostsL2 {
             .into())
     }
 
-    pub fn to_inventory(&self, name: &str) -> Result<Inventory> {
-        Ok(Inventory {
-            name: name.into(), // generate 'dev.yaml' file
-            root: InventoryRoot {
-                all: InventoryChild {
-                    hosts: OptU::Some(
-                        self.0
-                            .iter()
-                            .map(|h| h.gen_host_vars())
-                            .collect::<Result<Vec<_>>>()?
-                            .into_iter()
-                            .collect(),
-                    ),
-                    ..Default::default()
-                },
+    pub fn to_inventory_root(&self) -> Result<InventoryRoot> {
+        Ok(InventoryRoot {
+            all: InventoryChild {
+                hosts: OptU::Some(
+                    self.0
+                        .iter()
+                        .map(|h| h.gen_host_vars())
+                        .collect::<Result<Vec<_>>>()?
+                        .into_iter()
+                        .collect(),
+                ),
+                ..Default::default()
             },
         })
     }
@@ -139,7 +138,7 @@ impl fmt::Debug for PlayL2 {
 /// }
 ///
 /// impl LazyPlayL2 for SampleLazyPlayL2Helper {
-///     fn exe_play(&self) -> BoxFuture<'static, Result<PlayL2>> {
+///     fn create_play_l2(&self) -> BoxFuture<'static, Result<PlayL2>> {
 ///         let name = self.name.clone();
 ///         async move { Ok(PlayL2 {
 ///             name,
@@ -189,7 +188,7 @@ pub enum ExePlayL2 {
     /// Parallel execution
     Parallel(Vec<ExePlayL2>),
     /// Single Play
-    Single(Arc<dyn LazyPlayL2>),
+    Single(Arc<dyn LazyPlayL2 + Send + Sync>),
 }
 
 pub use ExePlayL2::Parallel as ExeParallelL2;
@@ -234,7 +233,7 @@ impl ExePlayL2 {
             }
         }
     }
-    pub fn push_play(&mut self, p: Arc<dyn LazyPlayL2>) {
+    pub fn push_play(&mut self, p: Arc<dyn LazyPlayL2 + Send + Sync>) {
         match self {
             ExePlayL2::Sequential(plays) => plays.push(p.into()),
             ExePlayL2::Parallel(plays) => plays.push(p.into()),
@@ -246,8 +245,8 @@ impl ExePlayL2 {
     }
 }
 
-impl From<Arc<dyn LazyPlayL2>> for ExePlayL2 {
-    fn from(p: Arc<dyn LazyPlayL2>) -> Self {
+impl From<Arc<dyn LazyPlayL2 + Send + Sync>> for ExePlayL2 {
+    fn from(p: Arc<dyn LazyPlayL2 + Send + Sync>) -> Self {
         ExePlayL2::Single(p)
     }
 }

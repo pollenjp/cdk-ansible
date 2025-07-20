@@ -40,7 +40,7 @@ use std::{fmt, ops::DerefMut, sync::Arc};
 /// }
 ///
 /// impl LazyPlayL2 for SampleLazyPlayL2Helper {
-///     fn exe_play(&self) -> BoxFuture<'static, Result<PlayL2>> {
+///     fn create_play_l2(&self) -> BoxFuture<'static, Result<PlayL2>> {
 ///         let name = self.name.clone();
 ///         async move { Ok(PlayL2 {
 ///             name,
