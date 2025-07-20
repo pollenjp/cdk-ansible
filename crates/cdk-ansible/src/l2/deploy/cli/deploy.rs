@@ -1,5 +1,5 @@
 use crate::{
-    ExePlaybook,
+    ExePlayL2,
     l2::deploy::{
         AppL2,
         cli::{GlobalConfig, synth::synth},
@@ -47,9 +47,7 @@ pub struct Deploy {
 impl Deploy {
     pub async fn run(self, app: &AppL2, global_config: Arc<GlobalConfig>) -> Result<()> {
         let deploy_config = Arc::new(DeployConfig::new(self)?);
-        synth(app, &global_config).await?;
-
-        deploy(app, &global_config, &deploy_config).await?;
+        // deploy(app, &global_config, &deploy_config).await?;
         Ok(())
     }
 }
@@ -74,113 +72,113 @@ impl DeployConfig {
     }
 }
 
-async fn deploy(
-    app: &AppL2,
-    global_config: &Arc<GlobalConfig>,
-    deploy_config: &Arc<DeployConfig>,
-) -> Result<()> {
-    let playbook_dir = Arc::new(global_config.playbook_dir.clone());
-    let inventory_dir = Arc::new(global_config.inventory_dir.clone());
+// async fn deploy(
+//     app: &AppL2,
+//     global_config: &Arc<GlobalConfig>,
+//     deploy_config: &Arc<DeployConfig>,
+// ) -> Result<()> {
+//     let playbook_dir = Arc::new(global_config.playbook_dir.clone());
+//     let inventory_dir = Arc::new(global_config.inventory_dir.clone());
 
-    // Semaphore for limiting the number of concurrent ansible-playbook processes
-    let pb_semaphore = Arc::new(Semaphore::new(deploy_config.max_procs));
+//     // Semaphore for limiting the number of concurrent ansible-playbook processes
+//     let pb_semaphore = Arc::new(Semaphore::new(deploy_config.max_procs));
 
-    let exe_playbook = app
-        .inner
-        .stack_container
-        .exe_playbooks()
-        .get(&StackName::from(deploy_config.stack_name.as_str()))
-        .with_context(|| "getting exe_playbook")?;
-    recursive_deploy(
-        exe_playbook.clone(),
-        Arc::clone(&playbook_dir),
-        Arc::clone(&inventory_dir),
-        Arc::clone(deploy_config),
-        Arc::clone(&pb_semaphore),
-    )
-    .await?;
-    Ok(())
-}
+//     let exe_playbook = app
+//         .inner
+//         .stack_container
+//         .stacks
+//         .get(&StackName::from(deploy_config.stack_name.as_str()))
+//         .with_context(|| "getting exe_playbook")?;
+//     recursive_deploy(
+//         exe_playbook.clone(),
+//         Arc::clone(&playbook_dir),
+//         Arc::clone(&inventory_dir),
+//         Arc::clone(deploy_config),
+//         Arc::clone(&pb_semaphore),
+//     )
+//     .await?;
+//     Ok(())
+// }
 
-fn recursive_deploy(
-    exe_playbook: ExePlaybook,
-    playbook_dir: Arc<PathBuf>,
-    inventory_dir: Arc<PathBuf>,
-    deploy_config: Arc<DeployConfig>,
-    pb_semaphore: Arc<Semaphore>,
-) -> BoxFuture<'static, Result<()>> {
-    async move {
-        match exe_playbook {
-            ExePlaybook::Single(pb) => {
-                // Run 'ansible-playbook' command
+// fn recursive_deploy(
+//     exe_play_l2: ExePlayL2,
+//     playbook_dir: Arc<PathBuf>,
+//     inventory_dir: Arc<PathBuf>,
+//     deploy_config: Arc<DeployConfig>,
+//     pb_semaphore: Arc<Semaphore>,
+// ) -> BoxFuture<'static, Result<()>> {
+//     async move {
+//         match exe_play_l2 {
+//             ExePlayL2::Single(ep) => {
+//                 // Run 'ansible-playbook' command
 
-                let pb_path = playbook_dir.join(pb.name.clone()).with_extension("yaml");
-                if !pb_path.exists() {
-                    anyhow::bail!("playbook file not found: {}", pb_path.display());
-                }
+//                 let pb_path = playbook_dir.join(ep.name.clone()).with_extension("yaml");
+//                 if !pb_path.exists() {
+//                     anyhow::bail!("playbook file not found: {}", pb_path.display());
+//                 }
 
-                let inventory_path = inventory_dir
-                    .join(deploy_config.inventory.clone())
-                    .with_extension("yaml");
-                if !inventory_path.exists() {
-                    anyhow::bail!("inventory file not found: {}", inventory_path.display());
-                }
+//                 let inventory_path = inventory_dir
+//                     .join(deploy_config.inventory.clone())
+//                     .with_extension("yaml");
+//                 if !inventory_path.exists() {
+//                     anyhow::bail!("inventory file not found: {}", inventory_path.display());
+//                 }
 
-                let cmd = deploy_config
-                    .playbook_command
-                    .first()
-                    .with_context(|| "getting 1st playbook command")?;
+//                 let cmd = deploy_config
+//                     .playbook_command
+//                     .first()
+//                     .with_context(|| "getting 1st playbook command")?;
 
-                let _permit = pb_semaphore.clone().acquire_owned().await?;
-                let output = Command::new(cmd)
-                    .args(deploy_config.playbook_command.get(1..).unwrap_or_default())
-                    .args([
-                        "-i",
-                        inventory_path
-                            .to_str()
-                            .with_context(|| "stringifying path")?,
-                        pb_path.to_str().with_context(|| "stringifying path")?,
-                    ])
-                    .output()
-                    .await?;
-                if !output.status.success() {
-                    anyhow::bail!(
-                        "running ansible-playbook:\n{}\n{}",
-                        String::from_utf8_lossy(&output.stdout),
-                        String::from_utf8_lossy(&output.stderr)
-                    );
-                }
-                println!("{}", String::from_utf8_lossy(&output.stdout));
-            }
-            ExePlaybook::Sequential(pbs) => {
-                for pb in pbs {
-                    recursive_deploy(
-                        pb,
-                        Arc::clone(&playbook_dir),
-                        Arc::clone(&inventory_dir),
-                        Arc::clone(&deploy_config),
-                        Arc::clone(&pb_semaphore),
-                    )
-                    .await?;
-                }
-            }
-            ExePlaybook::Parallel(pbs) => {
-                let mut set: JoinSet<Result<()>> = JoinSet::new();
-                for pb in pbs {
-                    set.spawn(recursive_deploy(
-                        pb,
-                        Arc::clone(&playbook_dir),
-                        Arc::clone(&inventory_dir),
-                        Arc::clone(&deploy_config),
-                        Arc::clone(&pb_semaphore),
-                    ));
-                }
-                while let Some(res) = set.join_next().await {
-                    (res?)?;
-                }
-            }
-        }
-        Ok(())
-    }
-    .boxed()
-}
+//                 let _permit = pb_semaphore.clone().acquire_owned().await?;
+//                 let output = Command::new(cmd)
+//                     .args(deploy_config.playbook_command.get(1..).unwrap_or_default())
+//                     .args([
+//                         "-i",
+//                         inventory_path
+//                             .to_str()
+//                             .with_context(|| "stringifying path")?,
+//                         pb_path.to_str().with_context(|| "stringifying path")?,
+//                     ])
+//                     .output()
+//                     .await?;
+//                 if !output.status.success() {
+//                     anyhow::bail!(
+//                         "running ansible-playbook:\n{}\n{}",
+//                         String::from_utf8_lossy(&output.stdout),
+//                         String::from_utf8_lossy(&output.stderr)
+//                     );
+//                 }
+//                 println!("{}", String::from_utf8_lossy(&output.stdout));
+//             }
+//             ExePlayL2::Sequential(pbs) => {
+//                 for pb in pbs {
+//                     recursive_deploy(
+//                         pb,
+//                         Arc::clone(&playbook_dir),
+//                         Arc::clone(&inventory_dir),
+//                         Arc::clone(&deploy_config),
+//                         Arc::clone(&pb_semaphore),
+//                     )
+//                     .await?;
+//                 }
+//             }
+//             ExePlayL2::Parallel(pbs) => {
+//                 let mut set: JoinSet<Result<()>> = JoinSet::new();
+//                 for pb in pbs {
+//                     set.spawn(recursive_deploy(
+//                         pb,
+//                         Arc::clone(&playbook_dir),
+//                         Arc::clone(&inventory_dir),
+//                         Arc::clone(&deploy_config),
+//                         Arc::clone(&pb_semaphore),
+//                     ));
+//                 }
+//                 while let Some(res) = set.join_next().await {
+//                     (res?)?;
+//                 }
+//             }
+//         }
+//         Ok(())
+//     }
+//     .boxed()
+// }

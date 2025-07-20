@@ -4,6 +4,7 @@ use anyhow::Result;
 use cdk_ansible_core::core::{
     Inventory, InventoryChild, InventoryRoot, OptU, Play, PlayOptions, StringOrVecString, Task,
 };
+use futures::future::BoxFuture;
 use std::fmt;
 use std::sync::Arc;
 
@@ -24,6 +25,34 @@ impl PlayL2 {
             tasks: self.tasks,
         })
     }
+}
+
+pub trait LazyPlayL2 {
+    /// Pseudo code
+    ///
+    /// ```ignore
+    /// use cdk_ansible::{prelude::*, PlayL2, PlayOptions, HostsL2, HostInventoryVarsGenerator, LazyPlayL2};
+    /// use std::sync::Arc;
+    /// use futures::future::{BoxFuture, FutureExt as _};
+    ///
+    /// // ...
+    ///
+    /// impl LazyPlayL2 for SampleLazyPlay {
+    ///     async move {
+    ///         let hosts = get_hosts()?;
+    ///         Ok(PlayL2 {
+    ///             name: "sample1".to_string(),
+    ///             hosts: HostsL2::new(vec![
+    ///                 Arc::clone(hosts.aaa),
+    ///                 Arc::clone(hosts.bbb),
+    ///             ]),
+    ///             options: PlayOptions::default(),
+    ///             tasks: vec![],
+    ///         })
+    ///     }.boxed()
+    /// }
+    /// ```
+    fn exe_play(&self) -> BoxFuture<'static, Result<PlayL2>>;
 }
 
 #[derive(Clone)]
@@ -80,9 +109,10 @@ impl fmt::Debug for PlayL2 {
 /// Play execution definition
 ///
 /// ```rust
-/// use cdk_ansible::{prelude::*, Play, PlayOptions, PlayL2, HostsL2, HostInventoryVarsGenerator, HostInventoryVars, ExeSequentialL2, ExeSingleL2, ExeParallelL2};
+/// use cdk_ansible::{prelude::*, Play, PlayOptions, PlayL2, HostsL2, HostInventoryVarsGenerator, HostInventoryVars, ExeSequentialL2, ExeSingleL2, ExeParallelL2, LazyPlayL2, ExePlayL2};
 /// use std::sync::Arc;
 /// use anyhow::Result;
+/// use futures::future::{BoxFuture, FutureExt as _};
 ///
 /// struct HostA {
 ///     name: String,
@@ -97,25 +127,38 @@ impl fmt::Debug for PlayL2 {
 ///     }
 /// }
 ///
-/// /// Helper function to create sample play
-/// fn create_play_l2_helper(name: &str) -> PlayL2 {
-///     PlayL2 {
-///         name: name.to_string(),
-///         hosts: HostsL2::new(vec![Arc::new(HostA { name: "localhost".to_string() })]),
-///         options: PlayOptions::default(),
-///         tasks: vec![],
+///
+/// struct SampleLazyPlayL2Helper {
+///     name: String,
+/// }
+///
+/// impl SampleLazyPlayL2Helper {
+///     pub fn new(name: &str) -> Self {
+///         Self { name: name.to_string() }
+///     }
+/// }
+///
+/// impl LazyPlayL2 for SampleLazyPlayL2Helper {
+///     fn exe_play(&self) -> BoxFuture<'static, Result<PlayL2>> {
+///         let name = self.name.clone();
+///         async move { Ok(PlayL2 {
+///             name,
+///             hosts: HostsL2::new(vec![Arc::new(HostA { name: "localhost".to_string() })]),
+///             options: PlayOptions::default(),
+///             tasks: vec![],
+///         }) }.boxed()
 ///     }
 /// }
 ///
 /// // Example of creating ExePlayL2 simply
 /// let _play_exec = ExeSequentialL2(vec![
-///     ExeSingleL2(Box::new(create_play_l2_helper("sample1"))),
-///     ExeSingleL2(Box::new(create_play_l2_helper("sample2"))),
+///     ExeSingleL2(Arc::new(SampleLazyPlayL2Helper::new("sample1"))),
+///     ExeSingleL2(Arc::new(SampleLazyPlayL2Helper::new("sample2"))),
 ///     ExeParallelL2(vec![
-///         ExeSingleL2(Box::new(create_play_l2_helper("sample3"))),
+///         ExeSingleL2(Arc::new(SampleLazyPlayL2Helper::new("sample3"))),
 ///         ExeSequentialL2(vec![
-///             ExeSingleL2(Box::new(create_play_l2_helper("sample4"))),
-///             ExeSingleL2(Box::new(create_play_l2_helper("sample5"))),
+///             ExeSingleL2(Arc::new(SampleLazyPlayL2Helper::new("sample4"))),
+///             ExeSingleL2(Arc::new(SampleLazyPlayL2Helper::new("sample5"))),
 ///         ]),
 ///     ]),
 /// ]);
@@ -124,13 +167,13 @@ impl fmt::Debug for PlayL2 {
 /// use cdk_ansible::prelude::*;
 ///
 /// let _play_exec = vec![
-///     create_play_l2_helper("sample1").into(),
-///     create_play_l2_helper("sample2").into(),
+///     ExePlayL2::Single(Arc::new(SampleLazyPlayL2Helper::new("sample1"))),
+///     ExePlayL2::Single(Arc::new(SampleLazyPlayL2Helper::new("sample2"))),
 ///     vec![
-///         create_play_l2_helper("sample3").into(),
+///         ExePlayL2::Single(Arc::new(SampleLazyPlayL2Helper::new("sample3"))),
 ///         vec![
-///             create_play_l2_helper("sample4").into(),
-///             create_play_l2_helper("sample5").into(),
+///             ExePlayL2::Single(Arc::new(SampleLazyPlayL2Helper::new("sample4"))),
+///             ExePlayL2::Single(Arc::new(SampleLazyPlayL2Helper::new("sample5"))),
 ///         ]
 ///         .into_exe_play_l2_parallel(),
 ///     ]
@@ -139,14 +182,14 @@ impl fmt::Debug for PlayL2 {
 /// .into_exe_play_l2_sequential();
 ///
 /// ```
-#[derive(Debug, Clone)]
+#[derive(Clone)]
 pub enum ExePlayL2 {
     /// Sequential execution
     Sequential(Vec<ExePlayL2>),
     /// Parallel execution
     Parallel(Vec<ExePlayL2>),
     /// Single Play
-    Single(Box<PlayL2>),
+    Single(Arc<dyn LazyPlayL2>),
 }
 
 pub use ExePlayL2::Parallel as ExeParallelL2;
@@ -161,11 +204,11 @@ mod test_exe_play_struct {
     #[test]
     fn test_sequential_play_exec() {
         let _play_exec = ExeSequentialL2(vec![
-            ExeSingleL2(Box::new(create_play_l2_helper("sample1"))),
-            ExeSingleL2(Box::new(create_play_l2_helper("sample2"))),
+            ExeSingleL2(Arc::new(SampleLazyPlayL2Helper::new("sample1"))),
+            ExeSingleL2(Arc::new(SampleLazyPlayL2Helper::new("sample2"))),
             ExeParallelL2(vec![
-                ExeSingleL2(Box::new(create_play_l2_helper("sample3"))),
-                ExeSingleL2(Box::new(create_play_l2_helper("sample4"))),
+                ExeSingleL2(Arc::new(SampleLazyPlayL2Helper::new("sample3"))),
+                ExeSingleL2(Arc::new(SampleLazyPlayL2Helper::new("sample4"))),
             ]),
         ]);
     }
@@ -191,7 +234,7 @@ impl ExePlayL2 {
             }
         }
     }
-    pub fn push_play(&mut self, p: PlayL2) {
+    pub fn push_play(&mut self, p: Arc<dyn LazyPlayL2>) {
         match self {
             ExePlayL2::Sequential(plays) => plays.push(p.into()),
             ExePlayL2::Parallel(plays) => plays.push(p.into()),
@@ -203,15 +246,23 @@ impl ExePlayL2 {
     }
 }
 
+impl From<Arc<dyn LazyPlayL2>> for ExePlayL2 {
+    fn from(p: Arc<dyn LazyPlayL2>) -> Self {
+        ExePlayL2::Single(p)
+    }
+}
+
 #[cfg(test)]
-mod test_exe_play {
+mod test_exe_play_l2_push {
     use super::*;
     use crate::utils::test::*;
 
     #[test]
     fn test_exe_play_single_push() {
-        let mut exe_play = ExeSingleL2(Box::new(create_play_l2_helper("sample1")));
-        exe_play.push(ExeSingleL2(Box::new(create_play_l2_helper("sample2"))));
+        let mut exe_play = ExeSingleL2(Arc::new(SampleLazyPlayL2Helper::new("sample1")));
+        exe_play.push(ExeSingleL2(Arc::new(SampleLazyPlayL2Helper::new(
+            "sample2",
+        ))));
         match exe_play {
             ExePlayL2::Sequential(plays) => {
                 assert_eq!(plays.len(), 2);
@@ -222,8 +273,12 @@ mod test_exe_play {
     }
     #[test]
     fn test_exe_play_sequential_push() {
-        let mut exe_play = ExeSequentialL2(vec![create_play_l2_helper("sample1").into()]);
-        exe_play.push(create_play_l2_helper("sample2").into());
+        let mut exe_play = ExeSequentialL2(vec![ExeSingleL2(Arc::new(
+            SampleLazyPlayL2Helper::new("sample1"),
+        ))]);
+        exe_play.push(ExeSingleL2(Arc::new(SampleLazyPlayL2Helper::new(
+            "sample2",
+        ))));
         match exe_play {
             ExePlayL2::Sequential(plays) => {
                 assert_eq!(plays.len(), 2);
@@ -234,8 +289,12 @@ mod test_exe_play {
     }
     #[test]
     fn test_exe_play_parallel_push() {
-        let mut exe_play = ExeParallelL2(vec![create_play_l2_helper("sample1").into()]);
-        exe_play.push(create_play_l2_helper("sample2").into());
+        let mut exe_play = ExeParallelL2(vec![ExeSingleL2(Arc::new(SampleLazyPlayL2Helper::new(
+            "sample1",
+        )))]);
+        exe_play.push(ExeSingleL2(Arc::new(SampleLazyPlayL2Helper::new(
+            "sample2",
+        ))));
         match exe_play {
             ExePlayL2::Parallel(plays) => {
                 assert_eq!(plays.len(), 2);
@@ -246,53 +305,49 @@ mod test_exe_play {
     }
 }
 
-impl From<PlayL2> for ExePlayL2 {
-    fn from(play: PlayL2) -> Self {
-        ExePlayL2::Single(Box::new(play))
-    }
-}
-
-impl From<Box<PlayL2>> for ExePlayL2 {
-    fn from(play: Box<PlayL2>) -> Self {
-        ExePlayL2::Single(play)
-    }
-}
-
-impl From<Vec<ExePlayL2>> for ExePlayL2 {
-    fn from(plays: Vec<ExePlayL2>) -> Self {
-        ExePlayL2::Sequential(plays)
-    }
-}
-
 #[cfg(test)]
-mod test_exe_play_from_impl {
+mod test_exe_play_l2_push_play {
     use super::*;
     use crate::utils::test::*;
 
     #[test]
-    fn test_exe_play_from_play() {
-        let play = create_play_l2_helper("sample");
-        let exe_play: ExePlayL2 = play.into();
+    fn test_exe_play_single_push_play() {
+        let mut exe_play = ExeSingleL2(Arc::new(SampleLazyPlayL2Helper::new("sample1")));
+        exe_play.push_play(Arc::new(SampleLazyPlayL2Helper::new("sample2")));
         match exe_play {
-            ExePlayL2::Single(_) => {
-                // OK
-            }
-            _ => unreachable!("exe_play should be ExeSingleL2"),
-        }
-    }
-    #[test]
-    fn test_exe_play_from_play_vec() {
-        let plays = vec![
-            create_play_l2_helper("sample1").into(),
-            create_play_l2_helper("sample2").into(),
-            create_play_l2_helper("sample3").into(),
-        ];
-        let exe_play: ExePlayL2 = plays.into();
-        match exe_play {
-            ExePlayL2::Sequential(_) => {
+            ExePlayL2::Sequential(plays) => {
+                assert_eq!(plays.len(), 2);
                 // OK
             }
             _ => unreachable!("exe_play should be ExeSequentialL2"),
+        }
+    }
+    #[test]
+    fn test_exe_play_sequential_push_play() {
+        let mut exe_play = ExeSequentialL2(vec![ExeSingleL2(Arc::new(
+            SampleLazyPlayL2Helper::new("sample1"),
+        ))]);
+        exe_play.push_play(Arc::new(SampleLazyPlayL2Helper::new("sample2")));
+        match exe_play {
+            ExePlayL2::Sequential(plays) => {
+                assert_eq!(plays.len(), 2);
+                // OK
+            }
+            _ => unreachable!("exe_play should be ExeSequentialL2"),
+        }
+    }
+    #[test]
+    fn test_exe_play_parallel_push_play() {
+        let mut exe_play = ExeParallelL2(vec![ExeSingleL2(Arc::new(SampleLazyPlayL2Helper::new(
+            "sample1",
+        )))]);
+        exe_play.push_play(Arc::new(SampleLazyPlayL2Helper::new("sample2")));
+        match exe_play {
+            ExePlayL2::Parallel(plays) => {
+                assert_eq!(plays.len(), 2);
+                // OK
+            }
+            _ => unreachable!("exe_play should be ExeParallelL2"),
         }
     }
 }

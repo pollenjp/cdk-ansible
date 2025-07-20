@@ -1,7 +1,6 @@
 mod cli;
 mod stack_container;
-// use crate::{ExePlay, ExePlaybook, Inventory};
-use crate::types::{ExePlay, ExePlaybook};
+use crate::l2::types::ExePlayL2;
 use anyhow::Result;
 use cdk_ansible_core::core::Inventory;
 use cli::Cli;
@@ -13,40 +12,70 @@ use std::{fmt, ops::DerefMut, sync::Arc};
 ///
 /// ```rust
 /// use anyhow::Result;
-/// use cdk_ansible::{App, Stack, ExePlay, ExeSingle, Play, PlayOptions};
+/// use cdk_ansible::{AppL2, StackL2, ExePlayL2, ExeSingle, Play, PlayOptions, LazyPlayL2, PlayL2, HostsL2, HostInventoryVarsGenerator, HostInventoryVars};
+/// use std::sync::Arc;
+/// use futures::future::{BoxFuture, FutureExt as _};
 ///
-/// fn create_play_helper(name: &str) -> Box<Play> {
-///     Box::new(Play {
-///         name: name.to_string(),
-///         hosts: "localhost".into(),
-///         options: PlayOptions::default(),
-///         tasks: vec![],
-///     })
+/// struct HostA {
+///     name: String,
+/// }
+///
+/// impl HostInventoryVarsGenerator for HostA {
+///     fn gen_host_vars(&self) -> Result<HostInventoryVars> {
+///         Ok(HostInventoryVars {
+///             ansible_host: self.name.clone(),
+///             inventory_vars: vec![],
+///         })
+///     }
+/// }
+///
+/// struct SampleLazyPlayL2Helper {
+///     name: String,
+/// }
+///
+/// impl SampleLazyPlayL2Helper {
+///     pub fn new(name: &str) -> Self {
+///         Self { name: name.to_string() }
+///     }
+/// }
+///
+/// impl LazyPlayL2 for SampleLazyPlayL2Helper {
+///     fn exe_play(&self) -> BoxFuture<'static, Result<PlayL2>> {
+///         let name = self.name.clone();
+///         async move { Ok(PlayL2 {
+///             name,
+///             hosts: HostsL2::new(vec![
+///                 Arc::new(HostA { name: "localhost".to_string() }),
+///             ]),
+///             options: PlayOptions::default(),
+///             tasks: vec![],
+///         }) }.boxed()
+///     }
 /// }
 ///
 /// struct SampleStack {
-///     exe_play: ExePlay,
+///     exe_play: ExePlayL2,
 /// }
 ///
 /// impl SampleStack {
-///   pub fn new() -> Self {
-///     Self {
-///       exe_play: ExeSingle(create_play_helper("sample")),
+///     fn new() -> Self {
+///         Self {
+///             exe_play: ExePlayL2::Single(Arc::new(SampleLazyPlayL2Helper::new("sample"))),
+///         }
 ///     }
-///   }
 /// }
 ///
-/// impl Stack for SampleStack {
+/// impl StackL2 for SampleStack {
 ///     fn name(&self) -> &str {
-///         "sample"
+///         ::std::any::type_name::<Self>()
 ///     }
-///     fn exe_play(&self) -> &ExePlay {
+///     fn exe_play(&self) -> &ExePlayL2 {
 ///         &self.exe_play
 ///     }
 /// }
 ///
-/// let mut app = App::new(vec!["help".to_string()]);
-/// app.add_stack(Box::new(SampleStack::new()))
+/// let _app = AppL2::new(vec!["help".to_string()])
+///     .stack(Arc::new(SampleStack::new()))
 ///     .expect("Failed to add sample stack");
 /// ```
 #[derive(Debug)]
@@ -123,7 +152,7 @@ impl AppL2 {
 /// 副作用の無いコードを書くこと
 pub trait StackL2 {
     fn name(&self) -> &str;
-    fn exe_play(&self) -> &ExePlay;
+    fn exe_play(&self) -> &ExePlayL2;
 }
 
 #[cfg(test)]
@@ -134,13 +163,13 @@ mod tests {
     #[test]
     fn test_sample_stack() {
         struct SampleStack {
-            exe_play: ExePlay,
+            exe_play: ExePlayL2,
         }
 
         impl SampleStack {
             fn new() -> Self {
                 Self {
-                    exe_play: create_play_helper("sample").into(),
+                    exe_play: ExePlayL2::Single(Arc::new(SampleLazyPlayL2Helper::new("sample"))),
                 }
             }
         }
@@ -149,7 +178,7 @@ mod tests {
             fn name(&self) -> &str {
                 ::std::any::type_name::<Self>()
             }
-            fn exe_play(&self) -> &ExePlay {
+            fn exe_play(&self) -> &ExePlayL2 {
                 &self.exe_play
             }
         }
@@ -163,14 +192,14 @@ mod tests {
     fn test_stack_name_confliction() {
         struct SampleStack1 {
             name: String,
-            exe_play: ExePlay,
+            exe_play: ExePlayL2,
         }
 
         impl SampleStack1 {
             fn new(n: &str) -> Self {
                 Self {
                     name: n.to_string(),
-                    exe_play: create_play_helper("sample1").into(),
+                    exe_play: ExePlayL2::Single(Arc::new(SampleLazyPlayL2Helper::new("sample1"))),
                 }
             }
         }
@@ -178,20 +207,20 @@ mod tests {
             fn name(&self) -> &str {
                 &self.name
             }
-            fn exe_play(&self) -> &ExePlay {
+            fn exe_play(&self) -> &ExePlayL2 {
                 &self.exe_play
             }
         }
 
         struct SampleStack2 {
             name: String,
-            exe_play: ExePlay,
+            exe_play: ExePlayL2,
         }
         impl SampleStack2 {
             fn new(n: &str) -> Self {
                 Self {
                     name: n.to_string(),
-                    exe_play: create_play_helper("sample2").into(),
+                    exe_play: ExePlayL2::Single(Arc::new(SampleLazyPlayL2Helper::new("sample2"))),
                 }
             }
         }
@@ -200,7 +229,7 @@ mod tests {
             fn name(&self) -> &str {
                 &self.name
             }
-            fn exe_play(&self) -> &ExePlay {
+            fn exe_play(&self) -> &ExePlayL2 {
                 &self.exe_play
             }
         }

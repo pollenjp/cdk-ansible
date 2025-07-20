@@ -1,9 +1,10 @@
 //! Utility for testing
 use crate::{
     HostInventoryVars, HostInventoryVarsGenerator, OptU, Play, PlayOptions, Task, TaskOptions,
-    l2::types::{HostsL2, PlayL2},
+    l2::types::{HostsL2, LazyPlayL2, PlayL2},
 };
 use anyhow::Result;
+use futures::future::{BoxFuture, FutureExt as _};
 use std::sync::Arc;
 
 /// Helper function to create sample play
@@ -76,6 +77,25 @@ pub fn create_play_l2_helper(name: &str) -> PlayL2 {
                 },
             }),
         }],
+    }
+}
+
+pub struct SampleLazyPlayL2Helper {
+    name: String,
+}
+
+impl SampleLazyPlayL2Helper {
+    pub fn new(name: &str) -> Self {
+        Self {
+            name: name.to_owned(),
+        }
+    }
+}
+
+impl LazyPlayL2 for SampleLazyPlayL2Helper {
+    fn exe_play(&self) -> BoxFuture<'static, Result<PlayL2>> {
+        let name = self.name.to_owned();
+        async move { Ok(create_play_l2_helper(&name)) }.boxed()
     }
 }
 
