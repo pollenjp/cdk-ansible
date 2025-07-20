@@ -1,9 +1,6 @@
 use crate::{
     ExePlayL2,
-    l2::deploy::{
-        AppL2,
-        cli::{GlobalConfig, synth::synth},
-    },
+    l2::deploy::{AppL2, cli::GlobalConfig},
     types::StackName,
     utils::{dump_json, json_to_yaml},
 };
@@ -32,11 +29,6 @@ pub struct Deploy {
         default_value = "ansible-playbook"
     )]
     pub playbook_command: String,
-    /// Inventory name.
-    ///
-    /// The candidates are inventories added to the [`crate::l2::deploy::App`] ([`crate::l2::deploy::App::add_inventory`])
-    #[arg(short = 'i', long, required = true)]
-    pub inventory: String,
     /// The maximum number of playbook processes.
     #[arg(short = 'P', long, required = false, default_value = "2")]
     pub max_procs: usize,
@@ -56,7 +48,6 @@ impl Deploy {
 #[derive(Debug, Clone)]
 struct DeployConfig {
     playbook_command: Vec<String>,
-    inventory: String,
     max_procs: usize,
     stack_name: StackName,
 }
@@ -66,7 +57,6 @@ impl DeployConfig {
         Ok(Self {
             playbook_command: ::shlex::split(&args.playbook_command)
                 .with_context(|| "parsing playbook command")?,
-            inventory: args.inventory,
             max_procs: args.max_procs,
             stack_name: StackName::from(args.stack_name.as_str()),
         })

@@ -2,7 +2,7 @@ pub(crate) mod trait_impl;
 use crate::HostInventoryVarsGenerator;
 use anyhow::Result;
 use cdk_ansible_core::core::{
-    Inventory, InventoryChild, InventoryRoot, OptU, Play, PlayOptions, StringOrVecString, Task,
+    InventoryChild, InventoryRoot, OptU, Play, PlayOptions, StringOrVecString, Task,
 };
 use futures::future::BoxFuture;
 use std::fmt;

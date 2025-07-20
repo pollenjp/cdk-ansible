@@ -2,12 +2,10 @@ mod cli;
 mod stack_container;
 use crate::l2::types::ExePlayL2;
 use anyhow::Result;
-use cdk_ansible_core::core::Inventory;
 use cli::Cli;
-use indexmap::IndexMap;
 use stack_container::StackContainer;
 use std::rc::Rc;
-use std::{fmt, ops::DerefMut, sync::Arc};
+use std::sync::Arc;
 
 /// Main entry point for the cdk-ansible CLI.
 ///
