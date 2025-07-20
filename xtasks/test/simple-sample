@@ -1,33 +1,5 @@
 #!/usr/bin/env bash
-#MISE description="Test simple sample"
+#MISE description="Test simple sample 'l1'"
 #MISE env={ RUST_BACKTRACE = "1" }
-#MISE depends=["test:simple-sample-module"]
-#MISE depends_post=["lint:simple-sample-ansible"]
-
-set -euo pipefail -x
-
-simple_sample_ansible_dir=./tools/ansible
-
-global_args=(
-  --app-dir "${simple_sample_ansible_dir}"
-)
-
-# cargo run --package simple-sample -- "${global_args[@]}" synth
-
-stringify_cmd=(uv run python -c 'import sys; from shlex import join; print(join(sys.argv[1:]))')
-playbook_command_str=$(
-  "${stringify_cmd[@]}" \
-    uv --project "${simple_sample_ansible_dir}" \
-    run --directory "${simple_sample_ansible_dir}" \
-    ansible-playbook -v
-)
-cargo run --package simple-sample --bin simple-sample -- "${global_args[@]}" deploy -P 3 --playbook-command "${playbook_command_str}" -i dev SampleStack
-
-stringify_cmd=(uv run python -c 'import sys; from shlex import join; print(join(sys.argv[1:]))')
-playbook_command_str=$(
-  "${stringify_cmd[@]}" \
-    uv --project "${simple_sample_ansible_dir}" \
-    run --directory "${simple_sample_ansible_dir}" \
-    ansible-playbook -v
-)
-cargo run --package simple-sample --bin l2 -- "${global_args[@]}" deploy -P 3 --playbook-command "${playbook_command_str}" SampleStack
+#MISE depends=["test:simple-sample-*"]
+#MISE depends_post=[]
