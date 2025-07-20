@@ -24,7 +24,7 @@ jobs:
       - run: rustup update stable && rustup default stable
       - run: rustup component add clippy
       - name: Lint
-        run: mise run lint:clippy
+        run: mise run lint:rust
         working-directory: .
   test:
     runs-on: ubuntu-latest
