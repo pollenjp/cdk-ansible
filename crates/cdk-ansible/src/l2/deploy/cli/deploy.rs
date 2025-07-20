@@ -78,7 +78,7 @@ async fn deploy(
         .inner
         .stack_container
         .get_stack(&deploy_config.stack_name)
-        .with_context(|| "getting exe_playbook")?;
+        .with_context(|| format!("getting stack: {}", deploy_config.stack_name))?;
 
     recursive_deploy(
         deploy_config
@@ -116,7 +116,7 @@ fn recursive_deploy(
 
                 // Create playbook
                 let pb_path_j = playbook_dir.join(&name).with_extension("json");
-                dump_json(pb_path_j.clone(), play).await?;
+                dump_json(pb_path_j.clone(), vec![play]).await?;
                 json_to_yaml(pb_path_j.clone()).await?;
 
                 // Create inventory

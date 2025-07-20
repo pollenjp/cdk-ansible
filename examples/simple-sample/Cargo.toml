@@ -13,6 +13,7 @@ sample_cdkam_ansible = { path = "../sample_cdkam_ansible", features = [
 ] }
 
 anyhow.workspace = true
+futures.workspace = true
 indexmap.workspace = true
 tokio.workspace = true
 serde.workspace = true

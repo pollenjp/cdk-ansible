@@ -22,3 +22,12 @@ playbook_command_str=$(
     ansible-playbook -v
 )
 cargo run --package simple-sample -- "${global_args[@]}" deploy -P 3 --playbook-command "${playbook_command_str}" -i dev SampleStack
+
+stringify_cmd=(uv run python -c 'import sys; from shlex import join; print(join(sys.argv[1:]))')
+playbook_command_str=$(
+  "${stringify_cmd[@]}" \
+    uv --project "${simple_sample_ansible_dir}" \
+    run --directory "${simple_sample_ansible_dir}" \
+    ansible-playbook -v
+)
+cargo run --package simple-sample --bin l2 -- "${global_args[@]}" deploy -P 3 --playbook-command "${playbook_command_str}" SampleStack
