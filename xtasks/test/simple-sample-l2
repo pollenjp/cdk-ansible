@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 #MISE description="Test simple sample 'l2'"
 #MISE env={ RUST_BACKTRACE = "1" }
-#MISE depends=["test:simple-sample-module"]
+#MISE depends=["test:simple-sample-cli-module"]
 #MISE depends_post=[]
 
 set -euo pipefail -x

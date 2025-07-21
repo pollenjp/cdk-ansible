@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 #MISE description="Test simple sample 'l1'"
 #MISE env={ RUST_BACKTRACE = "1" }
-#MISE depends=["test:simple-sample-module"]
+#MISE depends=["test:simple-sample-cli-module"]
 #MISE depends_post=[]
 
 set -euo pipefail -x
@@ -9,7 +9,7 @@ set -euo pipefail -x
 simple_sample_ansible_dir=./tools/ansible
 
 global_args=(
-  --app-dir ".cdka/l1"
+  --app-dir "${simple_sample_ansible_dir}"
 )
 
 stringify_cmd=(uv run python -c 'import sys; from shlex import join; print(join(sys.argv[1:]))')
