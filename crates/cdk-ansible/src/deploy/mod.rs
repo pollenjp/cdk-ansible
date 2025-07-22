@@ -1,9 +1,11 @@
-use crate::{ExePlay, ExePlaybook, Inventory};
-use anyhow::Result;
-use indexmap::IndexMap;
-
 mod cli;
+use crate::{
+    Inventory,
+    types::{ExePlay, ExePlaybook, StackName},
+};
+use anyhow::Result;
 use cli::Cli;
+use indexmap::IndexMap;
 
 /// Main entry point for the cdk-ansible CLI.
 ///
@@ -121,21 +123,6 @@ impl App {
 pub trait Stack {
     fn name(&self) -> &str;
     fn exe_play(&self) -> &ExePlay;
-}
-
-#[derive(Debug, Clone, PartialEq, Eq, Hash)]
-pub struct StackName(String);
-
-impl From<&str> for StackName {
-    fn from(s: &str) -> Self {
-        StackName(s.to_string())
-    }
-}
-
-impl std::fmt::Display for StackName {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        write!(f, "{}", self.0)
-    }
 }
 
 #[cfg(test)]

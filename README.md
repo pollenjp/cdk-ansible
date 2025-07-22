@@ -38,6 +38,8 @@ WARNING: This project does not use [JSii](https://github.com/aws/jsii).
 
 Full example project can see in [cdk-ansible-examples](https://github.com/pollenjp/cdk-ansible-examples)'s cli-init directory.
 
+### Define Plays
+
 Define Ansible **Play** in Rust.
 
 ```rust
@@ -60,7 +62,9 @@ let play = Box::new(Play {
 }),
 ```
 
-Create cdk-ansible's Stack and define the relationship between **Play** in Rust (Sequential, Parallel, etc.).
+### Define Stacks (L1 Stack)
+
+Create cdk-ansible's Stack and define the relationship between **Play** (Sequential, Parallel, etc.).
 
 ```rust
 // let play1, play2, play3, ...
@@ -124,6 +128,8 @@ stateDiagram
   play9 --> [*]
 ```
 
+### Instantiate an App
+
 Instantiate CDK-Ansible's App and add **Inventory** and **Stack** to it.
 
 ```rust
@@ -149,6 +155,8 @@ pub fn run() -> Result<()> {
 }
 ```
 
+### Run the App
+
 Run your app.
 
 ```bash
@@ -158,6 +166,108 @@ cargo run --package my-app -- deploy -P 3 -i dev SampleStack
 If your ansible command is installed through `uv`, pass `--playbook-command` option like below.
 
 <https://github.com/pollenjp/cdk-ansible-examples/blob/a5d5568fa170047fae4b7327b26c5ba16a37f88f/cli-init/xtasks/test/cdk-ansible-cli-init#L33-L40>
+
+### (Optional) L2 Stack
+
+CDK-Ansible can also define higher-level L2 (Layer 2) stacks.
+In comparison, the previous Stack is called an L1 Stack.
+
+[simple-sample for L2 Stack](src/bin/l2.rs)
+
+- L1 Stack first statically defines all Inventory and Play objects before moving to the execution phase.
+- In contrast, L2 Stack generates Inventory and Play objects just before executing each Play.
+- This allows generating Inventory and Play objects based on the execution state up to that point. This functionality can serve as an alternative to Ansible's Dynamic Inventory.
+
+The definition of L2 Stack is similar to L1, but it implements the `StackL2` trait.
+The difference is that `fn exe_play` returns `&ExePlayL2`.
+
+```rust
+struct SampleStack {
+    exe_play: ExePlayL2,
+}
+
+impl SampleStack {
+    fn new() -> Self {
+        Self {
+            exe_play: ExePlayL2::Single(Arc::new(SampleLazyPlayL2Helper::new("sample"))),
+        }
+    }
+}
+
+impl StackL2 for SampleStack {
+    fn name(&self) -> &str {
+        std::any::type_name::<Self>()
+            .split("::")
+            .last()
+            .expect("Failed to get a stack name")
+    }
+    fn exe_play(&self) -> &ExePlayL2 {
+        &self.exe_play
+    }
+}
+
+pub fn main2() -> Result<()> {
+    // AppL2 can define stacks with chainable method calls.
+    AppL2::new(std::env::args().collect())
+        .stack(Arc::new(SampleStack::new()))
+        .expect("Failed to add sample stack")
+        .run()
+}
+
+```
+
+`ExePlayL2` corresponds to `ExePlay`, but it can accept objects that implement the `LazyPlayL2` trait instead of `Play` objects.
+The `LazyPlayL2` trait implements an async function `fn create_play_l2` which can generate information equivalent to an Ansible Play within this function.
+
+```rust
+struct SampleLazyPlayL2Helper {
+    name: String,
+}
+
+impl SampleLazyPlayL2Helper {
+    pub fn new(name: &str) -> Self {
+        Self {
+            name: name.to_string(),
+        }
+    }
+}
+
+impl LazyPlayL2 for SampleLazyPlayL2Helper {
+    fn create_play_l2(&self) -> BoxFuture<'static, Result<PlayL2>> {
+        let name = self.name.clone();
+        async move {
+            Ok(PlayL2 {
+                name,
+                hosts: HostsL2::new(vec![Arc::new(HostA {
+                    name: "localhost".to_string(),
+                })]),
+                options: PlayOptions::default(),
+                tasks: create_tasks_helper(2)?,
+            })
+        }
+        .boxed()
+    }
+}
+```
+
+`PlayL2::hosts` is not a simple string, but an object that implements the `HostInventoryVarsGenerator` trait.
+This allows you to generate Inventory dynamically based on the execution state up to that point.
+
+```rust
+struct HostA {
+    name: String,
+}
+
+impl HostInventoryVarsGenerator for HostA {
+    fn gen_host_vars(&self) -> Result<HostInventoryVars> {
+        Ok(HostInventoryVars {
+            ansible_host: self.name.clone(),
+            inventory_vars: vec![("ansible_connection".to_string(), "local".into())],
+        })
+    }
+}
+
+```
 
 ## cdk-ansible-cli (cdk-ansible command)
 

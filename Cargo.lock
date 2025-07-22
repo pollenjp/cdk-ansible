@@ -741,6 +741,7 @@ version = "0.1.0"
 dependencies = [
  "anyhow",
  "cdk-ansible",
+ "futures",
  "indexmap",
  "sample_cdkam_ansible",
  "serde",

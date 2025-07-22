@@ -13,6 +13,7 @@ pub struct Inventory {
 }
 
 impl Inventory {
+    /// @deprecated
     pub fn dump_json(&self) -> serde_json::Result<String> {
         serde_json::to_string(&self.root)
     }

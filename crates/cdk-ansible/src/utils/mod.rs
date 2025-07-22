@@ -22,6 +22,8 @@ pub async fn dump_json(filepath: PathBuf, obj: impl Serialize) -> Result<()> {
     Ok(())
 }
 
+/// @deprecated
+/// Use [`dump_json`] instead.
 pub async fn playbook_dump(playbook: Playbook, dirpath: Arc<PathBuf>) -> Result<()> {
     let filepath = dirpath.join(format!("{}.json", playbook.name));
     fs::create_dir_all(

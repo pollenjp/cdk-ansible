@@ -5,7 +5,7 @@
 #MISE depends_post=[]
 set -euo pipefail
 
-pushd "${PROJ_CDK_ANSIBLE:?}" >/dev/null 2>&1
+pushd "." >/dev/null 2>&1
 
 # if ! git diff-index --quiet HEAD -- .; then
 if ! git diff --quiet -- .; then
