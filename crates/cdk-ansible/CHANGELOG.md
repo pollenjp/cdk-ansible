@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.3.0](https://github.com/pollenjp/cdk-ansible/compare/cdk-ansible-v0.2.5...cdk-ansible-v0.3.0) - 2025-07-22 (cdk-ansible)
+
+### Added
+
+- add L2 features (AppL2, StackL2, LazyPlayL2, PlayL2) ([#89](https://github.com/pollenjp/cdk-ansible/pull/89))
+
+### Other
+
+- add image
+
 ## [0.2.5](https://github.com/pollenjp/cdk-ansible/compare/cdk-ansible-v0.2.4...cdk-ansible-v0.2.5) - 2025-07-17 (cdk-ansible)
 
 ### Other
