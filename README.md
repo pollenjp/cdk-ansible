@@ -178,6 +178,40 @@ In comparison, the previous Stack is called an L1 Stack.
 - In contrast, L2 Stack generates Inventory and Play objects just before executing each Play.
 - This allows generating Inventory and Play objects based on the execution state up to that point. This functionality can serve as an alternative to Ansible's Dynamic Inventory.
 
+```mermaid
+%%{init: {'theme': 'redux', 'themeVariables': { 'fontSize': '30pt'}}}%%
+stateDiagram
+  direction LR
+  state ForkExeParallel2 <<fork>>
+  state JoinExeParallel2 <<join>>
+  [*] --> LazyPlayL2_1
+  LazyPlayL2_1 --> ForkExeParallel2
+  ForkExeParallel2 --> LazyPlayL2_2
+  ForkExeParallel2 --> LazyPlayL2_3
+  LazyPlayL2_2 --> JoinExeParallel2
+  LazyPlayL2_3 --> JoinExeParallel2
+  JoinExeParallel2 --> LazyPlayL2_4
+  LazyPlayL2_4 --> [*]
+```
+
+```mermaid
+%%{init: {'theme': 'redux', 'themeVariables': { 'fontSize': '10pt'}}}%%
+stateDiagram
+  direction LR
+  classDef Rose stroke-width:1px,stroke-dasharray:none,stroke:#FF5978,fill:#FFDFE5,color:#8E2236;
+  state LazyPlayL2_1 {
+    direction LR
+    [*] --> s2
+    s2 --> s4
+    s4 --> [*]
+  }
+  [*] --> LazyPlayL2_1
+  LazyPlayL2_1 --> [*]
+  s2:Generate Inventory<br>and Play (Playbook)
+  s4:Run Playbook
+  class s2 Rose
+```
+
 The definition of L2 Stack is similar to L1, but it implements the `StackL2` trait.
 The difference is that `fn exe_play` returns `&ExePlayL2`.
 
