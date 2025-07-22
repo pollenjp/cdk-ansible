@@ -1,6 +1,6 @@
 [package]
 name = "cdk-ansible"
-version = "0.2.5"
+version = "0.2.6"
 edition.workspace = true
 rust-version.workspace = true
 description.workspace = true
@@ -18,19 +18,12 @@ cdk-ansible-core.workspace = true
 cdk-ansible-macro.workspace = true
 
 anyhow.workspace = true
-cargo_toml.workspace = true
 clap.workspace = true
 convert_case.workspace = true
-fs-err.workspace = true
 futures.workspace = true
 indexmap.workspace = true
-quote.workspace = true
-regex.workspace = true
-semver.workspace = true
 serde.workspace = true
 serde_json.workspace = true
 shlex.workspace = true
-syn.workspace = true
 tempfile.workspace = true
 tokio.workspace = true
-toml.workspace = true
