@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.2.7](https://github.com/pollenjp/cdk-ansible/compare/cdk-ansible-v0.2.6...cdk-ansible-v0.2.7) - 2025-07-24 (cdk-ansible)
+
+### Other
+
+- Add mermaid for L2 app
+
 ## [0.2.6](https://github.com/pollenjp/cdk-ansible/compare/cdk-ansible-v0.2.5...cdk-ansible-v0.2.6) - 2025-07-22 (cdk-ansible)
 
 ### Added
