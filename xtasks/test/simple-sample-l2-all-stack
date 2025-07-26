@@ -9,7 +9,7 @@ set -euo pipefail -x
 simple_sample_ansible_dir=./tools/ansible
 
 global_args=(
-  --app-dir ".cdka/l2"
+  --app-dir ".cdka/l2-all"
 )
 
 stringify_cmd=(uv run python -c 'import sys; from shlex import join; print(join(sys.argv[1:]))')
@@ -19,4 +19,5 @@ playbook_command_str=$(
     run --directory "${simple_sample_ansible_dir}" \
     ansible-playbook -v
 )
-cargo run --package simple-sample --bin l2 -- "${global_args[@]}" deploy -P 3 --playbook-command "${playbook_command_str}" SampleStack
+
+cargo run --package simple-sample --bin l2 -- "${global_args[@]}" deploy -P 3 --playbook-command "${playbook_command_str}"

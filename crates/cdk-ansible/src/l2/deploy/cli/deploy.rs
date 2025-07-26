@@ -32,9 +32,10 @@ pub struct Deploy {
     /// The maximum number of playbook processes.
     #[arg(short = 'P', long, required = false, default_value = "2")]
     pub max_procs: usize,
-    // The stack name to deploy.
-    #[arg(required = true)]
-    pub stack_name: String,
+    /// The stack name to deploy.
+    /// If not specified, all stacks will be deployed.
+    // TODO: support multiple stacks
+    pub stack_name: Option<String>,
 }
 
 impl Deploy {
@@ -49,7 +50,7 @@ impl Deploy {
 struct DeployConfig {
     playbook_command: Vec<String>,
     max_procs: usize,
-    stack_name: StackName,
+    stack_name: Option<StackName>,
 }
 
 impl DeployConfig {
@@ -58,7 +59,7 @@ impl DeployConfig {
             playbook_command: ::shlex::split(&args.playbook_command)
                 .with_context(|| "parsing playbook command")?,
             max_procs: args.max_procs,
-            stack_name: StackName::from(args.stack_name.as_str()),
+            stack_name: args.stack_name.map(|s| StackName::from(s.as_str())),
         })
     }
 }
@@ -74,25 +75,24 @@ async fn deploy(
     // Semaphore for limiting the number of concurrent ansible-playbook processes
     let cmd_semaphore = Arc::new(Semaphore::new(deploy_config.max_procs));
 
-    let stack = app
-        .inner
-        .stack_container
-        .get_stack(&deploy_config.stack_name)
-        .with_context(|| format!("getting stack: {}", deploy_config.stack_name))?;
+    for stack in app.inner.stack_container.get_stacks() {
+        if let Some(stack_name_to_deploy) = &deploy_config.stack_name {
+            if stack.name() != stack_name_to_deploy.to_string().as_str() {
+                continue;
+            }
+        }
 
-    recursive_deploy(
-        deploy_config
-            .stack_name
-            .to_string()
-            .to_lowercase()
-            .replace(' ', "_"),
-        stack.exe_play().clone(),
-        Arc::clone(&playbook_dir),
-        Arc::clone(&inventory_dir),
-        Arc::clone(deploy_config),
-        Arc::clone(&cmd_semaphore),
-    )
-    .await?;
+        recursive_deploy(
+            stack.name().to_string().to_lowercase().replace(' ', "_"),
+            stack.exe_play().clone(),
+            Arc::clone(&playbook_dir),
+            Arc::clone(&inventory_dir),
+            Arc::clone(deploy_config),
+            Arc::clone(&cmd_semaphore),
+        )
+        .await?;
+    }
+
     Ok(())
 }
 
