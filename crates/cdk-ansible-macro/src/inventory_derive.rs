@@ -6,6 +6,7 @@ use syn::{
 };
 
 /// This derive macro adds `inventory_vars` method to a struct.
+/// Supposed to be used in [`cdk_ansible::AppL1`], no need in L2.
 /// See [`cdk_ansible::HostInventoryVars`] doc for more details.
 pub fn vars_gen_derive(input: TokenStream) -> TokenStream {
     let input = parse_macro_input!(input as DeriveInput);
