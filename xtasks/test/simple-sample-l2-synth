@@ -7,7 +7,9 @@
 set -euo pipefail -x
 
 simple_sample_ansible_dir=./tools/ansible
-generated_dir=$(realpath .cdka/l2-synth)
+generated_dir=.cdka/l2-synth
+mkdir -p "${generated_dir}"
+generated_dir=$(realpath "${generated_dir}")
 
 global_args=(
   --app-dir "${generated_dir}"
