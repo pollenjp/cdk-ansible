@@ -14,5 +14,6 @@ impl Synth {
 }
 
 pub async fn synth(_app: &AppL2, _global_config: &Arc<GlobalConfig>) -> Result<()> {
+    println!("Use 'deploy --synth' to synthesize playbooks and inventories.");
     Ok(())
 }
