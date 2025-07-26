@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.1](https://github.com/pollenjp/cdk-ansible/compare/cdk-ansible-macro-v0.1.0...cdk-ansible-macro-v0.1.1) - 2025-07-26 (cdk-ansible-macro)
+
+### Other
+
+- *(cdk-ansible-macro)* AllInventoryVarsGen macro only use in L1
+
 ## [0.0.5](https://github.com/pollenjp/cdk-ansible/compare/cdk-ansible-macro-v0.0.4...cdk-ansible-macro-v0.0.5) - 2025-07-10
 
 ### Other
