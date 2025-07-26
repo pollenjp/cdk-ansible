@@ -32,6 +32,9 @@ pub struct Deploy {
     /// The maximum number of playbook processes.
     #[arg(short = 'P', long, required = false, default_value = "2")]
     pub max_procs: usize,
+    /// Only synthesize playbooks and inventories.
+    #[arg(long, exclusive = true, default_value = "false")]
+    pub synth: bool,
     /// The stack name to deploy.
     /// If not specified, all stacks will be deployed.
     // TODO: support multiple stacks
@@ -50,6 +53,7 @@ impl Deploy {
 struct DeployConfig {
     playbook_command: Vec<String>,
     max_procs: usize,
+    synth: bool,
     stack_name: Option<StackName>,
 }
 
@@ -59,6 +63,7 @@ impl DeployConfig {
             playbook_command: ::shlex::split(&args.playbook_command)
                 .with_context(|| "parsing playbook command")?,
             max_procs: args.max_procs,
+            synth: args.synth,
             stack_name: args.stack_name.map(|s| StackName::from(s.as_str())),
         })
     }
@@ -75,13 +80,20 @@ async fn deploy(
     // Semaphore for limiting the number of concurrent ansible-playbook processes
     let cmd_semaphore = Arc::new(Semaphore::new(deploy_config.max_procs));
 
-    for stack in app.inner.stack_container.get_stacks() {
-        if let Some(stack_name_to_deploy) = &deploy_config.stack_name {
-            if stack.name() != stack_name_to_deploy.to_string().as_str() {
-                continue;
-            }
-        }
-
+    for stack in (deploy_config
+        .stack_name
+        .as_ref()
+        .map(|n| {
+            // Get a vec having the specified stack.
+            [app.inner
+                .stack_container
+                .get_stack(n)
+                .with_context(|| format!("getting stack: {n}"))]
+            .into_iter()
+            .collect::<Result<Vec<_>>>()
+        })
+        .unwrap_or_else(|| Ok(app.inner.stack_container.get_stacks().collect())))?
+    {
         recursive_deploy(
             stack.name().to_string().to_lowercase().replace(' ', "_"),
             stack.exe_play().clone(),
@@ -123,6 +135,11 @@ fn recursive_deploy(
                 let inv_path_j = inventory_dir.join(&name).with_extension("json");
                 dump_json(inv_path_j.clone(), inv_root).await?;
                 json_to_yaml(inv_path_j.clone()).await?;
+
+                if deploy_config.synth {
+                    // Only synthesize playbooks and inventories.
+                    return Ok(());
+                }
 
                 let cmd = deploy_config
                     .playbook_command

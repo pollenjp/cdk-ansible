@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+#MISE description="Test simple sample 'l2'"
+#MISE env={ RUST_BACKTRACE = "1" }
+#MISE depends=["test:simple-sample-cli-module"]
+#MISE depends_post=[]
+
+set -euo pipefail -x
+
+simple_sample_ansible_dir=./tools/ansible
+generated_dir=.cdka/l2-synth
+mkdir -p "${generated_dir}"
+generated_dir=$(realpath "${generated_dir}")
+
+global_args=(
+  --app-dir "${generated_dir}"
+)
+
+cargo run --package simple-sample --bin l2 -- "${global_args[@]}" deploy --synth
+
+uv --project "${simple_sample_ansible_dir}" \
+  run --directory "${simple_sample_ansible_dir}" \
+  ansible-lint -v "${generated_dir}"
