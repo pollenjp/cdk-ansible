@@ -34,9 +34,36 @@ WARNING: This project does not use [JSii](https://github.com/aws/jsii).
 
 `{cdk-ansible,cdk-ansible-cli}<v0.2.0` are guaranteed to work only with matching versions.
 
-## What can cdk-ansible do?
+## Quick Start
 
-Full example project can see in [cdk-ansible-examples](https://github.com/pollenjp/cdk-ansible-examples) and support [cargo-generate](https://github.com/cargo-generate/cargo-generate).
+Template project can see in [cdk-ansible-examples](https://github.com/pollenjp/cdk-ansible-examples) and support [cargo-generate](https://github.com/cargo-generate/cargo-generate).
+
+1. Install [mise](https://github.com/jdx/mise)
+
+2. Install [cargo-generate](https://github.com/cargo-generate/cargo-generate), for example:
+
+   ```bash
+   mise use -g rust@latest
+   mise use -g cargo-binstall
+   mise use -g cargo-generate
+   ```
+
+3. Init your project from template and 'Enter' (select default template)
+
+   ```bash
+   cargo generate gh:pollenjp/cdk-ansible-examples
+   ```
+
+4. Execute the sample command in your local environment.
+
+   ```bash
+   # For the command details, refer to `[tasks.run]` in `mise.toml`.
+   mise run run
+   ```
+
+5. Edit `src/stack/*.rs` and `src/inventory/*.rs` (or `src/inventory.rs`) as you like.
+
+## What can cdk-ansible do?
 
 ### Define Plays
 
