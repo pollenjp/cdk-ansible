@@ -36,7 +36,7 @@ WARNING: This project does not use [JSii](https://github.com/aws/jsii).
 
 ## What can cdk-ansible do?
 
-Full example project can see in [cdk-ansible-examples](https://github.com/pollenjp/cdk-ansible-examples)'s cli-init directory.
+Full example project can see in [cdk-ansible-examples](https://github.com/pollenjp/cdk-ansible-examples) and support [cargo-generate](https://github.com/cargo-generate/cargo-generate).
 
 ### Define Plays
 
