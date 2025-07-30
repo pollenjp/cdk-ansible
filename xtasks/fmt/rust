@@ -5,6 +5,9 @@
 #MISE depends_post=[]
 set -euo pipefail
 
+# requirements
+rustup component add rustfmt
+
 pushd "." >/dev/null 2>&1
 
 # if ! git diff-index --quiet HEAD -- .; then
