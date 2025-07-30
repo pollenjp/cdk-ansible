@@ -7,14 +7,14 @@ use futures::future::{BoxFuture, FutureExt as _};
 use simple_sample::create_tasks_helper;
 use std::sync::Arc;
 
-pub fn main() {
+fn main() {
     if let Err(e) = main2() {
         eprintln!("Error: {e:?}");
         std::process::exit(1);
     }
 }
 
-pub fn main2() -> Result<()> {
+fn main2() -> Result<()> {
     AppL2::new(std::env::args().collect())
         .stack(Arc::new(SampleStack::new()))
         .expect("Failed to add sample stack")
