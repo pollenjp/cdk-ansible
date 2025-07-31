@@ -22,6 +22,7 @@ cdk-ansible-macro = { version = "0.1", path = "crates/cdk-ansible-macro" }
 
 anyhow = { version = "1.0.95" }
 cargo_toml = "0.22.1"
+chrono = "0.4"
 clap = { version = "4.5.21", features = [
     "derive",
     "env",
@@ -63,9 +64,10 @@ lto = "thin"
 # restriction = { level = "warn", priority = -1 }
 # # cargo = "warn"
 
-# # style
-# #
+# style
+#
 # get_first = "allow"
+new_without_default = "allow"
 
 # # nursery
 # #
