@@ -1,7 +1,7 @@
 use crate::{
     l2::{
         deploy::{AppL2, cli::GlobalConfig},
-        types::{ExePlayL2, LazyExePlayL2, LazyPlayL2},
+        types::{ExePlayL2, LazyExePlayL2},
     },
     types::StackName,
     utils::{dump_json, json_to_yaml},
