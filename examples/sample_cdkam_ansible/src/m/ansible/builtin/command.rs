@@ -1,6 +1,6 @@
 #[allow(unused_imports, reason = "Some modules may have empty `options` field")]
-use cdk_ansible::OptU;
-use cdk_ansible::TaskModule;
+use cdk_ansible_core::core::OptU;
+use cdk_ansible_core::core::TaskModule;
 use serde::Serialize;
 #[derive(Clone, Debug, Serialize)]
 pub struct Module {
@@ -21,13 +21,13 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "argv"
     )]
-    pub argv: OptU<::cdk_ansible::StringOrVec>,
+    pub argv: OptU<::cdk_ansible_core::core::StringOrVec>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "chdir"
     )]
-    pub chdir: OptU<::cdk_ansible::StringOrPath>,
+    pub chdir: OptU<::cdk_ansible_core::core::StringOrPath>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -39,13 +39,13 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "creates"
     )]
-    pub creates: OptU<::cdk_ansible::StringOrPath>,
+    pub creates: OptU<::cdk_ansible_core::core::StringOrPath>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "expand_argument_vars"
     )]
-    pub expand_argument_vars: OptU<::cdk_ansible::BoolOrString>,
+    pub expand_argument_vars: OptU<::cdk_ansible_core::core::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -57,7 +57,7 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "removes"
     )]
-    pub removes: OptU<::cdk_ansible::StringOrPath>,
+    pub removes: OptU<::cdk_ansible_core::core::StringOrPath>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
@@ -69,11 +69,11 @@ pub struct Opt {
         skip_serializing_if = "OptU::is_unset",
         rename = "stdin_add_newline"
     )]
-    pub stdin_add_newline: OptU<::cdk_ansible::BoolOrString>,
+    pub stdin_add_newline: OptU<::cdk_ansible_core::core::BoolOrString>,
     #[serde(
         default = "OptU::default",
         skip_serializing_if = "OptU::is_unset",
         rename = "strip_empty_ends"
     )]
-    pub strip_empty_ends: OptU<::cdk_ansible::BoolOrString>,
+    pub strip_empty_ends: OptU<::cdk_ansible_core::core::BoolOrString>,
 }

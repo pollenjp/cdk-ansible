@@ -4,7 +4,6 @@ use crate::version;
 use anyhow::Result;
 use clap::{Parser, Subcommand, command};
 
-mod init;
 mod module;
 
 #[derive(Parser)]
@@ -33,7 +32,6 @@ impl Cli {
         let cli = Self::parse_from(args);
 
         match *cli.command {
-            Commands::Init(cmd) => cmd.run().await,
             Commands::Module(cmd) => cmd.run().await,
         }
     }
@@ -50,9 +48,6 @@ pub struct TopLevelArgs {
 
 #[derive(Subcommand)]
 pub enum Commands {
-    /// Initialize a cdk-ansible project
-    #[command(verbatim_doc_comment)]
-    Init(init::InitCmd),
     /// Create Rust code from ansible module
     ///
     /// Examples

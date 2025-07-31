@@ -757,7 +757,7 @@ name = "sample_cdkam_ansible"
 version = "0.1.0"
 dependencies = [
  "anyhow",
- "cdk-ansible",
+ "cdk-ansible-core",
  "indexmap",
  "serde",
  "serde_json",

@@ -505,7 +505,7 @@ async fn create_or_edit_cargo_toml(
 name = \"{pkg_name}\"
 version = \"0.1.0\"
 edition = \"2024\"
-rust-version = \"1.86\"
+rust-version = \"1.85\"
 "
         ))?;
         if let Some(package) = manifest.package.as_mut() {
@@ -513,7 +513,7 @@ rust-version = \"1.86\"
         }
         manifest.dependencies = vec![
             (
-                "cdk-ansible".to_owned(),
+                "cdk-ansible-core".to_owned(),
                 ::cargo_toml::Dependency::Inherited(::cargo_toml::InheritedDependencyDetail {
                     workspace: true,
                     ..Default::default()
@@ -521,23 +521,34 @@ rust-version = \"1.86\"
             ),
             (
                 "anyhow".to_owned(),
-                ::cargo_toml::Dependency::Simple("1.0.95".to_owned()),
+                ::cargo_toml::Dependency::Inherited(::cargo_toml::InheritedDependencyDetail {
+                    workspace: true,
+                    ..Default::default()
+                }),
             ),
             (
+                // used by cdk_ansible_core::core::StringOrMap::Map
                 "indexmap".to_owned(),
-                ::cargo_toml::Dependency::Detailed(Box::new(::cargo_toml::DependencyDetail {
-                    version: Some("2.7.1".to_owned()),
+                ::cargo_toml::Dependency::Inherited(::cargo_toml::InheritedDependencyDetail {
+                    workspace: true,
                     features: vec!["serde".to_owned()],
                     ..Default::default()
-                })),
+                }),
             ),
             (
                 "serde".to_owned(),
-                ::cargo_toml::Dependency::Simple("1.0.217".to_owned()),
+                ::cargo_toml::Dependency::Inherited(::cargo_toml::InheritedDependencyDetail {
+                    workspace: true,
+                    ..Default::default()
+                }),
             ),
             (
                 "serde_json".to_owned(),
-                ::cargo_toml::Dependency::Simple("1.0.138".to_owned()),
+                ::cargo_toml::Dependency::Inherited(::cargo_toml::InheritedDependencyDetail {
+                    workspace: true,
+                    features: vec!["preserve_order".to_owned()],
+                    ..Default::default()
+                }),
             ),
         ]
         .into_iter()
@@ -956,11 +967,11 @@ async fn generate_module_rs(module_json: &AnsModuleJson) -> Result<String> {
                     {
                         // always include "string" because ansible can use template.
                         // types are defined in `cdk-ansible-core/src/core/types.rs`
-                        "path" => "OptU<::cdk_ansible::StringOrPath>",
-                        "int" | "integer" => "OptU<::cdk_ansible::IntOrString>",
-                        "bool" | "boolean" => "OptU<::cdk_ansible::BoolOrString>",
-                        "list" => "OptU<::cdk_ansible::StringOrVec>",
-                        "dict" => "OptU<::cdk_ansible::StringOrMap>",
+                        "path" => "OptU<::cdk_ansible_core::core::StringOrPath>",
+                        "int" | "integer" => "OptU<::cdk_ansible_core::core::IntOrString>",
+                        "bool" | "boolean" => "OptU<::cdk_ansible_core::core::BoolOrString>",
+                        "list" => "OptU<::cdk_ansible_core::core::StringOrVec>",
+                        "dict" => "OptU<::cdk_ansible_core::core::StringOrMap>",
                         "str" | "string" => "OptU<String>",
                         // default should be [`OptU<String>`]
                         _ => "OptU<::serde_json::Value>",
@@ -981,8 +992,8 @@ async fn generate_module_rs(module_json: &AnsModuleJson) -> Result<String> {
 
         let token_streams = vec![quote! {
             #[allow(unused_imports, reason = "Some modules may have empty `options` field")]
-            use cdk_ansible::OptU;
-            use cdk_ansible::TaskModule;
+            use cdk_ansible_core::core::OptU;
+            use cdk_ansible_core::core::TaskModule;
             use serde::Serialize;
 
             #[derive(Clone, Debug, Serialize)]

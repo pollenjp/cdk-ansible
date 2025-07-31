@@ -23,7 +23,11 @@ cat <<__EOF__ >"${temp_dir}/Cargo.toml"
 members = ["crates/*"]
 
 [workspace.dependencies]
-cdk-ansible = { path = "${proj_root}/crates/cdk-ansible" }
+cdk-ansible-core = { path = "${proj_root}/crates/cdk-ansible-core" }
+anyhow = "1"
+indexmap = "2"
+serde = "1"
+serde_json = "1"
 __EOF__
 
 pushd "${proj_root}"
