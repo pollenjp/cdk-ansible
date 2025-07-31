@@ -1,7 +1,7 @@
 use anyhow::Result;
 use cdk_ansible::{
-    AppL2, HostInventoryVars, HostInventoryVarsGenerator, HostsL2, LazyExePlayL2, LazyPlayL2,
-    PlayL2, PlayOptions, StackL2,
+    AppL2, ExePlayL2, HostInventoryVars, HostInventoryVarsGenerator, HostsL2, LazyExePlayL2,
+    LazyPlayL2, PlayL2, PlayOptions, StackL2,
 };
 use futures::future::{BoxFuture, FutureExt as _};
 use simple_sample::create_tasks_helper;
@@ -55,7 +55,7 @@ impl SampleLazyPlayL2Helper {
 }
 
 impl LazyPlayL2 for SampleLazyPlayL2Helper {
-    fn create_play_l2(&self) -> BoxFuture<'static, Result<PlayL2>> {
+    fn lazy_play_l2(&self) -> BoxFuture<'static, Result<ExePlayL2>> {
         let host_a = Arc::new(HostA::new("localhost"));
         let name = self.name.clone();
         async move {
@@ -64,7 +64,8 @@ impl LazyPlayL2 for SampleLazyPlayL2Helper {
                 hosts: HostsL2::new(vec![Arc::clone(&(host_a as _))]),
                 options: PlayOptions::default(),
                 tasks: create_tasks_helper(2)?,
-            })
+            }
+            .into())
         }
         .boxed()
     }

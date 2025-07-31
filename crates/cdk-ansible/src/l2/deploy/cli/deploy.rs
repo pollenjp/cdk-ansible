@@ -1,6 +1,8 @@
 use crate::{
-    LazyExePlayL2,
-    l2::deploy::{AppL2, cli::GlobalConfig},
+    l2::{
+        deploy::{AppL2, cli::GlobalConfig},
+        types::{ExePlayL2, LazyExePlayL2, LazyPlayL2},
+    },
     types::StackName,
     utils::{dump_json, json_to_yaml},
 };
@@ -110,18 +112,101 @@ async fn deploy(
 
 fn recursive_deploy(
     name: String,
-    exe_play_l2: LazyExePlayL2,
+    lazy_exe_play: LazyExePlayL2,
     playbook_dir: Arc<PathBuf>,
     inventory_dir: Arc<PathBuf>,
     deploy_config: Arc<DeployConfig>,
     cmd_semaphore: Arc<Semaphore>,
 ) -> BoxFuture<'static, Result<()>> {
     async move {
-        match exe_play_l2 {
-            LazyExePlayL2::Single(ep) => {
-                // Run 'ansible-playbook' command
+        match lazy_exe_play {
+            LazyExePlayL2::Sequential(leps) => {
+                for (i, lep) in leps.into_iter().enumerate() {
+                    recursive_deploy(
+                        format!("{name}_s{i}"),
+                        lep,
+                        Arc::clone(&playbook_dir),
+                        Arc::clone(&inventory_dir),
+                        Arc::clone(&deploy_config),
+                        Arc::clone(&cmd_semaphore),
+                    )
+                    .await?;
+                }
+            }
+            LazyExePlayL2::Parallel(leps) => {
+                let mut set: JoinSet<Result<()>> = JoinSet::new();
+                for (i, lep) in leps.into_iter().enumerate() {
+                    set.spawn(recursive_deploy(
+                        format!("{name}_p{i}"),
+                        lep,
+                        Arc::clone(&playbook_dir),
+                        Arc::clone(&inventory_dir),
+                        Arc::clone(&deploy_config),
+                        Arc::clone(&cmd_semaphore),
+                    ));
+                }
+                while let Some(res) = set.join_next().await {
+                    (res?)?;
+                }
+            }
+            LazyExePlayL2::Single(lp) => {
+                let ep = lp.lazy_play_l2().await?;
+                deploy_exe_play_l2(
+                    name,
+                    ep,
+                    playbook_dir,
+                    inventory_dir,
+                    deploy_config,
+                    cmd_semaphore,
+                )
+                .await?;
+            }
+        }
+        Ok(())
+    }
+    .boxed()
+}
 
-                let play_l2 = ep.create_play_l2().await?;
+fn deploy_exe_play_l2(
+    name: String,
+    exe_play: ExePlayL2,
+    playbook_dir: Arc<PathBuf>,
+    inventory_dir: Arc<PathBuf>,
+    deploy_config: Arc<DeployConfig>,
+    cmd_semaphore: Arc<Semaphore>,
+) -> BoxFuture<'static, Result<()>> {
+    async move {
+        match exe_play {
+            ExePlayL2::Sequential(eps) => {
+                for (i, ep) in eps.into_iter().enumerate() {
+                    deploy_exe_play_l2(
+                        format!("{name}_s{i}"),
+                        ep,
+                        Arc::clone(&playbook_dir),
+                        Arc::clone(&inventory_dir),
+                        Arc::clone(&deploy_config),
+                        Arc::clone(&cmd_semaphore),
+                    )
+                    .await?;
+                }
+            }
+            ExePlayL2::Parallel(eps) => {
+                let mut set: JoinSet<Result<()>> = JoinSet::new();
+                for (i, ep) in eps.into_iter().enumerate() {
+                    set.spawn(deploy_exe_play_l2(
+                        format!("{name}_p{i}"),
+                        ep,
+                        Arc::clone(&playbook_dir),
+                        Arc::clone(&inventory_dir),
+                        Arc::clone(&deploy_config),
+                        Arc::clone(&cmd_semaphore),
+                    ));
+                }
+                while let Some(res) = set.join_next().await {
+                    (res?)?;
+                }
+            }
+            ExePlayL2::Single(play_l2) => {
                 let name = format!("{name}_{}", &play_l2.name);
                 let inv_root = play_l2.hosts.to_inventory_root()?;
                 let play = play_l2.try_play()?;
@@ -174,35 +259,6 @@ fn recursive_deploy(
                     String::from_utf8_lossy(&output.stdout),
                     String::from_utf8_lossy(&output.stderr),
                 );
-            }
-            LazyExePlayL2::Sequential(eps) => {
-                for (i, ep) in eps.into_iter().enumerate() {
-                    recursive_deploy(
-                        format!("{name}_seq{i}"),
-                        ep,
-                        Arc::clone(&playbook_dir),
-                        Arc::clone(&inventory_dir),
-                        Arc::clone(&deploy_config),
-                        Arc::clone(&cmd_semaphore),
-                    )
-                    .await?;
-                }
-            }
-            LazyExePlayL2::Parallel(eps) => {
-                let mut set: JoinSet<Result<()>> = JoinSet::new();
-                for (i, ep) in eps.into_iter().enumerate() {
-                    set.spawn(recursive_deploy(
-                        format!("{name}_par{i}"),
-                        ep,
-                        Arc::clone(&playbook_dir),
-                        Arc::clone(&inventory_dir),
-                        Arc::clone(&deploy_config),
-                        Arc::clone(&cmd_semaphore),
-                    ));
-                }
-                while let Some(res) = set.join_next().await {
-                    (res?)?;
-                }
             }
         }
         Ok(())

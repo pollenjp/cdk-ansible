@@ -278,7 +278,7 @@ pub fn main2() -> Result<()> {
 ```
 
 `LazyExePlayL2` corresponds to `ExePlay`, but it can accept objects that implement the `LazyPlayL2` trait instead of `Play` objects.
-The `LazyPlayL2` trait implements an async function `fn create_play_l2` which can generate information equivalent to an Ansible Play within this function.
+The `LazyPlayL2` trait implements an async function `fn lazy_play_l2` which can generate information equivalent to an Ansible Play within this function.
 
 ```rust
 struct SampleLazyPlayL2Helper {
@@ -294,7 +294,7 @@ impl SampleLazyPlayL2Helper {
 }
 
 impl LazyPlayL2 for SampleLazyPlayL2Helper {
-    fn create_play_l2(&self) -> BoxFuture<'static, Result<PlayL2>> {
+    fn lazy_play_l2(&self) -> BoxFuture<'static, Result<ExePlayL2>> {
         let name = self.name.clone();
         async move {
             Ok(PlayL2 {
@@ -304,7 +304,8 @@ impl LazyPlayL2 for SampleLazyPlayL2Helper {
                 })]),
                 options: PlayOptions::default(),
                 tasks: create_tasks_helper(2)?,
-            })
+            }
+            .into())
         }
         .boxed()
     }

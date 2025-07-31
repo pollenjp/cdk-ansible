@@ -11,7 +11,7 @@ use std::sync::Arc;
 ///
 /// ```rust
 /// use anyhow::Result;
-/// use cdk_ansible::{AppL2, StackL2, LazyExePlayL2, ExeSingle, Play, PlayOptions, LazyPlayL2, PlayL2, HostsL2, HostInventoryVarsGenerator, HostInventoryVars};
+/// use cdk_ansible::{AppL2, StackL2, LazyExePlayL2, ExeSingle, ExePlayL2, PlayOptions, LazyPlayL2, PlayL2, HostsL2, HostInventoryVarsGenerator, HostInventoryVars};
 /// use std::rc::Rc;
 /// use std::sync::Arc;
 /// use futures::future::{BoxFuture, FutureExt as _};
@@ -40,16 +40,19 @@ use std::sync::Arc;
 /// }
 ///
 /// impl LazyPlayL2 for SampleLazyPlayL2Helper {
-///     fn create_play_l2(&self) -> BoxFuture<'static, Result<PlayL2>> {
+///     fn lazy_play_l2(&self) -> BoxFuture<'static, Result<ExePlayL2>> {
 ///         let name = self.name.clone();
-///         async move { Ok(PlayL2 {
-///             name,
-///             hosts: HostsL2::new(vec![
-///                 Arc::new(HostA { name: "localhost".to_string() }),
-///             ]),
-///             options: PlayOptions::default(),
-///             tasks: vec![],
-///         }) }.boxed()
+///         async move {
+///             Ok(PlayL2 {
+///                 name,
+///                 hosts: HostsL2::new(vec![
+///                     Arc::new(HostA { name: "localhost".to_string() }),
+///                 ]),
+///                 options: PlayOptions::default(),
+///                 tasks: vec![],
+///             }
+///             .into())
+///         }.boxed()
 ///     }
 /// }
 ///

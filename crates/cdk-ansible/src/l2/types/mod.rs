@@ -27,6 +27,25 @@ impl PlayL2 {
     }
 }
 
+impl From<PlayL2> for ExePlayL2 {
+    fn from(play_l2: PlayL2) -> Self {
+        ExePlayL2::Single(Box::new(play_l2))
+    }
+}
+
+/// Define a relationship between [`PlayL2`]
+///
+/// This is a "L2 feature".
+#[derive(Debug, Clone)]
+pub enum ExePlayL2 {
+    /// Sequential execution
+    Sequential(Vec<ExePlayL2>),
+    /// Parallel execution
+    Parallel(Vec<ExePlayL2>),
+    /// Single PlayL2
+    Single(Box<PlayL2>),
+}
+
 /// Define play as lazy
 ///
 /// This is a "L2 feature".
@@ -41,7 +60,7 @@ pub trait LazyPlayL2 {
     /// // ...
     ///
     /// impl LazyPlayL2 for SampleLazyPlayL2 {
-    ///     fn play_l2(&self) -> BoxFuture<'static, Result<PlayL2>> {
+    ///     fn lazy_play_l2(&self) -> BoxFuture<'static, Result<ExePlayL2>> {
     ///         async move {
     ///             let hosts = get_hosts()?;
     ///             Ok(PlayL2 {
@@ -51,13 +70,16 @@ pub trait LazyPlayL2 {
     ///                     Arc::clone(hosts.bbb),
     ///                 ]),
     ///                 options: PlayOptions::default(),
-    ///                 tasks: vec![],
-    ///             })
+    ///                 tasks: vec![
+    ///                     // ...
+    ///                 ],
+    ///             }
+    ///             .into())
     ///         }.boxed()
     ///     }
     /// }
     /// ```
-    fn create_play_l2(&self) -> BoxFuture<'static, Result<PlayL2>>;
+    fn lazy_play_l2(&self) -> BoxFuture<'static, Result<ExePlayL2>>;
 }
 
 #[derive(Clone)]
@@ -113,7 +135,7 @@ impl fmt::Debug for PlayL2 {
 /// This is a "L2 feature".
 ///
 /// ```rust
-/// use cdk_ansible::{prelude::*, Play, PlayOptions, PlayL2, HostsL2, HostInventoryVarsGenerator, HostInventoryVars, LEPSequentialL2, LEPSingleL2, LEPParallelL2, LazyPlayL2, LazyExePlayL2};
+/// use cdk_ansible::{prelude::*, Play, PlayOptions, PlayL2, ExePlayL2, HostsL2, HostInventoryVarsGenerator, HostInventoryVars, LEPSequentialL2, LEPSingleL2, LEPParallelL2, LazyPlayL2, LazyExePlayL2};
 /// use std::sync::Arc;
 /// use anyhow::Result;
 /// use futures::future::{BoxFuture, FutureExt as _};
@@ -143,14 +165,17 @@ impl fmt::Debug for PlayL2 {
 /// }
 ///
 /// impl LazyPlayL2 for SampleLazyPlayL2Helper {
-///     fn create_play_l2(&self) -> BoxFuture<'static, Result<PlayL2>> {
+///     fn lazy_play_l2(&self) -> BoxFuture<'static, Result<ExePlayL2>> {
 ///         let name = self.name.clone();
-///         async move { Ok(PlayL2 {
-///             name,
-///             hosts: HostsL2::new(vec![Arc::new(HostA { name: "localhost".to_string() })]),
-///             options: PlayOptions::default(),
-///             tasks: vec![],
-///         }) }.boxed()
+///         async move {
+///             Ok(PlayL2 {
+///                 name,
+///                 hosts: HostsL2::new(vec![Arc::new(HostA { name: "localhost".to_string() })]),
+///                 options: PlayOptions::default(),
+///                 tasks: vec![],
+///             }
+///             .into())
+///         }.boxed()
 ///     }
 /// }
 ///
@@ -179,11 +204,11 @@ impl fmt::Debug for PlayL2 {
 ///             LazyExePlayL2::Single(Arc::new(SampleLazyPlayL2Helper::new("sample4"))),
 ///             LazyExePlayL2::Single(Arc::new(SampleLazyPlayL2Helper::new("sample5"))),
 ///         ]
-///         .into_exe_play_l2_parallel(),
+///         .into_lazy_exe_play_l2_parallel(),
 ///     ]
-///     .into_exe_play_l2_sequential(),
+///     .into_lazy_exe_play_l2_sequential(),
 /// ]
-/// .into_exe_play_l2_sequential();
+/// .into_lazy_exe_play_l2_sequential();
 ///
 /// ```
 #[derive(Clone)]
