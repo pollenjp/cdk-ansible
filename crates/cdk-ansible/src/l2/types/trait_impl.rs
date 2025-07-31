@@ -1,16 +1,16 @@
-//! Trait implementations for `ExePlayL2`
+//! Trait implementations for `LazyExePlayL2`
 //! These traits can be imported with `use cdk_ansible::prelude::*;`
 
-use crate::l2::types::ExePlayL2;
+use crate::l2::types::LazyExePlayL2;
 
 /// Convert to sequential execution
-pub trait IntoExePlayL2Sequential {
-    fn into_exe_play_l2_sequential(self) -> ExePlayL2;
+pub trait IntoLazyExePlayL2Sequential {
+    fn into_exe_play_l2_sequential(self) -> LazyExePlayL2;
 }
 
 ///
 /// ```rust
-/// use cdk_ansible::{prelude::*, PlayL2, PlayOptions, ExePlayL2, HostsL2, HostInventoryVarsGenerator, HostInventoryVars, LazyPlayL2};
+/// use cdk_ansible::{prelude::*, PlayL2, PlayOptions, LazyExePlayL2, HostsL2, HostInventoryVarsGenerator, HostInventoryVars, LazyPlayL2};
 /// use std::sync::Arc;
 /// use anyhow::Result;
 /// use futures::future::{BoxFuture, FutureExt as _};
@@ -51,20 +51,20 @@ pub trait IntoExePlayL2Sequential {
 /// }
 ///
 /// let plays = vec![
-///     ExePlayL2::Single(Arc::new(SampleLazyPlayL2Helper::new("sample1"))),
-///     ExePlayL2::Single(Arc::new(SampleLazyPlayL2Helper::new("sample2"))),
-///     ExePlayL2::Single(Arc::new(SampleLazyPlayL2Helper::new("sample3"))),
+///     LazyExePlayL2::Single(Arc::new(SampleLazyPlayL2Helper::new("sample1"))),
+///     LazyExePlayL2::Single(Arc::new(SampleLazyPlayL2Helper::new("sample2"))),
+///     LazyExePlayL2::Single(Arc::new(SampleLazyPlayL2Helper::new("sample3"))),
 /// ];
 /// match plays.into_exe_play_l2_sequential() {
-///     ExePlayL2::Sequential(_) => {
+///     LazyExePlayL2::Sequential(_) => {
 ///         // OK
 ///     }
 ///     _ => unreachable!("exe_play should be ExeSequential"),
 /// }
 /// ```
-impl IntoExePlayL2Sequential for Vec<ExePlayL2> {
-    fn into_exe_play_l2_sequential(self) -> ExePlayL2 {
-        ExePlayL2::Sequential(self)
+impl IntoLazyExePlayL2Sequential for Vec<LazyExePlayL2> {
+    fn into_exe_play_l2_sequential(self) -> LazyExePlayL2 {
+        LazyExePlayL2::Sequential(self)
     }
 }
 
@@ -77,12 +77,12 @@ mod test_into_exe_play_l2_sequential {
     #[test]
     fn test_into_exe_play_l2_sequential() {
         let plays = vec![
-            ExePlayL2::Single(Arc::new(SampleLazyPlayL2Helper::new("sample1"))),
-            ExePlayL2::Single(Arc::new(SampleLazyPlayL2Helper::new("sample2"))),
-            ExePlayL2::Single(Arc::new(SampleLazyPlayL2Helper::new("sample3"))),
+            LazyExePlayL2::Single(Arc::new(SampleLazyPlayL2Helper::new("sample1"))),
+            LazyExePlayL2::Single(Arc::new(SampleLazyPlayL2Helper::new("sample2"))),
+            LazyExePlayL2::Single(Arc::new(SampleLazyPlayL2Helper::new("sample3"))),
         ];
         match plays.into_exe_play_l2_sequential() {
-            ExePlayL2::Sequential(_) => {
+            LazyExePlayL2::Sequential(_) => {
                 // OK
             }
             _ => unreachable!("exe_play should be ExeSequential"),
@@ -91,12 +91,12 @@ mod test_into_exe_play_l2_sequential {
 }
 
 /// Convert to parallel execution
-pub trait IntoExePlayL2Parallel {
-    fn into_exe_play_l2_parallel(self) -> ExePlayL2;
+pub trait IntoLazyExePlayL2Parallel {
+    fn into_exe_play_l2_parallel(self) -> LazyExePlayL2;
 }
 
 /// ```rust
-/// use cdk_ansible::{prelude::*, PlayL2, PlayOptions, ExePlayL2, HostsL2, HostInventoryVarsGenerator, HostInventoryVars, LazyPlayL2};
+/// use cdk_ansible::{prelude::*, PlayL2, PlayOptions, LazyExePlayL2, HostsL2, HostInventoryVarsGenerator, HostInventoryVars, LazyPlayL2};
 /// use std::sync::Arc;
 /// use anyhow::Result;
 /// use futures::future::{BoxFuture, FutureExt as _};
@@ -137,20 +137,20 @@ pub trait IntoExePlayL2Parallel {
 /// }
 ///
 /// let plays = vec![
-///     ExePlayL2::Single(Arc::new(SampleLazyPlayL2Helper::new("sample1"))),
-///     ExePlayL2::Single(Arc::new(SampleLazyPlayL2Helper::new("sample2"))),
-///     ExePlayL2::Single(Arc::new(SampleLazyPlayL2Helper::new("sample3"))),
+///     LazyExePlayL2::Single(Arc::new(SampleLazyPlayL2Helper::new("sample1"))),
+///     LazyExePlayL2::Single(Arc::new(SampleLazyPlayL2Helper::new("sample2"))),
+///     LazyExePlayL2::Single(Arc::new(SampleLazyPlayL2Helper::new("sample3"))),
 /// ];
 /// match plays.into_exe_play_l2_parallel() {
-///     ExePlayL2::Parallel(_) => {
+///     LazyExePlayL2::Parallel(_) => {
 ///         // OK
 ///     }
 ///     _ => unreachable!("exe_play should be ExeParallel"),
 /// }
 /// ```
-impl IntoExePlayL2Parallel for Vec<ExePlayL2> {
-    fn into_exe_play_l2_parallel(self) -> ExePlayL2 {
-        ExePlayL2::Parallel(self)
+impl IntoLazyExePlayL2Parallel for Vec<LazyExePlayL2> {
+    fn into_exe_play_l2_parallel(self) -> LazyExePlayL2 {
+        LazyExePlayL2::Parallel(self)
     }
 }
 
@@ -163,12 +163,12 @@ mod test_into_exe_play_l2_parallel {
     #[test]
     fn test_into_exe_play_l2_parallel() {
         let plays = vec![
-            ExePlayL2::Single(Arc::new(SampleLazyPlayL2Helper::new("sample1"))),
-            ExePlayL2::Single(Arc::new(SampleLazyPlayL2Helper::new("sample2"))),
-            ExePlayL2::Single(Arc::new(SampleLazyPlayL2Helper::new("sample3"))),
+            LazyExePlayL2::Single(Arc::new(SampleLazyPlayL2Helper::new("sample1"))),
+            LazyExePlayL2::Single(Arc::new(SampleLazyPlayL2Helper::new("sample2"))),
+            LazyExePlayL2::Single(Arc::new(SampleLazyPlayL2Helper::new("sample3"))),
         ];
         match plays.into_exe_play_l2_parallel() {
-            ExePlayL2::Parallel(_) => {
+            LazyExePlayL2::Parallel(_) => {
                 // OK
             }
             _ => unreachable!("exe_play should be ExeParallel"),

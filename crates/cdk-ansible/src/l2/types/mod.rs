@@ -27,6 +27,9 @@ impl PlayL2 {
     }
 }
 
+/// Define play as lazy
+///
+/// This is a "L2 feature".
 pub trait LazyPlayL2 {
     /// Pseudo code
     ///
@@ -37,7 +40,7 @@ pub trait LazyPlayL2 {
     ///
     /// // ...
     ///
-    /// impl LazyPlayL2 for SampleLazyPlay {
+    /// impl LazyPlayL2 for SampleLazyPlayL2 {
     ///     fn play_l2(&self) -> BoxFuture<'static, Result<PlayL2>> {
     ///         async move {
     ///             let hosts = get_hosts()?;
@@ -105,10 +108,12 @@ impl fmt::Debug for PlayL2 {
     }
 }
 
-/// Play execution definition
+/// Enum to define the relationship between [`LazyPlayL2`]
+///
+/// This is a "L2 feature".
 ///
 /// ```rust
-/// use cdk_ansible::{prelude::*, Play, PlayOptions, PlayL2, HostsL2, HostInventoryVarsGenerator, HostInventoryVars, ExeSequentialL2, ExeSingleL2, ExeParallelL2, LazyPlayL2, ExePlayL2};
+/// use cdk_ansible::{prelude::*, Play, PlayOptions, PlayL2, HostsL2, HostInventoryVarsGenerator, HostInventoryVars, LEPSequentialL2, LEPSingleL2, LEPParallelL2, LazyPlayL2, LazyExePlayL2};
 /// use std::sync::Arc;
 /// use anyhow::Result;
 /// use futures::future::{BoxFuture, FutureExt as _};
@@ -149,30 +154,30 @@ impl fmt::Debug for PlayL2 {
 ///     }
 /// }
 ///
-/// // Example of creating ExePlayL2 simply
-/// let _play_exec = ExeSequentialL2(vec![
-///     ExeSingleL2(Arc::new(SampleLazyPlayL2Helper::new("sample1"))),
-///     ExeSingleL2(Arc::new(SampleLazyPlayL2Helper::new("sample2"))),
-///     ExeParallelL2(vec![
-///         ExeSingleL2(Arc::new(SampleLazyPlayL2Helper::new("sample3"))),
-///         ExeSequentialL2(vec![
-///             ExeSingleL2(Arc::new(SampleLazyPlayL2Helper::new("sample4"))),
-///             ExeSingleL2(Arc::new(SampleLazyPlayL2Helper::new("sample5"))),
+/// // Example of creating LazyExePlayL2 simply
+/// let _play_exec = LEPSequentialL2(vec![
+///     LEPSingleL2(Arc::new(SampleLazyPlayL2Helper::new("sample1"))),
+///     LEPSingleL2(Arc::new(SampleLazyPlayL2Helper::new("sample2"))),
+///     LEPParallelL2(vec![
+///         LEPSingleL2(Arc::new(SampleLazyPlayL2Helper::new("sample3"))),
+///         LEPSequentialL2(vec![
+///             LEPSingleL2(Arc::new(SampleLazyPlayL2Helper::new("sample4"))),
+///             LEPSingleL2(Arc::new(SampleLazyPlayL2Helper::new("sample5"))),
 ///         ]),
 ///     ]),
 /// ]);
 ///
-/// // Example of creating ExePlayL2 using IntoExePlayL2Parallel and IntoExePlayL2Sequential
+/// // Example of creating LazyExePlayL2 using IntoLazyExePlayL2Parallel and IntoLazyExePlayL2Sequential
 /// use cdk_ansible::prelude::*;
 ///
 /// let _play_exec = vec![
-///     ExePlayL2::Single(Arc::new(SampleLazyPlayL2Helper::new("sample1"))),
-///     ExePlayL2::Single(Arc::new(SampleLazyPlayL2Helper::new("sample2"))),
+///     LazyExePlayL2::Single(Arc::new(SampleLazyPlayL2Helper::new("sample1"))),
+///     LazyExePlayL2::Single(Arc::new(SampleLazyPlayL2Helper::new("sample2"))),
 ///     vec![
-///         ExePlayL2::Single(Arc::new(SampleLazyPlayL2Helper::new("sample3"))),
+///         LazyExePlayL2::Single(Arc::new(SampleLazyPlayL2Helper::new("sample3"))),
 ///         vec![
-///             ExePlayL2::Single(Arc::new(SampleLazyPlayL2Helper::new("sample4"))),
-///             ExePlayL2::Single(Arc::new(SampleLazyPlayL2Helper::new("sample5"))),
+///             LazyExePlayL2::Single(Arc::new(SampleLazyPlayL2Helper::new("sample4"))),
+///             LazyExePlayL2::Single(Arc::new(SampleLazyPlayL2Helper::new("sample5"))),
 ///         ]
 ///         .into_exe_play_l2_parallel(),
 ///     ]
@@ -182,18 +187,21 @@ impl fmt::Debug for PlayL2 {
 ///
 /// ```
 #[derive(Clone)]
-pub enum ExePlayL2 {
+pub enum LazyExePlayL2 {
     /// Sequential execution
-    Sequential(Vec<ExePlayL2>),
+    Sequential(Vec<LazyExePlayL2>),
     /// Parallel execution
-    Parallel(Vec<ExePlayL2>),
+    Parallel(Vec<LazyExePlayL2>),
     /// Single Play
     Single(Arc<dyn LazyPlayL2 + Send + Sync>),
 }
 
-pub use ExePlayL2::Parallel as ExeParallelL2;
-pub use ExePlayL2::Sequential as ExeSequentialL2;
-pub use ExePlayL2::Single as ExeSingleL2;
+// define alias as 'LEP'
+pub use LazyExePlayL2 as LEP;
+
+pub use LazyExePlayL2::Parallel as LEPParallelL2;
+pub use LazyExePlayL2::Sequential as LEPSequentialL2;
+pub use LazyExePlayL2::Single as LEPSingleL2;
 
 #[cfg(test)]
 mod test_exe_play_struct {
@@ -202,52 +210,52 @@ mod test_exe_play_struct {
 
     #[test]
     fn test_sequential_play_exec() {
-        let _play_exec = ExeSequentialL2(vec![
-            ExeSingleL2(Arc::new(SampleLazyPlayL2Helper::new("sample1"))),
-            ExeSingleL2(Arc::new(SampleLazyPlayL2Helper::new("sample2"))),
-            ExeParallelL2(vec![
-                ExeSingleL2(Arc::new(SampleLazyPlayL2Helper::new("sample3"))),
-                ExeSingleL2(Arc::new(SampleLazyPlayL2Helper::new("sample4"))),
+        let _play_exec = LEPSequentialL2(vec![
+            LEPSingleL2(Arc::new(SampleLazyPlayL2Helper::new("sample1"))),
+            LEPSingleL2(Arc::new(SampleLazyPlayL2Helper::new("sample2"))),
+            LEPParallelL2(vec![
+                LEPSingleL2(Arc::new(SampleLazyPlayL2Helper::new("sample3"))),
+                LEPSingleL2(Arc::new(SampleLazyPlayL2Helper::new("sample4"))),
             ]),
         ]);
     }
 }
 
-impl ExePlayL2 {
+impl LazyExePlayL2 {
     /// Experimental feature: Push a play to the end of the execution
     ///
-    /// - ExeSingleL2 -> ExeSequentialL2
-    /// - ExeSequentialL2 -> ExeSequentialL2
-    /// - ExeParallelL2 -> ExeParallelL2
+    /// - LEPSingleL2 -> LEPSequentialL2
+    /// - LEPSequentialL2 -> LEPSequentialL2
+    /// - LEPParallelL2 -> LEPParallelL2
     ///
     /// # Example
     ///
     /// TODO: fill in
-    pub fn push(&mut self, p: ExePlayL2) {
+    pub fn push(&mut self, p: LazyExePlayL2) {
         match self {
-            ExePlayL2::Sequential(plays) => plays.push(p),
-            ExePlayL2::Parallel(plays) => plays.push(p),
-            ExePlayL2::Single(_) => {
+            LazyExePlayL2::Sequential(plays) => plays.push(p),
+            LazyExePlayL2::Parallel(plays) => plays.push(p),
+            LazyExePlayL2::Single(_) => {
                 let p1 = self.clone();
-                *self = ExeSequentialL2(vec![p1, p]);
+                *self = LEPSequentialL2(vec![p1, p]);
             }
         }
     }
     pub fn push_play(&mut self, p: Arc<dyn LazyPlayL2 + Send + Sync>) {
         match self {
-            ExePlayL2::Sequential(plays) => plays.push(p.into()),
-            ExePlayL2::Parallel(plays) => plays.push(p.into()),
-            ExePlayL2::Single(_) => {
+            LazyExePlayL2::Sequential(plays) => plays.push(p.into()),
+            LazyExePlayL2::Parallel(plays) => plays.push(p.into()),
+            LazyExePlayL2::Single(_) => {
                 let p1 = self.clone();
-                *self = ExeSequentialL2(vec![p1, p.into()]);
+                *self = LEPSequentialL2(vec![p1, p.into()]);
             }
         }
     }
 }
 
-impl From<Arc<dyn LazyPlayL2 + Send + Sync>> for ExePlayL2 {
+impl From<Arc<dyn LazyPlayL2 + Send + Sync>> for LazyExePlayL2 {
     fn from(p: Arc<dyn LazyPlayL2 + Send + Sync>) -> Self {
-        ExePlayL2::Single(p)
+        LazyExePlayL2::Single(p)
     }
 }
 
@@ -258,48 +266,48 @@ mod test_exe_play_l2_push {
 
     #[test]
     fn test_exe_play_single_push() {
-        let mut exe_play = ExeSingleL2(Arc::new(SampleLazyPlayL2Helper::new("sample1")));
-        exe_play.push(ExeSingleL2(Arc::new(SampleLazyPlayL2Helper::new(
+        let mut exe_play = LEPSingleL2(Arc::new(SampleLazyPlayL2Helper::new("sample1")));
+        exe_play.push(LEPSingleL2(Arc::new(SampleLazyPlayL2Helper::new(
             "sample2",
         ))));
         match exe_play {
-            ExePlayL2::Sequential(plays) => {
+            LazyExePlayL2::Sequential(plays) => {
                 assert_eq!(plays.len(), 2);
                 // OK
             }
-            _ => unreachable!("exe_play should be ExeSequentialL2"),
+            _ => unreachable!("exe_play should be LEPSequentialL2"),
         }
     }
     #[test]
     fn test_exe_play_sequential_push() {
-        let mut exe_play = ExeSequentialL2(vec![ExeSingleL2(Arc::new(
+        let mut exe_play = LEPSequentialL2(vec![LEPSingleL2(Arc::new(
             SampleLazyPlayL2Helper::new("sample1"),
         ))]);
-        exe_play.push(ExeSingleL2(Arc::new(SampleLazyPlayL2Helper::new(
+        exe_play.push(LEPSingleL2(Arc::new(SampleLazyPlayL2Helper::new(
             "sample2",
         ))));
         match exe_play {
-            ExePlayL2::Sequential(plays) => {
+            LazyExePlayL2::Sequential(plays) => {
                 assert_eq!(plays.len(), 2);
                 // OK
             }
-            _ => unreachable!("exe_play should be ExeSequentialL2"),
+            _ => unreachable!("exe_play should be LEPSequentialL2"),
         }
     }
     #[test]
     fn test_exe_play_parallel_push() {
-        let mut exe_play = ExeParallelL2(vec![ExeSingleL2(Arc::new(SampleLazyPlayL2Helper::new(
+        let mut exe_play = LEPParallelL2(vec![LEPSingleL2(Arc::new(SampleLazyPlayL2Helper::new(
             "sample1",
         )))]);
-        exe_play.push(ExeSingleL2(Arc::new(SampleLazyPlayL2Helper::new(
+        exe_play.push(LEPSingleL2(Arc::new(SampleLazyPlayL2Helper::new(
             "sample2",
         ))));
         match exe_play {
-            ExePlayL2::Parallel(plays) => {
+            LazyExePlayL2::Parallel(plays) => {
                 assert_eq!(plays.len(), 2);
                 // OK
             }
-            _ => unreachable!("exe_play should be ExeParallelL2"),
+            _ => unreachable!("exe_play should be LEPParallelL2"),
         }
     }
 }
@@ -311,42 +319,42 @@ mod test_exe_play_l2_push_play {
 
     #[test]
     fn test_exe_play_single_push_play() {
-        let mut exe_play = ExeSingleL2(Arc::new(SampleLazyPlayL2Helper::new("sample1")));
+        let mut exe_play = LEPSingleL2(Arc::new(SampleLazyPlayL2Helper::new("sample1")));
         exe_play.push_play(Arc::new(SampleLazyPlayL2Helper::new("sample2")));
         match exe_play {
-            ExePlayL2::Sequential(plays) => {
+            LazyExePlayL2::Sequential(plays) => {
                 assert_eq!(plays.len(), 2);
                 // OK
             }
-            _ => unreachable!("exe_play should be ExeSequentialL2"),
+            _ => unreachable!("exe_play should be LEPSequentialL2"),
         }
     }
     #[test]
     fn test_exe_play_sequential_push_play() {
-        let mut exe_play = ExeSequentialL2(vec![ExeSingleL2(Arc::new(
+        let mut exe_play = LEPSequentialL2(vec![LEPSingleL2(Arc::new(
             SampleLazyPlayL2Helper::new("sample1"),
         ))]);
         exe_play.push_play(Arc::new(SampleLazyPlayL2Helper::new("sample2")));
         match exe_play {
-            ExePlayL2::Sequential(plays) => {
+            LazyExePlayL2::Sequential(plays) => {
                 assert_eq!(plays.len(), 2);
                 // OK
             }
-            _ => unreachable!("exe_play should be ExeSequentialL2"),
+            _ => unreachable!("exe_play should be LEPSequentialL2"),
         }
     }
     #[test]
     fn test_exe_play_parallel_push_play() {
-        let mut exe_play = ExeParallelL2(vec![ExeSingleL2(Arc::new(SampleLazyPlayL2Helper::new(
+        let mut exe_play = LEPParallelL2(vec![LEPSingleL2(Arc::new(SampleLazyPlayL2Helper::new(
             "sample1",
         )))]);
         exe_play.push_play(Arc::new(SampleLazyPlayL2Helper::new("sample2")));
         match exe_play {
-            ExePlayL2::Parallel(plays) => {
+            LazyExePlayL2::Parallel(plays) => {
                 assert_eq!(plays.len(), 2);
                 // OK
             }
-            _ => unreachable!("exe_play should be ExeParallelL2"),
+            _ => unreachable!("exe_play should be LEPParallelL2"),
         }
     }
 }

@@ -1,7 +1,7 @@
 use anyhow::Result;
 use cdk_ansible::{
-    AppL2, ExePlayL2, HostInventoryVars, HostInventoryVarsGenerator, HostsL2, LazyPlayL2, PlayL2,
-    PlayOptions, StackL2,
+    AppL2, HostInventoryVars, HostInventoryVarsGenerator, HostsL2, LazyExePlayL2, LazyPlayL2,
+    PlayL2, PlayOptions, StackL2,
 };
 use futures::future::{BoxFuture, FutureExt as _};
 use simple_sample::create_tasks_helper;
@@ -23,6 +23,14 @@ fn main2() -> Result<()> {
 
 struct HostA {
     name: String,
+}
+
+impl HostA {
+    fn new(name: &str) -> Self {
+        Self {
+            name: name.to_string(),
+        }
+    }
 }
 
 impl HostInventoryVarsGenerator for HostA {
@@ -48,13 +56,12 @@ impl SampleLazyPlayL2Helper {
 
 impl LazyPlayL2 for SampleLazyPlayL2Helper {
     fn create_play_l2(&self) -> BoxFuture<'static, Result<PlayL2>> {
+        let host_a = Arc::new(HostA::new("localhost"));
         let name = self.name.clone();
         async move {
             Ok(PlayL2 {
                 name,
-                hosts: HostsL2::new(vec![Arc::new(HostA {
-                    name: "localhost".to_string(),
-                })]),
+                hosts: HostsL2::new(vec![Arc::clone(&(host_a as _))]),
                 options: PlayOptions::default(),
                 tasks: create_tasks_helper(2)?,
             })
@@ -64,13 +71,13 @@ impl LazyPlayL2 for SampleLazyPlayL2Helper {
 }
 
 struct SampleStack {
-    exe_play: ExePlayL2,
+    exe_play: LazyExePlayL2,
 }
 
 impl SampleStack {
     fn new() -> Self {
         Self {
-            exe_play: ExePlayL2::Single(Arc::new(SampleLazyPlayL2Helper::new("sample"))),
+            exe_play: LazyExePlayL2::Single(Arc::new(SampleLazyPlayL2Helper::new("sample"))),
         }
     }
 }
@@ -82,7 +89,7 @@ impl StackL2 for SampleStack {
             .last()
             .expect("Failed to get a stack name")
     }
-    fn exe_play(&self) -> &ExePlayL2 {
+    fn exe_play(&self) -> &LazyExePlayL2 {
         &self.exe_play
     }
 }

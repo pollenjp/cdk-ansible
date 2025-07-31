@@ -1,5 +1,5 @@
 use crate::{
-    ExePlayL2,
+    LazyExePlayL2,
     l2::deploy::{AppL2, cli::GlobalConfig},
     types::StackName,
     utils::{dump_json, json_to_yaml},
@@ -110,7 +110,7 @@ async fn deploy(
 
 fn recursive_deploy(
     name: String,
-    exe_play_l2: ExePlayL2,
+    exe_play_l2: LazyExePlayL2,
     playbook_dir: Arc<PathBuf>,
     inventory_dir: Arc<PathBuf>,
     deploy_config: Arc<DeployConfig>,
@@ -118,7 +118,7 @@ fn recursive_deploy(
 ) -> BoxFuture<'static, Result<()>> {
     async move {
         match exe_play_l2 {
-            ExePlayL2::Single(ep) => {
+            LazyExePlayL2::Single(ep) => {
                 // Run 'ansible-playbook' command
 
                 let play_l2 = ep.create_play_l2().await?;
@@ -175,7 +175,7 @@ fn recursive_deploy(
                     String::from_utf8_lossy(&output.stderr),
                 );
             }
-            ExePlayL2::Sequential(eps) => {
+            LazyExePlayL2::Sequential(eps) => {
                 for (i, ep) in eps.into_iter().enumerate() {
                     recursive_deploy(
                         format!("{name}_seq{i}"),
@@ -188,7 +188,7 @@ fn recursive_deploy(
                     .await?;
                 }
             }
-            ExePlayL2::Parallel(eps) => {
+            LazyExePlayL2::Parallel(eps) => {
                 let mut set: JoinSet<Result<()>> = JoinSet::new();
                 for (i, ep) in eps.into_iter().enumerate() {
                     set.spawn(recursive_deploy(
