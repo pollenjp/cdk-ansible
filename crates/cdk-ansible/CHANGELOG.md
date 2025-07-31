@@ -7,6 +7,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.3.0](https://github.com/pollenjp/cdk-ansible/compare/cdk-ansible-v0.2.7...cdk-ansible-v0.3.0) - 2025-07-31 (cdk-ansible)
+
+### Added
+
+- LazyExePlayL2 and ExePlayL2::{Single, Sequential, Parallel} ([#113](https://github.com/pollenjp/cdk-ansible/pull/113))
+
+### Other
+
+- Add quick start section
+- update cdk-ansible-example's description
+
 ## [0.2.7](https://github.com/pollenjp/cdk-ansible/compare/cdk-ansible-v0.2.6...cdk-ansible-v0.2.7) - 2025-07-26 (cdk-ansible)
 
 ### Added
