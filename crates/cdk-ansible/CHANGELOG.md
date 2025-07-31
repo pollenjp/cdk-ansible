@@ -11,8 +11,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- *(cdk-ansible)* add l2 synth option ([#102](https://github.com/pollenjp/cdk-ansible/pull/102))
-- *(cdk-ansible)* support deploying all stacks
+- _(cdk-ansible)_ add l2 synth option ([#102](https://github.com/pollenjp/cdk-ansible/pull/102))
+- _(cdk-ansible)_ support deploying all stacks
 
 ### Other
 

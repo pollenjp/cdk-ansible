@@ -240,17 +240,17 @@ stateDiagram
 ```
 
 The definition of L2 Stack is similar to L1, but it implements the `StackL2` trait.
-The difference is that `fn exe_play` returns `&ExePlayL2`.
+The difference is that `fn exe_play` returns `&LazyExePlayL2`.
 
 ```rust
 struct SampleStack {
-    exe_play: ExePlayL2,
+    exe_play: LazyExePlayL2,
 }
 
 impl SampleStack {
     fn new() -> Self {
         Self {
-            exe_play: ExePlayL2::Single(Arc::new(SampleLazyPlayL2Helper::new("sample"))),
+            exe_play: LazyExePlayL2::Single(Arc::new(SampleLazyPlayL2Helper::new("sample"))),
         }
     }
 }
@@ -262,7 +262,7 @@ impl StackL2 for SampleStack {
             .last()
             .expect("Failed to get a stack name")
     }
-    fn exe_play(&self) -> &ExePlayL2 {
+    fn exe_play(&self) -> &LazyExePlayL2 {
         &self.exe_play
     }
 }
@@ -277,8 +277,8 @@ pub fn main2() -> Result<()> {
 
 ```
 
-`ExePlayL2` corresponds to `ExePlay`, but it can accept objects that implement the `LazyPlayL2` trait instead of `Play` objects.
-The `LazyPlayL2` trait implements an async function `fn create_play_l2` which can generate information equivalent to an Ansible Play within this function.
+`LazyExePlayL2` corresponds to `ExePlay`, but it can accept objects that implement the `LazyPlayL2` trait instead of `Play` objects.
+The `LazyPlayL2` trait implements an async function `fn lazy_play_l2` which can generate information equivalent to an Ansible Play within this function.
 
 ```rust
 struct SampleLazyPlayL2Helper {
@@ -294,7 +294,7 @@ impl SampleLazyPlayL2Helper {
 }
 
 impl LazyPlayL2 for SampleLazyPlayL2Helper {
-    fn create_play_l2(&self) -> BoxFuture<'static, Result<PlayL2>> {
+    fn lazy_play_l2(&self) -> BoxFuture<'static, Result<ExePlayL2>> {
         let name = self.name.clone();
         async move {
             Ok(PlayL2 {
@@ -304,7 +304,8 @@ impl LazyPlayL2 for SampleLazyPlayL2Helper {
                 })]),
                 options: PlayOptions::default(),
                 tasks: create_tasks_helper(2)?,
-            })
+            }
+            .into())
         }
         .boxed()
     }

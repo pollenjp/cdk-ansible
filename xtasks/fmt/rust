@@ -16,7 +16,7 @@ if ! git diff --quiet -- .; then
   exit 1
 fi
 
-cargo fix --allow-dirty
+cargo fix --all-targets --allow-dirty
 cargo fmt --all
 
 popd >/dev/null 2>&1
