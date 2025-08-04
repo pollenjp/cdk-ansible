@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.3.1](https://github.com/pollenjp/cdk-ansible/compare/cdk-ansible-v0.3.0...cdk-ansible-v0.3.1) - 2025-08-04 (cdk-ansible)
+
+### Added
+
+- *(cdk-ansible)* Update trait implementations to accept any iterable type instead of Vec
+
 ## [0.3.0](https://github.com/pollenjp/cdk-ansible/compare/cdk-ansible-v0.2.7...cdk-ansible-v0.3.0) - 2025-07-31 (cdk-ansible)
 
 ### Added
