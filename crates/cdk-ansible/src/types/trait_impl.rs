@@ -21,7 +21,7 @@ pub trait IntoExePlaySequential {
 ///     }
 /// }
 ///
-/// let plays = vec![
+/// let plays = [
 ///     create_play_helper("sample1").into(),
 ///     create_play_helper("sample2").into(),
 ///     create_play_helper("sample3").into(),
@@ -33,9 +33,9 @@ pub trait IntoExePlaySequential {
 ///     _ => unreachable!("exe_play should be ExeSequential"),
 /// }
 /// ```
-impl IntoExePlaySequential for Vec<ExePlay> {
+impl<I: IntoIterator<Item = ExePlay>> IntoExePlaySequential for I {
     fn into_exe_play_sequential(self) -> ExePlay {
-        ExePlay::Sequential(self)
+        ExePlay::Sequential(self.into_iter().collect())
     }
 }
 
@@ -46,7 +46,7 @@ mod test_into_exe_play_sequential {
 
     #[test]
     fn test_into_exe_play_sequential() {
-        let plays = vec![
+        let plays = [
             create_play_helper("sample1").into(),
             create_play_helper("sample2").into(),
             create_play_helper("sample3").into(),
@@ -77,7 +77,7 @@ pub trait IntoExePlayParallel {
 ///     }
 /// }
 ///
-/// let plays = vec![
+/// let plays = [
 ///     create_play_helper("sample1").into(),
 ///     create_play_helper("sample2").into(),
 ///     create_play_helper("sample3").into(),
@@ -89,9 +89,9 @@ pub trait IntoExePlayParallel {
 ///     _ => unreachable!("exe_play should be ExeParallel"),
 /// }
 /// ```
-impl IntoExePlayParallel for Vec<ExePlay> {
+impl<I: IntoIterator<Item = ExePlay>> IntoExePlayParallel for I {
     fn into_exe_play_parallel(self) -> ExePlay {
-        ExePlay::Parallel(self)
+        ExePlay::Parallel(self.into_iter().collect())
     }
 }
 
@@ -102,7 +102,7 @@ mod test_into_exe_play_parallel {
 
     #[test]
     fn test_into_exe_play_parallel() {
-        let plays = vec![
+        let plays = [
             create_play_helper("sample1").into(),
             create_play_helper("sample2").into(),
             create_play_helper("sample3").into(),

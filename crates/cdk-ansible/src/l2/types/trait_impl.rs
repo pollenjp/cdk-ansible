@@ -58,7 +58,7 @@ pub trait IntoExePlayL2Sequential {
 ///     }
 /// }
 ///
-/// let plays = vec![
+/// let plays = [
 ///     ExePlayL2::Single(play_l2_helper("sample1").into()),
 ///     ExePlayL2::Single(play_l2_helper("sample2").into()),
 ///     ExePlayL2::Single(play_l2_helper("sample3").into()),
@@ -70,9 +70,9 @@ pub trait IntoExePlayL2Sequential {
 ///     _ => unreachable!("exe_play should be Sequential"),
 /// }
 /// ```
-impl IntoExePlayL2Sequential for Vec<ExePlayL2> {
+impl<I: IntoIterator<Item = ExePlayL2>> IntoExePlayL2Sequential for I {
     fn into_exe_play_l2_sequential(self) -> ExePlayL2 {
-        ExePlayL2::Sequential(self)
+        ExePlayL2::Sequential(self.into_iter().collect())
     }
 }
 
@@ -83,7 +83,7 @@ mod test_into_exe_play_l2_sequential {
 
     #[test]
     fn test_into_exe_play_l2_sequential() {
-        let plays = vec![
+        let plays = [
             ExePlayL2::Single(play_l2_helper("sample1").into()),
             ExePlayL2::Single(play_l2_helper("sample2").into()),
             ExePlayL2::Single(play_l2_helper("sample3").into()),
@@ -163,9 +163,9 @@ pub trait IntoExePlayL2Parallel {
 ///     _ => unreachable!("exe_play should be Parallel"),
 /// }
 /// ```
-impl IntoExePlayL2Parallel for Vec<ExePlayL2> {
+impl<I: IntoIterator<Item = ExePlayL2>> IntoExePlayL2Parallel for I {
     fn into_exe_play_l2_parallel(self) -> ExePlayL2 {
-        ExePlayL2::Parallel(self)
+        ExePlayL2::Parallel(self.into_iter().collect())
     }
 }
 
@@ -176,7 +176,7 @@ mod test_into_exe_play_l2_parallel {
 
     #[test]
     fn test_into_exe_play_l2_parallel() {
-        let plays = vec![
+        let plays = [
             ExePlayL2::Single(play_l2_helper("sample1").into()),
             play_l2_helper("sample2").into(),
             play_l2_helper("sample3").into(),
@@ -242,7 +242,7 @@ pub trait IntoLazyExePlayL2Sequential {
 ///     }
 /// }
 ///
-/// let plays = vec![
+/// let plays = [
 ///     LazyExePlayL2::Single(Arc::new(SampleLazyPlayL2Helper::new("sample1"))),
 ///     LazyExePlayL2::Single(Arc::new(SampleLazyPlayL2Helper::new("sample2"))),
 ///     LazyExePlayL2::Single(Arc::new(SampleLazyPlayL2Helper::new("sample3"))),
@@ -254,9 +254,9 @@ pub trait IntoLazyExePlayL2Sequential {
 ///     _ => unreachable!("exe_play should be ExeSequential"),
 /// }
 /// ```
-impl IntoLazyExePlayL2Sequential for Vec<LazyExePlayL2> {
+impl<I: IntoIterator<Item = LazyExePlayL2>> IntoLazyExePlayL2Sequential for I {
     fn into_lazy_exe_play_l2_sequential(self) -> LazyExePlayL2 {
-        LazyExePlayL2::Sequential(self)
+        LazyExePlayL2::Sequential(self.into_iter().collect())
     }
 }
 
@@ -268,7 +268,7 @@ mod test_into_lazy_exe_play_l2_sequential {
 
     #[test]
     fn test_into_lazy_exe_play_l2_sequential() {
-        let plays = vec![
+        let plays = [
             LazyExePlayL2::Single(Arc::new(SampleLazyPlayL2Helper::new("sample1"))),
             LazyExePlayL2::Single(Arc::new(SampleLazyPlayL2Helper::new("sample2"))),
             LazyExePlayL2::Single(Arc::new(SampleLazyPlayL2Helper::new("sample3"))),
@@ -333,7 +333,7 @@ pub trait IntoLazyExePlayL2Parallel {
 ///     }
 /// }
 ///
-/// let plays = vec![
+/// let plays = [
 ///     LazyExePlayL2::Single(Arc::new(SampleLazyPlayL2Helper::new("sample1"))),
 ///     LazyExePlayL2::Single(Arc::new(SampleLazyPlayL2Helper::new("sample2"))),
 ///     LazyExePlayL2::Single(Arc::new(SampleLazyPlayL2Helper::new("sample3"))),
@@ -345,9 +345,9 @@ pub trait IntoLazyExePlayL2Parallel {
 ///     _ => unreachable!("exe_play should be ExeParallel"),
 /// }
 /// ```
-impl IntoLazyExePlayL2Parallel for Vec<LazyExePlayL2> {
+impl<I: IntoIterator<Item = LazyExePlayL2>> IntoLazyExePlayL2Parallel for I {
     fn into_lazy_exe_play_l2_parallel(self) -> LazyExePlayL2 {
-        LazyExePlayL2::Parallel(self)
+        LazyExePlayL2::Parallel(self.into_iter().collect())
     }
 }
 
@@ -359,7 +359,7 @@ mod test_into_lazy_exe_play_l2_parallel {
 
     #[test]
     fn test_into_lazy_exe_play_l2_parallel() {
-        let plays = vec![
+        let plays = [
             LazyExePlayL2::Single(Arc::new(SampleLazyPlayL2Helper::new("sample1"))),
             LazyExePlayL2::Single(Arc::new(SampleLazyPlayL2Helper::new("sample2"))),
             LazyExePlayL2::Single(Arc::new(SampleLazyPlayL2Helper::new("sample3"))),
