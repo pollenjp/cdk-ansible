@@ -21,7 +21,19 @@ jobs:
     concurrency:
       group: release-plz-${{ github.ref }}
       cancel-in-progress: false
+    environment:
+      name: release-plz commit
     steps:
+      # Generating a GitHub token, so that PRs and tags created by
+      # the release-plz-action can trigger actions workflows.
+      - name: Generate GitHub token
+        uses: actions/create-github-app-token@v2
+        id: generate-token
+        with:
+          # GitHub App ID secret name
+          app-id: ${{ secrets.APP_ID }}
+          # GitHub App private key secret name
+          private-key: ${{ secrets.APP_PRIVATE_KEY }}
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
@@ -46,5 +58,8 @@ jobs:
         with:
           command: release-pr
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # Commit by GitHub App to run CI workflows.
+          # https://release-plz.dev/docs/github/token#use-a-github-app
+          # https://github.com/release-plz/release-plz/blob/d8e8559d25cefbee0dc4097694ecb2f0dbaaf0f4/website/docs/github/token.md#use-a-github-app
+          GITHUB_TOKEN: ${{ steps.generate-token.outputs.token }}
           # CARGO_REGISTRY_TOKEN: ${{ secrets.CARGO_REGISTRY_TOKEN }}
