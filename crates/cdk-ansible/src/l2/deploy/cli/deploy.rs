@@ -207,7 +207,6 @@ fn deploy_exe_play_l2(
                 }
             }
             ExePlayL2::Single(play_l2) => {
-                let name = format!("{name}_{}", &play_l2.name);
                 let inv_root = play_l2.hosts.to_inventory_root()?;
                 let play = play_l2.try_play()?;
 
