@@ -11,9 +11,7 @@ use clap::Args;
 use futures::future::{BoxFuture, FutureExt as _};
 use std::path::PathBuf;
 use std::sync::Arc;
-use tokio::process::Command;
-use tokio::sync::Semaphore;
-use tokio::task::JoinSet;
+use tokio::{fs, process::Command, sync::Semaphore, task::JoinSet};
 
 #[derive(Args, Debug, Clone)]
 pub struct Deploy {
@@ -78,6 +76,10 @@ async fn deploy(
 ) -> Result<()> {
     let playbook_dir = Arc::new(global_config.playbook_dir.clone());
     let inventory_dir = Arc::new(global_config.inventory_dir.clone());
+
+    // remove playbook_dir and inventory_dir
+    fs::remove_dir_all(playbook_dir.as_ref().clone()).await?;
+    fs::remove_dir_all(inventory_dir.as_ref().clone()).await?;
 
     // Semaphore for limiting the number of concurrent ansible-playbook processes
     let cmd_semaphore = Arc::new(Semaphore::new(deploy_config.max_procs));
