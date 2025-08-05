@@ -6,17 +6,17 @@
 
 set -euo pipefail -x
 
-simple_sample_ansible_dir=./tools/ansible
+sample_ansible_root=$(realpath "${SAMPLE_ANSIBLE_ROOT:?}")
 
 global_args=(
-  --app-dir "${simple_sample_ansible_dir}"
+  --app-dir "${sample_ansible_root}"
 )
 
 stringify_cmd=(uv run python -c 'import sys; from shlex import join; print(join(sys.argv[1:]))')
 playbook_command_str=$(
   "${stringify_cmd[@]}" \
-    uv --project "${simple_sample_ansible_dir}" \
-    run --directory "${simple_sample_ansible_dir}" \
+    uv --project "${sample_ansible_root}" \
+    run --directory "${sample_ansible_root}" \
     ansible-playbook -v
 )
 cargo run --package simple-sample --bin l1 -- "${global_args[@]}" deploy -P 3 --playbook-command "${playbook_command_str}" -i dev SampleStack
