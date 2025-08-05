@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.3.2](https://github.com/pollenjp/cdk-ansible/compare/cdk-ansible-v0.3.1...cdk-ansible-v0.3.2) - 2025-08-05 (cdk-ansible)
+
+### Fixed
+
+- remove existing playbook and inventory directory
+
+### Other
+
+- fix playbook and inventory name
+
 ## [0.3.1](https://github.com/pollenjp/cdk-ansible/compare/cdk-ansible-v0.3.0...cdk-ansible-v0.3.1) - 2025-08-04 (cdk-ansible)
 
 ### Added
