@@ -70,7 +70,44 @@ impl LazyPlayL2 for Sample1LazyPlayL2Helper {
                     name: name.clone(),
                     hosts: HostsL2::new(vec![Arc::clone(&hp.localhost) as _]),
                     options: PlayOptions::default(),
-                    tasks: create_tasks_helper(Arc::clone(&hp.localhost) as _, 2)?,
+                    tasks: vec![::cdk_ansible::Task {
+                        name: "sleep".into(),
+                        options: TaskOptions {
+                            changed_when: OptU::Some(false.into()),
+                            // failed_when: OptU::Some("true".into()), // interruption test
+                            ..Default::default()
+                        },
+                        command: Box::new(::sample_cdkam_ansible::builtin::command::Module {
+                            module: ::sample_cdkam_ansible::builtin::command::Args {
+                                options: ::sample_cdkam_ansible::builtin::command::Opt {
+                                    cmd: OptU::Some("sleep 1".into()),
+                                    ..Default::default()
+                                },
+                            },
+                        }),
+                    }],
+                }
+                .into(),
+                PlayL2 {
+                    name: name.clone(),
+                    hosts: HostsL2::new(vec![Arc::clone(&hp.localhost) as _]),
+                    options: PlayOptions::default(),
+                    tasks: vec![::cdk_ansible::Task {
+                        name: "sleep".into(),
+                        options: TaskOptions {
+                            changed_when: OptU::Some(false.into()),
+                            // failed_when: OptU::Some("true".into()), // interruption test
+                            ..Default::default()
+                        },
+                        command: Box::new(::sample_cdkam_ansible::builtin::command::Module {
+                            module: ::sample_cdkam_ansible::builtin::command::Args {
+                                options: ::sample_cdkam_ansible::builtin::command::Opt {
+                                    cmd: OptU::Some("sleep 1".into()),
+                                    ..Default::default()
+                                },
+                            },
+                        }),
+                    }],
                 }
                 .into(),
                 ExePlayL2::Sequential(vec![

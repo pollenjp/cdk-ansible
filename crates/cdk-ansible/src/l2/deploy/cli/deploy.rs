@@ -7,10 +7,11 @@ use crate::{
     utils::{dump_json, json_to_yaml},
 };
 use anyhow::{Context as _, Result};
+use cdk_ansible_core::core::Play;
 use clap::Args;
 use futures::future::{BoxFuture, FutureExt as _};
-use std::path::PathBuf;
-use std::sync::Arc;
+use std::{path::PathBuf, process::ExitStatus, sync::Arc};
+use thiserror::Error;
 use tokio::{fs, process::Command, sync::Semaphore, task::JoinSet};
 
 #[derive(Args, Debug, Clone)]
@@ -123,7 +124,7 @@ fn recursive_deploy(
     inventory_dir: Arc<PathBuf>,
     deploy_config: Arc<DeployConfig>,
     cmd_semaphore: Arc<Semaphore>,
-) -> BoxFuture<'static, Result<()>> {
+) -> BoxFuture<'static, std::result::Result<(), DeployL2Error>> {
     async move {
         match lazy_exe_play {
             LazyExePlayL2::Sequential(leps) => {
@@ -140,7 +141,7 @@ fn recursive_deploy(
                 }
             }
             LazyExePlayL2::Parallel(leps) => {
-                let mut set: JoinSet<Result<()>> = JoinSet::new();
+                let mut set = JoinSet::new();
                 for (i, lep) in leps.into_iter().enumerate() {
                     set.spawn(recursive_deploy(
                         format!("{name}_p{i}"),
@@ -151,8 +152,23 @@ fn recursive_deploy(
                         Arc::clone(&cmd_semaphore),
                     ));
                 }
+
+                // Wait for all tasks to complete and then check the results.
+                let mut results = Vec::new();
                 while let Some(res) = set.join_next().await {
-                    (res?)?;
+                    results.push(res.map_err(|e| DeployL2Error::Other(e.into()))?);
+                }
+                // combine all error messages
+                let mut errors = Vec::new();
+                for res in results.into_iter() {
+                    if let Err(e) = res {
+                        errors.push(e);
+                    }
+                }
+                if !errors.is_empty() {
+                    return Err(DeployL2Error::Parallel {
+                        errors: errors.into_iter().map(|e| e.into()).collect(),
+                    });
                 }
             }
             LazyExePlayL2::Single(lp) => {
@@ -180,7 +196,7 @@ fn deploy_exe_play_l2(
     inventory_dir: Arc<PathBuf>,
     deploy_config: Arc<DeployConfig>,
     cmd_semaphore: Arc<Semaphore>,
-) -> BoxFuture<'static, Result<()>> {
+) -> BoxFuture<'static, std::result::Result<(), DeployL2Error>> {
     async move {
         match exe_play {
             ExePlayL2::Sequential(eps) => {
@@ -197,7 +213,7 @@ fn deploy_exe_play_l2(
                 }
             }
             ExePlayL2::Parallel(eps) => {
-                let mut set: JoinSet<Result<()>> = JoinSet::new();
+                let mut set = JoinSet::new();
                 for (i, ep) in eps.into_iter().enumerate() {
                     set.spawn(deploy_exe_play_l2(
                         format!("{name}_p{i}"),
@@ -208,8 +224,26 @@ fn deploy_exe_play_l2(
                         Arc::clone(&cmd_semaphore),
                     ));
                 }
+
+                // Wait for all tasks to complete and then check the results.
+                // This means that, in parallel execution, if one of the tasks fails,
+                // the other tasks will continue to run.
+                // So, we need to wait for all tasks to complete and then check the results.
+                let mut results: Vec<std::result::Result<(), DeployL2Error>> = Vec::new();
                 while let Some(res) = set.join_next().await {
-                    (res?)?;
+                    results.push(res.map_err(|e| DeployL2Error::Other(e.into()))?);
+                }
+                // combine all error messages
+                let mut errors: Vec<DeployL2Error> = Vec::new();
+                for res in results.into_iter() {
+                    if let Err(e) = res {
+                        errors.push(e);
+                    }
+                }
+                if !errors.is_empty() {
+                    return Err(DeployL2Error::Parallel {
+                        errors: errors.into_iter().map(|e| e.into()).collect(),
+                    });
                 }
             }
             ExePlayL2::Single(play_l2) => {
@@ -218,7 +252,14 @@ fn deploy_exe_play_l2(
 
                 // Create playbook
                 let pb_path_j = playbook_dir.join(&name).with_extension("json");
-                dump_json(pb_path_j.clone(), vec![play]).await?;
+                dump_json(
+                    pb_path_j.clone(),
+                    vec![Play {
+                        name: format!("{} ({name})", play.name),
+                        ..play
+                    }],
+                )
+                .await?;
                 json_to_yaml(pb_path_j.clone()).await?;
 
                 // Create inventory
@@ -236,7 +277,11 @@ fn deploy_exe_play_l2(
                     .first()
                     .with_context(|| "getting 1st playbook command")?;
 
-                let _permit = cmd_semaphore.clone().acquire_owned().await?;
+                let _permit = cmd_semaphore
+                    .clone()
+                    .acquire_owned()
+                    .await
+                    .map_err(|e| DeployL2Error::Other(e.into()))?;
                 let output = Command::new(cmd)
                     .args(deploy_config.playbook_command.get(1..).unwrap_or_default())
                     .args([
@@ -251,13 +296,15 @@ fn deploy_exe_play_l2(
                             .with_context(|| "stringifying path")?,
                     ])
                     .output()
-                    .await?;
+                    .await
+                    .map_err(|e| DeployL2Error::Other(e.into()))?;
                 if !output.status.success() {
-                    anyhow::bail!(
-                        "running ansible-playbook:\n{}\n{}",
-                        String::from_utf8_lossy(&output.stdout),
-                        String::from_utf8_lossy(&output.stderr)
-                    );
+                    return Err(DeployL2Error::Command {
+                        command: deploy_config.playbook_command.clone(),
+                        stdout: String::from_utf8_lossy(&output.stdout).to_string(),
+                        stderr: String::from_utf8_lossy(&output.stderr).to_string(),
+                        status: output.status,
+                    });
                 }
                 println!(
                     "{}\n{}",
@@ -269,4 +316,26 @@ fn deploy_exe_play_l2(
         Ok(())
     }
     .boxed()
+}
+
+#[derive(Error, Debug)]
+enum DeployL2Error {
+    #[error(
+        "failed to run ansible-playbook\n-- command --\n{command:?}\n-- stdout --\n{stdout}\n-- stderr --\n{stderr}\n-- status --\n{status:?}"
+    )]
+    Command {
+        command: Vec<String>,
+        stdout: String,
+        stderr: String,
+        status: ExitStatus,
+    },
+    #[error(
+        "failed to run ansible-playbook in parallel:\n{}",
+        errors.iter().map(|e| format!("{e}")).collect::<Vec<_>>().join("\n")
+    )]
+    Parallel {
+        errors: Vec<Box<dyn std::error::Error + Send + Sync>>,
+    },
+    #[error(transparent)]
+    Other(#[from] anyhow::Error),
 }

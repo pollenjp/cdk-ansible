@@ -43,7 +43,6 @@
     },
     "search.exclude": {
       "**/target/": true,
-      "crates/cdkam/**": true,
     },
     "rust-analyzer.cargo.extraEnv": {
       "CDK_ANSIBLE_COMMIT_HASH": "dummy_hash",
