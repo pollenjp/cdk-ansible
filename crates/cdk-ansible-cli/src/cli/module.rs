@@ -832,7 +832,8 @@ async fn get_module_json(
             Command::new("ansible-doc")
                 .args(["--json", name.as_str()])
                 .output()
-                .await?
+                .await
+                .with_context(|| format!("running 'ansible-doc --json {name}'"))?
         };
         if !output.status.success() {
             bail!(
@@ -870,7 +871,7 @@ async fn get_ansible_modules_list() -> Result<Vec<String>> {
         .args(["--list"])
         .output()
         .await
-        .with_context(|| "failed to execute 'ansible-doc --list'")?;
+        .with_context(|| "running 'ansible-doc --list'")?;
     let output_str = String::from_utf8_lossy(&output.stdout);
     let names = output_str
         .split('\n')
@@ -1059,7 +1060,7 @@ async fn format_code(code: &str) -> Result<String> {
         .stdin(Stdio::piped())
         .stdout(Stdio::piped())
         .spawn()
-        .with_context(|| "failed to spawn rustfmt")?;
+        .with_context(|| "running rustfmt")?;
 
     let Some(mut stdin) = child.stdin.take() else {
         bail!("failed to take stdin: rustfmt");

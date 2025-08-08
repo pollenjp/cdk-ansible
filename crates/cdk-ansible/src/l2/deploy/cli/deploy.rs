@@ -281,7 +281,7 @@ fn deploy_exe_play_l2(
                     .clone()
                     .acquire_owned()
                     .await
-                    .map_err(|e| DeployL2Error::Other(e.into()))?;
+                    .with_context(|| "acquiring semaphore")?;
                 let output = Command::new(cmd)
                     .args(deploy_config.playbook_command.get(1..).unwrap_or_default())
                     .args([
@@ -297,7 +297,12 @@ fn deploy_exe_play_l2(
                     ])
                     .output()
                     .await
-                    .map_err(|e| DeployL2Error::Other(e.into()))?;
+                    .with_context(|| {
+                        format!(
+                            "running ansible-playbook: {}",
+                            deploy_config.playbook_command.join(" ")
+                        )
+                    })?;
                 if !output.status.success() {
                     return Err(DeployL2Error::Command {
                         command: deploy_config.playbook_command.clone(),

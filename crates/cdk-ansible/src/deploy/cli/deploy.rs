@@ -128,7 +128,11 @@ fn recursive_deploy(
                     .first()
                     .with_context(|| "getting 1st playbook command")?;
 
-                let _permit = pb_semaphore.clone().acquire_owned().await?;
+                let _permit = pb_semaphore
+                    .clone()
+                    .acquire_owned()
+                    .await
+                    .with_context(|| "acquiring semaphore")?;
                 let output = Command::new(cmd)
                     .args(deploy_config.playbook_command.get(1..).unwrap_or_default())
                     .args([
@@ -139,7 +143,13 @@ fn recursive_deploy(
                         pb_path.to_str().with_context(|| "stringifying path")?,
                     ])
                     .output()
-                    .await?;
+                    .await
+                    .with_context(|| {
+                        format!(
+                            "running ansible-playbook: {}",
+                            deploy_config.playbook_command.join(" ")
+                        )
+                    })?;
                 if !output.status.success() {
                     anyhow::bail!(
                         "running ansible-playbook:\n{}\n{}",

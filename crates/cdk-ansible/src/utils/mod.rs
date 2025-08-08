@@ -50,9 +50,16 @@ pub async fn json_to_yaml(json_path: PathBuf) -> Result<()> {
         .arg("json")
         .arg("-o")
         .arg("yaml")
-        .arg(json_path)
-        .output();
-    let output = output.await?;
+        .arg(json_path.clone())
+        .output()
+        .await
+        .with_context(|| {
+            format!(
+                "running 'yq' to convert {} to {}",
+                json_path.display(),
+                yaml_path.display()
+            )
+        })?;
     if !output.status.success() {
         anyhow::bail!(
             "command failed: {}",
