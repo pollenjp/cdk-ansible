@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.2.6](https://github.com/pollenjp/cdk-ansible/compare/cdk-ansible-cli-v0.2.5...cdk-ansible-cli-v0.2.6) - 2025-08-08 (cdk-ansible-cli)
+
+### Other
+
+- *(cdk-ansible)* enhance error messages for Command
+
 ## [0.2.5](https://github.com/pollenjp/cdk-ansible/compare/cdk-ansible-cli-v0.2.4...cdk-ansible-cli-v0.2.5) - 2025-07-31 (cdk-ansible-cli)
 
 ### Added
