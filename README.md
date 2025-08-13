@@ -38,7 +38,7 @@ WARNING: This project does not use [JSii](https://github.com/aws/jsii).
 
 Template project can see in [cdk-ansible-examples](https://github.com/pollenjp/cdk-ansible-examples) and support [cargo-generate](https://github.com/cargo-generate/cargo-generate).
 
-1. Install [mise](https://github.com/jdx/mise)
+1. Install [mise](https://github.com/jdx/mise) (not required but recommended)
 
 2. Install [cargo-generate](https://github.com/cargo-generate/cargo-generate), for example:
 
@@ -194,7 +194,7 @@ If your ansible command is installed through `uv`, pass `--playbook-command` opt
 
 <https://github.com/pollenjp/cdk-ansible-examples/blob/a5d5568fa170047fae4b7327b26c5ba16a37f88f/cli-init/xtasks/test/cdk-ansible-cli-init#L33-L40>
 
-### (Optional) L2 Stack
+### L2 Stack (Recommended)
 
 CDK-Ansible can also define higher-level L2 (Layer 2) stacks.
 In comparison, the previous Stack is called an L1 Stack.
