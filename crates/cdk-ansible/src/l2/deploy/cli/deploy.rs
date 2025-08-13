@@ -272,48 +272,58 @@ fn deploy_exe_play_l2(
                     return Ok(());
                 }
 
-                let cmd = deploy_config
+                let playbook_cmd_args = deploy_config
                     .playbook_command
-                    .first()
-                    .with_context(|| "getting 1st playbook command")?;
+                    .clone()
+                    .into_iter()
+                    .chain([
+                        "-i".to_owned(),
+                        inv_path_j
+                            .with_extension("yaml")
+                            .to_string_lossy()
+                            .to_string(),
+                        pb_path_j
+                            .with_extension("yaml")
+                            .to_string_lossy()
+                            .to_string(),
+                    ])
+                    .collect::<Vec<_>>();
 
                 let _permit = cmd_semaphore
                     .clone()
                     .acquire_owned()
                     .await
                     .with_context(|| "acquiring semaphore")?;
-                let output = Command::new(cmd)
-                    .args(deploy_config.playbook_command.get(1..).unwrap_or_default())
-                    .args([
-                        "-i",
-                        inv_path_j
-                            .with_extension("yaml")
-                            .to_str()
-                            .with_context(|| "stringifying path")?,
-                        pb_path_j
-                            .with_extension("yaml")
-                            .to_str()
-                            .with_context(|| "stringifying path")?,
-                    ])
-                    .output()
-                    .await
-                    .with_context(|| {
-                        format!(
-                            "running ansible-playbook: {}",
-                            deploy_config.playbook_command.join(" ")
-                        )
-                    })?;
+                let output = Command::new(
+                    playbook_cmd_args
+                        .first()
+                        .with_context(|| "getting 1st playbook command")?,
+                )
+                .args(playbook_cmd_args.get(1..).unwrap_or_default())
+                .output()
+                .await
+                .with_context(|| {
+                    format!(
+                        "running ansible-playbook: {}",
+                        deploy_config.playbook_command.join(" ")
+                    )
+                })?;
                 if !output.status.success() {
                     return Err(DeployL2Error::Command {
-                        command: deploy_config.playbook_command.clone(),
+                        command: playbook_cmd_args,
                         stdout: String::from_utf8_lossy(&output.stdout).to_string(),
                         stderr: String::from_utf8_lossy(&output.stderr).to_string(),
                         status: output.status,
                     });
                 }
                 println!(
-                    "{}\n{}",
+                    "stdout for '{}'\n{}",
+                    playbook_cmd_args.join(" "),
                     String::from_utf8_lossy(&output.stdout),
+                );
+                println!(
+                    "stderr for '{}'\n{}",
+                    playbook_cmd_args.join(" "),
                     String::from_utf8_lossy(&output.stderr),
                 );
             }

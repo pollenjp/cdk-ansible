@@ -228,6 +228,10 @@ impl HostInventoryVarsGenerator for LocalHost {
                     VAR_NAME_INSTANTIATED_AT.to_string(),
                     self.common_field.instantiated_at.to_rfc3339().into(),
                 ),
+                // (
+                //     "ansible_python_interpreter".to_string(),
+                //     "/usr/local/ansible_python/.venv/bin/python".into(),
+                // ),
             ],
         })
     }
@@ -265,6 +269,10 @@ impl HostInventoryVarsGenerator for HostA {
                     VAR_NAME_INSTANTIATED_AT.to_string(),
                     self.common_field.instantiated_at.to_rfc3339().into(),
                 ),
+                // (
+                //     "ansible_python_interpreter".to_string(),
+                //     "/usr/local/ansible_python/.venv/bin/python".into(),
+                // ),
             ],
         })
     }
