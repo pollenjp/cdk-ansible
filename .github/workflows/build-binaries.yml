@@ -70,7 +70,7 @@ jobs:
       - run: rustup update stable && rustup default stable
       - uses: actions/setup-python@v5
         with:
-          python-version: "3.12"
+          python-version: "3.13"
       - name: Update pip
         run: pip install --user -U pip
       - name: Install cargo-zigbuild (and ziglang)
