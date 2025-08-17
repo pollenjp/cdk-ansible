@@ -367,15 +367,9 @@ cargo install cdk-ansible-cli
   - rustfmt
     - `rustup component add rustfmt`
 
-## Tutorial
+### Tutorial
 
-### Init cdk-ansible project
-
-While we plan to provide an init command in the future, for now it is recommended to copy the following sample project.
-
-- <https://github.com/pollenjp/cdk-ansible-examples/tree/main/cli-init>
-
-### Create Ansible Module package for the workspace
+#### Create Ansible Module package for a workspace
 
 Running `cdk-ansible module` command generates a Rust package for the specified Ansible module.
 
