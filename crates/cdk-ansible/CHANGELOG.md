@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.3.7](https://github.com/pollenjp/cdk-ansible/compare/cdk-ansible-v0.3.6...cdk-ansible-v0.3.7) - 2025-08-17 (cdk-ansible)
+
+### Other
+
+- remove out-of-date description
+
 ## [0.3.6](https://github.com/pollenjp/cdk-ansible/compare/cdk-ansible-v0.3.5...cdk-ansible-v0.3.6) - 2025-08-13 (cdk-ansible)
 
 ### Other
