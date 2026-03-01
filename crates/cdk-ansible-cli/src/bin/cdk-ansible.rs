@@ -3,7 +3,7 @@
 
 use cdk_ansible_cli::run;
 
-/// Main entry point for end users
+/// Main entry point for end users.
 pub fn main() -> std::result::Result<(), i32> {
     if let Err(e) = run() {
         eprintln!("Error: {e:?}");

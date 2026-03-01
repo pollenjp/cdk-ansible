@@ -14,7 +14,7 @@ use std::process::Command;
 static TAG_PREFIX: &str = "cdk-ansible-cli";
 
 fn main() -> Result<()> {
-    let workspace_root = Path::new(&std::env::var(EnvVars::CARGO_MANIFEST_DIR).unwrap())
+    let workspace_root = Path::new(&std::env::var(EnvVars::CARGO_MANIFEST_DIR)?)
         .parent()
         .context("CARGO_MANIFEST_DIR should be nested in workspace")?
         .parent()
@@ -62,7 +62,7 @@ fn commit_info(workspace_root: &Path) -> Result<()> {
         .arg("--format=%H %h %cd")
         .output()
         .context("failed to run git log -1 --date=short --abbrev=9 --format=%H %h %cd")?;
-    let stdout = String::from_utf8(output.stdout).unwrap();
+    let stdout = String::from_utf8(output.stdout)?;
     let mut parts = stdout.split_whitespace();
     let mut next = || parts.next().unwrap();
     println!(
@@ -103,14 +103,14 @@ fn commit_info(workspace_root: &Path) -> Result<()> {
 }
 
 struct LatestTag {
-    /// tag name
+    /// Tag name.
     name: String,
-    /// semantic version
+    /// Semantic version.
     #[expect(dead_code, reason = "may be used in the future")]
     semver: SemVer,
 }
 
-/// Get the latest tag from the git repository
+/// Get the latest tag from the git repository.
 fn git_latest_tag() -> Result<LatestTag> {
     // git tag --sort=-committerdate
     let output = Command::new("git")
@@ -155,7 +155,7 @@ fn git_latest_tag() -> Result<LatestTag> {
     })
 }
 
-/// Get the distance between the current HEAD and the given tag
+/// Get the distance between the current HEAD and the given tag.
 fn git_tag_distance(tag_name: &str) -> Result<u32> {
     let output = Command::new("git")
         .arg("rev-list")
@@ -201,7 +201,7 @@ fn git_head(git_dir: &Path) -> Option<PathBuf> {
     Some(PathBuf::from(worktree_path))
 }
 
-/// Semantic versioning
+/// Semantic versioning.
 struct SemVer {
     major: u32,
     minor: u32,

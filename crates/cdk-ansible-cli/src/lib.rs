@@ -1,5 +1,5 @@
 //!
-//! This is a crate for `cdk-ansible` command
+//! This is a crate for `cdk-ansible` command.
 //!
 //! # Usage
 //!

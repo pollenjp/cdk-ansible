@@ -16,7 +16,7 @@ use tokio::{fs, io::AsyncWriteExt as _, process::Command, sync::Semaphore, task:
 
 // FIXME: should be configurable
 /// The name of the submodule
-/// Any name is allowed because 'pub use <name>::*' is used in 'lib.rs'
+/// Any name is allowed because 'pub use <name>::*' is used in 'lib.rs'.
 static SUB_MOD_NAME: &str = "m";
 
 #[derive(Args, Debug, Clone)]
@@ -69,7 +69,7 @@ pub struct ModuleCmd {
         conflicts_with = "module_name_regex"
     )]
     pub module_name: Option<String>,
-    /// Specify the ansible module name regex. (e.g. 'ansible\.builtin\..*')
+    /// Specify the ansible module name regex. (e.g. 'ansible\.builtin\..*'.)
     /// If not specified, all modules accessible from your ansible environment will be generated.
     #[arg(
         long,
@@ -79,7 +79,7 @@ pub struct ModuleCmd {
     )]
     pub module_name_regex: Option<String>,
     /// Exclude regex of the ansible module name. It can be specified multiple times.
-    /// (e.g. `--module-name-exclude 'ansible\.builtin\.meta' --module-name-exclude 'ansible\.builtin\.set_fact'`)
+    /// (e.g. `--module-name-exclude 'ansible\.builtin\.meta' --module-name-exclude 'ansible\.builtin\.set_fact'`.)
     #[arg(long, required = false, verbatim_doc_comment)]
     pub module_name_exclude: Option<Vec<String>>,
     /// The number of child processes to run `ansible-doc` in parallel.
@@ -136,41 +136,41 @@ impl ModuleCmd {
 }
 
 #[derive(Debug, Clone)]
-/// The unit of the package for settings
+/// The unit of the package for settings.
 pub enum PkgUnitSetting {
-    /// The namespace of the package
+    /// The namespace of the package.
     Namespace,
-    /// The collection of the package
+    /// The collection of the package.
     Collection,
-    /// The module of the package
+    /// The module of the package.
     Module,
 }
 
 #[derive(Debug, Clone)]
-/// Settings for the module command
+/// Settings for the module command.
 pub struct ModuleSettings {
-    /// The output directory
+    /// The output directory.
     pub output_dir: PathBuf,
-    /// The prefix for the package name (default: "cdkam")
+    /// The prefix for the package name (default: "cdkam").
     pub pkg_prefix: String,
-    /// The unit of the package
+    /// The unit of the package.
     pub pkg_unit: Option<PkgUnitSetting>,
-    /// Whether to use the cache
+    /// Whether to use the cache.
     pub use_cache: bool,
-    /// The cache directory
+    /// The cache directory.
     pub cache_dir: PathBuf,
-    /// The name of the module
+    /// The name of the module.
     pub module_name: Option<String>,
-    /// The regex for the module name
+    /// The regex for the module name.
     pub module_name_regex: Option<String>,
-    /// The regex for the module name to exclude
+    /// The regex for the module name to exclude.
     pub module_name_exclude: Option<Vec<String>>,
     /// The number of child processes to run in parallel.
     pub max_procs: usize,
 }
 
 impl ModuleSettings {
-    /// Convert the command line arguments to the settings
+    /// Convert the command line arguments to the settings.
     pub fn resolve(args: ModuleCmd) -> Self {
         Self {
             output_dir: args.output_dir,
@@ -193,11 +193,11 @@ impl ModuleSettings {
 
 #[derive(Debug, Clone, ValueEnum, Eq, PartialEq)]
 pub enum PkgUnit {
-    /// Create a package at the namespace level (package name will be 'cdkam_<namespace>')
+    /// Create a package at the namespace level (package name will be 'cdkam_<namespace>').
     Namespace,
-    /// Create a package at the collection level (package name will be 'cdkam_<namespace>_<collection>')
+    /// Create a package at the collection level (package name will be 'cdkam_<namespace>_<collection>').
     Collection,
-    /// Create a package at the module level (package name will be 'cdkam_<namespace>_<collection>_<module>')
+    /// Create a package at the module level (package name will be 'cdkam_<namespace>_<collection>_<module>').
     Module,
     /// Does not create package directory.
     /// Only create the module source code.
@@ -242,7 +242,7 @@ async fn match_module_name(
     Ok(ans_modu_names)
 }
 
-/// Create a module file written by Rust from the module json
+/// Create a module file written by Rust from the module json.
 async fn create_module_rs(modu_path: &Path, module_json: &AnsModuleJson) -> Result<()> {
     let content = generate_module_rs(module_json).await.with_context(|| {
         let module_json_str = serde_json::to_string(&module_json)
@@ -268,25 +268,25 @@ async fn create_module_rs(modu_path: &Path, module_json: &AnsModuleJson) -> Resu
     Ok(())
 }
 
-/// '<namespace>.<collection>.<module>'
+/// '<namespace>.<collection>.<module>'.
 ///
 /// ex) ansible.builtin.debug
 ///   =>
 ///   namespace: ansible
 ///   collection: builtin
-///   module: debug
+///   module: debug.
 #[derive(Debug, Clone)]
 struct AnsibleModuleName {
-    /// e.g. 'ansible' in 'ansible.builtin.debug'
+    /// e.g. 'ansible' in 'ansible.builtin.debug'.
     pub namespace: String,
-    /// e.g. 'builtin' in 'ansible.builtin.debug'
+    /// e.g. 'builtin' in 'ansible.builtin.debug'.
     pub collection: String,
-    /// e.g. 'debug' in 'ansible.builtin.debug'
+    /// e.g. 'debug' in 'ansible.builtin.debug'.
     pub module: String,
 }
 
 impl AnsibleModuleName {
-    /// parse '<namespace>.<collection>.<module>' into [`AnsibleModuleName`]
+    /// parse '<namespace>.<collection>.<module>' into [`AnsibleModuleName`].
     pub fn new(modu_name: &str) -> Result<Self> {
         let parts = modu_name.split('.').collect::<Vec<_>>();
         if parts.len() != 3 {
@@ -302,7 +302,7 @@ impl AnsibleModuleName {
         }
     }
 
-    /// '<namespace>.<collection>.<module>'
+    /// '<namespace>.<collection>.<module>'.
     pub fn fqdn(&self) -> String {
         format!("{}.{}.{}", self.namespace, self.collection, self.module)
     }
@@ -325,7 +325,7 @@ impl AnsibleModuleName {
         }
     }
 
-    /// e.g. 'ansible-builtin-debug'
+    /// e.g. 'ansible-builtin-debug'.
     pub fn feature_name(&self, pkg_unit: &PkgUnitSetting) -> String {
         match *pkg_unit {
             PkgUnitSetting::Namespace => self.namespace.clone(),
@@ -343,7 +343,7 @@ impl fmt::Display for AnsibleModuleName {
     }
 }
 
-/// Create a rust package project
+/// Create a rust package project.
 ///
 /// # Arguments
 ///
@@ -806,7 +806,7 @@ async fn create_mod_rs(
     Ok(())
 }
 
-/// Get module json
+/// Get module json.
 ///
 /// # Arguments
 ///
@@ -865,7 +865,7 @@ async fn get_module_json(
     Ok(module_json)
 }
 
-/// list all ansible module names accessible by ansible-doc
+/// list all ansible module names accessible by ansible-doc.
 async fn get_ansible_modules_list() -> Result<Vec<String>> {
     let output = Command::new("ansible-doc")
         .args(["--list"])
@@ -887,35 +887,35 @@ async fn get_ansible_modules_list() -> Result<Vec<String>> {
     Ok(names)
 }
 
-/// Ansible Module Json Type (`TypeAlias`)
+/// Ansible Module Json Type (`TypeAlias`).
 type AnsModuleJson = IndexMap<String, AnsModuleItem>;
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
-/// module field
+/// module field.
 struct AnsModuleItem {
-    /// 'doc' field
+    /// 'doc' field.
     pub doc: AnsModuleDoc,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
-/// doc field
+/// doc field.
 struct AnsModuleDoc {
-    /// 'options' field
+    /// 'options' field.
     pub options: Option<IndexMap<String, AnsModuleDocOption>>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
-/// doc option field
+/// doc option field.
 struct AnsModuleDocOption {
     // TODO: add description field
     // #[serde(default)]
     // pub description: Vec<String>,
-    /// 'type' field
+    /// 'type' field.
     #[serde(default, rename = "type")]
     pub type_: Option<String>,
 }
 
-/// generate module rs
+/// generate module rs.
 ///
 /// # Arguments
 ///
@@ -1030,9 +1030,9 @@ async fn generate_module_rs(module_json: &AnsModuleJson) -> Result<String> {
     Ok(formatted_code)
 }
 
-/// Escape rust reserved keywords
+/// Escape rust reserved keywords.
 ///
-/// <https://doc.rust-lang.org/reference/keywords.html>
+/// <https://doc.rust-lang.org/reference/keywords.html>.
 ///
 fn escape_rust_reserved_keywords(s: &str) -> String {
     match s {
@@ -1054,7 +1054,7 @@ fn escape_rust_reserved_keywords(s: &str) -> String {
     }
 }
 
-/// format code by rustfmt (requires rustfmt)
+/// format code by rustfmt (requires rustfmt).
 async fn format_code(code: &str) -> Result<String> {
     let mut child = Command::new("rustfmt")
         .stdin(Stdio::piped())

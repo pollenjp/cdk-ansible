@@ -2,7 +2,7 @@
 
 use crate::version;
 use anyhow::Result;
-use clap::{Parser, Subcommand, command};
+use clap::{Parser, Subcommand};
 
 mod module;
 
@@ -48,12 +48,12 @@ pub struct TopLevelArgs {
 
 #[derive(Subcommand)]
 pub enum Commands {
-    /// Create Rust code from ansible module
+    /// Create Rust code from ansible module.
     ///
-    /// Examples
+    /// Examples.
     ///
     /// cdk-ansible module --module-name ansible.builtin.debug
-    /// cdk-ansible module --module-name-regex 'ansible.builtin\..*'
+    /// cdk-ansible module --module-name-regex 'ansible.builtin\..*'.
     ///
     ///
     #[command(verbatim_doc_comment)]

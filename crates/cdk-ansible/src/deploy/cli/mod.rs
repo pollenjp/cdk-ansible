@@ -1,6 +1,6 @@
 use crate::deploy::App;
 use anyhow::{Context as _, Result};
-use clap::{Args, Parser, Subcommand, command};
+use clap::{Args, Parser, Subcommand};
 use std::path::{PathBuf, absolute};
 use std::sync::Arc;
 
