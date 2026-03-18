@@ -1,15 +1,15 @@
 use convert_case::Boundary;
 
-/// ex)
+/// ex).
 /// - `AAbb` -> `a_abb` (boundary)
 /// - `AAb1` -> `aab1` (no boundary) (ex: `IPv4` -> `ipv4` with [`Boundary::LOWER_DIGIT`])
 pub const ACRONYM_WITH_TWO_LOWER: Boundary = Boundary {
     name: "AcronymWithTwoLower",
     condition: |s, _| {
-        s.get(0).map(grapheme_is_uppercase) == Some(true)
-            && s.get(1).map(grapheme_is_uppercase) == Some(true)
-            && s.get(2).map(grapheme_is_lowercase) == Some(true)
-            && s.get(3).map(grapheme_is_lowercase) == Some(true)
+        s.get(0).is_some_and(grapheme_is_uppercase)
+            && s.get(1).is_some_and(grapheme_is_uppercase)
+            && s.get(2).is_some_and(grapheme_is_lowercase)
+            && s.get(3).is_some_and(grapheme_is_lowercase)
     },
     arg: None,
     start: 1,

@@ -4,23 +4,23 @@ use serde::Serialize;
 #[derive(Serialize)]
 /// Information about the git commit we may have been built from.
 pub struct CommitInfo {
-    /// The short commit hash
+    /// The short commit hash.
     short_commit_hash: String,
-    /// The commit hash
+    /// The commit hash.
     commit_hash: String,
-    /// The commit date
+    /// The commit date.
     commit_date: String,
-    /// The last tag
+    /// The last tag.
     last_tag: Option<String>,
-    /// The number of commits since the last tag
+    /// The number of commits since the last tag.
     commits_since_last_tag: u32,
-    /// Whether the build time repo is dirty
+    /// Whether the build time repo is dirty.
     is_dirty: bool,
 }
 
 #[derive(Serialize)]
 pub struct VersionInfo {
-    /// version, such as "1.2.3"
+    /// version, such as "1.2.3".
     version: String,
     /// Information about the git commit we may have been built from.
     ///
@@ -29,7 +29,7 @@ pub struct VersionInfo {
 }
 
 impl fmt::Display for VersionInfo {
-    /// Formatted version information: "<version>[+<commits>] (<commit> <date>)"
+    /// Formatted version information: "<version>[+<commits>] (<commit> <date>)".
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         write!(f, "{}", self.version)?;
 

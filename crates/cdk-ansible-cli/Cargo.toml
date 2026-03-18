@@ -80,6 +80,7 @@ arbitrary_source_item_ordering = "allow"
 implicit_return = "allow"
 min_ident_chars = "allow"
 missing_docs_in_private_items = "allow"
+missing_inline_in_public_items = "allow"
 mod_module_files = "allow"
 # FIXME: later
 print_stdout = "allow"
