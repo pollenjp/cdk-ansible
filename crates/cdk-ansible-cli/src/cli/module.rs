@@ -504,8 +504,8 @@ async fn create_or_edit_cargo_toml(
             "[package]
 name = \"{pkg_name}\"
 version = \"0.1.0\"
-edition = \"2024\"
-rust-version = \"1.85\"
+edition.workspace = true
+rust-version.workspace = true
 "
         ))?;
         if let Some(package) = manifest.package.as_mut() {
