@@ -7,7 +7,7 @@ cargo-binstall = "1.17.5"
 rust = "1.93.1"
 shellcheck = "0.11.0"
 uv = "0.10.7"
-yq = "4.52.4"
+yq = "4.53.2"
 zig = "0.15.2"
 
 [env]
