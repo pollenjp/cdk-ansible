@@ -6,7 +6,7 @@ cargo-binstall = "1.17.5"
 "cargo:cargo-zigbuild" = "0.22.1"
 rust = "1.93.1"
 shellcheck = "0.11.0"
-uv = "0.10.7"
+uv = "0.11.5"
 yq = "4.52.4"
 zig = "0.15.2"
 
